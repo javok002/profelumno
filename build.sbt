@@ -15,7 +15,6 @@ Common.settings
 
 libraryDependencies ++= Common.dependencies
 
-target in bower := baseDirectory.value / "app" / "assets"
 
 // Play provides two styles of routers, one expects its actions to be injected, the
 // other, legacy style, accesses its actions statically.
