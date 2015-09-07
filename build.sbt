@@ -2,17 +2,12 @@ name := """profelumno"""
 
 version := "1.0-SNAPSHOT"
 
-lazy val users = (project in file("modules/users"))
-  .enablePlugins(PlayJava, PlayEbean)
-
-lazy val teacherProfile = (project in file("modules/teacher-profile"))
-  .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(users)
+lazy val admin = (project in file("modules/users")).enablePlugins(PlayJava)
 
 lazy val root = (project in file("."))
-  .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(users, teacherProfile)
-  .aggregate(users, teacherProfile)
+  .enablePlugins(PlayJava)
+  .dependsOn(admin)
+  .aggregate(admin)
 
 scalaVersion := "2.11.6"
 
