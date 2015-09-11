@@ -1,0 +1,8 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+
+POST    /validate               ua.dirproy.profelumno.subscription.controllers.TeacherSubscription.validateForm()
+# Map static resources from the /public folder to the /assets URL path
