@@ -18,6 +18,7 @@ import play.twirl.api.Content;
 
 import static play.test.Helpers.*;
 import static org.junit.Assert.*;
+import ua.dirproy.profelumno.views.html.*;
 
 
 /**
@@ -36,7 +37,7 @@ public class ApplicationTest {
 
     @Test
     public void renderTemplate() {
-        Content html = views.html.index.render("Your new application is ready.");
+        Content html = index.render("Your new application is ready.");
         assertEquals("text/html", contentType(html));
         assertTrue(contentAsString(html).contains("Your new application is ready."));
     }
