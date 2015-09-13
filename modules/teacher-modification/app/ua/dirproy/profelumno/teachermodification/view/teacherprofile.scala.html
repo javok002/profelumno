@@ -1,0 +1,41 @@
+@()
+
+@main("Profile") {
+    <form method="post">
+        <div class="form-group">
+          <label for="teacherFirstName">Nombre</label>
+            <input type="text" class="form-control" id="teacherFirstName">
+        </div>
+        <div class="form-group">
+            <label for="teacherLastName">Apellido</label>
+            <input type="text" class="form-control" id="teacherLastName">
+        </div>
+        <div class="form-group">
+            <label for="teacherEmail">Email</label>
+            <input type="email" class="form-control" id="teacherEmail">
+        </div>
+        <div class="form-group">
+            <label for="teacherBirthday">Fecha de Nacimiento</label>
+            <input type="date" class="form-control" id="teacherBirthday">
+        </div>
+        <div class="form-group">
+            <label>Clases a domicilio</label>
+            <label class="radio-inline"><input type="radio" name="homeClasses" id="homeClassesYes" value="yes">yes</label>
+            <label class="radio-inline"><input type="radio" name="homeClasses" id="homeClassesNo" value="no">no</label>
+        </div>
+        <div class="form-group">
+            <label for="pricePerHour">Precio por hora</label>
+            <input type="number" class="form-control" id="pricePerHour">
+        </div>
+        <div class="form-group">
+            <label for="description">Descripcion</label>
+            <input type="text" class="form-control" id="description">
+        </div>
+        <button></button>
+    </form>
+
+    <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
+    <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
+    <script src="@routes.Assets.versioned("external/datepicker/bootstrap-datepicker.js")"></script>
+    <script src="@routes.Assets.versioned("javascripts/register.js")"></script>
+}

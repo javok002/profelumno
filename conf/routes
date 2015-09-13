@@ -3,12 +3,13 @@
 # ~~~~
 
 # Home page
-GET        /                    ua.dirproy.profelumno.controllers.Application.index()
+GET        /                       ua.dirproy.profelumno.controllers.Application.index()
 
-->         /user                user.Routes
-->         /teacher-profile     teacherProfile.Routes
-->         /register            register.Routes
-->         /delete              delete.Routes
+->         /user                   user.Routes
+->         /teacher-profile        teacherProfile.Routes
+->         /register               register.Routes
+->         /delete                 delete.Routes
+->         /modify-teacher         teacherModification.Routes
 
 # Map static resources from the /public folder to the /assets URL path
-GET        /assets/*file        controllers.Assets.versioned(path="/public", file: Asset)
+GET        /assets/*file           controllers.Assets.versioned(path="/public", file: Asset)
