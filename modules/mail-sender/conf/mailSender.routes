@@ -1,0 +1,8 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+
+POST    /send               ua.dirproy.profelumno.mailsender.controllers.MailSender.send()
+# Map static resources from the /public folder to the /assets URL path
