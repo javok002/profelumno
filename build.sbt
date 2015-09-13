@@ -13,6 +13,10 @@ lazy val register = (project in file("modules/register"))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(teacherProfile)
 
+lazy val delete = (project in file("modules/delete"))
+  .enablePlugins(PlayJava, PlayEbean)
+  .dependsOn(teacherProfile)
+
 lazy val teacherSubscription = (project in file("modules/teacher-subscription"))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(teacherProfile)
@@ -27,8 +31,8 @@ lazy val mailSender = (project in file("modules/mail-sender"))
 
 lazy val root = (project in file("."))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(users, teacherProfile, teacherSubscription, register, passwordRecovery, mailSender)
-  .aggregate(users, teacherProfile, teacherSubscription, register, passwordRecovery, mailSender)
+  .dependsOn(users, teacherProfile, teacherSubscription, register, delete, passwordRecovery, mailSender)
+  .aggregate(users, teacherProfile, teacherSubscription, register, delete, passwordRecovery, mailSender)
 
 scalaVersion := "2.11.6"
 
@@ -39,5 +43,3 @@ libraryDependencies ++= Common.dependencies
 // Play provides two styles of routers, one expects its actions to be injected, the
 // other, legacy style, accesses its actions statically.
 routesGenerator := InjectedRoutesGenerator
-
-
