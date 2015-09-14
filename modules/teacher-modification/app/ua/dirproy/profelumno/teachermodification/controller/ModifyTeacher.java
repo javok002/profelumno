@@ -8,7 +8,7 @@ import ua.dirproy.profelumno.teachermodification.view.html.*;
  */
 public class ModifyTeacher extends Controller {
 
-    public static Result registerView() {
+    public static Result profileView() {
         return ok(teacherprofile.render());
     }
 }
