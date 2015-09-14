@@ -4,5 +4,5 @@
 
 # Home page
 GET     /                           ua.dirproy.profelumno.loginout.controllers.Login.loginView()
-
+POST    /loguser                    ua.dirproy.profelumno.loginout.controllers.Login.loginUser()
 # Map static resources from the /public folder to the /assets URL path

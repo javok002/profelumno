@@ -42,6 +42,7 @@ lazy val passwordRecovery = (project in file("modules/password-recovery"))
 
 lazy val mailSender = (project in file("modules/mail-sender"))
   .enablePlugins(PlayJava, PlayEbean)
+
 lazy val loginout = (project in file("modules/loginout"))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(users, common)

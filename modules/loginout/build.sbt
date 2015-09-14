@@ -1,4 +1,4 @@
-name := """logintout"""
+name := """loginout"""
 
 version := "1.0-SNAPSHOT"
 

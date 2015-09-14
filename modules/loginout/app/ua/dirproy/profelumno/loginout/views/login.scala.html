@@ -1,6 +1,6 @@
 @()
 
-@main("LogIn") {
+@ua.dirproy.profelumno.common.views.html.main("LogIn") {
     <div class="center-text">
         <h1 class="main-header"><b>Profe</b><span class="thin">Lumno</span></h1>
     </div>
@@ -11,13 +11,13 @@
                 <div class="box-header center-text">
                     <h3 class="box-title">Iniciar Sesión</h3>
                 </div>
-                <form role="form" method="post">
+                <form role="form" action="@ua.dirproy.profelumno.loginout.controllers.routes.Login.loginUser()" method="post">
                     <div class="box-body">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Mail" name="email" required>
+                            <input type="email" class="form-control" placeholder="Mail" name="email" required>
                             <span class="input-group-addon"><i class="fa fa-user"></i></span>
                         </div>
-
+                        <br/>
 
                         <div class="input-group">
                             <input type="password" class="form-control" placeholder="Contraseña" name="password" required pattern=".{6,}" title="La contraseña debe contener al menos 6 caracteres." onchange="form.confirm.pattern = this.value;">
@@ -28,7 +28,6 @@
 
                     <div class="box-footer">
                         <div class="input-group"><button type="submit" class="btn btn-primary">Ingresar</button></div>
-
                     </div>
                 </form>
             </div>
@@ -42,7 +41,4 @@
     <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
     <script src="@routes.Assets.versioned("external/datepicker/bootstrap-datepicker.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/register.js")"></script>
-} {
-    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/register.css")">
-    <link rel="stylesheet" href="@routes.Assets.versioned("external/iCheck/square/blue.css")">
 }
