@@ -4,6 +4,7 @@ import com.avaje.ebean.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,10 +18,16 @@ public class User extends Model {
 
     @Id private Long id;
 
+    private String name;
+    private String surname;
     private String email;
     private String password;
+    private Date birthday;
+    private String gender;
+    private String secureQuestion;
+    private String secureAnswer;
 
-    private static Finder<Long, User> finder = new Finder<>(User.class);
+    public static Finder<Long, User> finder = new Finder<>(User.class);
 
     public static List<User> list() { return finder.all(); }
 
