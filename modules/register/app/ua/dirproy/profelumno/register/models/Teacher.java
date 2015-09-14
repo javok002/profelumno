@@ -24,6 +24,14 @@ public class Teacher extends Model {
 
     private Date renewalDate;
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public String getSubscription() {
         return subscription;
     }
