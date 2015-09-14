@@ -10,7 +10,7 @@ function initDatepicker() {
     $('.datepicker').datepicker({
         endDate: '0d',
         language: 'es',
-        format: 'dddd DD/MM/YYYY'
+        format: 'dd/mm/yyyy'
     });
 }
 
