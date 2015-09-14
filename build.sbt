@@ -49,9 +49,9 @@ lazy val mailSender = (project in file("modules/mail-sender"))
 
 lazy val root = (project in file("."))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(common, users, teacherProfile, teacherSubscription, register, delete,
+  .dependsOn(common, users,studentModification, teacherProfile, teacherSubscription, register, delete,
     passwordRecovery, mailSender,teacherModification, teacherSearch, hireLesson)
-  .aggregate(common, users, teacherProfile, teacherSubscription, register, delete,
+  .aggregate(common, users,studentModification, teacherProfile, teacherSubscription, register, delete,
     passwordRecovery, mailSender,teacherModification, teacherSearch, hireLesson)
 
 
