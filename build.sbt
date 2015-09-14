@@ -21,6 +21,10 @@ lazy val teacherSubscription = (project in file("modules/teacher-subscription"))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(teacherProfile)
 
+lazy val hireLesson = (project in file("modules/hire-lesson"))
+  .enablePlugins(PlayJava, PlayEbean)
+  .dependsOn(/*teacher-search*/)
+
 lazy val teacherModification = (project in file("modules/teacher-modification"))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(teacherProfile)
@@ -38,8 +42,9 @@ lazy val mailSender = (project in file("modules/mail-sender"))
 
 lazy val root = (project in file("."))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(users, teacherProfile, teacherSubscription, register, delete, passwordRecovery, mailSender,teacherModification, teacherSearch)
-  .aggregate(users, teacherProfile, teacherSubscription, register, delete, passwordRecovery, mailSender,teacherModification, teacherSearch)
+  .dependsOn(users, teacherProfile, teacherSubscription, register, delete, passwordRecovery, mailSender,teacherModification, teacherSearch, hireLesson)
+  .aggregate(users, teacherProfile, teacherSubscription, register, delete, passwordRecovery, mailSender,teacherModification, teacherSearch, hireLesson)
+
 
 scalaVersion := "2.11.6"
 

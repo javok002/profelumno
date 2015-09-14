@@ -8,3 +8,5 @@ target
 /RUNNING_PID
 activator*
 .DS_Store
+app/modules/hire-class/target
+
