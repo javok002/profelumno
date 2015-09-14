@@ -60,3 +60,5 @@ libraryDependencies ++= Common.dependencies
 // Play provides two styles of routers, one expects its actions to be injected, the
 // other, legacy style, accesses its actions statically.
 routesGenerator := InjectedRoutesGenerator
+
+includeFilter in (Assets, LessKeys.less) := "*.less"
