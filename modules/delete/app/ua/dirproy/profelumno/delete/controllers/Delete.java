@@ -3,6 +3,7 @@ package ua.dirproy.profelumno.delete.controllers;
 import play.mvc.Controller;
 import play.mvc.Result;
 import ua.dirproy.profelumno.delete.views.html.delete;
+import ua.dirproy.profelumno.user.models.User;
 
 /**
  * Created by Nicolas Burroni
@@ -15,8 +16,10 @@ public class Delete extends Controller {
     }
 
     public static Result deleteUser() {
-       /* User user = User.finder.byId(id);
-        user.delete(); */
+        String id = session("id");
+        Long parseId = Long.parseLong(id);
+        User user = User.finder.byId(parseId);
+        user.delete();
         return ok();
     }
 }
