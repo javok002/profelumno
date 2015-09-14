@@ -2,8 +2,8 @@
  * Created by Nicolás Burroni on 13/09/15.
  */
 $(function(){
-    initICheck();
     initDatepicker();
+    initICheck();
 });
 
 function initDatepicker() {
