@@ -28,6 +28,7 @@
                         <div class="form-group">
                             <label for="teacherEmail" class="col-sm-2 control-label">Email</label>
                             <input type="email" class="form-control" id="teacherEmail" required>
+                            <span ng-show="myForm.user.$error.required">Username is required.</span>
                         </div>
                         <div class="form-group">
                             <label for="teacherBirthday" class="col-sm-2 control-label">Fecha de Nacimiento</label>
@@ -71,4 +72,5 @@
     <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
     <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
     <script src="@routes.Assets.versioned("external/datepicker/bootstrap-datepicker.js")"></script>
+    <script src="@routes.Assets.versioned("lib/angular/angular.js")"></script>
 }
