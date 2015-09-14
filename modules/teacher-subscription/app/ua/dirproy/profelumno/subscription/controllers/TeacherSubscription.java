@@ -1,7 +1,7 @@
 package ua.dirproy.profelumno.subscription.controllers;
 
-import play.mvc.Controller;
-import play.mvc.Result;
+        import play.mvc.Controller;
+        import play.mvc.Result;
 
 /**
  * Created with IntelliJ IDEA.

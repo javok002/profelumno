@@ -4,5 +4,5 @@
 
 # Home page
 
-GET        /mock-send        ua.dirproy.profelumno.mailsender.controllers.MailSender.mockSend(to: String)
+GET        /validate        ua.dirproy.profelumno.teachersearch.controllers.TeacherSearches.validateForm()
 # Map static resources from the /public folder to the /assets URL path

@@ -1,4 +1,4 @@
-name := """mail-sender"""
+name := """teacher-search"""
 
 version := "1.0-SNAPSHOT"
 
@@ -6,6 +6,6 @@ scalaVersion := "2.11.6"
 
 Common.settings
 
-playEbeanModels in Compile := Seq("ua.dirproy.profelumno.mailSender.models.*")
+//playEbeanModels in Compile := Seq("ua.dirproy.profelumno.user.models.*")
 
 libraryDependencies ++= Common.dependencies
