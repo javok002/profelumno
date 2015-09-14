@@ -9,7 +9,10 @@ create table user (
   surname                   varchar(255),
   email                     varchar(255),
   password                  varchar(255),
+  birthday                  timestamp,
   gender                    varchar(255),
+  secure_question           varchar(255),
+  secure_answer             varchar(255),
   constraint pk_user primary key (id))
 ;
 
