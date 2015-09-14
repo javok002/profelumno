@@ -1,11 +1,8 @@
 package ua.dirproy.profelumno.delete.controllers;
 
-import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
-import ua.dirproy.profelumno.delete.views.html.*;
-
-import static play.libs.Json.toJson;
+import ua.dirproy.profelumno.delete.views.html.delete;
 
 /**
  * Created by Nicolas Burroni
@@ -18,6 +15,8 @@ public class Delete extends Controller {
     }
 
     public static Result deleteUser() {
-        return ok("To be implemented"); //TODO
+       /* User user = User.finder.byId(id);
+        user.delete(); */
+        return ok();
     }
 }
