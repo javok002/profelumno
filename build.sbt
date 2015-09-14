@@ -2,6 +2,9 @@ name := """profelumno"""
 
 version := "1.0-SNAPSHOT"
 
+lazy val common = (project in file("modules/common"))
+  .enablePlugins(PlayJava, PlayEbean)
+
 lazy val users = (project in file("modules/users"))
   .enablePlugins(PlayJava, PlayEbean)
 
@@ -46,8 +49,10 @@ lazy val mailSender = (project in file("modules/mail-sender"))
 
 lazy val root = (project in file("."))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(users, teacherProfile,studentModification, teacherSubscription, register, delete, passwordRecovery, mailSender,teacherModification, teacherSearch, hireLesson)
-  .aggregate(users, teacherProfile,studentModification, teacherSubscription, register, delete, passwordRecovery, mailSender,teacherModification, teacherSearch, hireLesson)
+  .dependsOn(common, users, teacherProfile, teacherSubscription, register, delete,
+    passwordRecovery, mailSender,teacherModification, teacherSearch, hireLesson)
+  .aggregate(common, users, teacherProfile, teacherSubscription, register, delete,
+    passwordRecovery, mailSender,teacherModification, teacherSearch, hireLesson)
 
 
 scalaVersion := "2.11.6"
