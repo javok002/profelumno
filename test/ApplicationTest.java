@@ -15,6 +15,7 @@ import play.i18n.Lang;
 import play.libs.F;
 import play.libs.F.*;
 import play.twirl.api.Content;
+import ua.dirproy.profelumno.views.html.index;
 
 import static play.test.Helpers.*;
 import static org.junit.Assert.*;

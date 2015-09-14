@@ -1,6 +1,6 @@
 @()
 
-@main("Registro") {
+@ua.dirproy.profelumno.common.views.html.main("Registro") {
     <div class="center-text">
         <h1 class="main-header"><b>Profe</b><span class="thin">Lumno</span></h1>
     </div>
@@ -38,6 +38,14 @@
                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                         </div>
                         <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Pregunta de Seguridad" name="secureQuestion" required>
+                            <span class="input-group-addon"><i class="fa fa-question"></i></span>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Respuesta de Seguridad" name="secureAnswer" required>
+                            <span class="input-group-addon"><i class="fa fa-question"></i></span>
+                        </div>
+                        <div class="input-group">
                             <input type="radio" name="gender" id="male" required>
                             <label for="male">Masculino</label>
                             <input type="radio" name="gender" id="female" required>
@@ -73,7 +81,9 @@
     <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
     <script src="@routes.Assets.versioned("external/datepicker/bootstrap-datepicker.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/register.js")"></script>
-} {
-    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/register.css")">
+} @* {
+    <link rel="stylesheet" href="@routes.Assets.versioned("ua/dirproy/profelumno/register/stylesheets/register.css")">
     <link rel="stylesheet" href="@routes.Assets.versioned("external/iCheck/square/blue.css")">
-}
+} {
+    <span></span>
+} *@
