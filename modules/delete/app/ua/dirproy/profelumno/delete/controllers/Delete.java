@@ -16,7 +16,7 @@ public class Delete extends Controller {
     }
 
     public static Result deleteUser() {
-        String id = session("id");
+        String id = session("id");//tienen que pasarle a la session id
         Long parseId = Long.parseLong(id);
         User user = User.finder.byId(parseId);
         user.delete();
