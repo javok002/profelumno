@@ -7041,7 +7041,7 @@ wysihtml5.dom.replaceWithChildNodes = function(node) {
 
       return wysihtml5.lang.string(
         '<!DOCTYPE html><html><head>'
-        + '<meta charset="#{charset}">#{stylesheets}</head>'
+        + '<meta charset="#{charset}">#{ua.dirproy.profelumno.register.stylesheets}</head>'
         + '<body></body></html>'
       ).interpolate(templateVars);
     },
@@ -13245,7 +13245,7 @@ wysihtml5.views.View = Base.extend(
     pasteParserRulesets: null,
     // Parser method to use when the user inserts content
     parser:               wysihtml5.dom.parse,
-    // Class name which should be set on the contentEditable element in the created sandbox iframe, can be styled via the 'stylesheets' option
+    // Class name which should be set on the contentEditable element in the created sandbox iframe, can be styled via the 'ua.dirproy.profelumno.register.stylesheets' option
     composerClassName:    "wysihtml5-editor",
     // Class name to add to the body when the wysihtml5 editor is supported
     bodyClassName:        "wysihtml5-supported",
