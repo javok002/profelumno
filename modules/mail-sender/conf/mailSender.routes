@@ -4,5 +4,5 @@
 
 # Home page
 
-POST    /send               ua.dirproy.profelumno.mailsender.controllers.MailSender.send()
+GET        /mock-send        ua.dirproy.profelumno.mailsender.controllers.MailSender.mockSend(to: String)
 # Map static resources from the /public folder to the /assets URL path
