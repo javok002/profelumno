@@ -1,0 +1,8 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           ua.dirproy.profelumno.loginout.controllers.Login.loginView()
+
+# Map static resources from the /public folder to the /assets URL path
