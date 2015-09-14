@@ -12,7 +12,13 @@ import play.mvc.Result;
  * To change this template use File | Settings | File Templates.
  */
 public class PasswordRecovery extends Controller{
-    public static Result recover(){
+
+    public static Result validateMail(String mail){
         return ok();
     }
+
+    public static Result validatePersonalInfo(String mail, String answer){
+        return ok();
+    }
+
 }
