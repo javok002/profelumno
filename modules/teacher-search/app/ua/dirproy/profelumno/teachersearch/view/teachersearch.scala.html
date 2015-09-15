@@ -1,0 +1,20 @@
+
+@main("Search teacher") {
+    <div>
+        <form novalidate class="simple-form" ng-submit="submit()" ng-controller="Search">
+            Subjects: <input type="text" ng-model="subjects" name="subjects"/><br />
+            Ranking: <input type="number" ng-model="ranking" name="ranking"/><br />
+            Lessons Dictated: <input type="number" ng-model="lessons" name="lessons"/>
+            <input type="checkbox" ng-model="home" />Da clases a domicilio<br/>
+            <input type="checkbox" ng-model="sort"/>Ordenar segun cercanía a mi domicilio<br/>
+            <input type="submit" value="Search" name="search" />
+        </form>
+        <div>
+
+        </div>
+    </div>
+
+    <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
+    <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
+    <script src="@routes.Assets.versioned("external/datepicker/bootstrap-datepicker.js")"></script>
+}

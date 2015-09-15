@@ -1,8 +1,11 @@
 package ua.dirproy.profelumno.subscription.controllers;
 
-        import play.mvc.Controller;
-        import play.mvc.Result;
-
+import org.apache.commons.validator.routines.CreditCardValidator;
+import play.data.Form;
+import play.mvc.Controller;
+import play.mvc.Result;
+import ua.dirproy.profelumno.subscription.models.Card;
+import ua.dirproy.profelumno.subscription.views.html.subscription;
 /**
  * Created with IntelliJ IDEA.
  * <p>
@@ -13,6 +16,11 @@ package ua.dirproy.profelumno.subscription.controllers;
  */
 public class TeacherSubscription extends Controller{
     public static Result validateForm(){
-        return ok();
+        CreditCardValidator validator = new CreditCardValidator(CreditCardValidator.NONE);
+        Card card = Form.form(Card.class).bindFromRequest().get();
+        if(validator.isValid(card.getNumber())) return ok();
+        else return ok();
     }
+
+    public static Result subscriptionForm(){ return ok(subscription.render());}
 }

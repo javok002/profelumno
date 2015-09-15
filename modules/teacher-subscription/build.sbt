@@ -9,3 +9,4 @@ Common.settings
 //playEbeanModels in Compile := Seq("ua.dirproy.profelumno.user.models.*")
 
 libraryDependencies ++= Common.dependencies
+libraryDependencies += "commons-validator" % "commons-validator" % "1.4.1"
