@@ -4,5 +4,6 @@
 
 # Home page
 
-POST    /validate               ua.dirproy.profelumno.subscription.controllers.TeacherSubscription.validateForm()
+GET        /                    ua.dirproy.profelumno.subscription.controllers.TeacherSubscription.subscriptionForm()
+POST       /validate            ua.dirproy.profelumno.subscription.controllers.TeacherSubscription.validateForm()
 # Map static resources from the /public folder to the /assets URL path
