@@ -4,5 +4,6 @@
 
 # Home page
 
-GET        /validate        ua.dirproy.profelumno.teachersearch.controllers.TeacherSearches.validateForm()
+GET        /        ua.dirproy.profelumno.teachersearch.controllers.TeacherSearches.teacherSearchView()
+GET        /getTeachers        ua.dirproy.profelumno.teachersearch.controllers.TeacherSearches.getTeachers()
 # Map static resources from the /public folder to the /assets URL path
