@@ -9,22 +9,39 @@ import ua.dirproy.profelumno.loginout.views.html.login;
 import ua.dirproy.profelumno.loginout.views.html.main;
 import ua.dirproy.profelumno.user.models.User;
 
+import java.util.Date;
+
 /**
  * Created by facundo on 14/9/15.
  */
 public class Login extends Controller {
 
-    public static Result loginView (){ return ok(login.render());}
+    public static Result loginView (){
+        User user = new User();
+        user.setName("Pepe");
+        user.setSurname("Castro");
+        user.setEmail("pepe@gmail.com");
+        user.setBirthday(new Date());
+        user.setGender("M");
+        user.setPassword("pepehola");
+        user.setSecureAnswer("Fazzo");
+        user.setSecureQuestion("aaaa");
+        user.save();
+        return ok(login.render());}
 
     public static Result loginUser(){
         UserLogger user = Form.form(UserLogger.class).bindFromRequest().get();
         System.out.println(user.getEmail()+" + "+user.getPassword());
         User user1 = User.validateEmail(user.getEmail(),user.getPassword());
         if (user1 == null){
+            flash("error","Email o contraseña incorrectos." );
+            flash("previousEmail", user.getEmail());
+
             System.out.println("bad");
-            return badRequest(login.render());
+            return redirect(routes.Login.loginView());
         }
         else{
+            session("email", user.getEmail());
             System.out.println("ok");
             return ok(login.render());
         }
