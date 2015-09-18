@@ -14,8 +14,7 @@ GET        /                       ua.dirproy.profelumno.controllers.Application
 ->         /teacher-search         teacherSearch.Routes
 ->         /mail-sender            mailSender.Routes
 ->         /subscription           teacherSubscription.Routes
-->         /loginout               loginout.Routes
-
+->         /log                    loginout.Routes
 ->         /hire-lesson            hireLesson.Routes
 
 # Map static resources from the /public folder to the /assets URL path
