@@ -1,6 +1,7 @@
 @()
 
 @ua.dirproy.profelumno.common.views.html.main("LogIn") {
+
     <div class="center-text">
         <h1 class="main-header"><b>Profe</b><span class="thin">Lumno</span></h1>
     </div>
@@ -14,7 +15,9 @@
                 <form role="form" action="@ua.dirproy.profelumno.loginout.controllers.routes.Login.loginUser()" method="post">
                     <div class="box-body">
                         <div class="input-group">
-                            <input type="email" class="form-control" placeholder="Mail" name="email" required>
+                            <input type="email" class="form-control" placeholder="Mail" name="email" required value="@if(flash.containsKey("previousEmail")) {
+                                @flash.get("previousEmail")
+                            }">
                             <span class="input-group-addon"><i class="fa fa-user"></i></span>
                         </div>
                         <br/>
@@ -23,11 +26,15 @@
                             <input type="password" class="form-control" placeholder="Contraseña" name="password" required pattern=".{6,}" title="La contraseña debe contener al menos 6 caracteres." onchange="form.confirm.pattern = this.value;">
                             <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                         </div>
-
+                        <h4 class="error" style="color: #a20e10">
+                        @if(flash.containsKey("error")) {
+                            @flash.get("error")
+                        }</h4>
                     </div><!-- /.box-body -->
 
                     <div class="box-footer">
-                        <div class="input-group"><button type="submit" class="btn btn-primary">Ingresar</button></div>
+                        <div class="input-group"><button type="submit" class="btn btn-primary">Ingresar</button> <a href="#">Olvidé mi contraseña</a></div>
+
                     </div>
                 </form>
             </div>
