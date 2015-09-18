@@ -43,6 +43,9 @@ public class User extends Model {
 
     public void setPassword(String password) { this.password = password; }
 
+    public static User validateEmail(String email, String password){
+        return finder.where().eq("email", email).eq("password", password).findUnique();}
+
     public String getName() {
         return name;
     }
