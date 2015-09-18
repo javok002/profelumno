@@ -38,7 +38,7 @@ lazy val teacherSearch = (project in file("modules/teacher-search"))
 
 lazy val passwordRecovery = (project in file("modules/password-recovery"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(users, mailSender)
+  .dependsOn(users, mailSender, common)
 
 lazy val mailSender = (project in file("modules/mail-sender"))
   .enablePlugins(PlayJava, PlayEbean)

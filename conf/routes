@@ -15,6 +15,7 @@ GET        /                       ua.dirproy.profelumno.controllers.Application
 ->         /mail-sender            mailSender.Routes
 ->         /subscription           teacherSubscription.Routes
 ->         /loginout               loginout.Routes
+->         /password-recovery      passwordRecovery.Routes
 
 ->         /hire-lesson            hireLesson.Routes
 
