@@ -5,6 +5,8 @@
 
 create table student (
   id                        bigint not null,
+  user_id                   bigint,
+  constraint uq_student_user_id unique (user_id),
   constraint pk_student primary key (id))
 ;
 
@@ -34,6 +36,8 @@ create sequence teacher_seq;
 
 create sequence user_seq;
 
+alter table student add constraint fk_student_user_1 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_student_user_1 on student (user_id);
 
 
 

@@ -5,6 +5,7 @@ import ua.dirproy.profelumno.user.models.User;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class Teacher extends Model {
 
     @Id private Long id;
 
+    @OneToOne
     private User user;
 
     private String subscription;
