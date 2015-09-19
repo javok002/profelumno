@@ -9,8 +9,7 @@ import ua.dirproy.profelumno.register.models.Teacher;
 import ua.dirproy.profelumno.register.views.html.register;
 import ua.dirproy.profelumno.user.models.User;
 
-import java.util.Date;
-import java.util.Map;
+import java.util.List;
 
 /**
  * Created by Nicolas Burroni
@@ -46,9 +45,11 @@ public class Register extends Controller {
                 teacher.save();
                 return ok(Json.toJson(teacher));
             }
+
         }
         else {
             return badRequest("Unique");
         }
+
     }
 }
