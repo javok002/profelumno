@@ -1,8 +1,24 @@
 /**
  * Created by Nicolás Burroni on 13/09/15.
  */
-$(function(){
-    initDatepicker();
+angular.module('register', [])
+    .controller('RegisterController', ['$scope', '$http', function ($scope, $http) {
+
+        $scope.submit = function () {
+            //$scope.$apply();
+            $http.post('/register', $scope.user)
+                .success(function (data) {
+                    alert(JSON.stringify(data));
+                })
+                .error(function (data) {
+                    alert(data);
+                });
+        };
+
+    }]);
+
+$(function () {
+    //initDatepicker();
     initICheck();
 });
 
