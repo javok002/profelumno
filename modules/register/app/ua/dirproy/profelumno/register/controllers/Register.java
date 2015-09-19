@@ -17,6 +17,14 @@ import java.util.List;
  */
 public class Register extends Controller {
 
+    public static final String[] secureQuestions = {
+            "Cuál es el nombre de mi primer mascota?",
+            "En qué ciudad nació mi madre?",
+            "Cómo se llama mi cantante/grupo favorito/a?",
+            "Quién dejó salir a los perros?",
+            "Por qué sibarita es tan rica?"
+    };
+
     public static Result registerView() {
         return ok(register.render());
     }
@@ -52,4 +60,6 @@ public class Register extends Controller {
         }
 
     }
+
+    public static Result getSecureQuestions() { return ok(Json.toJson(secureQuestions)); }
 }
