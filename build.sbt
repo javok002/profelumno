@@ -38,7 +38,7 @@ lazy val teacherSearch = (project in file("modules/teacher-search"))
 
 lazy val studentModification = (project in file("modules/student-modification"))
   .enablePlugins(PlayJava, PlayEbean)
-  //.dependsOn(studentProfile)
+  .dependsOn(users,register)
 
 lazy val passwordRecovery = (project in file("modules/password-recovery"))
   .enablePlugins(PlayJava, PlayEbean)

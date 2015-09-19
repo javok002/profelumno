@@ -1,69 +1,47 @@
 @()
 
 @main("Modify student") {
-    <div class="row">
-        <div class="col-md-3">
-            <form role="form">
-                <img src="" class="img-circle">
-                <div class="input-group"><button type="submit" class="btn btn-primary">Cambiar</button></div>
-            </form>
-        </div>
-        <div class="col-md-9">
-            <div class="box box-primary">
-                <div class="box-header">
-                    <h4>Editar perfil</h4>
-                </div>
-                <form role="form" method="post" class="from-horizontal">
-                    <div class="box-body">
-                        <div class="form-group">
-                            <label for="teacherFirstName" class="col-sm-2 control-label">Nombre</label>
-                            <div >
-                                <input type="text" class="form-control" id="teacherFirstName" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="teacherLastName" class="col-sm-2 control-label">Apellido</label>
-                            <input type="text" class="form-control" id="teacherLastName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="teacherEmail" class="col-sm-2 control-label">Email</label>
-                            <input type="email" class="form-control" id="teacherEmail" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="teacherBirthday" class="col-sm-2 control-label">Fecha de Nacimiento</label>
-                            <input type="date" class="form-control datepicker" data-date-format="dd/mm/yyyy" id="teacherBirthday" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Clases a domicilio</label>
-                            <label class="radio-inline"><input type="radio" name="homeClasses" id="homeClassesYes" required>Si</label>
-                            <label class="radio-inline"><input type="radio" name="homeClasses" id="homeClassesNo" required>No</label>
-                        </div>
-                        <div class="form-group">
-                            <label for="pricePerHour" class="col-sm-2 control-label">Precio por hora</label>
-                            <div class="input-group"><div class="input-group-addon">$</div> <input type="number" class="form-control" id="pricePerHour"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="description" class="col-sm-2 control-label">Descripción</label>
-                            <textarea class="form-control" id="description" rows="2"></textarea>
-                        </div>
-                    </div>
-                    <div class="box-footer">
-                        <div class="input-group"><button type="submit" class="btn btn-primary">Guardar</button></div>
-                    </div>
+    <div class="row" ng-app="EditForm">
+        <div>
+            <div class="col-md-3">
+                <form role="form">
+                    <img src="" class="img-circle">
+                    <div class="input-group"><button type="submit" class="btn btn-primary">Cambiar</button></div>
                 </form>
             </div>
-            <div class="panel">
-                <div class="panel-header">
-                    <label for="subjects">Materias:</label>
+            <div class="col-md-9">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h4>Editar perfil</h4>
+                    </div>
+                    <form role="form" method="post" class="from-horizontal">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="teacherFirstName" placeholder="Nombre" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="teacherLastName" placeholder="Apellido" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control" id="teacherEmail" placeholder="Email" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="date" class="form-control datepicker" data-date-format="dd/mm/yyyy" id="teacherBirthday" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="radio"><input type="radio" name="gender" id="male" required>Masculino</label>
+                                <label class="radio"><input type="radio" name="gender" id="female" required>Femenino</label>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="from-control" placeholder="Materias" id="subjects" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <div class="input-group"><button type="submit" class="btn btn-primary">Guardar</button></div>
+                            <div class="input-group"><a href=""><button  type="button">Cancelar</button></a></div>
+                        </div>
+                    </form>
                 </div>
-                <form role="form" method="get">
-                    <div class="panel-body">
-                        <textarea class="from-control" id="subjects" rows="3"></textarea>
-                    </div>
-                    <div class="panel-footer">
-                        <div class="input-group"><button type="submit" class="btn btn-primary">Guardar</button></div>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
@@ -71,4 +49,7 @@
     <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
     <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
     <script src="@routes.Assets.versioned("external/datepicker/bootstrap-datepicker.js")"></script>
+} {
+    <link rel="stylesheet" href="@routes.Assets.versioned("ua/dirproy/profelumno/register/stylesheets/register.css")">
+    <link rel="stylesheet" href="@routes.Assets.versioned("external/iCheck/square/blue.css")">
 }
