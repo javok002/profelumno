@@ -1,8 +1,11 @@
 @()
 
-@main("Modify student") {
+@ua.dirproy.profelumno.common.views.html.main("Modify student") {
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/register/register.css")">
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifystudent/ng-tags-input.min.css")">
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifystudent/ng-tags-input.bootstrap.min.css")">
     <div class="row" ng-app="EditForm">
-        <div>
+        <div ng-controller="EditController as edit">
             <div class="col-md-3">
                 <form role="form">
                     <img src="" class="img-circle">
@@ -16,25 +19,31 @@
                     </div>
                     <form role="form" method="post" class="from-horizontal">
                         <div class="box-body">
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="teacherFirstName" placeholder="Nombre" required>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="studentFirstName"  ng-model="edit.u.user.name" placeholder="Nombre" required>
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                            </div>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="studentLastName"  ng-model="edit.u.user.surname" placeholder="Apellido" required>
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                            </div>
+                            <div class="input-group">
+                               <input type="email" class="form-control" id="studentEmail"  ng-model="edit.u.user.email" required>
+                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                            </div>
+                            <div class="input-group">
+                                <input type="text" class="form-control datepicker" data-date-format="dd/mm/yyyy" value="{{edit.u.user.birthday}}" placeholder="Fecha de Nacimiento" name="birthday" required>
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            </div>
+                            <div class="input-group">
+                                <label class="radio"><input type="radio" name="gender" id="male" ng-model="edit.u.user.gender" value="male" required>Masculino</label>
+                                <label class="radio"><input type="radio" name="gender" id="female" ng-model="edit.u.user.gender"  value="female" required>Femenino</label>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" id="teacherLastName" placeholder="Apellido" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="email" class="form-control" id="teacherEmail" placeholder="Email" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="date" class="form-control datepicker" data-date-format="dd/mm/yyyy" id="teacherBirthday" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="radio"><input type="radio" name="gender" id="male" required>Masculino</label>
-                                <label class="radio"><input type="radio" name="gender" id="female" required>Femenino</label>
-                            </div>
-                            <div class="form-group">
-                                <textarea class="from-control" placeholder="Materias" id="subjects" rows="3"></textarea>
-                            </div>
+                                <label>Materias de interes:</label>
+                                <tags-input ng-model="tags" add-on-paste="true">
+                                    <auto-complete source="loadTags($query)"></auto-complete>
+                                </tags-input>                            </div>
                         </div>
                         <div class="box-footer">
                             <div class="input-group"><button type="submit" class="btn btn-primary">Guardar</button></div>
@@ -48,8 +57,13 @@
 
     <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
     <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
+    <script src="@routes.Assets.versioned("external/angularjs/angular.min.js")"></script>
     <script src="@routes.Assets.versioned("external/datepicker/bootstrap-datepicker.js")"></script>
-} {
-    <link rel="stylesheet" href="@routes.Assets.versioned("ua/dirproy/profelumno/register/stylesheets/register.css")">
-    <link rel="stylesheet" href="@routes.Assets.versioned("external/iCheck/square/blue.css")">
+    <script src="@routes.Assets.versioned("javascripts/modifyStudent/editform.js")"></script>
+    <script src="@routes.Assets.versioned("javascripts/modifyStudent/modify-main.js")"></script>
+    <script src="@routes.Assets.versioned("javascripts/modifyStudent/ng-tags-input.min.js")"></script>
+
+
+
+
 }

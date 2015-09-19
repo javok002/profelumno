@@ -19,6 +19,14 @@ public class Student extends Model {
 
     private User user;
 
+    public Student() {
+    }
+
+    public Student(Long id, User user) {
+        this.id = id;
+        this.user = user;
+    }
+
     public User getUser() {
         return user;
     }

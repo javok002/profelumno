@@ -10,6 +10,8 @@ import ua.dirproy.profelumno.register.models.Student;
 import ua.dirproy.profelumno.studentmodification.view.html.*;
 import ua.dirproy.profelumno.user.models.User;
 
+import java.util.Date;
+
 /**
  * Created by tombatto on 14/09/15.
  */
@@ -21,14 +23,18 @@ public class ModifyStudent extends Controller {
     }
 
     public static Result getStudent(){
-        final Long userId = Long.parseLong(session().get("id"));
-        Student student = Ebean.find(Student.class,userId);
-//        User a=new User();
-//        a.setEmail("a@a");
-//        Long b = new Long(10);
-//        a.setId(b);
-//        a.setPassword("a");
-//        Student student=new Student(a.getId(),a);
+        //final Long userId = Long.parseLong(session().get("id"));
+        //Student student = Ebean.find(Student.class,userId);
+        User a=new User();
+        a.setName("Tom");
+        a.setSurname("Batto");
+        a.setEmail("tombatto@gmail.com");
+        a.setBirthday(new Date(500));
+        a.setGender("male");
+        Long b = new Long(10);
+        a.setId(b);
+        a.setPassword("alabama");
+        Student student=new Student(a.getId(),a);
         JsonNode json= Json.toJson(student);
         System.out.println(json);
         return ok(json);

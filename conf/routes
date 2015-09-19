@@ -3,21 +3,22 @@
 # ~~~~
 
 # Home page
-GET        /                       ua.dirproy.profelumno.controllers.Application.index()
+GET        /                         ua.dirproy.profelumno.controllers.Application.index()
 
-->         /common                 common.Routes
-->         /user                   user.Routes
-->         /teacher-profile        teacherProfile.Routes
-->         /register               register.Routes
-->         /delete                 delete.Routes
-->         /modify-teacher         teacherModification.Routes
-->         /teacher-search         teacherSearch.Routes
-->         /mail-sender            mailSender.Routes
-->         /subscription           teacherSubscription.Routes
-->         /log                    loginout.Routes
-->         /loginout               loginout.Routes
-->         /password-recovery      passwordRecovery.Routes
-->         /hire-lesson            hireLesson.Routes
+->         /common                   common.Routes
+->         /user                     user.Routes
+->         /teacher-profile          teacherProfile.Routes
+->         /register                 register.Routes
+->         /delete                   delete.Routes
+->         /modify-teacher           teacherModification.Routes
+->         /teacher-search           teacherSearch.Routes
+->         /mail-sender              mailSender.Routes
+->         /subscription             teacherSubscription.Routes
+->         /log                      loginout.Routes
+->         /loginout                 loginout.Routes
+->         /password-recovery        passwordRecovery.Routes
+->         /hire-lesson              hireLesson.Routes
+->         /modify-student         studentModification.Routes
 
 # Map static resources from the /public folder to the /assets URL path
-GET        /assets/*file           controllers.Assets.versioned(path="/public", file: Asset)
+GET        /assets/*file             controllers.Assets.versioned(path="/public", file: Asset)
