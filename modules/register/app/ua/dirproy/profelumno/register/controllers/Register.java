@@ -8,6 +8,8 @@ import ua.dirproy.profelumno.register.models.Teacher;
 import ua.dirproy.profelumno.register.views.html.register;
 import ua.dirproy.profelumno.user.models.User;
 
+import java.util.Map;
+
 /**
  * Created by Nicolas Burroni
  * Date: 9/12/15
@@ -24,13 +26,16 @@ public class Register extends Controller {
             return badRequest(register.render());
         }
         String role = form.data().get("role");
+        User user = form.get();
         if (role.equals("student")){
             Student student = new Student();
-            student.setUser(form.get());
+            student.setUser(user);
+            user.save();
             student.save();
         }else {
             Teacher teacher = new Teacher();
-            teacher.setUser(form.get());
+            teacher.setUser(user);
+            user.save();
             teacher.save();
         }
         return ok();
