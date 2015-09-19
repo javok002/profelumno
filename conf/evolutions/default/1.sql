@@ -12,8 +12,10 @@ create table student (
 
 create table teacher (
   id                        bigint not null,
+  user_id                   bigint,
   subscription              varchar(255),
   renewal_date              timestamp,
+  constraint uq_teacher_user_id unique (user_id),
   constraint pk_teacher primary key (id))
 ;
 
@@ -38,6 +40,8 @@ create sequence user_seq;
 
 alter table student add constraint fk_student_user_1 foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_student_user_1 on student (user_id);
+alter table teacher add constraint fk_teacher_user_2 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_teacher_user_2 on teacher (user_id);
 
 
 

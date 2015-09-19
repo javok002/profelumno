@@ -24,7 +24,9 @@ public class Card {
         this.expirationYear = expirationYear;
         this.security = security;
     }
+    public Card(){
 
+    }
     public String getType() {
         return type;
     }
