@@ -1,6 +1,7 @@
 @()
 
 @ua.dirproy.profelumno.common.views.html.main("Registro") {
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/register/register.css")">
     <div class="center-text">
         <h1 class="main-header"><b>Profe</b><span class="thin">Lumno</span></h1>
     </div>
@@ -78,7 +79,7 @@
     @termsAndConditions()
 
     <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
-    <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
+    <script src="@routes.Assets.versioned("external/iCheck/icheck.js")"></script>
     <script src="@routes.Assets.versioned("external/datepicker/bootstrap-datepicker.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/register/register.js")"></script>
 } @* {

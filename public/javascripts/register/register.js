@@ -8,9 +8,7 @@ $(function(){
 
 function initDatepicker() {
     $('.datepicker').datepicker({
-        endDate: '0d',
-        language: 'es',
-        format: 'dd/mm/yyyy'
+        endDate: '0d'
     });
 }
 
