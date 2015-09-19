@@ -4,6 +4,7 @@ import com.avaje.ebean.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -37,11 +38,11 @@ public class User extends Model {
 
     public String getEmail() { return email; }
 
-    public void setEmail(String email) { this.email = email; }
+    public void setEmail(@NotNull String email) { this.email = email; }
 
     public String getPassword() { return password; }
 
-    public void setPassword(String password) { this.password = password; }
+    public void setPassword(@NotNull String password) { this.password = password; }
 
     public static User validateEmail(String email, String password){
         return finder.where().eq("email", email).eq("password", password).findUnique();}
@@ -50,7 +51,7 @@ public class User extends Model {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@NotNull String name) {
         this.name = name;
     }
 
@@ -58,7 +59,7 @@ public class User extends Model {
         return surname;
     }
 
-    public void setSurname(String surname) {
+    public void setSurname(@NotNull String surname) {
         this.surname = surname;
     }
 
@@ -66,7 +67,7 @@ public class User extends Model {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(@NotNull Date birthday) {
         this.birthday = birthday;
     }
 
@@ -74,7 +75,7 @@ public class User extends Model {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(@NotNull String gender) {
         this.gender = gender;
     }
 
@@ -82,7 +83,7 @@ public class User extends Model {
         return secureQuestion;
     }
 
-    public void setSecureQuestion(String secureQuestion) {
+    public void setSecureQuestion(@NotNull String secureQuestion) {
         this.secureQuestion = secureQuestion;
     }
 
@@ -90,7 +91,7 @@ public class User extends Model {
         return secureAnswer;
     }
 
-    public void setSecureAnswer(String secureAnswer) {
+    public void setSecureAnswer(@NotNull String secureAnswer) {
         this.secureAnswer = secureAnswer;
     }
 }

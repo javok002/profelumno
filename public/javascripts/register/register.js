@@ -4,10 +4,28 @@
 angular.module('register', [])
     .controller('RegisterController', ['$scope', '$http', function ($scope, $http) {
 
+        $http.get('/register/secure-questions')
+            .success(function (data) {
+                $scope.secureQuestions = data;
+            });
+
+        $scope.errors = {
+            invalid: false,
+            incomplete: false,
+            teacherAge: false,
+            studentAge: false
+        };
+
         $scope.submit = function () {
-            //$scope.$apply();
+            if (!verify())
+                return;
+            if(!$scope.registerForm.$valid) {
+                errors.invalid = true;
+                return;
+            }
             $http.post('/register', $scope.user)
                 .success(function (data) {
+                    $scope.errors = { invalid: false, incomplete: false, teacherAge: false, studentAge: false };
                     alert(JSON.stringify(data));
                 })
                 .error(function (data) {
@@ -15,7 +33,39 @@ angular.module('register', [])
                 });
         };
 
-    }]);
+        var verify = function() {
+            $scope.errors.incomplete = $scope.user["secureQuestion"] == undefined || $scope.user["secureQuestion"] == '';
+            var today = new Date();
+            var birthday = $scope.user.birthday;
+            $scope.errors.teacherAge = $scope.user.role == 'teacher' &&
+                (today.getYear() - birthday.getYear() < 16 ||
+                (today.getYear() - birthday.getYear() == 16 && today.getMonth() < birthday.getMonth()));
+            $scope.errors.studentAge = $scope.user.role == 'student' &&
+                (today.getYear() - birthday.getYear() < 6 ||
+                (today.getYear() - birthday.getYear() == 6 && today.getMonth() < birthday.getMonth()));
+            return !$scope.errors.incomplete && !$scope.errors.invalid && !$scope.errors.studentAge && !$scope.errors.teacherAge;
+        };
+
+    }])
+    .directive("compareTo", function () {
+        return {
+            require: "ngModel",
+            scope: {
+                otherModelValue: "=compareTo"
+            },
+            link: function (scope, element, attributes, ngModel) {
+
+                ngModel.$validators.compareTo = function (modelValue) {
+                    return modelValue == scope.otherModelValue;
+                };
+
+                scope.$watch("otherModelValue", function () {
+                    ngModel.$validate();
+                });
+            }
+        }
+    });
+
 
 $(function () {
     //initDatepicker();

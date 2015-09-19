@@ -9,11 +9,27 @@
     <div class="row" ng-app="register">
         <div class="col-md-4 col-sm-3"></div>
         <div class="col-md-4 col-sm-6">
-            <div class="box box-primary">
+            <div class="box box-primary" ng-controller="RegisterController">
                 <div class="box-header center-text">
                     <h3 class="box-title">Regístrese</h3>
                 </div>
-                <form role="form" name="registerForm" method="post" ng-controller="RegisterController" ng-submit="submit()">
+                <div class="isa_error" ng-show="errors.invalid">
+                    <i class="fa fa-times-circle"></i>
+                    Por favor verifique los datos ingresados.
+                </div>
+                <div class="isa_error" ng-show="errors.incomplete">
+                    <i class="fa fa-times-circle"></i>
+                    Por favor complete todos los campos.
+                </div>
+                <div class="isa_error" ng-show="errors.teacherAge">
+                    <i class="fa fa-times-circle"></i>
+                    Debe tener al menos 16 años para ser profesor.
+                </div>
+                <div class="isa_error" ng-show="errors.studentAge">
+                    <i class="fa fa-times-circle"></i>
+                    Debe tener al menos 6 años para ser alumno.
+                </div>
+                <form role="form" name="registerForm" method="post" ng-submit="submit()">
                     <div class="box-body">
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Nombre" name="name" required ng-model="user.name">
@@ -28,21 +44,25 @@
                             <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
                         </div>
                         <div class="input-group">
-                            <input type="password" class="form-control" placeholder="Contraseña" name="password" required pattern=".{6,}" title="La contraseña debe contener al menos 6 caracteres." onchange="form.confirm.pattern = this.value;" ng-model="user.password">
+                            <input type="password" class="form-control" placeholder="Contraseña" name="password" required pattern=".{6,}" title="La contraseña debe contener al menos 6 caracteres."  ng-model="user.password">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                         </div>
                         <div class="input-group">
-                            <input type="password" class="form-control" placeholder="Confirmar Contraseña" name="confirm" required pattern=".{6,}" title="La contraseña coincidir con la ingresada arriba.">
+                            <input type="password" class="form-control" placeholder="Confirmar Contraseña" name="confirm" required pattern=".{6,}" compare-to="user.password" title="La contraseña coincidir con la ingresada arriba." ng-model="user.confirmPassword">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                         </div>
                         <div class="input-group">
                             @*<input type="text" class="form-control datepicker" datepicker="user.birthday" placeholder="Fecha de Nacimiento" name="birthday" required ng-model="user.birthday">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>*@
-                            <input type="date" class="form-control" placeholder="Fecha de Nacimiento" name="birthday" required ng-model="user.birthday">
-                            <span class="input-group-btn"><i class="glyphicon glyphicon-calendar"></i></span>
+                            <input type="date" class="form-control" placeholder="Fecha de Nacimiento" name="birthday" required ng-model="user.birthday" ng-class="{'default-option': user.birthday == undefined}">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                         </div>
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Pregunta de Seguridad" name="secureQuestion" required ng-model="user.secureQuestion">
+                            @*<input type="text" class="form-control" placeholder="Pregunta de Seguridad" name="secureQuestion" required ng-model="user.secureQuestion">*@
+                            <select class="form-control" name="secureQuestion" required ng-model="user.secureQuestion"  ng-class="{'default-option': user.secureQuestion == undefined}">
+                                <option value="" default selected class="default-option">Pregunta de Seguridad</option>
+                                <option ng-repeat="question in secureQuestions" value="{{question}}">{{question}}</option>
+                            </select>
                             <span class="input-group-addon"><i class="glyphicon glyphicon-question-sign"></i></span>
                         </div>
                         <div class="input-group">
