@@ -70,3 +70,6 @@ libraryDependencies ++= Common.dependencies
 routesGenerator := InjectedRoutesGenerator
 
 includeFilter in (Assets, LessKeys.less) := "*.less"
+
+
+fork in run := true

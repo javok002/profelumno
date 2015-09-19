@@ -30,18 +30,25 @@ public class Register extends Controller {
         }
         String role = form.data().get("role");
         User user = form.get();
-        if (role.equals("student")){
-            Student student = new Student();
-            student.setUser(user);
-            user.save();
-            student.save();
-            return ok(Json.toJson(student));
-        } else {
-            Teacher teacher = new Teacher();
-            teacher.setUser(user);
-            user.save();
-            teacher.save();
-            return ok(Json.toJson(teacher));
+
+        if (User.validateEmailUnique(user.getEmail())) {
+
+            if (role.equals("student")) {
+                Student student = new Student();
+                student.setUser(user);
+                user.save();
+                student.save();
+                return ok(Json.toJson(student));
+            } else {
+                Teacher teacher = new Teacher();
+                teacher.setUser(user);
+                user.save();
+                teacher.save();
+                return ok(Json.toJson(teacher));
+            }
+        }
+        else {
+            return badRequest("Unique");
         }
     }
 }
