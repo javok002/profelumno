@@ -1,18 +1,74 @@
 package ua.dirproy.profelumno.passwordrecovery.controllers;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+import ua.dirproy.profelumno.mailsender.models.MailSenderUtil;
+import ua.dirproy.profelumno.passwordrecovery.views.html.passwordRecovery;
+import ua.dirproy.profelumno.user.models.User;
+
+import java.util.Random;
+
 
 /**
- * Created with IntelliJ IDEA.
- * <p>
- * User: federuiz
- * Date: 11/9/15
- * Time: 12:53 PM
- * To change this template use File | Settings | File Templates.
+ * Created by Alvaro Gaita on 13/09/2015.
+ * Universidad Austral.
+ * Facultad Ingenieria 2015.
  */
-public class PasswordRecovery extends Controller{
-    public static Result recover(){
-        return ok();
+public class PasswordRecovery extends Controller {
+
+    public static Result show() {
+        return ok(passwordRecovery.render());
     }
+
+    public static Result validateMail(String email) {
+        final User user = User.finder.where().eq("email", email).findUnique();
+        final ObjectNode result = Json.newObject();
+
+        if (user != null) {
+            result.put("mail", email);
+            result.put("question", user.getSecureQuestion());
+        } else {
+            result.put("mail", email);
+            result.put("question", "");
+        }
+
+        return ok(result);
+    }
+
+    public static Result validatePersonalInfo(String email, String answer) {
+        final User user = User.finder.where().eq("email", email).findUnique();
+        final boolean validation = user.getSecureAnswer().equals(answer);
+        final ObjectNode result = Json.newObject();
+        result.put("ok", validation);
+
+        if (validation) {
+            final String pw = randomPw(8);
+
+            try {
+                MailSenderUtil.send(new String[]{user.getEmail()}, "Password changed!", "");
+                user.setPassword(pw);
+                user.save();
+            } catch (Exception e) {
+                return badRequest();
+            }
+        }
+
+        return ok(result);
+    }
+
+    private static String randomPw(int length) {
+        final char[] chars = "abcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()-+?".toCharArray();
+        final StringBuilder sb = new StringBuilder();
+        final Random random = new Random();
+
+        for (int i = 0; i < length; i++) {
+            char c = chars[random.nextInt(chars.length)];
+            sb.append(c);
+        }
+
+        return sb.toString();
+    }
+
 }

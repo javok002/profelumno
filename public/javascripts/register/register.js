@@ -2,15 +2,15 @@
  * Created by Nicolás Burroni on 13/09/15.
  */
 $(function(){
-    initICheck();
     initDatepicker();
+    initICheck();
 });
 
 function initDatepicker() {
     $('.datepicker').datepicker({
         endDate: '0d',
         language: 'es',
-        format: 'dddd DD/MM/YYYY'
+        format: 'dd/mm/yyyy'
     });
 }
 

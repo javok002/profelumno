@@ -6,6 +6,7 @@ import ua.dirproy.profelumno.user.models.User;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by javier
@@ -23,6 +24,18 @@ public class Teacher extends Model {
     private String subscription;
 
     private Date renewalDate;
+
+    public static Finder<Long, Teacher> finder = new Finder<>(Teacher.class);
+
+    public static List<Teacher> list() { return finder.all(); }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public String getSubscription() {
         return subscription;

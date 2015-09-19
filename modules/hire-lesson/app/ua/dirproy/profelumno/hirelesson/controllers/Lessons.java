@@ -15,7 +15,7 @@ public class Lessons extends Controller {
     public static Result newLesson() {
         final Lesson lesson = Form.form(Lesson.class).bindFromRequest().get();
         lesson.save();
-        return ok(); //todo redicreccionar al index
+        return ok(); //todo redireccionar al index
     }
 
 

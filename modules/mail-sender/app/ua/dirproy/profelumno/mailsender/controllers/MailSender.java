@@ -8,19 +8,16 @@ import javax.mail.MessagingException;
 import java.util.ArrayList;
 
 /**
- * Created with IntelliJ IDEA.
- * <p>
- * User: federuiz
- * Date: 11/9/15
- * Time: 12:53 PM
- * To change this template use File | Settings | File Templates.
+ * Created by Alvaro Gaita on 13/09/2015.
+ * Universidad Austral.
+ * Facultad Ingenieria 2015.
  */
 public class MailSender extends Controller {
 
-    public static Result mockSend(String to){ //TODO: Test
+    public static Result mockSend(String to){
         try {
-            MailSenderUtil.send(to, "Test", "<h1><strong>Hello</strong> World!</h1>", new ArrayList<String>());
-            return redirect("/");
+            MailSenderUtil.send(new String[]{to}, "Test", "<h1>Hello</h1> <h2>World!</h2>");
+            return ok("Mail sent to: " + to);
         } catch (MessagingException e) {
             return internalServerError(e.toString());
         }

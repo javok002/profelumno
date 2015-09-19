@@ -1,11 +1,14 @@
 @()
 
-@main("Registro") {
+@ua.dirproy.profelumno.common.views.html.main("Registro") {
+    <div class="center-text">
+        <h1 class="main-header"><b>Profe</b><span class="thin">Lumno</span></h1>
+    </div>
     <div class="row">
         <div class="col-md-4 col-sm-3"></div>
         <div class="col-md-4 col-sm-6">
             <div class="box box-primary">
-                <div class="box-header with-border">
+                <div class="box-header center-text">
                     <h3 class="box-title">Regístrese</h3>
                 </div>
                 <form role="form" method="post">
@@ -35,6 +38,14 @@
                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                         </div>
                         <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Pregunta de Seguridad" name="secureQuestion" required>
+                            <span class="input-group-addon"><i class="fa fa-question"></i></span>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Respuesta de Seguridad" name="secureAnswer" required>
+                            <span class="input-group-addon"><i class="fa fa-question"></i></span>
+                        </div>
+                        <div class="input-group">
                             <input type="radio" name="gender" id="male" required>
                             <label for="male">Masculino</label>
                             <input type="radio" name="gender" id="female" required>
@@ -46,28 +57,33 @@
                             <input type="radio" name="role" id="teacher" required>
                             <label for="teacher">Profesor</label>
                         </div>
-                        <div class="input_group">
+                        <div class="input-group">
                             <input type="checkbox" id="terms" required>
-                            <label for="terms">Acepto los <a href="#">Términos y Condiciones de Uso</a>.</label>
+                            <label for="terms">Acepto los <a href="" data-toggle="modal" data-target="#termsModal">
+                                Términos y Condiciones de Uso</a>.</label>
                         </div>
 
                     </div><!-- /.box-body -->
 
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-primary">Registrarse</button>
+                        <div class="input-group"><button type="submit" class="btn btn-primary">Registrarse</button></div>
+                        <div class="input-group"><a href="#">Ya tengo un usuario</a></div>
                     </div>
                 </form>
-                <div><a href="#">Ya tengo un usuario.</a></div>
             </div>
         </div>
         <div class="col-md-4 col-sm-3"></div>
     </div>
 
+    @termsAndConditions()
+
     <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
     <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
     <script src="@routes.Assets.versioned("external/datepicker/bootstrap-datepicker.js")"></script>
-    <script src="@routes.Assets.versioned("javascripts/register.js")"></script>
-} {
+    <script src="@routes.Assets.versioned("javascripts/register/register.js")"></script>
+} @* {
     <link rel="stylesheet" href="@routes.Assets.versioned("ua/dirproy/profelumno/register/stylesheets/register.css")">
     <link rel="stylesheet" href="@routes.Assets.versioned("external/iCheck/square/blue.css")">
-}
+} {
+    <span></span>
+} *@

@@ -1,11 +1,11 @@
-@(title: String)(content: Html)
+@(title: String)(content: Html)(styles: Html)
 
 <!DOCTYPE html>
 
 <html lang="en">
     <head><meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>title</title>
+        <title>Profelumno</title>
             <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
             <!-- Bootstrap 3.3.5 -->
@@ -22,6 +22,7 @@
         <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/skins/_all-skins.min.css")">
             <!-- iCheck -->
         <link rel="stylesheet" href="@routes.Assets.versioned("external/iCheck/flat/blue.css")">
+
             <!-- Morris chart -->
         <link rel="stylesheet" href="@routes.Assets.versioned("external/morris/morris.css")">
             <!-- jvectormap -->
@@ -32,6 +33,8 @@
         <link rel="stylesheet" href="@routes.Assets.versioned("external/daterangepicker/daterangepicker-bs3.css")">
             <!-- bootstrap wysihtml5 - text editor -->
         <link rel="stylesheet" href="@routes.Assets.versioned("external/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css")">
+
+        @styles
 
             <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
             <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -74,11 +77,13 @@
         <script src="@routes.Assets.versioned("external/slimScroll/jquery.slimscroll.min.js")"></script>
             <!-- FastClick -->
         <script src="@routes.Assets.versioned("external/fastclick/fastclick.min.js")"></script>
+
+        <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
             <!-- AdminLTE App -->
         <script src="@routes.Assets.versioned("javascripts/app.min.js")"></script>
             <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
         <script src="@routes.Assets.versioned("javascripts/pages/dashboard.js")"></script>
             <!-- AdminLTE for demo purposes -->
         <script src="@routes.Assets.versioned("javascripts/demo.js")"></script>
-    </body>
+            </body>
 </html>
