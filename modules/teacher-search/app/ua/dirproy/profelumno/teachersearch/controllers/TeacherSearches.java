@@ -23,6 +23,7 @@ public class TeacherSearches extends Controller {
     public static Result getTeachers(){
         final List<Teacher> teachers = Teacher.list();
         return ok(toJson(teachers));
+
     }
 
 

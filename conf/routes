@@ -5,7 +5,7 @@
 # Home page
 GET        /                         ua.dirproy.profelumno.controllers.Application.index()
 
-->         /common                   common.Routes
+->         /architecture             architecture.Routes
 ->         /user                     user.Routes
 ->         /teacher-profile          teacherProfile.Routes
 ->         /register                 register.Routes
@@ -13,6 +13,7 @@ GET        /                         ua.dirproy.profelumno.controllers.Applicati
 ->         /modify-teacher           teacherModification.Routes
 ->         /teacher-search           teacherSearch.Routes
 ->         /mail-sender              mailSender.Routes
+->         /common                   common.Routes
 ->         /subscription             teacherSubscription.Routes
 ->         /log                      loginout.Routes
 ->         /loginout                 loginout.Routes
