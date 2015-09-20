@@ -14,11 +14,11 @@ lazy val teacherProfile = (project in file("modules/teacher-profile"))
 
 lazy val architecture = (project in file("modules/architecture"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(teacherProfile, users, common)
+  .dependsOn(teacherProfile, users, common, delete)
 
 lazy val register = (project in file("modules/register"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(teacherProfile, common, architecture, loginout)
+  .dependsOn(teacherProfile, common, architecture, loginout, teacherSubscription)
 
 lazy val delete = (project in file("modules/delete"))
   .enablePlugins(PlayJava, PlayEbean)
