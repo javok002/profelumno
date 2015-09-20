@@ -25,17 +25,19 @@ public class ModifyStudent extends Controller {
 
     public static Result getStudent(){
         //final Long userId = Long.parseLong(session().get("id"));
-        //Student student = Ebean.find(Student.class,userId);
-        User a=new User();
-        a.setName("Tom");
-        a.setSurname("Batto");
-        a.setEmail("tombatto@gmail.com");
-        a.setBirthday(new Date(500));
-        a.setGender("male");
-        Long b = new Long(10);
-        a.setId(b);
-        a.setPassword("alabama");
-        Student student=new Student(a.getId(),a);
+        Student student = Ebean.find(Student.class,1);
+//        User a=new User();
+//        a.setName("Tom");
+//        a.setSurname("Batto");
+//        a.setEmail("tombatto@gmail.com");
+//        a.setBirthday(new Date(500));
+//        a.setGender("male");
+//        a.setPassword("alabama");
+//        a.setAddress("Palermo, Autonomous City of Buenos Aires, Argentina");
+//        Student student=new Student();
+//        student.setUser(a);
+//        a.save();
+//        student.save();
         JsonNode json= Json.toJson(student);
         System.out.println(json);
         return ok(json);
@@ -48,12 +50,22 @@ public class ModifyStudent extends Controller {
             return badRequest("Error in form");
         }
         Student stu = form.get();
-        if (User.validateEmailUnique(stu.getUser().getEmail())) {
-                Student student = Ebean.find(Student.class, stu.getUser().getId());
-                stu=student;
-                stu.save();
-                student.save();
-                return ok(Json.toJson(student));
+        Student student = Ebean.find(Student.class,stu.getUser().getId());
+        if ((stu.getUser().getEmail()).equalsIgnoreCase(student.getUser().getEmail())||
+                User.validateEmailUnique(stu.getUser().getEmail())) {
+                    student.setProfilePicture(stu.getProfilePicture());
+                    User studentU=student.getUser();
+                    User stuU=stu.getUser();
+                    studentU.setAddress(stuU.getAddress());
+                    studentU.setBirthday(stuU.getBirthday());
+                    studentU.setEmail(stuU.getEmail());
+                    studentU.setGender(stuU.getGender());
+                    studentU.setName(stuU.getName());
+                    studentU.setPassword(stuU.getPassword());
+                    studentU.setSurname(stuU.getSurname());
+                    Ebean.save(student);
+                    Ebean.save(student.getUser());
+                    return ok(Json.toJson(student));
         }else {
             return badRequest("Unique");
         }

@@ -19,7 +19,7 @@
                     <div class="box-header">
                         <h4>Editar perfil</h4>
                     </div>
-                    <form role="form" method="post" class="from-horizontal" ng-submit="submit()">
+                    <form role="form" name="modifyForm" method="post" class="from-horizontal" ng-submit="submit()">
                         <div class="box-body">
                             <div class="input-group">
                                 <input type="text" class="form-control" id="studentFirstName" name="name"  ng-model="edit.u.user.name" placeholder="Nombre" required>
@@ -34,7 +34,7 @@
                                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                             </div>
                             <div class="input-group">
-                                <input type="date" class="form-control"  value="{{edit.u.user.birthday}}" name="birthday" placeholder="Fecha de Nacimiento" name="birthday" required>
+                                <input type="date" class="form-control" id="birthday" ng-model="edit.u.user.birthday" name="birthday" placeholder="Fecha de Nacimiento" name="birthday" required>
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                             </div>
                             <div class="input-group">
@@ -63,7 +63,7 @@
                                 <span class="input-group-addon"><i class="fa fa-key"></i></span>
                             </div>
                             <div class="input-group">
-                                <input type="password" class="form-control" id="pass2" name="confirm" pattern=".{6,}" compare-to="edit.u.user.password" placeholder="Repita contraseña">
+                                <input type="password" class="form-control" id="pass2" name="confirm" pattern=".{6,}" ng-model="confirm" compare-to="edit.u.user.password" placeholder="Repita contraseña">
                                 <span class="input-group-addon"><i class="fa fa-key"></i></span>
                             </div>
                         </div>

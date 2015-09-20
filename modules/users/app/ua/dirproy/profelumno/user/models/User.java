@@ -26,6 +26,7 @@ public class User extends Model {
     private String password;
     private Date birthday;
     private String gender;
+    private String address;
     private String secureQuestion;
     private String secureAnswer;
 
@@ -99,5 +100,13 @@ public class User extends Model {
 
     public void setSecureAnswer(@NotNull String secureAnswer) {
         this.secureAnswer = secureAnswer;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

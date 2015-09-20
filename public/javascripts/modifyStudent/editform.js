@@ -21,26 +21,10 @@ app.controller("EditController", ['$http','$scope',function($http,$scope){
         studentAge: false
     };
 
-    $scope.submit = function () {
-        if (!verify())
-            return;
-        if(!$scope.registerForm.$valid) {
-            errors.invalid = true;
-            return;
-        }
-        $http.post('/save-modification', edit.u.user)
-            .success(function (data) {
-                $scope.errors = { invalid: false, incomplete: false, teacherAge: false, studentAge: false };
-                alert(JSON.stringify(data));
-            })
-            .error(function (data) {
-                alert(data);
-            });
-    };
 
     var verify = function() {
         var today = new Date();
-        var birthday = $scope.user.birthday;
+        var birthday = edit.u.user.birthday;
         $scope.errors.studentAge =(today.getYear() - birthday.getYear() < 6 ||(today.getYear() - birthday.getYear() == 6 && today.getMonth() < birthday.getMonth()));
         return !$scope.errors.incomplete && !$scope.errors.invalid && !$scope.errors.studentAge && !$scope.errors.teacherAge;
     };
@@ -93,6 +77,25 @@ app.controller("EditController", ['$http','$scope',function($http,$scope){
         }
     };
     $scope.loc =$scope.geoCode();
+
+    $scope.submit = function () {
+        if (!verify())
+            return;
+        if(!$scope.modifyForm.$valid) {
+            errors.invalid = true;
+            return;
+        }
+        edit.u.user.address=$scope.search;
+        $http.post('student-modification', edit.u)
+            .success(function (data) {
+                $scope.errors = { invalid: false, incomplete: false, teacherAge: false, studentAge: false };
+                alert(JSON.stringify(data));
+            })
+            .error(function (data) {
+                alert(data);
+            });
+    };
+
 }]);
 
 app.directive("appMap", function () {
