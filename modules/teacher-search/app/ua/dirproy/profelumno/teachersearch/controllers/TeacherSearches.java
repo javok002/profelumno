@@ -17,7 +17,7 @@ import static play.libs.Json.toJson;
 public class TeacherSearches extends Controller {
 
     public static Result teacherSearchView(){
-        return ok(ua.dirproy.profelumno.teachersearch.view.html.teachersearch.render());
+        return ok(ua.dirproy.profelumno.teachersearch.views.html.teachersearch.render());
     }
 
     public static Result getTeachers(){
@@ -25,6 +25,4 @@ public class TeacherSearches extends Controller {
         return ok(toJson(teachers));
 
     }
-
-
 }
