@@ -1,10 +1,11 @@
 package ua.dirproy.profelumno.hirelesson.controllers;
 
+import play.Application;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import ua.dirproy.profelumno.hirelesson.models.Lesson;
-
+import ua.dirproy.profelumno.hirelesson.views.html.hire;
 
 
 /**
@@ -18,7 +19,7 @@ public class Lessons extends Controller {
         return ok(); //todo redireccionar al index
     }
 
-
-
-
+    public static Result redirect() {
+        return ok(hire.render());
+    }
 }
