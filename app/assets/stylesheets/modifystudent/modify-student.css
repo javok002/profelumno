@@ -1,9 +1,4 @@
-#map {
-    height: calc(100vh - 305px);
-}
-
-#map-canvas {
-    position: relative;
-    width: 100%;
-    height: 100%;
+.map{
+    height: 400px;
+    margin: 10px;
 }

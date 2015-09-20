@@ -33,7 +33,7 @@ public class Register extends Controller {
         Form<User> form = Form.form(User.class).bindFromRequest();
         if (form.hasErrors()) {
 //            return badRequest(register.render());
-            return badRequest("Error in form");
+            return badRequest("invalid");
         }
         String role = form.data().get("role");
         User user = form.get();
@@ -45,18 +45,18 @@ public class Register extends Controller {
                 student.setUser(user);
                 user.save();
                 student.save();
-                return ok(Json.toJson(student));
+                return ok(ua.dirproy.profelumno.loginout.controllers.routes.Login.loginView().url());
             } else {
                 Teacher teacher = new Teacher();
                 teacher.setUser(user);
                 user.save();
                 teacher.save();
-                return ok(Json.toJson(teacher));
+                return ok(ua.dirproy.profelumno.subscription.controllers.routes.TeacherSubscription.subscriptionForm().url());
             }
 
         }
         else {
-            return badRequest("Unique");
+            return badRequest("taken");
         }
 
     }

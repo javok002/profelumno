@@ -3,6 +3,7 @@ package ua.dirproy.profelumno.studentmodification.controller;
 import com.avaje.ebean.Ebean;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import play.data.Form;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -38,6 +39,24 @@ public class ModifyStudent extends Controller {
         JsonNode json= Json.toJson(student);
         System.out.println(json);
         return ok(json);
+    }
+
+    public static Result saveStudent(){
+        Form<Student> form = Form.form(Student.class).bindFromRequest();
+        if (form.hasErrors()) {
+//            return badRequest(register.render());
+            return badRequest("Error in form");
+        }
+        Student stu = form.get();
+        if (User.validateEmailUnique(stu.getUser().getEmail())) {
+                Student student = Ebean.find(Student.class, stu.getUser().getId());
+                stu=student;
+                stu.save();
+                student.save();
+                return ok(Json.toJson(student));
+        }else {
+            return badRequest("Unique");
+        }
     }
 
 }
