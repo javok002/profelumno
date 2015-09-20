@@ -12,9 +12,13 @@ lazy val teacherProfile = (project in file("modules/teacher-profile"))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(users)
 
+lazy val architecture = (project in file("modules/architecture"))
+  .enablePlugins(PlayJava, PlayEbean)
+  .dependsOn(teacherProfile, users, common)
+
 lazy val register = (project in file("modules/register"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(teacherProfile, common)
+  .dependsOn(teacherProfile, common, architecture, loginout)
 
 lazy val delete = (project in file("modules/delete"))
   .enablePlugins(PlayJava, PlayEbean)
@@ -47,10 +51,6 @@ lazy val loginout = (project in file("modules/loginout"))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(users, common)
 
-lazy val architecture = (project in file("modules/architecture"))
-  .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(teacherProfile, users, common)
-
 lazy val root = (project in file("."))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(common, users, teacherProfile, teacherSubscription, register, delete,
@@ -70,3 +70,6 @@ libraryDependencies ++= Common.dependencies
 routesGenerator := InjectedRoutesGenerator
 
 includeFilter in (Assets, LessKeys.less) := "*.less"
+
+
+fork in run := true

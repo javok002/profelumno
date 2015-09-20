@@ -1,6 +1,6 @@
 package ua.dirproy.profelumno.subscription.controllers;
 
-import org.apache.commons.validator.routines.CreditCardValidator;
+import org.apache.commons.validator.CreditCardValidator;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -16,9 +16,9 @@ import ua.dirproy.profelumno.subscription.views.html.subscription;
  */
 public class TeacherSubscription extends Controller{
     public static Result validateForm(){
-        CreditCardValidator validator = new CreditCardValidator(CreditCardValidator.NONE);
+        CreditCardValidator validator = new CreditCardValidator(CreditCardValidator.VISA);
         Card card = Form.form(Card.class).bindFromRequest().get();
-        if(validator.isValid(card.getNumber())) return ok();
+        if(validator.isValid(card.getNumber())) return badRequest();
         else return ok();
     }
 
