@@ -40,6 +40,10 @@ lazy val teacherSearch = (project in file("modules/teacher-search"))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(register, common)
 
+lazy val studentModification = (project in file("modules/student-modification"))
+  .enablePlugins(PlayJava, PlayEbean)
+  .dependsOn(users,register,common)
+
 lazy val passwordRecovery = (project in file("modules/password-recovery"))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(users, mailSender, common)
@@ -53,9 +57,9 @@ lazy val loginout = (project in file("modules/loginout"))
 
 lazy val root = (project in file("."))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(common, users, teacherProfile, teacherSubscription, register, delete,
+  .dependsOn(common,studentModification, users, teacherProfile, teacherSubscription, register, delete,
     passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture, loginout)
-  .aggregate(common, users, teacherProfile, teacherSubscription, register, delete,
+  .aggregate(common,studentModification, users, teacherProfile, teacherSubscription, register, delete,
     passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture,loginout)
 
 

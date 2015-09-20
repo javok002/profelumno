@@ -1,44 +1,15 @@
-@ua.dirproy.profelumno.common.views.html.main("Hire-class") {
+@ua.dirproy.profelumno.common.views.html.main("Hire lesson") {
+    <div ng-app="profLesson">
 
-    <!-- Modal -->
-    <div class="modal fade" id="hire-Modal" role="dialog" ng-app="hireLesson" >
-        <div class="modal-dialog" ng-controller="LessonController as lesson">
+        <hire-lesson></hire-lesson>
 
-                <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Hire lesson</h4>
-                </div>
-                <div class="modal-body">
-                    <form class="form-inline" role="form">
-                        <div class="form-group">
-                            <label class="sr-only" for="email">Email address:</label>
-                            <input type="email" class="form-control" id="email">
-                        </div>
-                        <div class="form-group">
-                            <label class="sr-only" for="commentary">Comentary:</label>
-                            <input type="text" class="form-control" id="commentary">
-                        </div>
-                        <div class="checkbox">
-                            <label><input type="checkbox"> Remember me</label>
-                        </div>
-                        <button type="submit" class="btn btn-default">Submit</button>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-
-        </div>
+        <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
+        <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
+        <script src="@routes.Assets.versioned("external/bootstrap/js/bootstrap.min.js")"></script>
+        <script src="@routes.Assets.versioned("external/datepicker/bootstrap-datepicker.js")"></script>
+        <script src="@routes.Assets.versioned("external/angularjs/angular.min.js")"></script>
+        <script src="@routes.Assets.versioned("/javascripts/hire-lesson.js")"></script>
+        @*<script src="@routes.Assets.versioned("javascripts/hire-client/")"></script> a completar -->*@
+        <script src="@routes.Assets.versioned("javascripts/register/register.js")"></script>
     </div>
-
-    <script src="@routes.Assets.versioned("external/angularjs/angular.min.js")"></script>
-    <script src="@routes.Assets.versioned("javascripts/hire-client/")"></script> <!--a completar -->
-    <script src="@routes.Assets.versioned("external/bootstrap/js/bootstrap.min.js")"></script>
-    <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
-    <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
-    <script src="@routes.Assets.versioned("external/datepicker/bootstrap-datepicker.js")"></script>
-    <script src="@routes.Assets.versioned("javascripts/register.js")"></script>
 }
