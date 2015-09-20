@@ -11,6 +11,7 @@ angular.module('register', [])
 
         $scope.errors = {
             invalid: false,
+            taken: false,
             incomplete: false,
             teacherAge: false,
             studentAge: false
@@ -25,11 +26,11 @@ angular.module('register', [])
             }
             $http.post('/register', $scope.user)
                 .success(function (data) {
-                    $scope.errors = { invalid: false, incomplete: false, teacherAge: false, studentAge: false };
-                    alert(JSON.stringify(data));
+                    window.location.href = data;
                 })
                 .error(function (data) {
-                    alert(data);
+                    $scope.errors.invalid = data == 'invalid';
+                    $scope.errors.taken = data == 'taken';
                 });
         };
 
