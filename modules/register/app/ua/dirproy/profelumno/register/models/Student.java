@@ -24,6 +24,14 @@ public class Student extends Model {
 
     public static Finder<Long, Student> finder = new Finder<>(Student.class);
 
+    public Student() {
+    }
+
+    public Student(Long id, User user) {
+        this.id = id;
+        this.user = user;
+    }
+
     public static List<Student> list() { return finder.all(); }
 
     public User getUser() {
