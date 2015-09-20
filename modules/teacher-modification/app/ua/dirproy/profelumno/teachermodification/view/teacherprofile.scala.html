@@ -1,51 +1,66 @@
 @()
 
-@main("Profile") {
-    <div class="row">
+@ua.dirproy.profelumno.common.views.html.main("Profile") {
+    <div class="row" ng-app="teacherModify">
         <div class="col-md-3">
-            <form role="form">
-                <img src="" class="img-circle">
-                <div class="input-group"><button type="submit" class="btn btn-primary">Cambiar</button></div>
-            </form>
+            <div ng-controller="ImageController as imgCtrl">@*flow-init*@
+                @*<div class="ng-scope" flow-init="{singleFile:true}" flow-file-added="!!{png:1,jpg:1,jpeg:1}[$file.getExtension()]">
+                    <h4>Imagen de perfil</h4><br>
+                    <div class="thumbnail ng-hide" ng-show="!$flow.files.length">
+                        <img src="@routes.Assets.versioned("images/userDefault.jpeg")">
+                    </div>
+                    <div class="thumbnail" ng-show="$flow.files.length">
+                        <img src="@routes.Assets.versioned("images/userDefault.jpeg")">
+                    </div>
+                    <div>
+                        <span class="btn btn-primary " ng-show="$flow.files.length" flow-btn="">Select image<input style=" visibility: hidden; position: absolute;" type="file"></span>
+                        <span class="btn btn-info" ng-show="$flow.files.length" flow-btn="">Change<input style=" visibility: hidden; position: absolute;" type="file"></span>
+                    </div>
+                </div>*@
+      @*          <input type="file" class="btn btn-primary" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'"
+                accept=".jpg, .png, .jpeg" ngf-max-size="20MB" ngf-min-height="100" ngf-resize="{width: 100, height: 100}"/>*@
+                <input type="file" name="file" onchange="angular.element(this).scope().uploadFile(this)" id="photo-upload"/>
+            </div>
         </div>
         <div class="col-md-9">
             <div class="box box-primary">
                 <div class="box-header">
                     <h4>Editar perfil</h4>
                 </div>
-                <form role="form" method="post" class="from-horizontal">
+                <form role="form" name="info" class="from-horizontal" ng-controller="TeacherEditController as infoCtrl"
+                    ng-submit="info.$valid() && infoCtrl.submitModification()" novalidate>
                     <div class="box-body">
                         <div class="form-group">
                             <label for="teacherFirstName" class="col-sm-2 control-label">Nombre</label>
                             <div >
-                                <input type="text" class="form-control" id="teacherFirstName" required>
+                                <input type="text" class="form-control" id="teacherFirstName" ng-model="teacher.firstName" required placeholder="{{infoCtrl.teacher.firstName}}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="teacherLastName" class="col-sm-2 control-label">Apellido</label>
-                            <input type="text" class="form-control" id="teacherLastName" required>
+                            <input type="text" class="form-control" id="teacherLastName" ng-model="teacher.lastName" required placeholder="{{infoCtrl.teacher.lastName}}">
                         </div>
                         <div class="form-group">
                             <label for="teacherEmail" class="col-sm-2 control-label">Email</label>
-                            <input type="email" class="form-control" id="teacherEmail" required>
+                            <input type="email" class="form-control" id="teacherEmail"  ng-model="teacher.email" required placeholder="{{infoCtrl.teacher.email}}">
                             <span ng-show="myForm.user.$error.required">Username is required.</span>
                         </div>
                         <div class="form-group">
-                            <label for="teacherBirthday" class="col-sm-2 control-label">Fecha de Nacimiento</label>
-                            <input type="date" class="form-control datepicker" data-date-format="dd/mm/yyyy" id="teacherBirthday" required>
+                            <label for="birthday" class="col-sm-2 control-label">Fecha de Nacimiento</label>
+                            <input type="text" class="form-control datepicker" data-date-format="dd/mm/yyyy" id="birthday" ng-model="teacher.birthday" required placeholder="{{infoCtrl.teacher.birthday}}">
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Clases a domicilio</label>
-                            <label class="radio-inline"><input type="radio" name="homeClasses" id="homeClassesYes" required>Si</label>
-                            <label class="radio-inline"><input type="radio" name="homeClasses" id="homeClassesNo" required>No</label>
+                            <label class="radio-inline"><input type="radio" name="homeClasses" id="homeClassesYes" ng-model="teacher.homeClasses" required>Si</label>
+                            <label class="radio-inline"><input type="radio" name="homeClasses" id="homeClassesNo" ng-model="teacher.homeClasses" required>No</label>
                         </div>
                         <div class="form-group">
                             <label for="pricePerHour" class="col-sm-2 control-label">Precio por hora</label>
-                            <div class="input-group"><div class="input-group-addon">$</div> <input type="number" class="form-control" id="pricePerHour"></div>
+                            <div class="input-group"><div class="input-group-addon">$</div> <input type="number" class="form-control" id="pricePerHour" ng-model="teacher.price" required placeholder="{{infoCtrl.teacher.price}}"></div>
                         </div>
                         <div class="form-group">
                             <label for="description" class="col-sm-2 control-label">Descripción</label>
-                            <textarea class="form-control" id="description" rows="2"></textarea>
+                            <textarea class="form-control" id="description" rows="2" ng-model="teacher.description" ng-minLength="50" required>{{infoCtrl.teacher.firstName}}</textarea>
                         </div>
                     </div>
                     <div class="box-footer">
@@ -53,13 +68,19 @@
                     </div>
                 </form>
             </div>
-            <div class="panel">
-                <div class="panel-header">
-                    <label for="subjects">Materias:</label>
+            <div class="panel" ng-controller="TeacherSubjectController as subjectCtrl">
+                <div>
+                    <select ng-model="subjectCtrl.subject.">
+                        <option ng-selected="{{subject.name == filterCondition.operator}}"
+                        ng-repeat="subject in subjects"
+                        value="{{subject.name}}">
+                            {{subject.name}}
+                        </option>
+                    </select>
                 </div>
                 <form role="form" method="get">
                     <div class="panel-body">
-                        <textarea class="from-control" id="subjects" rows="3"></textarea>
+
                     </div>
                     <div class="panel-footer">
                         <div class="input-group"><button type="submit" class="btn btn-primary">Guardar</button></div>
@@ -72,5 +93,8 @@
     <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
     <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
     <script src="@routes.Assets.versioned("external/datepicker/bootstrap-datepicker.js")"></script>
+    <script src="@routes.Assets.versioned("external/ng-flow/dist/ng-flow-standalone.min.js")"></script>
     <script src="@routes.Assets.versioned("lib/angular/angular.js")"></script>
+    <script src="@routes.Assets.versioned("external/ng-file-upload/ng-file-upload-shim.min.js")"></script>
+    <script src="@routes.Assets.versioned("external/ng-file-upload/ng-file-upload.min.js")"></script>
 }

@@ -5,6 +5,7 @@ import ua.dirproy.profelumno.user.models.User;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import java.util.Date;
 import java.util.List;
 
@@ -24,6 +25,9 @@ public class Teacher extends Model {
     private String subscription;
 
     private Date renewalDate;
+
+    @Lob
+    private byte[] profilePicture;
 
     public static Finder<Long, Teacher> finder = new Finder<>(Teacher.class);
 
@@ -51,5 +55,13 @@ public class Teacher extends Model {
 
     public void setRenewalDate(Date renewalDate) {
         this.renewalDate = renewalDate;
+    }
+
+    public byte[] getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(byte[] profilePicture) {
+        this.profilePicture = profilePicture;
     }
 }

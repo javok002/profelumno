@@ -12,6 +12,7 @@ create table teacher (
   id                        bigint not null,
   subscription              varchar(255),
   renewal_date              timestamp,
+  profile_picture           blob,
   constraint pk_teacher primary key (id))
 ;
 
