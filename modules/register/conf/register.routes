@@ -3,5 +3,6 @@
 # ~~~~
 
 # Home page
-GET     /                      ua.dirproy.profelumno.register.controllers.Register.registerView()
-POST    /                      ua.dirproy.profelumno.register.controllers.Register.registerUser()
+GET     /                               ua.dirproy.profelumno.register.controllers.Register.registerView()
+POST    /                               ua.dirproy.profelumno.register.controllers.Register.registerUser()
+GET     /secure-questions               ua.dirproy.profelumno.register.controllers.Register.getSecureQuestions()
