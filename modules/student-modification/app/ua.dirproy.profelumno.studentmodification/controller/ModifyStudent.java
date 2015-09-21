@@ -23,6 +23,11 @@ public class ModifyStudent extends Controller {
         return ok(modifystudent.render());
     }
 
+    public static Result changePasswordView() {
+
+        return ok(changepassword.render());
+    }
+
     public static Result getStudent(){
         //final Long userId = Long.parseLong(session().get("id"));
         Student student = Ebean.find(Student.class,1);
@@ -39,9 +44,10 @@ public class ModifyStudent extends Controller {
 //        a.save();
 //        student.save();
         JsonNode json= Json.toJson(student);
-        System.out.println(json);
         return ok(json);
     }
+
+
 
     public static Result saveStudent(){
         Form<Student> form = Form.form(Student.class).bindFromRequest();
@@ -70,5 +76,27 @@ public class ModifyStudent extends Controller {
             return badRequest("Unique");
         }
     }
+
+    public static Result savePassword(){
+        Form<Student> form = Form.form(Student.class).bindFromRequest();
+        if (form.hasErrors()) {
+//            return badRequest(register.render());
+            return badRequest("Error in form");
+        }
+        Student stu = form.get();
+        Student student = Ebean.find(Student.class,stu.getUser().getId());
+        if (User.validateEmailUnique(stu.getUser().getEmail())) {
+            User studentU=student.getUser();
+            User stuU=stu.getUser();
+            studentU.setPassword(stuU.getPassword());
+            studentU.setSurname(stuU.getSurname());
+            Ebean.save(student);
+            Ebean.save(student.getUser());
+            return ok(Json.toJson(student));
+        }else {
+            return badRequest("Unique");
+        }
+    }
+
 
 }

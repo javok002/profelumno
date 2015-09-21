@@ -5,6 +5,8 @@
 # Home page
 GET        /edit                ua.dirproy.profelumno.studentmodification.controller.ModifyStudent.modifyStudentView()
 GET        /user                ua.dirproy.profelumno.studentmodification.controller.ModifyStudent.getStudent()
+GET        /changepass                ua.dirproy.profelumno.studentmodification.controller.ModifyStudent.changePasswordView()
 POST       /student-modification    ua.dirproy.profelumno.studentmodification.controller.ModifyStudent.saveStudent()
+POST       /save-pass                ua.dirproy.profelumno.studentmodification.controller.ModifyStudent.savePassword()
 # Map static resources from the /public folder to the /assets URL path
 GET        /assets/*file        controllers.Assets.versioned(path="/public", file: Asset)
