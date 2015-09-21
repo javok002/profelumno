@@ -43,7 +43,6 @@ public class Register extends Controller {
                 student.setUser(user);
                 user.save();
                 student.save();
-                return ok(ua.dirproy.profelumno.loginout.controllers.routes.Login.loginView().url());
             } else {
                 Teacher teacher = new Teacher();
                 teacher.setUser(user);
@@ -51,7 +50,6 @@ public class Register extends Controller {
                 teacher.setHasCard(false);
                 user.save();
                 teacher.save();
-                return ok(ua.dirproy.profelumno.subscription.controllers.routes.TeacherSubscription.subscriptionForm().url());
             }
 
         }
@@ -59,6 +57,7 @@ public class Register extends Controller {
             return badRequest("taken");
         }
 
+        return ok(ua.dirproy.profelumno.loginout.controllers.routes.Login.loginView().url());
     }
 
     public static Result getSecureQuestions() { return ok(Json.toJson(secureQuestions)); }
