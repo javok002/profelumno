@@ -9,8 +9,6 @@ import ua.dirproy.profelumno.register.models.Teacher;
 import ua.dirproy.profelumno.register.views.html.register;
 import ua.dirproy.profelumno.user.models.User;
 
-import java.util.List;
-
 /**
  * Created by Nicolas Burroni
  * Date: 9/12/15
@@ -49,6 +47,8 @@ public class Register extends Controller {
             } else {
                 Teacher teacher = new Teacher();
                 teacher.setUser(user);
+                teacher.setIsInTrial(true);
+                teacher.setHasCard(false);
                 user.save();
                 teacher.save();
                 return ok(Json.toJson(teacher));

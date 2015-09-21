@@ -15,6 +15,8 @@ create table teacher (
   user_id                   bigint,
   subscription              varchar(255),
   renewal_date              timestamp,
+  is_in_trial               boolean,
+  has_card                  boolean,
   constraint uq_teacher_user_id unique (user_id),
   constraint pk_teacher primary key (id))
 ;

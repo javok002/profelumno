@@ -27,6 +27,10 @@ public class Teacher extends Model {
 
     private Date renewalDate;
 
+    private boolean isInTrial;
+
+    private boolean hasCard;
+
     public static Finder<Long, Teacher> finder = new Finder<>(Teacher.class);
 
     public static List<Teacher> list() { return finder.all(); }
@@ -53,5 +57,21 @@ public class Teacher extends Model {
 
     public void setRenewalDate(Date renewalDate) {
         this.renewalDate = renewalDate;
+    }
+
+    public boolean isInTrial() {
+        return isInTrial;
+    }
+
+    public void setIsInTrial(boolean isInTrial) {
+        this.isInTrial = isInTrial;
+    }
+
+    public boolean hasCard() {
+        return hasCard;
+    }
+
+    public void setHasCard(boolean hasCard) {
+        this.hasCard = hasCard;
     }
 }
