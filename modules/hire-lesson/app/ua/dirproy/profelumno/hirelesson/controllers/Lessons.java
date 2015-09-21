@@ -6,7 +6,6 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import ua.dirproy.profelumno.hirelesson.models.Lesson;
 import ua.dirproy.profelumno.hirelesson.views.html.hire;
-import ua.dirproy.profelumno.register.models.Student;
 
 
 /**

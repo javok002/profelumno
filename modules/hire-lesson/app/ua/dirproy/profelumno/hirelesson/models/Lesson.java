@@ -2,6 +2,8 @@ package ua.dirproy.profelumno.hirelesson.models;
 
 import com.avaje.ebean.Model;
 import com.avaje.ebean.config.JsonConfig;
+import ua.dirproy.profelumno.common.models.Student;
+import ua.dirproy.profelumno.common.models.Teacher;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -16,12 +18,28 @@ public class Lesson extends Model {
     @Id private Long id;
 
     private Date dateTime;
-    private Time time;
-    //private Teacher teacher;
-    //private Student student;
+    private Time duration;
+    private Teacher teacher;
+    private Student student;
     private String place;
     private String description;
     private Float price;
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
 
     public Long getId() {
         return id;
@@ -39,12 +57,12 @@ public class Lesson extends Model {
         this.dateTime = dateTime;
     }
 
-    public Time getTime() {
-        return time;
+    public Time getDuration() {
+        return duration;
     }
 
-    public void setTime(Time time) {
-        this.time = time;
+    public void setDuration(Time duration) {
+        this.duration = duration;
     }
 
     public String getPlace() {
