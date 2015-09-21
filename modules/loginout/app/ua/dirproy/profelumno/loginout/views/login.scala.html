@@ -33,7 +33,10 @@
                     </div><!-- /.box-body -->
 
                     <div class="box-footer">
-                        <div class="input-group"><button type="submit" class="btn btn-primary">Ingresar</button> <a href="#">Olvidé mi contraseña</a></div>
+                        <div class="input-group"><button type="submit" class="btn btn-primary">Ingresar</button> <a href="#" style="margin-left: 15px" onclick="goTo('/password-recovery')">Olvidé mi contraseña</a></div>
+                        <br>
+                        <div class="input-group"><a href="#" onclick="goTo('/register')">No tengo un usuario</a></div>
+
 
                     </div>
                 </form>
@@ -43,9 +46,12 @@
     </div>
 
 
-
+    <script>
+    function goTo(url){
+        window.location = url;
+    }
+    </script>
     <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
     <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
     <script src="@routes.Assets.versioned("external/datepicker/bootstrap-datepicker.js")"></script>
-    <script src="@routes.Assets.versioned("javascripts/register.js")"></script>
 }
