@@ -4,6 +4,7 @@ import com.avaje.ebean.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 import java.util.Base64;
 import java.util.Date;
@@ -29,6 +30,8 @@ public class User extends Model {
     private String address;
     private String secureQuestion;
     private String secureAnswer;
+    @ManyToMany
+    private List<Subject> subjects;
 
     public static Finder<Long, User> finder = new Finder<>(User.class);
 
@@ -108,5 +111,13 @@ public class User extends Model {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public List<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(List<Subject> subjects) {
+        this.subjects = subjects;
     }
 }

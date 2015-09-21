@@ -37,11 +37,17 @@ public class Teacher extends Model {
 
     private String description;
 
-    private String homeClasses;
+    private boolean homeClasses;
+
+    private int ranking;
+
+    private int lessonsDictated;
+
+
 
     public Teacher(){}
 
-    public Teacher(long id, String description, String homeClasses, User user){
+    public Teacher(long id, String description, boolean homeClasses, User user){
         this.id=id;
         this.description=description;
         this.homeClasses=homeClasses;
@@ -108,11 +114,29 @@ public class Teacher extends Model {
         this.description = description;
     }
 
-    public String getHomeClasses() {
+    public void setRanking(int ranking) {
+        this.ranking = ranking;
+    }
+
+    public void setLessonsDictated(int lessonsDictated) {
+        this.lessonsDictated = lessonsDictated;
+    }
+
+    public int getLessonsDictated() {
+        return lessonsDictated;
+    }
+
+    public int getRanking() {
+        return ranking;
+    }
+
+    public boolean getHomeClasses() {
         return homeClasses;
     }
 
-    public void setHomeClasses(String homeClasses) {
+    public void setHomeClasses(boolean homeClasses) {
         this.homeClasses = homeClasses;
     }
+
+
 }

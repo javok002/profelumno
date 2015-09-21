@@ -35,7 +35,7 @@ public class ModifyTeacher extends Controller {
         Long b = new Long(13);
         a.setId(b);
         a.setPassword("12345678");
-        Teacher teacher=new Teacher(a.getId(),"c=Como minimo 50 caracteres","yes", a);
+        Teacher teacher=new Teacher(a.getId(),"c=Como minimo 50 caracteres",true, a);
         JsonNode json= Json.toJson(teacher);
         System.out.println(json);
         return ok(json);
