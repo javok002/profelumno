@@ -7,7 +7,7 @@ import play.mvc.Result;
 import ua.dirproy.profelumno.loginout.models.UserLogger;
 import ua.dirproy.profelumno.loginout.views.html.login;
 import ua.dirproy.profelumno.loginout.views.html.main;
-import ua.dirproy.profelumno.register.models.Teacher;
+import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.user.models.User;
 
 import java.util.Date;
@@ -45,7 +45,7 @@ public class Login extends Controller {
             session("id", Long.toString(user1.getId()));
             Teacher teacher = Teacher.finder.where().eq("USER_ID", user1.getId()).findUnique();
             if (teacher != null && !teacher.hasCard()){
-                return ok(ua.dirproy.profelumno.teacherSubscription.conf.teacherSubscription.subscriptionForm());
+                return redirect("/subscription");
             }
 
             //System.out.println("ok");
