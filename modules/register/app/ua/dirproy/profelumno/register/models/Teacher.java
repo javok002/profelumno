@@ -5,6 +5,7 @@ import ua.dirproy.profelumno.user.models.User;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +31,22 @@ public class Teacher extends Model {
     private boolean isInTrial;
 
     private boolean hasCard;
+
+    @Lob
+    private byte[] profilePicture;
+
+    private String description;
+
+    private String homeClasses;
+
+    public Teacher(){}
+
+    public Teacher(long id, String description, String homeClasses, User user){
+        this.id=id;
+        this.description=description;
+        this.homeClasses=homeClasses;
+        this.user=user;
+    }
 
     public static Finder<Long, Teacher> finder = new Finder<>(Teacher.class);
 
@@ -73,5 +90,29 @@ public class Teacher extends Model {
 
     public void setHasCard(boolean hasCard) {
         this.hasCard = hasCard;
+    }
+
+    public byte[] getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(byte[] profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getHomeClasses() {
+        return homeClasses;
+    }
+
+    public void setHomeClasses(String homeClasses) {
+        this.homeClasses = homeClasses;
     }
 }

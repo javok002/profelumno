@@ -6,6 +6,7 @@
 create table student (
   id                        bigint not null,
   user_id                   bigint,
+  profile_picture           blob,
   constraint uq_student_user_id unique (user_id),
   constraint pk_student primary key (id))
 ;
@@ -17,6 +18,9 @@ create table teacher (
   renewal_date              timestamp,
   is_in_trial               boolean,
   has_card                  boolean,
+  profile_picture           blob,
+  description               varchar(255),
+  home_classes              varchar(255),
   constraint uq_teacher_user_id unique (user_id),
   constraint pk_teacher primary key (id))
 ;
@@ -29,6 +33,7 @@ create table user (
   password                  varchar(255),
   birthday                  timestamp,
   gender                    varchar(255),
+  address                   varchar(255),
   secure_question           varchar(255),
   secure_answer             varchar(255),
   constraint pk_user primary key (id))

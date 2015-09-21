@@ -5,6 +5,7 @@ import ua.dirproy.profelumno.user.models.User;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import java.util.List;
 
@@ -22,7 +23,18 @@ public class Student extends Model {
     @OneToOne
     private User user;
 
+    @Lob
+    private byte[] profilePicture;
+
     public static Finder<Long, Student> finder = new Finder<>(Student.class);
+
+    public Student() {
+    }
+
+    public Student(Long id, User user) {
+        this.id = id;
+        this.user = user;
+    }
 
     public static List<Student> list() { return finder.all(); }
 
@@ -32,5 +44,17 @@ public class Student extends Model {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public byte[] getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(byte[] profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+    public Long getId() {
+        return id;
     }
 }
