@@ -2,7 +2,7 @@ package ua.dirproy.profelumno.teachersearch.controllers;
 
 import play.mvc.Controller;
 import play.mvc.Result;
-import ua.dirproy.profelumno.register.models.Teacher;
+import ua.dirproy.profelumno.common.models.Teacher;
 
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package ua.dirproy.profelumno.register.models;
+package ua.dirproy.profelumno.common.models;
 
 import com.avaje.ebean.Model;
 import ua.dirproy.profelumno.user.models.User;
