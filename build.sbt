@@ -54,7 +54,7 @@ lazy val mailSender = (project in file("modules/mail-sender"))
 
 lazy val loginout = (project in file("modules/loginout"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(users, common)
+  .dependsOn(users, common)//, teacherSubscription, passwordRecovery)
 
 lazy val root = (project in file("."))
   .enablePlugins(PlayJava, PlayEbean)

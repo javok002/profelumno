@@ -7,6 +7,7 @@ import play.mvc.Result;
 import ua.dirproy.profelumno.loginout.models.UserLogger;
 import ua.dirproy.profelumno.loginout.views.html.login;
 import ua.dirproy.profelumno.loginout.views.html.main;
+import ua.dirproy.profelumno.register.models.Teacher;
 import ua.dirproy.profelumno.user.models.User;
 
 import java.util.Date;
@@ -17,7 +18,7 @@ import java.util.Date;
 public class Login extends Controller {
 
     public static Result loginView (){
-        User user = new User();
+        /*User user = new User();
         user.setName("Pepe");
         user.setSurname("Castro");
         user.setEmail("pepe@gmail.com");
@@ -26,24 +27,29 @@ public class Login extends Controller {
         user.setPassword("pepehola");
         user.setSecureAnswer("Fazzo");
         user.setSecureQuestion("aaaa");
-        user.save();
+        user.save();*/
         return ok(login.render());}
 
     public static Result loginUser(){
         UserLogger user = Form.form(UserLogger.class).bindFromRequest().get();
-        System.out.println(user.getEmail()+" + "+user.getPassword());
+        //System.out.println(user.getEmail()+" + "+user.getPassword());
         User user1 = User.validateEmail(user.getEmail(),user.getPassword());
         if (user1 == null){
             flash("error","Email o contraseña incorrectos." );
             flash("previousEmail", user.getEmail());
 
-            System.out.println("bad");
+            //System.out.println("bad");
             return redirect(routes.Login.loginView());
         }
         else{
-            session("email", user.getEmail());
-            System.out.println("ok");
-            return ok(login.render());
+            session("id", Long.toString(user1.getId()));
+            Teacher teacher = Teacher.finder.where().eq("USER_ID", user1.getId()).findUnique();
+            if (teacher != null && !teacher.hasCard()){
+                return ok(ua.dirproy.profelumno.teacherSubscription.conf.teacherSubscription.subscriptionForm());
+            }
+
+            //System.out.println("ok");
+            return redirect("/");
         }
     }
 
