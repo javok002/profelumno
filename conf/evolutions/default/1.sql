@@ -20,7 +20,9 @@ create table teacher (
   has_card                  boolean,
   profile_picture           blob,
   description               varchar(255),
-  home_classes              varchar(255),
+  home_classes              boolean,
+  ranking                   integer,
+  lessons_dictated          integer,
   constraint uq_teacher_user_id unique (user_id),
   constraint pk_teacher primary key (id))
 ;
