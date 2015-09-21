@@ -53,4 +53,8 @@ public class Student extends Model {
     public void setProfilePicture(byte[] profilePicture) {
         this.profilePicture = profilePicture;
     }
+
+    public Long getId() {
+        return id;
+    }
 }

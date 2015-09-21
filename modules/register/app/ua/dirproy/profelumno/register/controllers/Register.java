@@ -9,8 +9,6 @@ import ua.dirproy.profelumno.register.models.Teacher;
 import ua.dirproy.profelumno.register.views.html.register;
 import ua.dirproy.profelumno.user.models.User;
 
-import java.util.List;
-
 /**
  * Created by Nicolas Burroni
  * Date: 9/12/15
@@ -45,13 +43,13 @@ public class Register extends Controller {
                 student.setUser(user);
                 user.save();
                 student.save();
-                return ok(ua.dirproy.profelumno.loginout.controllers.routes.Login.loginView().url());
             } else {
                 Teacher teacher = new Teacher();
                 teacher.setUser(user);
+                teacher.setIsInTrial(true);
+                teacher.setHasCard(false);
                 user.save();
                 teacher.save();
-                return ok(ua.dirproy.profelumno.subscription.controllers.routes.TeacherSubscription.subscriptionForm().url());
             }
 
         }
@@ -59,6 +57,7 @@ public class Register extends Controller {
             return badRequest("taken");
         }
 
+        return ok(ua.dirproy.profelumno.loginout.controllers.routes.Login.loginView().url());
     }
 
     public static Result getSecureQuestions() { return ok(Json.toJson(secureQuestions)); }
