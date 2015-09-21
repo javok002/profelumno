@@ -3,7 +3,6 @@ package ua.dirproy.profelumno.user.models;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.UniqueConstraint;
 
 import com.avaje.ebean.Model;
 
@@ -26,7 +25,9 @@ public class Subject extends Model{
     public Subject() {
         users = new ArrayList<>();
     }
-
+    public Subject(String name){
+        this.name = name;
+    }
     public Long getId() {
         return id;
     }

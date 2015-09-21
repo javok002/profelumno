@@ -1,5 +1,6 @@
 package ua.dirproy.profelumno.teachersearch.controllers;
 
+import javafx.scene.input.InputMethodTextRun;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -42,9 +43,9 @@ public class TeacherSearches extends Controller {
         return ok(toJson(teachers));
     }
 
-    private static boolean checkSubjects(List<String> subject,Teacher teacher) {
-        //TODO: faltaria agregar la lista de subjects en TEACHER.
-        return false;
+    private static boolean checkSubjects(List<String> subjects,Teacher teacher) {
+
+        return !teacher.getUser().getSubjects().containsAll(subjects);
     }
 
     private static boolean checkRanking(Integer ranking, Teacher teacher) {
@@ -56,7 +57,7 @@ public class TeacherSearches extends Controller {
     }
 
     private static boolean checkHome(Boolean home, Teacher teacher) {
-        return !home /*|| CAMBIAR STRING A BOOLEAN -- teacher.getHomeClasses() == home*/;
+        return home && !teacher.getHomeClasses();
     }
 
 }
