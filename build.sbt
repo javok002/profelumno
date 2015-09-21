@@ -4,6 +4,7 @@ version := "1.0-SNAPSHOT"
 
 lazy val common = (project in file("modules/common"))
   .enablePlugins(PlayJava, PlayEbean)
+  .dependsOn(users)
 
 lazy val users = (project in file("modules/users"))
   .enablePlugins(PlayJava, PlayEbean)
@@ -18,7 +19,7 @@ lazy val architecture = (project in file("modules/architecture"))
 
 lazy val register = (project in file("modules/register"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(teacherProfile, common, architecture, loginout, teacherSubscription)
+  .dependsOn(teacherProfile, common, architecture, loginout)
 
 lazy val delete = (project in file("modules/delete"))
   .enablePlugins(PlayJava, PlayEbean)
@@ -34,7 +35,7 @@ lazy val hireLesson = (project in file("modules/hire-lesson"))
 
 lazy val teacherModification = (project in file("modules/teacher-modification"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(teacherProfile, common, register)
+  .dependsOn(teacherProfile, common)
 
 lazy val teacherSearch = (project in file("modules/teacher-search"))
   .enablePlugins(PlayJava, PlayEbean)
@@ -53,7 +54,7 @@ lazy val mailSender = (project in file("modules/mail-sender"))
 
 lazy val loginout = (project in file("modules/loginout"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(users, common)
+  .dependsOn(users, common)//, teacherSubscription, passwordRecovery)
 
 lazy val root = (project in file("."))
   .enablePlugins(PlayJava, PlayEbean)

@@ -6,6 +6,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import ua.dirproy.profelumno.hirelesson.models.Lesson;
 import ua.dirproy.profelumno.hirelesson.views.html.hire;
+import ua.dirproy.profelumno.register.models.Student;
 
 
 /**
@@ -14,8 +15,8 @@ import ua.dirproy.profelumno.hirelesson.views.html.hire;
 public class Lessons extends Controller {
 
     public static Result newLesson() {
-        final Lesson lesson = Form.form(Lesson.class).bindFromRequest().get();
-        lesson.save();
+        Lesson lesson = new Lesson();
+
         return ok(); //todo redireccionar al index
     }
 

@@ -3,11 +3,6 @@
 @ua.dirproy.profelumno.common.views.html.main("Teacher search") {
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/teachersearch/ng-tags-input.min.css")">
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/teachersearch/ng-tags-input.bootstrap.min.css")">
-    <script src="@routes.Assets.versioned("javascripts/teacherSearch/teacherSearch.js")"></script>
-    <script src="@routes.Assets.versioned("external/angularjs/angular.min.js")"></script>
-    <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
-    <script src="@routes.Assets.versioned("javascripts/teacherSearch/ng-tags-input.min.js")"></script>
-    <script src="@routes.Assets.versioned("javascripts/teacherSearch/dirPagination.js")"></script>
 
     <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
     @*<div ng-app="teacherSearchApp">*@
@@ -51,46 +46,46 @@
             <div class="row-fluid">
                 <div class="col span6">
                     <div class="input-group">
-                        <tags-input ng-model="subjects" add-on-paste="true">
+                        <tags-input ng-model="subjects" name="subjects" add-on-paste="true">
                             <auto-complete source="loadTags($query)"></auto-complete>
                         </tags-input>
                         <span class="input-group-addon"><i class="fa fa-book"></i></span>
                     </div>
                     <div class="row">
                         <label>
-                            <input type="checkbox" ng-model="home" />
+                            <input type="checkbox" name="homeClasses" ng-model="homeClasses" />
                             Da clases a domicilio
                         </label>
                         <label>
-                            <input type="checkbox" ng-model="sort"/>
+                            <input type="checkbox" name="sort" ng-model="sort"/>
                             Ordenar según cercanía a mi domicilio
                         </label>
                     </div>
                 </div>
                 <div class="col span6">
-                    <div class="row-fluid ">
-                        <label class="">Ranking</label>
-                        <input class="input" type="Number" ng-model="ranking">
-                    </div>
-                    <div class="row-fluid ">
-                        <label class="">Cantidad de clases dictadas</label>
-                        <input class="input" type="Number" ng-model="lessons">
-                    </div>
-                </div>
-            </div>
-            <button type="submit" class="btn-submit">Buscar</button>
-        </form>
-        <h4>Resultado de la búsqueda</h4>
-        <div class="row-fluid " ng-hide="teachers.lenght == 0">
-            <table class="table">
-                <tbody>
-                    <tr>
-                        <th>Profesor</th>
-                        <th>Ranking</th>
-                        <th>Clases dictadas</th>
-                    </tr>
-                    <tr dir-paginate="teacher in teachers|orderBy:sortKey:reverse|filter:search|itemsPerPage:5">
-                        <td>{{teacher.name}}</td>
+                        <div class="row-fluid ">
+                            <label class="">Ranking</label>
+                            <input class="input" type="Number" name="ranking" ng-model="ranking">
+                        </div>
+                        <div class="row-fluid ">
+                            <label class="">Cantidad de clases dictadas</label>
+                            <input class="input" name="lessonsDictated" type="Number" ng-model="lessonsDictated">
+                        </div>
+        </div>
+    </div>
+    <button type="submit" class="btn-submit">Buscar</button>
+    </form>
+    <h4>Resultado de la búsqueda</h4>
+    <div class="row-fluid " ng-hide="teachers.lenght == 0">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Profesor</th>
+                    <th>Ranking</th>
+                    <th>Clases dictadas</th>
+                </tr>
+                <tr dir-paginate="teacher in teachers|orderBy:sortKey:reverse|filter:search|itemsPerPage:5">
+                    <td>{{teacher.name}}</td>
                         <td>{{teacher.ranking}}</td>
                         <td>{{teacher.dictatedLessons}}</td>
                     </tr>
@@ -104,6 +99,10 @@
         </div>
     </div>
 </div>
-
+    <script src="@routes.Assets.versioned("external/angularjs/angular.min.js")"></script>
+    <script src="@routes.Assets.versioned("javascripts/teacherSearch/teacherSearch.js")"></script>
+    <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
+    <script src="@routes.Assets.versioned("javascripts/teacherSearch/ng-tags-input.min.js")"></script>
+    <script src="@routes.Assets.versioned("javascripts/teacherSearch/dirPagination.js")"></script>
 
 }

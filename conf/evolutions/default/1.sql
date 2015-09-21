@@ -16,6 +16,8 @@ create table teacher (
   user_id                   bigint,
   subscription              varchar(255),
   renewal_date              timestamp,
+  is_in_trial               boolean,
+  has_card                  boolean,
   profile_picture           blob,
   description               varchar(255),
   home_classes              varchar(255),

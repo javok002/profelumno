@@ -8,4 +8,6 @@ watchSources ++= (watchSources.value --- baseDirectory.value / "modules/common/a
 
 Common.settings
 
+playEbeanModels in Compile := Seq("ua.dirproy.profelumno.common.models.*")
+
 libraryDependencies ++= Common.dependencies
