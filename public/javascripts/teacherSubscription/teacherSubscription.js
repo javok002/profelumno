@@ -1,7 +1,7 @@
 (function() {
     var formApp = angular.module('postApp', ['ngRoute']);
 
-    formApp.controller('SubscriptionController', ['$http', '$scope', function ($http, $scope) {
+    formApp.controller('SubscriptionController', ['$http', '$scope', function ($http) {
         // create a blank object to handle form data.
         var control = this;
         control.card = {};
@@ -15,16 +15,10 @@
                 then(function(response) {
                     control.succeded = true;
                 }, function(response) {
-                    control.error = true;
+                    document.getElementById('cardNumber').style.borderColor = "red";
+                    document.getElementById('cardNumber').value = "";
+                    document.getElementById('cardNumber').placeholder = "Número de tarjeta equivocado";
                 });
-            //$http({
-            //    method: 'POST',
-            //    url: '/subscription/validate',
-            //    data: this.card, //forms user object
-            //    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            //}).success(function () {
-            //        control.succeded = true;
-            //    });
         };
     }]);
 })();
