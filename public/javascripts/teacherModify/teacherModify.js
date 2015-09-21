@@ -13,13 +13,12 @@ app.controller('TeacherInfoController', ['$http','$scope',function($scope, $http
             // log error
         });
     $scope.tags = [
-        { text: 'Tag1' },
-        { text: 'Tag2' },
-        { text: 'Tag3' }
+        { text: 'Matematica' },
+        { text: 'Fisica' }
     ];
     edit.tags=$scope.tags;
     $scope.loadTags = function(query) {
-        return [{text: 'Tag1'},{text: 'Tag2'},{text: 'Tag3'},{text: 'Tag4'},{text: 'Tag5'}]
+        return [{text: 'Matematica'},{text: 'Fisica'},{text: 'Algebra'},{text: 'Lengua'},{text: 'Programación'}]
     };
 
 

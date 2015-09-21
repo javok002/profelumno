@@ -68,6 +68,7 @@ public class ModifyTeacher extends Controller {
         Teacher teacher = Ebean.find(Teacher.class, userId);
         return status(200, teacher.getProfilePicture());
     }
+
     public static Result savePicture(byte[] image){
         final long userId=Long.parseLong(session("id"));
         Teacher teacher = Ebean.find(Teacher.class, userId);
