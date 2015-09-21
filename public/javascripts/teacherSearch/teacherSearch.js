@@ -6,7 +6,7 @@
 var teacherSearchApp = angular.module("teacherSearchApp", ['ngTagsInput', 'angularUtils.directives.dirPagination']);
 teacherSearchApp.controller("searchController", function($scope, $http) {
     $scope.subjects = [];
-    //$scope.teachers = {};
+    $scope.teachers = {name: "prueba"};
     $scope.search = function search(){
         var literalSubjects = [];
         for(var i = 0; i < $scope.subjects.length; i++){
@@ -15,7 +15,7 @@ teacherSearchApp.controller("searchController", function($scope, $http) {
         $scope.data = {subjects: literalSubjects , ranking: $scope.ranking, lessons: $scope.lessonsDictated, homeClasses: $scope.homeClasses};
         $http.post('/teacher-search/getTeachers', JSON.stringify($scope.data)).
             then(function(response){
-                $scope.teachers = response;
+                $scope.teachers = response.data;
             }, function(response){
                 //TODO
             })

@@ -88,9 +88,9 @@
                     <th>Clases dictadas</th>
                 </tr>
                 <tr dir-paginate="teacher in teachers|orderBy:sortKey:reverse|filter:search|itemsPerPage:5">
-                    <td>{{teacher.name}}</td>
+                    <td>{{teacher.user.name}}</td>
                         <td>{{teacher.ranking}}</td>
-                        <td>{{teacher.dictatedLessons}}</td>
+                        <td>{{teacher.lessonsDictated}}</td>
                     </tr>
                 </tbody>
             </table>
