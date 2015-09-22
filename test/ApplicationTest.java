@@ -31,7 +31,7 @@ import ua.dirproy.profelumno.views.html.*;
 public class ApplicationTest {
 
     @Test
-    public void simpleCheck() {
+    private void simpleCheck() {
         int a = 1 + 1;
         assertEquals(2, a);
     }

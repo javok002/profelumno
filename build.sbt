@@ -4,6 +4,7 @@ version := "1.0-SNAPSHOT"
 
 lazy val common = (project in file("modules/common"))
   .enablePlugins(PlayJava, PlayEbean)
+  .dependsOn(users)
 
 lazy val users = (project in file("modules/users"))
   .enablePlugins(PlayJava, PlayEbean)
@@ -12,9 +13,13 @@ lazy val teacherProfile = (project in file("modules/teacher-profile"))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(users)
 
+lazy val architecture = (project in file("modules/architecture"))
+  .enablePlugins(PlayJava, PlayEbean)
+  .dependsOn(teacherProfile, users, common, delete)
+
 lazy val register = (project in file("modules/register"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(teacherProfile, common)
+  .dependsOn(teacherProfile, common, architecture, loginout)
 
 lazy val delete = (project in file("modules/delete"))
   .enablePlugins(PlayJava, PlayEbean)
@@ -30,11 +35,15 @@ lazy val hireLesson = (project in file("modules/hire-lesson"))
 
 lazy val teacherModification = (project in file("modules/teacher-modification"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(teacherProfile)
+  .dependsOn(teacherProfile, common)
 
 lazy val teacherSearch = (project in file("modules/teacher-search"))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(register, common)
+
+lazy val studentModification = (project in file("modules/student-modification"))
+  .enablePlugins(PlayJava, PlayEbean)
+  .dependsOn(users,register,common)
 
 lazy val passwordRecovery = (project in file("modules/password-recovery"))
   .enablePlugins(PlayJava, PlayEbean)
@@ -45,17 +54,13 @@ lazy val mailSender = (project in file("modules/mail-sender"))
 
 lazy val loginout = (project in file("modules/loginout"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(users, common)
-
-lazy val architecture = (project in file("modules/architecture"))
-  .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(teacherProfile, users, common)
+  .dependsOn(users, common)//, teacherSubscription, passwordRecovery)
 
 lazy val root = (project in file("."))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(common, users, teacherProfile, teacherSubscription, register, delete,
+  .dependsOn(common,studentModification, users, teacherProfile, teacherSubscription, register, delete,
     passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture, loginout)
-  .aggregate(common, users, teacherProfile, teacherSubscription, register, delete,
+  .aggregate(common,studentModification, users, teacherProfile, teacherSubscription, register, delete,
     passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture,loginout)
 
 
@@ -70,3 +75,6 @@ libraryDependencies ++= Common.dependencies
 routesGenerator := InjectedRoutesGenerator
 
 includeFilter in (Assets, LessKeys.less) := "*.less"
+
+
+fork in run := true

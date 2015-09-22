@@ -1,60 +1,88 @@
 @()
 
 @ua.dirproy.profelumno.common.views.html.main("Registro") {
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/register/register.css")">
+    <link rel="stylesheet" href="@routes.Assets.versioned("external/iCheck/square/blue.css")">
     <div class="center-text">
         <h1 class="main-header"><b>Profe</b><span class="thin">Lumno</span></h1>
     </div>
-    <div class="row">
+    <div class="row" ng-app="register">
         <div class="col-md-4 col-sm-3"></div>
         <div class="col-md-4 col-sm-6">
-            <div class="box box-primary">
+            <div class="box box-primary" ng-controller="RegisterController">
                 <div class="box-header center-text">
                     <h3 class="box-title">Regístrese</h3>
                 </div>
-                <form role="form" method="post">
+                <div class="isa_error" ng-show="errors.invalid">
+                    <i class="fa fa-times-circle"></i>
+                    Por favor verifique los datos ingresados.
+                </div>
+                <div class="isa_error" ng-show="errors.taken">
+                    <i class="fa fa-times-circle"></i>
+                    El email ya está relacionado a una cuenta.
+                </div>
+                <div class="isa_error" ng-show="errors.incomplete">
+                    <i class="fa fa-times-circle"></i>
+                    Por favor complete todos los campos.
+                </div>
+                <div class="isa_error" ng-show="errors.teacherAge">
+                    <i class="fa fa-times-circle"></i>
+                    Debe tener al menos 16 años para ser profesor.
+                </div>
+                <div class="isa_error" ng-show="errors.studentAge">
+                    <i class="fa fa-times-circle"></i>
+                    Debe tener al menos 6 años para ser alumno.
+                </div>
+                <form role="form" name="registerForm" method="post" ng-submit="submit()">
                     <div class="box-body">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Nombre" name="name" required>
-                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                            <input type="text" class="form-control" placeholder="Nombre" name="name" required ng-model="user.name">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                         </div>
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Apellido" name="surname" required>
-                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                            <input type="text" class="form-control" placeholder="Apellido" name="surname" required ng-model="user.surname">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                         </div>
                         <div class="input-group">
-                            <input type="email" class="form-control" placeholder="Email" name="email" required>
-                            <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                            <input type="email" class="form-control" placeholder="Email" name="email" required ng-model="user.email">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
                         </div>
                         <div class="input-group">
-                            <input type="password" class="form-control" placeholder="Contraseña" name="password" required pattern=".{6,}" title="La contraseña debe contener al menos 6 caracteres." onchange="form.confirm.pattern = this.value;">
-                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                            <input type="password" class="form-control" placeholder="Contraseña" name="password" required pattern=".{6,}" title="La contraseña debe contener al menos 6 caracteres."  ng-model="user.password">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                         </div>
                         <div class="input-group">
-                            <input type="password" class="form-control" placeholder="Confirmar Contraseña" name="confirm" required pattern=".{6,}" title="La contraseña coincidir con la ingresada arriba.">
-                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                            <input type="password" class="form-control" placeholder="Confirmar Contraseña" name="confirm" required pattern=".{6,}" compare-to="user.password" title="La contraseña coincidir con la ingresada arriba." ng-model="user.confirmPassword">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                         </div>
                         <div class="input-group">
-                            <input type="text" class="form-control datepicker" data-date-format="dd/mm/yyyy" placeholder="Fecha de Nacimiento" name="birthday" required>
-                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            @*<input type="text" class="form-control datepicker" datepicker="user.birthday" placeholder="Fecha de Nacimiento" name="birthday" required ng-model="user.birthday">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>*@
+                            <input type="date" class="form-control" placeholder="Fecha de Nacimiento" name="birthday" required ng-model="user.birthday" ng-class="{'default-option': user.birthday == undefined}">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                         </div>
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Pregunta de Seguridad" name="secureQuestion" required>
-                            <span class="input-group-addon"><i class="fa fa-question"></i></span>
+                            @*<input type="text" class="form-control" placeholder="Pregunta de Seguridad" name="secureQuestion" required ng-model="user.secureQuestion">*@
+                            <select class="form-control" name="secureQuestion" required ng-model="user.secureQuestion"  ng-class="{'default-option': user.secureQuestion == undefined}">
+                                <option value="" default selected class="default-option">Pregunta de Seguridad</option>
+                                <option ng-repeat="question in secureQuestions" value="{{question}}">{{question}}</option>
+                            </select>
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-question-sign"></i></span>
                         </div>
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Respuesta de Seguridad" name="secureAnswer" required>
-                            <span class="input-group-addon"><i class="fa fa-question"></i></span>
+                            <input type="text" class="form-control" placeholder="Respuesta de Seguridad" name="secureAnswer" required ng-model="user.secureAnswer">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-question-sign"></i></span>
                         </div>
                         <div class="input-group">
-                            <input type="radio" name="gender" id="male" required>
+                            <input type="radio" name="gender" value="male" id="male" required ng-model="user.gender">
                             <label for="male">Masculino</label>
-                            <input type="radio" name="gender" id="female" required>
+                            <input type="radio" name="gender" value="female" id="female" required ng-model="user.gender">
                             <label for="female">Femenino</label>
                         </div>
                         <div class="input-group">
-                            <input type="radio" name="role" id="student" required>
+                            <input type="radio" name="role" id="student" value="student" required ng-model="user.role">
                             <label for="student">Alumno</label>
-                            <input type="radio" name="role" id="teacher" required>
+                            <input type="radio" name="role" id="teacher" value="teacher" required ng-model="user.role">
                             <label for="teacher">Profesor</label>
                         </div>
                         <div class="input-group">
@@ -67,7 +95,7 @@
 
                     <div class="box-footer">
                         <div class="input-group"><button type="submit" class="btn btn-primary">Registrarse</button></div>
-                        <div class="input-group"><a href="#">Ya tengo un usuario</a></div>
+                        <div class="input-group"><a href="@ua.dirproy.profelumno.loginout.controllers.routes.Login.loginView()">Ya tengo un usuario</a></div>
                     </div>
                 </form>
             </div>
@@ -78,7 +106,8 @@
     @termsAndConditions()
 
     <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
-    <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
+    <script src="@routes.Assets.versioned("external/angularjs/angular.min.js")"></script>
+    <script src="@routes.Assets.versioned("external/iCheck/icheck.js")"></script>
     <script src="@routes.Assets.versioned("external/datepicker/bootstrap-datepicker.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/register/register.js")"></script>
 } @* {

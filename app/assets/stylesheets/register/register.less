@@ -30,7 +30,7 @@ label{
 }
 
 .input-group {
-  margin: 15px 10px;
+  margin: 10px 10px;
 }
 
 .center-text {
@@ -47,6 +47,54 @@ label{
   padding: 6px 12px;
 }
 
+option {
+  color: black;
+  &.default-option {
+    color: #888888;
+  }
+}
+
+.default-option {
+  color: #888888;
+}
+
 .fa {
   width: 15px;
+}
+
+.ng-dirty {
+  &.ng-valid {
+    border-color: #00B74F;
+  }
+  &.ng-invalid {
+    border-color: #E20000;
+  }
+}
+
+@import url('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css');
+
+.isa_info, .isa_success, .isa_warning, .isa_error {
+  margin: 10px 0px;
+  padding:12px;
+}
+.isa_info {
+  color: #00529B;
+  background-color: #BDE5F8;
+}
+.isa_success {
+  color: #4F8A10;
+  background-color: #DFF2BF;
+}
+.isa_warning {
+  color: #9F6000;
+  background-color: #FEEFB3;
+}
+.isa_error {
+  color: #D8000C;
+  background-color: #FFBABA;
+}
+.isa_info i, .isa_success i, .isa_warning i, .isa_error i {
+  margin:10px 22px;
+  font-size:2em;
+  vertical-align:middle;
 }
