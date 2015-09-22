@@ -8,6 +8,7 @@ import ua.dirproy.profelumno.mailsender.models.MailSenderUtil;
 import ua.dirproy.profelumno.passwordrecovery.views.html.passwordRecovery;
 import ua.dirproy.profelumno.user.models.User;
 
+import java.util.Date;
 import java.util.Random;
 
 
@@ -45,9 +46,8 @@ public class PasswordRecovery extends Controller {
 
         if (validation) {
             final String pw = randomPw(8);
-
             try {
-                MailSenderUtil.send(new String[]{user.getEmail()}, "Password changed!", "");
+                MailSenderUtil.send(new String[]{user.getEmail()}, "Password changed!", "New password: " + pw);
                 user.setPassword(pw);
                 user.save();
             } catch (Exception e) {
@@ -56,6 +56,28 @@ public class PasswordRecovery extends Controller {
         }
 
         return ok(result);
+    }
+
+    //Testing method.
+    public static Result createMockUser() {
+        final User user = new User();
+        user.setName("Mock");
+        user.setSurname("User");
+        user.setEmail("noreply.profelumno@gmail.com");
+        user.setPassword("mockuserlab2");
+        user.setBirthday(new Date());
+        user.setGender("Undefined");
+        user.setSecureQuestion("El nombre de tu primer mascota.");
+        user.setSecureAnswer("Pepe");
+        user.save();
+
+        return redirect(routes.PasswordRecovery.show());
+    }
+
+    //Testing method.
+    public static Result viewMockUserPassword() {
+        final User user = User.finder.where().eq("email", "noreply.profelumno@gmail.com").findUnique();
+        return ok(user.getPassword());
     }
 
     private static String randomPw(int length) {
