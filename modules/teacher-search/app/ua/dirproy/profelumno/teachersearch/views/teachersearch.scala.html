@@ -3,11 +3,6 @@
 @ua.dirproy.profelumno.common.views.html.main("Teacher search") {
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/teachersearch/ng-tags-input.min.css")">
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/teachersearch/ng-tags-input.bootstrap.min.css")">
-    <script src="@routes.Assets.versioned("javascripts/teacherSearch/teacherSearch.js")"></script>
-    <script src="@routes.Assets.versioned("external/angularjs/angular.min.js")"></script>
-    <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
-    <script src="@routes.Assets.versioned("javascripts/teacherSearch/ng-tags-input.min.js")"></script>
-    <script src="@routes.Assets.versioned("javascripts/teacherSearch/dirPagination.js")"></script>
 
     <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
     @*<div ng-app="teacherSearchApp">*@
@@ -45,54 +40,57 @@
     @*</div>*@
 <div ng-app="teacherSearchApp">
     <div class="container-fluid"  ng-controller="searchController">
-
-        <h3>Buscar profesor</h3>
-        <form novalidate class="simple-form" ng-submit="search()">
-            <div class="row-fluid">
-                <div class="col span6">
+          <h3 class="header">Buscar profesor</h3>
+            <form novalidate class="simple-form" ng-submit="search()">
+                <div class="row">
+                <div class="col-sm-6">
                     <div class="input-group">
-                        <tags-input ng-model="subjects" add-on-paste="true">
+                        <tags-input ng-model="subjects" name="subjects" add-on-paste="true">
                             <auto-complete source="loadTags($query)"></auto-complete>
                         </tags-input>
-                        <span class="input-group-addon"><i class="fa fa-book"></i></span>
+                        @*<span class="input-group-addon"><i class="fa fa-book"></i></span>*@
                     </div>
-                    <div class="row">
-                        <label>
-                            <input type="checkbox" ng-model="home" />
-                            Da clases a domicilio
-                        </label>
-                        <label>
-                            <input type="checkbox" ng-model="sort"/>
-                            Ordenar según cercanía a mi domicilio
-                        </label>
+                    <br>
+                    <div class="input-group">
+                        <input type="checkbox" name="homeClasses" ng-model="homeClasses" id="domicilio" class="check-box" />
+                        <label for="domicilio" style="margin-left: 10px">Da clases a domicilio</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="checkbox" name="sort" ng-model="sort" id="cercania" class="check-box"/>
+                        <label for="cercania" style="margin-left: 10px">Ordenar según cercanía a mi domicilio</label>
+                    </div>
+
+                </div>
+                <div class="col-sm-6">
+                    <div class="input-group">
+                        <label for="ranking">Ranking</label><br>
+                        <input id="ranking" class="text-input" type="number" name="ranking" ng-model="ranking">
+                    </div>
+                    <div class="input-group">
+                        <label for="lessons">Cantidad de clases dictadas</label><br>
+                        <input class="text-input" id="lessons" name="lessonsDictated" type="number" ng-model="lessonsDictated">
                     </div>
                 </div>
-                <div class="col span6">
-                    <div class="row-fluid ">
-                        <label class="">Ranking</label>
-                        <input class="input" type="Number" ng-model="ranking">
-                    </div>
-                    <div class="row-fluid ">
-                        <label class="">Cantidad de clases dictadas</label>
-                        <input class="input" type="Number" ng-model="lessons">
-                    </div>
                 </div>
-            </div>
-            <button type="submit" class="btn-submit">Buscar</button>
-        </form>
+                <div class="input-group">
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                </div>
+
+    </form>
+
         <h4>Resultado de la búsqueda</h4>
-        <div class="row-fluid " ng-hide="teachers.lenght == 0">
-            <table class="table">
-                <tbody>
-                    <tr>
-                        <th>Profesor</th>
-                        <th>Ranking</th>
-                        <th>Clases dictadas</th>
-                    </tr>
-                    <tr dir-paginate="teacher in teachers|orderBy:sortKey:reverse|filter:search|itemsPerPage:5">
-                        <td>{{teacher.name}}</td>
+    <div class="row-fluid " ng-hide="teachers.lenght == 0">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Profesor</th>
+                    <th>Ranking</th>
+                    <th>Clases dictadas</th>
+                </tr>
+                <tr dir-paginate="teacher in teachers|orderBy:sortKey:reverse|filter:search|itemsPerPage:5">
+                    <td>{{teacher.user.name}}</td>
                         <td>{{teacher.ranking}}</td>
-                        <td>{{teacher.dictatedLessons}}</td>
+                        <td>{{teacher.lessonsDictated}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -104,6 +102,10 @@
         </div>
     </div>
 </div>
-
+    <script src="@routes.Assets.versioned("external/angularjs/angular.min.js")"></script>
+    <script src="@routes.Assets.versioned("javascripts/teacherSearch/teacherSearch.js")"></script>
+    <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
+    <script src="@routes.Assets.versioned("javascripts/teacherSearch/ng-tags-input.min.js")"></script>
+    <script src="@routes.Assets.versioned("javascripts/teacherSearch/dirPagination.js")"></script>
 
 }

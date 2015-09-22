@@ -4,7 +4,7 @@ import org.apache.commons.validator.CreditCardValidator;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
-import ua.dirproy.profelumno.register.models.Teacher;
+import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.subscription.models.Card;
 import ua.dirproy.profelumno.subscription.views.html.subscription;
 
