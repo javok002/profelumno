@@ -8,23 +8,19 @@
 
     <div class="row" ng-app="teacherModify">
         <div class="col-md-3">
-            <div ng-controller="ImageController as imgCtrl">@*flow-init*@
-                @*<div class="ng-scope" flow-init="{singleFile:true}" flow-file-added="!!{png:1,jpg:1,jpeg:1}[$file.getExtension()]">
+            <div ng-controller="ImageController as imgCtrl" ng-flow-init flow-name="flow">
+                <div class="ng-scope" flow-init="{singleFile:true}" flow-file-added="!!{png:1,jpg:1,jpeg:1}[$file.getExtension()]">
                     <h4>Imagen de perfil</h4><br>
                     <div class="thumbnail ng-hide" ng-show="!$flow.files.length">
                         <img src="@routes.Assets.versioned("images/userDefault.jpeg")">
                     </div>
-                    <div class="thumbnail" ng-show="$flow.files.length">
-                        <img src="@routes.Assets.versioned("images/userDefault.jpeg")">
+                    <div class="thumbnail" ng-show="$flow.files.length" ng-repeat="img in flow.files">
+                        <img ng-src="{{img}}"/>
                     </div>
                     <div>
-                        <span class="btn btn-primary " ng-show="$flow.files.length" flow-btn="">Select image<input style=" visibility: hidden; position: absolute;" type="file"></span>
-                        <span class="btn btn-info" ng-show="$flow.files.length" flow-btn="">Change<input style=" visibility: hidden; position: absolute;" type="file"></span>
+                        <input class="btn btn-info" type="file" flow-btn/>
                     </div>
-                </div>*@
-      @*          <input type="file" class="btn btn-primary" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'"
-                accept=".jpg, .png, .jpeg" ngf-max-size="20MB" ngf-min-height="100" ngf-resize="{width: 100, height: 100}"/>*@
-                <input type="file" name="file" onchange="angular.element(this).scope().uploadFile(this)" id="photo-upload"/>
+                </div>
             </div>
         </div>
         <div class="col-md-9" ng-controller="TeacherInfoController as editInfo">
@@ -43,7 +39,7 @@
                             <span class="input-group-addon"><i class="fa fa-user"></i></span>
                         </div>
                         <div class="input-group">
-                            <input type="email" class="form-control" id="teacherEmail"  ng-model="editInfo.u.user.email" required>
+                            <input type="email" class="form-control" id="teacherEmail"  ng-model="editInfo.u.user.email" placeholder="Email" required>
                             <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                         </div>
                         <div class="input-group">
@@ -87,8 +83,7 @@
     <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
     <script src="@routes.Assets.versioned("external/datepicker/bootstrap-datepicker.js")"></script>
     <script src="@routes.Assets.versioned("lib/angular/angular.min.js")"></script>
-    @*<script src="@routes.Assets.versioned("external/ng-file-upload/ng-file-upload-shim.min.js")"></script>
-    <script src="@routes.Assets.versioned("external/ng-file-upload/ng-file-upload.min.js")"></script>*@
-    <script src="@routes.Assets.versioned("javascripts/modifyTeacher/teacherModify.js")"></script>
+    <script src="@routes.Assets.versioned("javascripts/teacherModify/teacherModify.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/modifyStudent/ng-tags-input.min.js")"></script>
+    <script src="@routes.Assets.versioned("external/ng-flow/ng-flow-standalone.min.js")"></script>
 }
