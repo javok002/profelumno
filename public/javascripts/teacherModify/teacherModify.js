@@ -6,8 +6,7 @@ var app = angular.module('teacherModify', ['ngTagsInput'] );
 app.controller('TeacherInfoController', ['$scope','$http',function($scope, $http){
     edit=this;
     edit.u={};
-
-    $http.get("user").
+    $http.get("/user").
         success(function(data, status, headers, config) {
             edit.u= data;
         }).
@@ -30,34 +29,20 @@ app.controller('TeacherInfoController', ['$scope','$http',function($scope, $http
         var fd = new FormData();
         fd.append("file", files[0]);
 
-        $http.post('img', fd, {
+        $http.post('/modify-teacher/img', fd, {
             withCredentials: true,
             headers: {'Content-Type': "image" },
             transformRequest: angular.identity
         }).success(
-            alert("success"+data)
+            alert("success")
         ).error(alert("error")/*function(data){alert("error"+data);}*/);
 
     };
 
     $scope.submitSubjects = function(){
-        var myJsonString = JSON.stringify(edit);
-        $http.post('/teacher-modify/subjects', myJsonString)
+        var myJsonString = JSON.stringify($scope.edit);
+        $http.post('/modify-teacher/subjects', myJsonString)
             .success(alert("subido con exito"))
             .error("falla al guardar")
     };
-
-    function encodeImageFileAsURL(files) {
-        var filesSelected = files;
-        if (filesSelected.length > 0) {
-            var fileToLoad = filesSelected[0];
-            var fileReader = new FileReader();
-            fileReader.onload = function (fileLoadedEvent) {
-                var srcData = fileLoadedEvent.target.result; // <--- data: base64
-                document.getElementById("hiddenBase64").value = srcData;
-                document.getElementById("upload_form").submit();
-            };
-            fileReader.readAsDataURL(fileToLoad);
-        }
-    }
 }]);

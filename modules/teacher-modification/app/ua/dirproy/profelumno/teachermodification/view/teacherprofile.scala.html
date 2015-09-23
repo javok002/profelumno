@@ -13,11 +13,11 @@
                     <div class="box box-primary">
                         <div class="box-header"><h4>Imagen de perfil</h4></div>
                         <div class="box-body">
-                            <div class="thumbnail" ng-hide="edit.u.profilePicture">
+                            <div class="thumbnail" ng-hide="edit.profilePicture">
                                 <img src="@routes.Assets.versioned("images/userDefault.jpeg")">
                             </div>
-                            <div class="thumbnail" ng-show="edit.u.profilePicture">
-                                <img ng-src="{{img}}"/>
+                            <div class="thumbnail" ng-show="edit.profilePicture">
+                                <img ng-src="{{edit.profilePicture}}"/>
                             </div>
                         </div>
                         <div class="box-footer">
@@ -57,17 +57,17 @@
                             </div>
                             <div class="input-group">
                                 <label>Clases a domicilio: </label>
-                                <label class="radio"><input type="radio" name="homeClass" id="yesHome" ng-model="editInfo.u.homeClasses" value="yes" required>
+                                <label class="radio"><input type="radio" name="homeClass" id="yesHome" ng-model="editInfo.homeClasses" value="yes" required>
                                     Si</label>
-                                <label class="radio"><input type="radio" name="homeClass" id="noHome" ng-model="editInfo.u.homeClasses" value="no" required>
+                                <label class="radio"><input type="radio" name="homeClass" id="noHome" ng-model="editInfo.homeClasses" value="no" required>
                                     No</label>
                             </div>
                             <div class="input-group">
-                                <input type="number" class="form-control" id="teacherPrice" ng-model="editInfo.u.price" placeholder="$" required>
+                                <input type="number" class="form-control" id="teacherPrice" ng-model="editInfo.price" placeholder="$" required>
                                 <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
                             </div>
                             <div class="input-group">
-                                <textarea type="text" class="form-control" id="teacherDescription" ng-model="editInfo.u.description" placeholder="Descripcion" value="{{editInfo.u.description}}" rows="3" ng-minlength="50" required></textarea>
+                                <textarea type="text" class="form-control" id="teacherDescription" ng-model="editInfo.description" placeholder="Descripcion" value="{{editInfo.u.description}}" rows="3" ng-minlength="50" required></textarea>
                             </div>
 
                         </div>

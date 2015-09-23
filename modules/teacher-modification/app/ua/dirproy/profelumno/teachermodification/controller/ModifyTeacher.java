@@ -55,10 +55,8 @@ public class ModifyTeacher extends Controller {
         return ok();
     }
     public static Result savePicture() {
-        return ok("ok");
-//        final Http.MultipartFormData body = request().body().asMultipartFormData();
-
-        /*final Http.MultipartFormData.FilePart picture = body.getFile("fileInput");
+       final Http.MultipartFormData body = request().body().asMultipartFormData();
+        final Http.MultipartFormData.FilePart picture = body.getFile("fileInput");
         if (picture != null) {
             final String fileName = picture.getFilename();
             final String suffix = fileName.substring((fileName.length() - 4));
@@ -74,9 +72,7 @@ public class ModifyTeacher extends Controller {
                     return ok(file);
                 }
             }
-
-
         }
-        return notFound();*/
+        return ok("yfvygfvyg");
     }
 }
