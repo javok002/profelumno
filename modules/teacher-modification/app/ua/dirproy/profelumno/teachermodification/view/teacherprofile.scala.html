@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifystudent/ng-tags-input.bootstrap.min.css")">
 
     <div class="row" ng-app="teacherModify">
-        <div ng-controller="TeacherInfoController as editInfo">
+        <div ng-controller="TeacherInfoController as edit">
             <div class="col-md-3">
                 <div>
                     <div class="box box-primary">
@@ -34,7 +34,7 @@
                     <form role="form" method="post" class="from-horizontal">
                         <div class="box-body">
                             <div class="input-group">
-                                <input type="text" class="form-control" id="teacherFirstName" ng-model="editInfo.edit.u.user.name" placeholder="Nombre" required>
+                                <input type="text" class="form-control" id="teacherFirstName" ng-model="edit.u.user.name" placeholder="Nombre" required>
                                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
                             </div>
                             <div class="input-group">

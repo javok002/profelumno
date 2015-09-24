@@ -39,7 +39,7 @@ public class ModifyTeacher extends Controller {
         user.setName("Nicolas");
         user.setSurname("Rudolph");
         user.setId(new Long(1));
-        user.setAddress("Pilar");
+        user.setAddress("Pilar, Buenos Aires Province, Argentina");
         user.setEmail("n@n");
         user.setGender("male");
         user.setPassword("123456");
@@ -47,7 +47,7 @@ public class ModifyTeacher extends Controller {
         subjects.add(new Subject("Matematica"));
         subjects.add(new Subject("Fisica"));
         user.setSubjects(subjects);
-        user.setBirthday(new Date(200));
+        user.setBirthday(new Date(8/4/1995));
         teacher.setUser(user);
         teacher.setDescription("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
         teacher.setHomeClasses(true);
