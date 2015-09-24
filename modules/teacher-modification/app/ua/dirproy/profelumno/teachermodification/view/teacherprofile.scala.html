@@ -28,10 +28,10 @@
                 <div class="box-header">
                     <h4>Información personal</h4>
                 </div>
-                <form role="form" method="post" class="from-horizontal">
+                <form role="form" method="post" class="from-horizontal"  ng-submit="submit()" ng->
                     <div class="box-body">
                         <div class="input-group">
-                            <input type="text" class="form-control" id="teacherFirstName"  ng-model="editInfo.u.user.name" placeholder="Nombre" required>
+                            <input type="text" class="form-control" id="teacherFirstName"  ng-model="editInfo.u.user.name" placeholder={{editInfo.u.name}} required>
                             <span class="input-group-addon"><i class="fa fa-user"></i></span>
                         </div>
                         <div class="input-group">
@@ -43,7 +43,7 @@
                             <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                         </div>
                         <div class="input-group">
-                            <input type="text" class="form-control datepicker" data-date-format="dd/mm/yyyy" value="{{editInfo.u.user.birthday}}" placeholder="Fecha de Nacimiento" name="birthday" required>
+                            <input type="date" class="form-control" id="birthday" ng-model="editInfo.u.user.birthday" name="birthday" placeholder="Fecha de Nacimiento" name="birthday" required>
                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                         </div>
                         <div class="input-group">
@@ -56,18 +56,15 @@
                             <label class="radio"><input type="radio" name="homeClass" id="noHome" ng-model="editInfo.u.homeClasses"  value="no" required>No</label>
                         </div>
                         <div class="input-group">
+                            <input type="text" class="form-control" id="teacherLocation"  ng-model="editInfo.u.user.address" placeholder="Direccion" required>
+                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                        </div>
+                        <div class="input-group">
                             <input type="number" class="form-control" id="teacherPrice"  ng-model="editInfo.u.price" placeholder="$" required>
                             <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
                         </div>
                         <div class="input-group">
                             <textarea type="text" class="form-control" id="teacherDescription"  ng-model="editInfo.u.description" placeholder="Descripcion" value="{{editInfo.u.description}}" rows="3" ng-minlength="50" required></textarea>
-                        </div>
-                        <h4>Materias de interes:</h4>
-                        <div class="input-group">
-                            <tags-input ng-model="materias" add-on-paste="true">
-                                <auto-complete source="loadTags($query)"></auto-complete>
-                            </tags-input>
-                            <span class="input-group-addon"><i class="fa fa-book"></i></span>
                         </div>
                     </div>
                     <div class="box-footer">
