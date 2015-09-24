@@ -34,15 +34,15 @@
                     <form role="form" method="post" class="from-horizontal">
                         <div class="box-body">
                             <div class="input-group">
-                                <input type="text" class="form-control" id="teacherFirstName" ng-model="editInfo.u.user.name" placeholder="Nombre" required>
+                                <input type="text" class="form-control" id="teacherFirstName" ng-model="editInfo.edit.u.user.name" placeholder="Nombre" required>
                                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
                             </div>
                             <div class="input-group">
-                                <input type="text" class="form-control" id="teacherLastName" ng-model="editInfo.u.user.surname" placeholder="Apellido" required>
+                                <input type="text" class="form-control" id="teacherLastName" ng-model="edit.u.user.surname" placeholder="Apellido" required>
                                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
                             </div>
                             <div class="input-group">
-                                <input type="email" class="form-control" id="teacherEmail" ng-model="editInfo.u.user.email" placeholder="Email" required>
+                                <input type="email" class="form-control" id="teacherEmail" ng-model="edit.u.user.email" placeholder="Email" required>
                                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                             </div>
                             <div class="input-group">
@@ -50,26 +50,30 @@
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                             </div>
                             <div class="input-group">
-                                <label class="radio"><input type="radio" name="gender" id="male" ng-model="editInfo.u.user.gender" value="male" required>
+                                <label class="radio"><input type="radio" name="gender" id="male" ng-model="edit.u.user.gender" value="male" required>
                                     Masculino</label>
-                                <label class="radio"><input type="radio" name="gender" id="female" ng-model="editInfo.u.user.gender" value="female" required>
+                                <label class="radio"><input type="radio" name="gender" id="female" ng-model="edit.u.user.gender" value="female" required>
                                     Femenino</label>
                             </div>
                             <div class="input-group">
                                 <label>Clases a domicilio: </label>
-                                <label class="radio"><input type="radio" name="homeClass" id="yesHome" ng-model="editInfo.homeClasses" value="yes" required>
+                                <label class="radio"><input type="radio" name="homeClass" id="yesHome" ng-model="edit.u.homeClasses" value="yes" required>
                                     Si</label>
-                                <label class="radio"><input type="radio" name="homeClass" id="noHome" ng-model="editInfo.homeClasses" value="no" required>
+                                <label class="radio"><input type="radio" name="homeClass" id="noHome" ng-model="edit.u.homeClasses" value="no" required>
                                     No</label>
                             </div>
                             <div class="input-group">
-                                <input type="number" class="form-control" id="teacherPrice" ng-model="editInfo.price" placeholder="$" required>
+                                <input type="number" class="form-control" id="teacherPrice" ng-model="edit.u.price" placeholder="$" required>
                                 <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
                             </div>
                             <div class="input-group">
-                                <textarea type="text" class="form-control" id="teacherDescription" ng-model="editInfo.description" placeholder="Descripcion" value="{{editInfo.u.description}}" rows="3" ng-minlength="50" required></textarea>
+                                <textarea type="text" class="form-control" id="teacherDescription" ng-model="edit.u.description" placeholder="Descripcion" value="{{edit.u.description}}" rows="3" ng-minlength="50" required></textarea>
                             </div>
-
+                            <h4>Direccion</h4>
+                            <div class="input-group">
+                                <input class="form-control" name="address" ng-model="edit.u.address" ng-enter="geoCode()"  googleplace/>
+                                <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+                            </div>
                         </div>
                         <div class="box-footer">
                             <div class="input-group"><button type="submit" class="btn btn-primary">Guardar</button></div>
@@ -82,7 +86,7 @@
                     <form role="form" method="post" class="from-horizontal" ng-submit="submitSubjects()" name="subjects">
                         <div class="box-body">
                             <div class="input-group">
-                                <tags-input ng-model="edit.materias" add-on-paste="true">
+                                <tags-input ng-model="edit.u.subjects" add-on-paste="true">
                                     <auto-complete source="loadTags($query)"></auto-complete>
                                 </tags-input>
                                 <span class="input-group-addon"><i class="fa fa-book"></i></span>
@@ -97,6 +101,7 @@
         </div>
     </div>
 
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
     <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
     <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
     <script src="@routes.Assets.versioned("external/datepicker/bootstrap-datepicker.js")"></script>

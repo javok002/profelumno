@@ -15,13 +15,13 @@ app.controller('TeacherInfoController', ['$scope','$http',function($scope, $http
                 // log error
             });
 
-
-    $scope.materias = [
+    $scope.subjects = [
         { text: 'Matematica' },
+        { text: 'Lengua' },
         { text: 'Fisica' }
-    ];
+    ];//edit.u.user.materias
 
-    edit.materias=$scope.materias;
+    edit.u.subjects=$scope.subjects;
     var verify = function() {
         var today = new Date();
         var birthday = edit.u.user.birthday;
@@ -29,11 +29,10 @@ app.controller('TeacherInfoController', ['$scope','$http',function($scope, $http
         return !$scope.errors.incomplete && !$scope.errors.invalid && !$scope.errors.teacherAge;
     };
 
-    edit.tags=$scope.tags;
-
     $scope.loadTags = function(query) {
         return [{text: 'Matematica'},{text: 'Fisica'},{text: 'Algebra'},{text: 'Lengua'},{text: 'Programación'}]
     };
+
     $scope.submit = function () {
         if (!verify())
             return;
@@ -55,7 +54,7 @@ app.controller('TeacherInfoController', ['$scope','$http',function($scope, $http
         var fd = new FormData();
         fd.append("file", files[0]);
 
-        $http.post('/modify-teacher/img', fd, {
+        $http.post('modify-teacher/img', fd, {
             withCredentials: true,
             headers: {'Content-Type': "image" },
             transformRequest: angular.identity
@@ -67,8 +66,27 @@ app.controller('TeacherInfoController', ['$scope','$http',function($scope, $http
 
     $scope.submitSubjects = function(){
         var myJsonString = JSON.stringify($scope.edit);
-        $http.post('/modify-teacher/subjects', myJsonString)
+        $http.post('modify-teacher/subjects', myJsonString)
             .success(alert("subido con exito"))
             .error("falla al guardar")
     };
 }]);
+
+app.directive('googleplace', function() {
+    return {
+        require: 'ngModel',
+        link: function(scope, element, attrs, model) {
+            var options = {
+                types: [],
+                componentRestrictions: {}
+            };
+            scope.gPlace = new google.maps.places.Autocomplete(element[0], options);
+
+            google.maps.event.addListener(scope.gPlace, 'place_changed', function() {
+                scope.$apply(function() {
+                    model.$setViewValue(element.val());
+                });
+            });
+        }
+    };
+});

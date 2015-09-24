@@ -31,9 +31,27 @@ public class ModifyTeacher extends Controller {
     }
 
     public static Result getTeacher(){
-        //final long userId=Long.parseLong(session("id"));
-        long userId=1;
+        /*final long userId=Long.parseLong(session("id"));
+        Teacher teacher = Ebean.find(Teacher.class, userId);*/
+        //usuario de prueba
         Teacher teacher = new Teacher();
+        User user= new User();
+        user.setName("Nicolas");
+        user.setSurname("Rudolph");
+        user.setId(new Long(1));
+        user.setAddress("Pilar");
+        user.setEmail("n@n");
+        user.setGender("male");
+        user.setPassword("123456");
+        List<Subject> subjects=new ArrayList<>();
+        subjects.add(new Subject("Matematica"));
+        subjects.add(new Subject("Fisica"));
+        user.setSubjects(subjects);
+        user.setBirthday(new Date(200));
+        teacher.setUser(user);
+        teacher.setDescription("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
+        teacher.setHomeClasses(true);
+
         JsonNode json= Json.toJson(teacher);
         System.out.println(json);
         return ok(json);
