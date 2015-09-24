@@ -50,9 +50,10 @@ app.controller('TeacherInfoController', ['$scope','$http',function($scope, $http
             });
     };
 
-    $scope.uploadImage = function(files) {
+
+    $scope.submitImage = function() {
         var fd = new FormData();
-        fd.append("file", files[0]);
+        fd.append("file", edit.u.profilePicture);
 
         $http.post('modify-teacher/img', fd, {
             withCredentials: true,

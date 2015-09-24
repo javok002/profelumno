@@ -5,36 +5,43 @@
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifyteacher/modify-teacher.css")">
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifystudent/ng-tags-input.min.css")">
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifystudent/ng-tags-input.bootstrap.min.css")">
-
+    @ua.dirproy.profelumno.architecture.views.html.topbar()
     <div class="row" ng-app="teacherModify">
-        <div ng-controller="TeacherInfoController as editInfo">
-            <div class="col-md-3">
+        <div ng-controller="TeacherInfoController as edit">
+            <div>
+                @ua.dirproy.profelumno.architecture.views.html.sidebar()
+            </div>
+            <div class="col-md-3 col-md-offset-2">
                 <div>
                     <div class="box box-primary">
                         <div class="box-header"><h4>Imagen de perfil</h4></div>
                         <div class="box-body">
-                            <div class="thumbnail" ng-hide="edit.profilePicture">
+                            <div class="thumbnail" ng-hide="edit.u.profilePicture">
                                 <img src="@routes.Assets.versioned("images/userDefault.jpeg")">
                             </div>
                             <div class="thumbnail" ng-show="edit.profilePicture">
-                                <img ng-src="{{edit.profilePicture}}"/>
+                                <img ng-src="{{edit.u.profilePicture}}"/>
                             </div>
                         </div>
                         <div class="box-footer">
-                            <input type="file" name="file" onchange="angular.element(this).scope().uploadImage(this.files)"/>
+                            <form role="form" ng-submit="submitImage()" enctype="multipart/form-data">
+                                <input class="btn btn-info"type="file" name="file" ng-model="edit.u.profilePicture" required/> @*onchange="angular.element(this).scope().submitImage(this.files)"/>*@
+                                <button class="btn btn-info" type="submit">Guardar</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-9">
+            <div class="col-md-7">
                 <div class="box box-primary">
                     <div class="box-header">
                         <h4>Información personal</h4>
+                        <button class="btn btn-info" style="float: right">Modificar subscripcion</button>
                     </div>
                     <form role="form" method="post" class="from-horizontal">
                         <div class="box-body">
                             <div class="input-group">
-                                <input type="text" class="form-control" id="teacherFirstName" ng-model="editInfo.edit.u.user.name" placeholder="Nombre" required>
+                                <input type="text" class="form-control" id="teacherFirstName" ng-model="edit.u.user.name" placeholder="Nombre" required>
                                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
                             </div>
                             <div class="input-group">

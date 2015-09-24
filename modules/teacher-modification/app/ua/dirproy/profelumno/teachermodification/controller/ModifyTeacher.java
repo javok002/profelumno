@@ -12,6 +12,7 @@ import scala.util.parsing.json.JSONArray$;
 import sun.text.resources.FormatData;
 import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
+import ua.dirproy.profelumno.teachermodification.model.Resource;
 import ua.dirproy.profelumno.teachermodification.view.html.*;
 import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
@@ -39,7 +40,7 @@ public class ModifyTeacher extends Controller {
         user.setName("Nicolas");
         user.setSurname("Rudolph");
         user.setId(new Long(1));
-        user.setAddress("Pilar");
+        user.setAddress("Pilar, Buenos Aires Province, Argentina");
         user.setEmail("n@n");
         user.setGender("male");
         user.setPassword("123456");
@@ -47,8 +48,10 @@ public class ModifyTeacher extends Controller {
         subjects.add(new Subject("Matematica"));
         subjects.add(new Subject("Fisica"));
         user.setSubjects(subjects);
-        user.setBirthday(new Date(200));
+        user.setBirthday(new Date(8 / 4 / 1995));
         teacher.setUser(user);
+        teacher.setPrice(20.5);
+        teacher.setHomeClasses(true);
         teacher.setDescription("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
         teacher.setHomeClasses(true);
 
@@ -98,7 +101,8 @@ public class ModifyTeacher extends Controller {
         return ok();
     }
     public static Result savePicture() {
-       final Http.MultipartFormData body = request().body().asMultipartFormData();
+        Form<Resource> form = Form.form(Resource.class).bindFromRequest();
+        final Http.MultipartFormData body = request().body().asMultipartFormData();
         final Http.MultipartFormData.FilePart picture = body.getFile("fileInput");
         if (picture != null) {
             final String fileName = picture.getFilename();
