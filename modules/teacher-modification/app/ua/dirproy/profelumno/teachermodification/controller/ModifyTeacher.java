@@ -6,14 +6,20 @@ import org.jboss.netty.handler.codec.http.HttpRequest;
 import play.data.Form;
 import play.libs.Json;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.Result;
+import scala.util.parsing.json.JSONArray$;
 import sun.text.resources.FormatData;
 import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.teachermodification.view.html.*;
+import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by francisco on 13/09/15.
@@ -25,23 +31,12 @@ public class ModifyTeacher extends Controller {
     }
 
     public static Result getTeacher(){
-        /*final long userId=Long.parseLong(session("id"));
-        Teacher teacher = Ebean.find(Teacher.class, userId);
-        JsonNode teacherJson= Json.toJson(teacher);*/
-        User a=new User();
-        a.setName("Nicolas");
-        a.setSurname("Rudolph");
-        a.setEmail("nrudolph@gmail.com");
-        a.setBirthday(new Date());
-        a.setGender("male");
-        a.setAddress("La Ramona 1254");
-        Long b = new Long(13);
-        a.setId(b);
-        a.setPassword("12345678");
-        Teacher teacher=new Teacher(a.getId(),"Subjects to ecstatic children he. Could ye leave up as built match. Dejection agreeable attention set suspected led offending. Admitting an performed supposing by. Garden agreed matter are should formed temper had. Full held gay now roof whom such next was. Ham pretty our people moment put excuse narrow. Spite mirth money six above get going great own. Started now shortly had for assured hearing expense. Led juvenile his laughing speedily put pleasant relation offering.",true, a);
+        //final long userId=Long.parseLong(session("id"));
+        long userId=1;
+        Teacher teacher = new Teacher();
         JsonNode json= Json.toJson(teacher);
+        System.out.println(json);
         return ok(json);
-//        return ok(teacherJson);
     }
 
     public static Result saveTeacherInfo(){
@@ -74,31 +69,35 @@ public class ModifyTeacher extends Controller {
     }
 
     public static Result saveSubject(){
+        Form<Teacher> form = Form.form(Teacher.class).bindFromRequest();
+        if (form.hasErrors())
+            return badRequest("Error in form");
+        Teacher aux=form.get();
         final long userId=Long.parseLong(session("id"));
         Teacher teacher = Ebean.find(Teacher.class, userId);
-
+        //teacher.setSubjects(aux.getSubjects());
+        Ebean.save(teacher);
         return ok();
     }
-
-    public static Result emailExist(String email){
-        User user=(User) User.finder.where().eq("email", email);
-        if (user == null)
-            return ok();
-        else
-            return notFound("Email already in use");
-    }
-
-    public static Result getPicture(){
-        final long userId=Long.parseLong(session("id"));
-        Teacher teacher = Ebean.find(Teacher.class, userId);
-        return status(200, teacher.getProfilePicture());
-    }
-
-    public static Result savePicture(byte[] image){
-        final long userId=Long.parseLong(session("id"));
-        Teacher teacher = Ebean.find(Teacher.class, userId);
-        teacher.setProfilePicture(image);
-        Ebean.update(teacher);
-        return status(200, image);
+    public static Result savePicture() {
+       final Http.MultipartFormData body = request().body().asMultipartFormData();
+        final Http.MultipartFormData.FilePart picture = body.getFile("fileInput");
+        if (picture != null) {
+            final String fileName = picture.getFilename();
+            final String suffix = fileName.substring((fileName.length() - 4));
+            System.out.println("suffix = " + suffix);
+            if (suffix.equals(".jpg") || suffix.equals("jpeg") || suffix.equals(".png") || suffix.equals(".bmp")) {
+                final String contentType = picture.getContentType();
+                final File file = picture.getFile();
+                if (contentType.contains("image")) {
+                    final long userId = Long.parseLong(session("id"));
+                    Teacher teacher = Ebean.find(Teacher.class, userId);
+                    teacher.setProfilePicture(file.toString().getBytes());
+                    Ebean.update(teacher);
+                    return ok(file);
+                }
+            }
+        }
+        return ok("yfvygfvyg");
     }
 }

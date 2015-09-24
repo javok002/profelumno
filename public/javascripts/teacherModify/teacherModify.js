@@ -3,26 +3,25 @@
  */
 var app = angular.module('teacherModify', ['ngTagsInput', 'flow'] );
 
-
 app.controller('TeacherInfoController', ['$scope','$http',function($scope, $http){
     edit=this;
     edit.u='';
 
-        $http.get('modify-teacher/get-teacher')
+        $http.get('modify-teacher/user')
             .success(function (data, status, headers, config) {
                 edit.u = data;
             }).
             error(function (data, status, headers, config) {
-                edit.u='juan';
                 // log error
             });
 
 
-    $scope.tags = [
+    $scope.materias = [
         { text: 'Matematica' },
         { text: 'Fisica' }
     ];
 
+    edit.materias=$scope.materias;
     var verify = function() {
         var today = new Date();
         var birthday = edit.u.user.birthday;
@@ -52,9 +51,24 @@ app.controller('TeacherInfoController', ['$scope','$http',function($scope, $http
             });
     };
 
+    $scope.uploadImage = function(files) {
+        var fd = new FormData();
+        fd.append("file", files[0]);
 
+        $http.post('/modify-teacher/img', fd, {
+            withCredentials: true,
+            headers: {'Content-Type': "image" },
+            transformRequest: angular.identity
+        }).success(
+            alert("success")
+        ).error(alert("error")/*function(data){alert("error"+data);}*/);
+
+    };
+
+    $scope.submitSubjects = function(){
+        var myJsonString = JSON.stringify($scope.edit);
+        $http.post('/modify-teacher/subjects', myJsonString)
+            .success(alert("subido con exito"))
+            .error("falla al guardar")
+    };
 }]);
-
-app.controller('ImageController', function($scope, $http){
-
-});
