@@ -11,6 +11,12 @@ create table student (
   constraint pk_student primary key (id))
 ;
 
+create table subject (
+  id                        bigint not null,
+  name                      varchar(255),
+  constraint pk_subject primary key (id))
+;
+
 create table teacher (
   id                        bigint not null,
   user_id                   bigint,
@@ -20,7 +26,9 @@ create table teacher (
   has_card                  boolean,
   profile_picture           blob,
   description               varchar(255),
-  home_classes              varchar(255),
+  home_classes              boolean,
+  ranking                   integer,
+  lessons_dictated          integer,
   constraint uq_teacher_user_id unique (user_id),
   constraint pk_teacher primary key (id))
 ;
@@ -39,7 +47,21 @@ create table user (
   constraint pk_user primary key (id))
 ;
 
+
+create table subject_user (
+  subject_id                     bigint not null,
+  user_id                        bigint not null,
+  constraint pk_subject_user primary key (subject_id, user_id))
+;
+
+create table user_subject (
+  user_id                        bigint not null,
+  subject_id                     bigint not null,
+  constraint pk_user_subject primary key (user_id, subject_id))
+;
 create sequence student_seq;
+
+create sequence subject_seq;
 
 create sequence teacher_seq;
 
@@ -52,19 +74,35 @@ create index ix_teacher_user_2 on teacher (user_id);
 
 
 
+alter table subject_user add constraint fk_subject_user_subject_01 foreign key (subject_id) references subject (id) on delete restrict on update restrict;
+
+alter table subject_user add constraint fk_subject_user_user_02 foreign key (user_id) references user (id) on delete restrict on update restrict;
+
+alter table user_subject add constraint fk_user_subject_user_01 foreign key (user_id) references user (id) on delete restrict on update restrict;
+
+alter table user_subject add constraint fk_user_subject_subject_02 foreign key (subject_id) references subject (id) on delete restrict on update restrict;
+
 # --- !Downs
 
 SET REFERENTIAL_INTEGRITY FALSE;
 
 drop table if exists student;
 
+drop table if exists subject;
+
+drop table if exists subject_user;
+
 drop table if exists teacher;
 
 drop table if exists user;
 
+drop table if exists user_subject;
+
 SET REFERENTIAL_INTEGRITY TRUE;
 
 drop sequence if exists student_seq;
+
+drop sequence if exists subject_seq;
 
 drop sequence if exists teacher_seq;
 

@@ -69,6 +69,7 @@ public class ModifyStudent extends Controller {
                     studentU.setName(stuU.getName());
                     studentU.setPassword(stuU.getPassword());
                     studentU.setSurname(stuU.getSurname());
+                    studentU.setSubjects(stuU.getSubjects());
                     Ebean.save(student);
                     Ebean.save(student.getUser());
                     return ok(Json.toJson(student));

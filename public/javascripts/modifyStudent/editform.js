@@ -20,16 +20,16 @@ app.controller("EditController", ['$http','$scope',function($http,$scope){
         });
 
     //TAGS
-    $scope.materias = [
-        { text: 'Matematica' },
-        { text: 'Lengua' },
-        { text: 'Fisica' }
-    ];//edit.u.user.materias
+    $scope.subjects=edit.u.user.subjects;
 
     edit.tags=$scope.tags;//meterias.json
 
     $scope.loadTags = function(query) {
-        return [{text: 'Lengua'},{text: 'Matematica'},{text: 'Fisica'},{text: 'Quimica'},{text: 'Algebra'}]
+        return [{text: 'Lengua'},
+                {text: 'Matematica'},
+                {text: 'Fisica'},
+                {text: 'Quimica'},
+                {text: 'Algebra'}]
     };
 
     //MAPS
@@ -93,6 +93,7 @@ app.controller("EditController", ['$http','$scope',function($http,$scope){
         edit.u.user.password=$scope.password;
         edit.u.user.address=$scope.search;
         edit.u.user.birthday=$scope.date;
+        edit.u.user.subjects=$scope.subjects;
         $http.post('student-modification', edit.u)
             .success(function (data) {
                 $scope.errors = { invalid: false, incomplete: false, teacherAge: false, studentAge: false };
