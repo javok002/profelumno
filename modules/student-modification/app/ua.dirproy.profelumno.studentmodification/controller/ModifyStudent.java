@@ -9,9 +9,11 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.studentmodification.view.html.*;
+import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by tombatto on 14/09/15.
@@ -29,8 +31,9 @@ public class ModifyStudent extends Controller {
     }
 
     public static Result getStudent(){
-        //final Long userId = Long.parseLong(session().get("id"));
-        Student student = Ebean.find(Student.class,1);
+        final Long userId = Long.parseLong(session().get("id"));
+        User user=User.finder.byId(userId);
+        Student student = Student.finder.where().eq("user",user).findUnique();
 //        User a=new User();
 //        a.setName("Tom");
 //        a.setSurname("Batto");
@@ -47,6 +50,11 @@ public class ModifyStudent extends Controller {
         return ok(json);
     }
 
+    public static Result getSubjects(){
+        List<Subject>subjects=Ebean.find(Subject.class).findList();
+        JsonNode json=Json.toJson(subjects);
+        return ok(json);
+    }
 
 
     public static Result saveStudent(){

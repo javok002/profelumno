@@ -7,6 +7,7 @@ app.controller("EditController", ['$http','$scope',function($http,$scope){
     edit=this;
     edit.u={};
     edit.u.user={};
+    edit.u.user.subjects=[];
 
     $http.get("user").
         success(function(data, status, headers, config) {
@@ -14,22 +15,62 @@ app.controller("EditController", ['$http','$scope',function($http,$scope){
             $scope.search = edit.u.user.address+"";
             $scope.date=new Date(edit.u.user.birthday);
             $scope.geoCode();
+            if(edit.u.user.subjects.length>0){
+                $scope.userSub=$scope.getUserSubjects();
+            }
+        }).
+        error(function(data, status, headers, config) {
+            // log error
+        });
+
+    $http.get("subjects").
+        success(function(data, status, headers, config) {
+            $scope.allSubjects= data;
         }).
         error(function(data, status, headers, config) {
             // log error
         });
 
     //TAGS
-    $scope.subjects=edit.u.user.subjects;
+    $scope.getSubjects=function(){
+        var sub=[];
+        for(var i= 0;i<$scope.allSubjects.length;i++){
+            sub.push({text:$scope.allSubjects[i].name})
+        }
+        return sub
+    };
+
+    $scope.getUserSubjects=function(){
+        var sub=[];
+        for(var i= 0;i<edit.u.user.subjects.length;i++){
+            sub.push({text:''+edit.u.user.subjects[i].name})
+        }
+        return sub
+    };
+    $scope.subjects=$scope.userSub;
 
     edit.tags=$scope.tags;//meterias.json
 
     $scope.loadTags = function(query) {
-        return [{text: 'Lengua'},
-                {text: 'Matematica'},
-                {text: 'Fisica'},
-                {text: 'Quimica'},
-                {text: 'Algebra'}]
+        var sub=$scope.getSubjects();
+        return sub;
+    };
+
+    $scope.userSubjects=function(){
+        var result=[];
+        for(var i= 0;i<$scope.subjects.length;i++){
+            result.push($scope.compare($scope.allSubjects,$scope.subjects[i].text));
+        }
+        return result;
+    };
+
+    $scope.compare=function(array1,value2){
+        for(var i=0;i<array1.length;i++){
+            if(array1[i].name==value2){
+                return array1[i];
+            }
+        }
+        return {};
     };
 
     //MAPS
@@ -75,7 +116,6 @@ app.controller("EditController", ['$http','$scope',function($http,$scope){
         studentAge: false
     };
 
-
     var verify = function() {
         var today = new Date();
         var birthday = $scope.date;
@@ -93,7 +133,7 @@ app.controller("EditController", ['$http','$scope',function($http,$scope){
         edit.u.user.password=$scope.password;
         edit.u.user.address=$scope.search;
         edit.u.user.birthday=$scope.date;
-        edit.u.user.subjects=$scope.subjects;
+        edit.u.user.subjects=$scope.userSubjects();
         $http.post('student-modification', edit.u)
             .success(function (data) {
                 $scope.errors = { invalid: false, incomplete: false, teacherAge: false, studentAge: false };
