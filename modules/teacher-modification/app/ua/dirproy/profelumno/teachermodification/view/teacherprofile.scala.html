@@ -7,87 +7,106 @@
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifystudent/ng-tags-input.bootstrap.min.css")">
 
     <div class="row" ng-app="teacherModify">
-        <div class="col-md-3">
-            <div ng-controller="ImageController as imgCtrl">@*flow-init*@
-                @*<div class="ng-scope" flow-init="{singleFile:true}" flow-file-added="!!{png:1,jpg:1,jpeg:1}[$file.getExtension()]">
-                    <h4>Imagen de perfil</h4><br>
-                    <div class="thumbnail ng-hide" ng-show="!$flow.files.length">
-                        <img src="@routes.Assets.versioned("images/userDefault.jpeg")">
+        <div ng-controller="TeacherInfoController as edit">
+            <div class="col-md-3">
+                <div>
+                    <div class="box box-primary">
+                        <div class="box-header"><h4>Imagen de perfil</h4></div>
+                        <div class="box-body">
+                            <div class="thumbnail" ng-hide="edit.profilePicture">
+                                <img src="@routes.Assets.versioned("images/userDefault.jpeg")">
+                            </div>
+                            <div class="thumbnail" ng-show="edit.profilePicture">
+                                <img ng-src="{{edit.profilePicture}}"/>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <input type="file" name="file" onchange="angular.element(this).scope().uploadImage(this.files)"/>
+                        </div>
                     </div>
-                    <div class="thumbnail" ng-show="$flow.files.length">
-                        <img src="@routes.Assets.versioned("images/userDefault.jpeg")">
-                    </div>
-                    <div>
-                        <span class="btn btn-primary " ng-show="$flow.files.length" flow-btn="">Select image<input style=" visibility: hidden; position: absolute;" type="file"></span>
-                        <span class="btn btn-info" ng-show="$flow.files.length" flow-btn="">Change<input style=" visibility: hidden; position: absolute;" type="file"></span>
-                    </div>
-                </div>*@
-      @*          <input type="file" class="btn btn-primary" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'"
-                accept=".jpg, .png, .jpeg" ngf-max-size="20MB" ngf-min-height="100" ngf-resize="{width: 100, height: 100}"/>*@
-                <input type="file" name="file" onchange="angular.element(this).scope().uploadFile(this)" id="photo-upload"/>
-            </div>
-        </div>
-        <div class="col-md-9" ng-controller="TeacherInfoController as editInfo">
-            <div class="box box-primary">
-                <div class="box-header">
-                    <h4>Editar perfil</h4>
                 </div>
-                <form role="form" method="post" class="from-horizontal">
-                    <div class="box-body">
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="teacherFirstName"  ng-model="editInfo.u.user.name" placeholder="Nombre" required>
-                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                        </div>
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="teacherLastName"  ng-model="editInfo.u.user.surname" placeholder="Apellido" required>
-                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                        </div>
-                        <div class="input-group">
-                            <input type="email" class="form-control" id="teacherEmail"  ng-model="editInfo.u.user.email" required>
-                            <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                        </div>
-                        <div class="input-group">
-                            <input type="text" class="form-control datepicker" data-date-format="dd/mm/yyyy" value="{{editInfo.u.user.birthday}}" placeholder="Fecha de Nacimiento" name="birthday" required>
-                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                        </div>
-                        <div class="input-group">
-                            <label class="radio"><input type="radio" name="gender" id="male" ng-model="editInfo.u.user.gender" value="male" required>Masculino</label>
-                            <label class="radio"><input type="radio" name="gender" id="female" ng-model="editInfo.u.user.gender"  value="female" required>Femenino</label>
-                        </div>
-                        <div class="input-group">
-                            <label>Clases a domicilio: </label>
-                            <label class="radio"><input type="radio" name="homeClass" id="yesHome" ng-model="editInfo.u.homeClasses" value="yes" required>Si</label>
-                            <label class="radio"><input type="radio" name="homeClass" id="noHome" ng-model="editInfo.u.homeClasses"  value="no" required>No</label>
-                        </div>
-                        <div class="input-group">
-                            <input type="number" class="form-control" id="teacherPrice"  ng-model="editInfo.u.price" placeholder="$" required>
-                            <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                        </div>
-                        <div class="input-group">
-                            <textarea type="text" class="form-control" id="teacherDescription"  ng-model="editInfo.u.description" placeholder="Descripcion" value="{{editInfo.u.description}}" rows="3" ng-minlength="50" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Materias de interes:</label>
-                            <tags-input ng-model="tags" add-on-paste="true">
-                                <auto-complete source="loadTags($query)"></auto-complete>
-                            </tags-input>
-                        </div>
+            </div>
+            <div class="col-md-9">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h4>Información personal</h4>
                     </div>
-                    <div class="box-footer">
-                        <div class="input-group"><button type="submit" class="btn btn-primary">Guardar</button></div>
-                        <div class="input-group"><a href=""><button  type="button">Cancelar</button></a></div>
-                    </div>
-                </form>
+                    <form role="form" method="post" class="from-horizontal">
+                        <div class="box-body">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="teacherFirstName" ng-model="edit.u.user.name" placeholder="Nombre" required>
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                            </div>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="teacherLastName" ng-model="edit.u.user.surname" placeholder="Apellido" required>
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                            </div>
+                            <div class="input-group">
+                                <input type="email" class="form-control" id="teacherEmail" ng-model="edit.u.user.email" placeholder="Email" required>
+                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                            </div>
+                            <div class="input-group">
+                                <input type="date" class="form-control" id="birthday" ng-model="edit.u.user.birthday" name="birthday" placeholder="Fecha de Nacimiento" name="birthday" required>
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            </div>
+                            <div class="input-group">
+                                <label class="radio"><input type="radio" name="gender" id="male" ng-model="edit.u.user.gender" value="male" required>
+                                    Masculino</label>
+                                <label class="radio"><input type="radio" name="gender" id="female" ng-model="edit.u.user.gender" value="female" required>
+                                    Femenino</label>
+                            </div>
+                            <div class="input-group">
+                                <label>Clases a domicilio: </label>
+                                <label class="radio"><input type="radio" name="homeClass" id="yesHome" ng-model="edit.u.homeClasses" value="yes" required>
+                                    Si</label>
+                                <label class="radio"><input type="radio" name="homeClass" id="noHome" ng-model="edit.u.homeClasses" value="no" required>
+                                    No</label>
+                            </div>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="teacherPrice" ng-model="edit.u.price" placeholder="$" required>
+                                <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                            </div>
+                            <div class="input-group">
+                                <textarea type="text" class="form-control" id="teacherDescription" ng-model="edit.u.description" placeholder="Descripcion" value="{{edit.u.description}}" rows="3" ng-minlength="50" required></textarea>
+                            </div>
+                            <h4>Direccion</h4>
+                            <div class="input-group">
+                                <input class="form-control" name="address" ng-model="edit.u.address" ng-enter="geoCode()"  googleplace/>
+                                <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <div class="input-group"><button type="submit" class="btn btn-primary">Guardar</button></div>
+                            <div class="input-group"><a href=""><button type="button">Cancelar</button></a></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="box">
+                    <div class="box-header"><h4>Materias de interes:</h4></div>
+                    <form role="form" method="post" class="from-horizontal" ng-submit="submitSubjects()" name="subjects">
+                        <div class="box-body">
+                            <div class="input-group">
+                                <tags-input ng-model="edit.u.subjects" add-on-paste="true">
+                                    <auto-complete source="loadTags($query)"></auto-complete>
+                                </tags-input>
+                                <span class="input-group-addon"><i class="fa fa-book"></i></span>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <div class="input-group"><button type="submit" class="btn btn-primary">Guardar</button></div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
     <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
     <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
     <script src="@routes.Assets.versioned("external/datepicker/bootstrap-datepicker.js")"></script>
     <script src="@routes.Assets.versioned("lib/angular/angular.min.js")"></script>
-    @*<script src="@routes.Assets.versioned("external/ng-file-upload/ng-file-upload-shim.min.js")"></script>
-    <script src="@routes.Assets.versioned("external/ng-file-upload/ng-file-upload.min.js")"></script>*@
-    <script src="@routes.Assets.versioned("javascripts/modifyStudent/modify-main.js")"></script>
+    <script src="@routes.Assets.versioned("javascripts/teacherModify/teacherModify.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/modifyStudent/ng-tags-input.min.js")"></script>
+    <script src="@routes.Assets.versioned("external/ng-flow/ng-flow-standalone.min.js")"></script>
 }

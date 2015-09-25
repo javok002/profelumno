@@ -44,7 +44,7 @@ angular.module('profLesson', [])
                             '<h4 class="modal-title">Hire lesson</h4>' +
                         '</div>' +
                         '<div class="modal-body">' +
-                            '<div class="box box-primary" ng-controller="HireCtrl">' +
+                            '<div ng-controller="HireCtrl">' +
                                 '<div class="box-body">' +
                                     '<div class="form-group">' +
                                         '<div class="radio"> ' +
@@ -94,10 +94,7 @@ angular.module('profLesson', [])
                                             '<textarea class="form-control" rows="3" placeholder="Enter ..." ng-model="comment"></textarea>' +
                                         '</div>' +
                                     '</div><!-- /.box-body -->' +
-
-                                    '<div class="box-footer">' +
-                                        '<button ng-click="postLesson()" class="btn btn-primary">Submit</button>' +
-                                    '</div>' +
+                                    '<button ng-click="postLesson()" class="btn btn-primary">Submit</button>' +
                             '</div><!-- /.box -->' +
                         '</div>' +
                         '<div class="modal-footer">' +
