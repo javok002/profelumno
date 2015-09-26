@@ -36,6 +36,8 @@ public class Student extends Model {
         this.user = user;
     }
 
+    public static Student getStudent(Long id) { return finder.byId(id);}
+
     public static List<Student> list() { return finder.all(); }
 
     public User getUser() {

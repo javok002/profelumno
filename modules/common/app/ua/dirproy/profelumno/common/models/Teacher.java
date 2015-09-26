@@ -58,6 +58,8 @@ public class Teacher extends Model {
 
     public static List<Teacher> list() { return finder.all(); }
 
+    public static Teacher getTeacher(Long id) { return finder.byId(id);}
+
     public User getUser() {
         return user;
     }
