@@ -6,41 +6,74 @@ var app=angular.module( 'EditForm', ['ngTagsInput'] );
 app.controller("EditController", ['$http','$scope',function($http,$scope){
     edit=this;
     edit.u={};
+    edit.u.user={};
+    edit.u.user.subjects=[];
 
     $http.get("user").
         success(function(data, status, headers, config) {
             edit.u= data;
+            $scope.search = edit.u.user.address+"";
+            $scope.date=new Date(edit.u.user.birthday);
+            $scope.geoCode();
+            if(edit.u.user.subjects.length>0){
+                $scope.userSub=$scope.getUserSubjects();
+            }
         }).
         error(function(data, status, headers, config) {
             // log error
         });
 
-    $scope.errors = {
-        invalid: false,
-        incomplete: false,
-        studentAge: false
+    $http.get("subjects").
+        success(function(data, status, headers, config) {
+            $scope.allSubjects= data;
+        }).
+        error(function(data, status, headers, config) {
+            // log error
+        });
+
+    //TAGS
+    $scope.getSubjects=function(){
+        var sub=[];
+        for(var i= 0;i<$scope.allSubjects.length;i++){
+            sub.push({text:$scope.allSubjects[i].name})
+        }
+        return sub
     };
 
-
-    var verify = function() {
-        var today = new Date();
-        var birthday = edit.u.user.birthday;
-        $scope.errors.studentAge =(today.getYear() - birthday.getYear() < 6 ||(today.getYear() - birthday.getYear() == 6 && today.getMonth() < birthday.getMonth()));
-        return !$scope.errors.incomplete && !$scope.errors.invalid && !$scope.errors.studentAge && !$scope.errors.teacherAge;
+    $scope.getUserSubjects=function(){
+        var sub=[];
+        for(var i= 0;i<edit.u.user.subjects.length;i++){
+            sub.push({text:''+edit.u.user.subjects[i].name})
+        }
+        return sub
     };
-
-    $scope.materias = [
-        { text: 'Matematica' },
-        { text: 'Lengua' },
-        { text: 'Fisica' }
-    ];//edit.u.user.materias
+    $scope.subjects=$scope.userSub;
 
     edit.tags=$scope.tags;//meterias.json
 
     $scope.loadTags = function(query) {
-        return [{text: 'Lengua'},{text: 'Matematica'},{text: 'Fisica'},{text: 'Quimica'},{text: 'Algebra'}]
+        var sub=$scope.getSubjects();
+        return sub;
     };
 
+    $scope.userSubjects=function(){
+        var result=[];
+        for(var i= 0;i<$scope.subjects.length;i++){
+            result.push($scope.compare($scope.allSubjects,$scope.subjects[i].text));
+        }
+        return result;
+    };
+
+    $scope.compare=function(array1,value2){
+        for(var i=0;i<array1.length;i++){
+            if(array1[i].name==value2){
+                return array1[i];
+            }
+        }
+        return {};
+    };
+
+    //MAPS
     $scope.gotoCurrentLocation = function () {
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(function (position) {
@@ -51,15 +84,13 @@ app.controller("EditController", ['$http','$scope',function($http,$scope){
         }
         return false;
     };
+
     $scope.gotoLocation = function (lat, lon) {
         if ($scope.lat != lat || $scope.lon != lon) {
             $scope.loc = { lat: lat, lon: lon };
             if (!$scope.$$phase) $scope.$apply("loc");
         }
     };
-
-    // geo-coding
-    $scope.search = "Palermo, Buenos Aires, Autonomous City of Buenos Aires, Argentina";
 
     $scope.geoCode = function () {
         if ($scope.search && $scope.search.length > 0) {
@@ -78,14 +109,31 @@ app.controller("EditController", ['$http','$scope',function($http,$scope){
     };
     $scope.loc =$scope.geoCode();
 
+    //SUBMIT
+    $scope.errors = {
+        invalid: false,
+        incomplete: false,
+        studentAge: false
+    };
+
+    var verify = function() {
+        var today = new Date();
+        var birthday = $scope.date;
+        $scope.errors.studentAge =(today.getYear() - birthday.getYear() < 6 ||(today.getYear() - birthday.getYear() == 6 && today.getMonth() < birthday.getMonth()));
+        return !$scope.errors.incomplete && !$scope.errors.invalid && !$scope.errors.studentAge && !$scope.errors.teacherAge;
+    };
+
     $scope.submit = function () {
         if (!verify())
             return;
-        if(!$scope.modifyForm.$valid) {
-            errors.invalid = true;
+        if(!$scope.modifyForm.$valid&&$scope.modifyForm.actualPassword.$valid) {
+            $scope.errors.invalid = true;
             return;
         }
+        edit.u.user.password=$scope.password;
         edit.u.user.address=$scope.search;
+        edit.u.user.birthday=$scope.date;
+        edit.u.user.subjects=$scope.userSubjects();
         $http.post('student-modification', edit.u)
             .success(function (data) {
                 $scope.errors = { invalid: false, incomplete: false, teacherAge: false, studentAge: false };
