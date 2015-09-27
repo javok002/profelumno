@@ -15,9 +15,6 @@ app.controller("EditController", ['$http','$scope',function($http,$scope){
             $scope.search = edit.u.user.address+"";
             $scope.date=new Date(edit.u.user.birthday);
             $scope.geoCode();
-            if(edit.u.user.subjects.length>0){
-                $scope.userSub=$scope.getUserSubjects();
-            }
         }).
         error(function(data, status, headers, config) {
             // log error
@@ -32,36 +29,10 @@ app.controller("EditController", ['$http','$scope',function($http,$scope){
         });
 
     //TAGS
-    $scope.getSubjects=function(){
-        var sub=[];
-        for(var i= 0;i<$scope.allSubjects.length;i++){
-            sub.push({text:$scope.allSubjects[i].name})
-        }
-        return sub
-    };
-
-    $scope.getUserSubjects=function(){
-        var sub=[];
-        for(var i= 0;i<edit.u.user.subjects.length;i++){
-            sub.push({text:''+edit.u.user.subjects[i].name})
-        }
-        return sub
-    };
-    $scope.subjects=$scope.userSub;
-
     edit.tags=$scope.tags;//meterias.json
 
     $scope.loadTags = function(query) {
-        var sub=$scope.getSubjects();
-        return sub;
-    };
-
-    $scope.userSubjects=function(){
-        var result=[];
-        for(var i= 0;i<$scope.subjects.length;i++){
-            result.push($scope.compare($scope.allSubjects,$scope.subjects[i].text));
-        }
-        return result;
+        return $scope.allSubjects;
     };
 
     $scope.compare=function(array1,value2){
@@ -113,7 +84,8 @@ app.controller("EditController", ['$http','$scope',function($http,$scope){
     $scope.errors = {
         invalid: false,
         incomplete: false,
-        studentAge: false
+        studentAge: false,
+        taken:false
     };
 
     var verify = function() {
@@ -133,14 +105,14 @@ app.controller("EditController", ['$http','$scope',function($http,$scope){
         edit.u.user.password=$scope.password;
         edit.u.user.address=$scope.search;
         edit.u.user.birthday=$scope.date;
-        edit.u.user.subjects=$scope.userSubjects();
+        //edit.u.user.subjects;
         $http.post('student-modification', edit.u)
             .success(function (data) {
-                $scope.errors = { invalid: false, incomplete: false, teacherAge: false, studentAge: false };
+                $scope.errors = { invalid: false, incomplete: false, teacherAge: false, studentAge: false,take:false};
                 alert(JSON.stringify(data));
             })
             .error(function (data) {
-                alert(data);
+                $scope.errors.taken=true;
             });
     };
 

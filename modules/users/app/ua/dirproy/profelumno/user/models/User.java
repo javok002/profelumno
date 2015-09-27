@@ -2,6 +2,7 @@ package ua.dirproy.profelumno.user.models;
 
 import com.avaje.ebean.Model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -31,7 +32,7 @@ public class User extends Model {
     private String address;
     private String secureQuestion;
     private String secureAnswer;
-    @ManyToMany
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL)
     private List<Subject> subjects;
 
     public static Finder<Long, User> finder = new Finder<>(User.class);

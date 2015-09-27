@@ -53,12 +53,6 @@ create table subject_user (
   user_id                        bigint not null,
   constraint pk_subject_user primary key (subject_id, user_id))
 ;
-
-create table user_subject (
-  user_id                        bigint not null,
-  subject_id                     bigint not null,
-  constraint pk_user_subject primary key (user_id, subject_id))
-;
 create sequence student_seq;
 
 create sequence subject_seq;
@@ -78,10 +72,6 @@ alter table subject_user add constraint fk_subject_user_subject_01 foreign key (
 
 alter table subject_user add constraint fk_subject_user_user_02 foreign key (user_id) references user (id) on delete restrict on update restrict;
 
-alter table user_subject add constraint fk_user_subject_user_01 foreign key (user_id) references user (id) on delete restrict on update restrict;
-
-alter table user_subject add constraint fk_user_subject_subject_02 foreign key (subject_id) references subject (id) on delete restrict on update restrict;
-
 # --- !Downs
 
 SET REFERENTIAL_INTEGRITY FALSE;
@@ -95,8 +85,6 @@ drop table if exists subject_user;
 drop table if exists teacher;
 
 drop table if exists user;
-
-drop table if exists user_subject;
 
 SET REFERENTIAL_INTEGRITY TRUE;
 
