@@ -1,3 +1,4 @@
-
+GET        /                    ua.dirproy.profelumno.lessonReview.controllers.ReviewController.show()
+POST       /                    ua.dirproy.profelumno.lessonReview.controllers.ReviewController.review(comment: String, stars: int, from: String, to: String, idLesson: int)
 # Map static resources from the /public folder to the /assets URL path
-GET        /assets/*file                   controllers.Assets.versioned(path="/public", file: Asset)
+GET        /assets/*file        controllers.Assets.versioned(path="/public", file: Asset)
