@@ -4,8 +4,7 @@ import com.avaje.ebean.Model;
 import ua.dirproy.profelumno.user.models.User;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.Id;;
 import javax.persistence.OneToOne;
 import java.util.Date;
 import java.util.List;
@@ -32,14 +31,11 @@ public class Teacher extends Model {
 
     private boolean hasCard;
 
-    @Lob
-    private byte[] profilePicture;
-
     private String description;
 
     private boolean homeClasses;
 
-    private int ranking;
+    private float ranking;
 
     private int lessonsDictated;
 
@@ -59,6 +55,14 @@ public class Teacher extends Model {
     public static List<Teacher> list() { return finder.all(); }
 
     public static Teacher getTeacher(Long id) { return finder.byId(id);}
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public User getUser() {
         return user;
@@ -100,14 +104,6 @@ public class Teacher extends Model {
         this.hasCard = hasCard;
     }
 
-    public byte[] getProfilePicture() {
-        return profilePicture;
-    }
-
-    public void setProfilePicture(byte[] profilePicture) {
-        this.profilePicture = profilePicture;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -128,7 +124,7 @@ public class Teacher extends Model {
         return lessonsDictated;
     }
 
-    public int getRanking() {
+    public float getRanking() {
         return ranking;
     }
 

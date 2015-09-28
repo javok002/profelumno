@@ -23,9 +23,6 @@ public class Student extends Model {
     @OneToOne
     private User user;
 
-    @Lob
-    private byte[] profilePicture;
-
     public static Finder<Long, Student> finder = new Finder<>(Student.class);
 
     public Student() {
@@ -46,14 +43,6 @@ public class Student extends Model {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public byte[] getProfilePicture() {
-        return profilePicture;
-    }
-
-    public void setProfilePicture(byte[] profilePicture) {
-        this.profilePicture = profilePicture;
     }
 
     public Long getId() {
