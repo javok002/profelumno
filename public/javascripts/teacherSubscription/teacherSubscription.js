@@ -18,14 +18,32 @@
         control.errorMessage = "Error";
         // calling our submit function.
         control.submitForm = function () {
-            $http.post('/subscription/validate', this.card).
-                then(function(response) {
-                    window.location = response.data;
-                }, function(response) {
-                    document.getElementById('cardNumber').style.borderColor = "red";
-                    document.getElementById('cardNumber').value = "";
-                    document.getElementById('cardNumber').placeholder = "Número de tarjeta equivocado";
-                });
+            var yearSelect = document.getElementById('year');
+            var monthSelect = document.getElementById('month');
+            var typeSelect = document.getElementById('type');
+
+
+            if(yearSelect.value == "" || monthSelect.value == ""){
+                document.getElementById('venError').hidden = false;
+                document.getElementById('typeError').hidden = true;
+            }
+            else if(typeSelect.value == ""){
+                document.getElementById('venError').hidden = true;
+                document.getElementById('typeError').hidden = false;
+            }
+            else {
+                document.getElementById('typeError').hidden = true;
+                document.getElementById('venError').hidden = true;
+
+                $http.post('/subscription/validate', this.card).
+                    then(function (response) {
+                        window.location = response.data;
+                    }, function (response) {
+                        document.getElementById('cardNumber').style.borderColor = "red";
+                        document.getElementById('cardNumber').value = "";
+                        document.getElementById('cardNumber').placeholder = "Número de tarjeta equivocado";
+                    });
+            }
         };
     }]);
 })();

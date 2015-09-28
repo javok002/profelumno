@@ -27,13 +27,12 @@
                     <div class="col-sm-8">
                         <div class="row">
                             <div class="col-sm-6">
-                                <select aria-label="Month" name="month" id="month" title="Month" class="selectpicker" data-width="100%" ng-model="control.card.expirationMonth"><option value="0" selected="1">Month</option><option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option><option value="4">Apr</option><option value="5">May</option><option value="6">Jun</option><option value="7">Jul</option><option value="8">Aug</option><option value="9">Sep</option><option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option></select>
-
+                                <select aria-label="Month" name="month" id="month" title="Month" class="selectpicker" data-width="100%" ng-model="control.card.expirationMonth"><option value="">Month</option><option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option><option value="4">Apr</option><option value="5">May</option><option value="6">Jun</option><option value="7">Jul</option><option value="8">Aug</option><option value="9">Sep</option><option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option></select>
                             </div>
                             <div class="col-sm-6">
-                                <select name="year" class="selectpicker" data-width="100%" ng-model="control.card.expirationYear">
-                                    <option value="" selected="">Year
-                                    </option><option value="15">2015
+                                <select name="year" id="year" class="selectpicker" data-width="100%" ng-model="control.card.expirationYear">
+                                    <option value="">Year</option>
+                                    <option value="15">2015
                                 </option><option value="16">2016
                                 </option><option value="17">2017
                                 </option><option value="18">2018
@@ -49,6 +48,7 @@
                                 </select>
                             </div>
                         </div>
+                        <label class="row" hidden id="venError" style="padding-left: 15px; color:darkred;">Ingrese el vencimiento de la tarjeta</label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -60,7 +60,7 @@
                 <div class="form-group">
                     <label class="col-sm-4" for="cardType" ng-model="control.card.type">Tipo de tarjeta:</label>
                     <div class="col-sm-8">
-                        <select name="type" class="selectpicker" data-width="100%" ng-model="control.card.type">
+                        <select name="type" id="type" class="selectpicker" data-width="100%" ng-model="control.card.type">
                             <option value="" selected="">Type
                             <option id="visa">VISA</option>
                             <option id="amex">AMEX</option>
@@ -68,6 +68,7 @@
                             <option id="discover">DISCOVER</option>
                             <option id="diners">DINERS</option>
                         </select>
+                        <label hidden id="typeError" style="color: darkred">Ingrese el tipo de tarjeta</label>
                     </div>
                 </div>
                 <div class="form-group">
