@@ -7,7 +7,7 @@ app.controller('recoveryCtrl', function($scope, $http) {
 
     $scope.validate = function() {
         if(this.user.mail.length != 0 && this.user.question.length == 0){
-            $http.post("/validate-email", {email: $scope.user.mail}).success(function(response){
+            $http.post("/password-recovery/validate-email?email=" + $scope.user.mail).success(function(response){
                 $scope.user = response;
                 if($scope.user.question.length != 0){
                     $scope.validMail = true;
@@ -16,7 +16,7 @@ app.controller('recoveryCtrl', function($scope, $http) {
                 }
             });
         } else if (this.user.mail.length != 0 && this.secureAnswer.length != 0){
-            $http.post("/validate-personal-info", {email: $scope.user.mail, answer: $scope.secureAnswer}).success(function(response){
+            $http.post("/password-recovery/validate-personal-info?email=" + $scope.user.mail + "&answer=" + $scope.secureAnswer).success(function(response){
                 if(response.ok == true){
                     $('#infoModal').modal('show');
                 } else if ($("#warning").children().length == 0){

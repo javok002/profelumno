@@ -30,11 +30,19 @@
                                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
                             </div>
                             <div class="input-group">
+                                <div class="isa_error" ng-show="errors.taken">
+                                    <i class="fa fa-times-circle"></i>
+                                    El email ya está relacionado a una cuenta.
+                                </div>
                                <input type="email" class="form-control" id="studentEmail" name="email" ng-model="edit.u.user.email" required>
                                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                             </div>
                             <div class="input-group">
-                                <input type="date" class="form-control" id="birthday" ng-model="edit.u.user.birthday" name="birthday" placeholder="Fecha de Nacimiento" name="birthday" required>
+                                <div class="isa_error" ng-show="errors.studentAge">
+                                    <i class="fa fa-times-circle"></i>
+                                    Debe tener al menos 6 años para ser alumno.
+                                </div>
+                                <input type="date" class="form-control" id="birthday" ng-model="date" name="birthday" placeholder="Fecha de Nacimiento" name="birthday" required>
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                             </div>
                             <div class="input-group">
@@ -44,7 +52,7 @@
                             <hr>
                             <h4>Materias de interes:</h4>
                             <div class="input-group">
-                                <tags-input ng-model="materias" add-on-paste="true">
+                                <tags-input ng-model="edit.u.user.subjects" add-on-paste="true">
                                     <auto-complete source="loadTags($query)"></auto-complete>
                                 </tags-input>
                                 <span class="input-group-addon"><i class="fa fa-book"></i></span>
@@ -57,19 +65,11 @@
                             </div>
                             <app-map class="map" center="loc" markers="[loc]" zoom="17"></app-map>
                             <hr>
-                            <h4>Cambiar contraseña</h4>
-                            <div class="input-group">
-                                <input type="password" class="form-control" name="password" id="pass1" pattern=".{6,}" ng-model="edit.u.user.password" placeholder="Nueva contraseña">
-                                <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                            </div>
-                            <div class="input-group">
-                                <input type="password" class="form-control" id="pass2" name="confirm" pattern=".{6,}" ng-model="confirm" compare-to="edit.u.user.password" placeholder="Repita contraseña">
-                                <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                            </div>
+                            <a type="button" href="@ua.dirproy.profelumno.studentmodification.controller.routes.ModifyStudent.changePasswordView()"><h4>Cambiar Contraseña</h4></a>
                         </div>
                         <div class="box-footer">
                             <div class="input-group"><button type="submit" class="btn btn-primary">Guardar</button></div>
-                            <div class="input-group"><a href=""><button  type="button">Cancelar</button></a></div>
+                            <div class="input-group"><a href="/"><button  type="button">Cancelar</button></a href=""></div>
                         </div>
                     </form>
                 </div>

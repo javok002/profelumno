@@ -5,99 +5,77 @@
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/teachersearch/ng-tags-input.bootstrap.min.css")">
 
     <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
-    @*<div ng-app="teacherSearchApp">*@
-        @*<div ng-controller="searchController">*@
-            @*<form novalidate class="simple-form" ng-submit="search()">*@
-                @*<label>Materias:*@
-                    @*<tags-input ng-model="subjects" add-on-paste="true"></tags-input>*@
-                @*</label>*@
-                @*<label>*@
-                    @*Ranking:*@
-                    @*<input type="number" ng-model="ranking" />*@
-                @*</label>*@
-                @*<label>*@
-                    @*Clases dictadas:*@
-                    @*<input type="number" ng-model="lessons" />*@
-                @*</label>*@
-                @*<label>*@
-                    @*<input type="checkbox" ng-model="home" />*@
-                    @*Da clases a domicilio*@
-                @*</label>*@
-                @*<label>*@
-                    @*<input type="checkbox" ng-model="sort"/>*@
-                    @*Ordenar según cercanía a mi domicilio*@
-                @*</label>*@
-                @*<input type="submit" value="Search"/>*@
-            @*</form>*@
-            @*<div>*@
-                @*<table>*@
-                    @*<tr ng-repeat="x in teachers">*@
-                        @*<td>{{ x.user.name }}</td>*@
-                    @*</tr>*@
-                @*</table>*@
-            @*</div>*@
-        @*</div>*@
-    @*</div>*@
+
 <div ng-app="teacherSearchApp">
     <div class="container-fluid"  ng-controller="searchController">
-          <h3 class="header">Buscar profesor</h3>
-            <form novalidate class="simple-form" ng-submit="search()">
-                <div class="row">
-                <div class="col-sm-6">
-                    <div class="input-group">
-                        <tags-input ng-model="subjects" name="subjects" add-on-paste="true">
-                            <auto-complete source="loadTags($query)"></auto-complete>
-                        </tags-input>
-                        @*<span class="input-group-addon"><i class="fa fa-book"></i></span>*@
+        <h3 class="header">Buscar profesor</h3>
+        <form role="form" class="simple-form" ng-submit="search()">
+            <div class="row-fluid">
+                    <div class="col-sm-6 form-group">
+                        <label>Materias</label>
+                        <div class="input-group">
+                            <tags-input ng-model="subjects" name="subjects" add-on-paste="true">
+                                <auto-complete source="loadTags($query)"></auto-complete>
+                            </tags-input>
+                            <span class="input-group-addon"><i class="fa fa-book"></i></span>
+                        </div>
+                        <div class="checkbox input-group">
+                            <label>
+                                <input type="checkbox" name="homeClasses" ng-model="homeClasses" id="domicilio" value="false">
+                                Da clases a domicilio
+                            </label>
+                        </div>
+                        <div class="checkbox input-group">
+                            <label>
+                                <input type="checkbox" id="cercania" name="sort" ng-model="sort" value="false">
+                                Ordenar según cercanía a mi domicilio
+                            </label>
+                        </div>
                     </div>
-                    <br>
-                    <div class="input-group">
-                        <input type="checkbox" name="homeClasses" ng-model="homeClasses" id="domicilio" class="check-box" />
-                        <label for="domicilio" style="margin-left: 10px">Da clases a domicilio</label>
+                    <div class="col-sm-6 form-group">
+                        <label for="ranking">Ranking</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-star"></i></span>
+                            <input id="ranking" class="form-control" type="number" min="0" max="10" name="ranking" ng-model="ranking">
+                        </div>
+                        <label for="lessons">Cantidad de clases dictadas</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
+                            <input class="form-control" id="lessons" name="lessonsDictated" type="number" min="0" max="999999" ng-model="lessonsDictated">
+                        </div>
                     </div>
-                    <div class="input-group">
-                        <input type="checkbox" name="sort" ng-model="sort" id="cercania" class="check-box"/>
-                        <label for="cercania" style="margin-left: 10px">Ordenar según cercanía a mi domicilio</label>
-                    </div>
+                </div>
+            @*<button type="submit" class="btn btn-primary">Buscar</button>*@
+            <div class="row-fluid form-group">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </div>
+        </form>
 
-                </div>
-                <div class="col-sm-6">
-                    <div class="input-group">
-                        <label for="ranking">Ranking</label><br>
-                        <input id="ranking" class="text-input" type="number" name="ranking" ng-model="ranking">
-                    </div>
-                    <div class="input-group">
-                        <label for="lessons">Cantidad de clases dictadas</label><br>
-                        <input class="text-input" id="lessons" name="lessonsDictated" type="number" ng-model="lessonsDictated">
-                    </div>
-                </div>
-                </div>
-                <div class="input-group">
-                    <button type="submit" class="btn btn-primary">Buscar</button>
-                </div>
-
-    </form>
-
-        <h4>Resultado de la búsqueda</h4>
-    <div class="row-fluid " ng-hide="teachers.lenght == 0">
-        <table class="table">
-            <tbody>
-                <tr>
-                    <th>Profesor</th>
-                    <th>Ranking</th>
-                    <th>Clases dictadas</th>
-                </tr>
-                <tr dir-paginate="teacher in teachers|orderBy:sortKey:reverse|filter:search|itemsPerPage:5">
-                    <td>{{teacher.user.name}}</td>
+        <div class="row-fluid " ng-show="showResults">
+            <h4>Resultado de la búsqueda</h4>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Profesor</th>
+                        <th>Ranking</th>
+                        <th>Clases dictadas</th>
+                    </tr>
+                    <tr ng-repeat="teacher in teachers">
+                        <td>{{teacher.name}}</td>
+                        <td>{{teacher.ranking}}</td>
+                        <td>{{teacher.lessonsDictated}}</td>
+                    </tr>
+                    <tr dir-paginate="teacher in teachers|orderBy:sortKey:reverse|filter:search|itemsPerPage:5">
+                        <td>{{teacher.user.name}}</td>
                         <td>{{teacher.ranking}}</td>
                         <td>{{teacher.lessonsDictated}}</td>
                     </tr>
                 </tbody>
             </table>
             <dir-pagination-controls
-            max-size="5"
-            direction-links="true"
-            boundary-links="true" >
+                max-size="5"
+                direction-links="true"
+                boundary-links="true" >
             </dir-pagination-controls>
         </div>
     </div>

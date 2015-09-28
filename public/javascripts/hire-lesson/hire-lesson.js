@@ -9,8 +9,9 @@ angular.module('profLesson', [])
 
         $scope.postLesson = function() {
             data = {
+                address:$scope.address,
                 comment:$scope.comment,
-                address:$scope.address
+                teacherId:$scope.teacherId
             };
             $http.post('/hire-lesson/new', data).then(successCallback);
         };
@@ -24,7 +25,7 @@ angular.module('profLesson', [])
         return {
             restrict: 'E',
             scope : {
-                teacherId : '='
+                teacherId : '=teacherId' //todo quien se encargue de buscar profesores tiene que setear este atributo
             },
             link : function(scope){
                 scope.date = 'date';
@@ -49,19 +50,19 @@ angular.module('profLesson', [])
                                     '<div class="form-group">' +
                                         '<div class="radio"> ' +
                                             '<label> ' +
-                                                '<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="" ng-model="address"> ' +
+                                                '<input type="radio" name="optionsRadios" id="optionsRadios1" value="teacher" ng-model="address" ng-required="!address"> ' +
                                                     'Tomar clase en el domicilio del profesor' +
                                             ' </label> ' +
                                         ' </div> ' +
                                         ' <div class="radio"> ' +
                                             ' <label> ' +
-                                                ' <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" ng-model="address"> ' +
+                                                ' <input type="radio" name="optionsRadios" id="optionsRadios2" value="student" ng-model="address" ng-required="!address"> ' +
                                                     'Tomar clases en mi domicilio' +
                                             ' </label> ' +
                                         ' </div> ' +
                                         ' <div class="radio"> ' +
                                             ' <label> ' +
-                                                ' <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" ng-model="address"> ' +
+                                                ' <input type="radio" name="optionsRadios" id="optionsRadios3" value="unknow" ng-model="address" ng-required="!address"> ' +
                                                     'El domicilio se pactará despues' +
                                             ' </label> ' +
                                         ' </div> ' +
@@ -94,7 +95,7 @@ angular.module('profLesson', [])
                                             '<textarea class="form-control" rows="3" placeholder="Enter ..." ng-model="comment"></textarea>' +
                                         '</div>' +
                                     '</div><!-- /.box-body -->' +
-                                    '<button ng-click="postLesson()" class="btn btn-primary">Submit</button>' +
+                                    '<button ng-click="postLesson()" class="btn btn-primary" data-dismiss="modal">Submit</button>' +
                             '</div><!-- /.box -->' +
                         '</div>' +
                         '<div class="modal-footer">' +
