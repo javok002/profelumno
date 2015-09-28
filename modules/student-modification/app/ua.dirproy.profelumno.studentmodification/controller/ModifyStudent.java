@@ -104,7 +104,7 @@ public class ModifyStudent extends Controller {
     }
 
     public static Result savePicture() {
-        final Http.MultipartFormData body = request().body().asMultipartFormData();
+        /*final Http.MultipartFormData body = request().body().asMultipartFormData();
         final Http.MultipartFormData.FilePart picture = body.getFile("fileInput");
         if (picture != null) {
             final String fileName = picture.getFilename();
@@ -123,7 +123,7 @@ public class ModifyStudent extends Controller {
                     return ok(file);
                 }
             }
-        }
+        }*/
         return ok("yfvygfvyg");
     }
 
