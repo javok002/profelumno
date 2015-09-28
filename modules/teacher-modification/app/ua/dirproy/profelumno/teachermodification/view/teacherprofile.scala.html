@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifyteacher/modify-teacher.css")">
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifystudent/ng-tags-input.min.css")">
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifystudent/ng-tags-input.bootstrap.min.css")">
-
+    @ua.dirproy.profelumno.architecture.views.html.topbar()
     <div class="row" ng-app="teacherModify">
         <div ng-controller="TeacherInfoController as edit">
             <div class="col-md-3">
@@ -13,23 +13,27 @@
                     <div class="box box-primary">
                         <div class="box-header"><h4>Imagen de perfil</h4></div>
                         <div class="box-body">
-                            <div class="thumbnail" ng-hide="edit.profilePicture">
+                            <div class="thumbnail" ng-hide="edit.u.profilePicture">
                                 <img src="@routes.Assets.versioned("images/userDefault.jpeg")">
                             </div>
-                            <div class="thumbnail" ng-show="edit.profilePicture">
-                                <img ng-src="{{edit.profilePicture}}"/>
+                            <div class="thumbnail" ng-show="edit.u.profilePicture">
+                                <img ng-src="data:image/*;base64,{{edit.u.profilePicture}}"/>
                             </div>
                         </div>
                         <div class="box-footer">
-                            <input type="file" name="file" onchange="angular.element(this).scope().uploadImage(this.files)"/>
+                            <form role="form" ng-submit="uploadFile()" enctype="multipart/form-data">
+                                <input id="inputFile" class="btn btn-info" type="file" name="file" ng-model="edit.fileToUpload" file-model="fileToUpload" accept="image/*" required/> @*onchange="angular.element(this).scope().submitImage(this.files)"/>*@
+                                <button class="btn btn-info" type="submit">Guardar</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-9">
+            <div class="col-md-7">
                 <div class="box box-primary">
                     <div class="box-header">
                         <h4>Información personal</h4>
+                        <a class="btn btn-info" style="float: right" href="@ua.dirproy.profelumno.subscription.controllers.routes.TeacherSubscription.subscriptionForm()">Modificar subscripcion</a>
                     </div>
                     <form role="form" method="post" class="from-horizontal">
                         <div class="box-body">
@@ -46,7 +50,7 @@
                                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                             </div>
                             <div class="input-group">
-                                <input type="date" class="form-control" id="birthday" ng-model="edit.u.user.birthday" name="birthday" placeholder="Fecha de Nacimiento" name="birthday" required>
+                                <input type="date" class="form-control" id="birthday" ng-model="date" name="birthday" placeholder="Fecha de Nacimiento" name="birthday" required>
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                             </div>
                             <div class="input-group">
@@ -55,23 +59,23 @@
                                 <label class="radio"><input type="radio" name="gender" id="female" ng-model="edit.u.user.gender" value="female" required>
                                     Femenino</label>
                             </div>
-                            <div class="input-group">
+                            <div class="input-group" ng-init="homeClass={{edit.radio}}">
                                 <label>Clases a domicilio: </label>
-                                <label class="radio"><input type="radio" name="homeClass" id="yesHome" ng-model="edit.u.homeClasses" value="yes" required>
+                                <label class="radio"><input type="radio" name="homeClass" id="yesHome" ng-model="radio" value="yes" required>
                                     Si</label>
-                                <label class="radio"><input type="radio" name="homeClass" id="noHome" ng-model="edit.u.homeClasses" value="no" required>
+                                <label class="radio"><input type="radio" name="homeClass" id="noHome" ng-model="radio" value="no" required>
                                     No</label>
                             </div>
                             <div class="input-group">
-                                <input type="number" class="form-control" id="teacherPrice" ng-model="edit.u.price" placeholder="$" required>
+                                <input type="number" class="form-control" id="teacherPrice" ng-model="edit.u.price" placeholder="$" min="0" required>
                                 <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
                             </div>
                             <div class="input-group">
-                                <textarea type="text" class="form-control" id="teacherDescription" ng-model="edit.u.description" placeholder="Descripcion" value="{{edit.u.description}}" rows="3" ng-minlength="50" required></textarea>
+                                <textarea type="text" class="form-control" id="teacherDescription" ng-model="edit.u.description" placeholder="Descripcion" value="{{edit.u.description}}" rows="3" ng-minlength="50" cols="500" required></textarea>
                             </div>
                             <h4>Direccion</h4>
                             <div class="input-group">
-                                <input class="form-control" name="address" ng-model="edit.u.address" ng-enter="geoCode()"  googleplace/>
+                                <input class="form-control" name="address" ng-model="edit.u.user.address" ng-enter="geoCode()"  googleplace/>
                                 <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
                             </div>
                         </div>

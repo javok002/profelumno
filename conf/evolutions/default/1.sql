@@ -41,6 +41,7 @@ create table teacher (
   home_classes              boolean,
   ranking                   integer,
   lessons_dictated          integer,
+  price                     double,
   constraint uq_teacher_user_id unique (user_id),
   constraint pk_teacher primary key (id))
 ;
