@@ -17,6 +17,8 @@ import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -46,8 +48,12 @@ public class ModifyTeacher extends Controller {
         List<Subject> subjects=new ArrayList<>();
         subjects.add(new Subject("Matematica"));
         subjects.add(new Subject("Fisica"));
-        user.setSubjects(subjects);
-        user.setBirthday(new Date(8/4/1995));
+        //user.setSubjects(subjects);   <- Throws null point exception
+        try{
+        user.setBirthday(new SimpleDateFormat("dd/MM/yy").parse("6/8/93"));
+        }catch (ParseException E){
+            System.out.println(E.getMessage());
+        }
         teacher.setUser(user);
         teacher.setDescription("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
         teacher.setHomeClasses(true);
@@ -80,6 +86,8 @@ public class ModifyTeacher extends Controller {
             Ebean.save(teacher);
             Ebean.save(teacher.getUser());
             System.out.println(Teacher.list().get(0).getUser().getName());
+            System.out.println("WAAAAAAAAATSSSSSSSSAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP");
+
             return ok(Json.toJson(teacher));
         }else {
             return badRequest("Unique");

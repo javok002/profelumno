@@ -7,11 +7,12 @@ app.controller('TeacherInfoController', ['$scope','$http',function($scope, $http
     edit=this;
     edit.u='';
 
-        $http.get('modify-teacher/user')
+        $http.get('/modify-teacher/user')
             .success(function (data, status, headers, config) {
                 edit.u = data;
             }).
             error(function (data, status, headers, config) {
+                alert('ERROR TRYING TO LOAD TEACHER DATA');
                 // log error
             });
 
@@ -21,12 +22,20 @@ app.controller('TeacherInfoController', ['$scope','$http',function($scope, $http
         { text: 'Fisica' }
     ];//edit.u.user.materias
 
+    $scope.errors = {
+        invalid: false,
+        incomplete: false,
+        teacherAge: false,
+        taken:false
+    };
+
     edit.u.subjects=$scope.subjects;
     var verify = function() {
         var today = new Date();
-        var birthday = edit.u.user.birthday;
+        var birthday = $scope.date;
         $scope.errors.teacherAge =(today.getYear() - birthday.getYear() < 6 ||(today.getYear() - birthday.getYear() == 6 && today.getMonth() < birthday.getMonth()));
-        return !$scope.errors.incomplete && !$scope.errors.invalid && !$scope.errors.teacherAge;
+       var aux=!$scope.errors.incomplete && !$scope.errors.invalid && !$scope.errors.studentAge && !$scope.errors.teacherAge;
+        return aux;
     };
 
     $scope.loadTags = function(query) {
@@ -40,13 +49,13 @@ app.controller('TeacherInfoController', ['$scope','$http',function($scope, $http
             errors.invalid = true;
             return;
         }
-        $http.post('modify-teacher/teacher-modification-post', edit.u)
+        $http.post('/modify-teacher/teacher-modification-post', edit.u)
             .success(function (data) {
                 $scope.errors = { incomplete:false, invalid: false, teacherAge: false };
-                alert(JSON.stringify(data));
+                alert('Guarda bieen');
             })
             .error(function (data) {
-                alert(data);
+                alert("error al guardar");
             });
     };
 
@@ -60,7 +69,7 @@ app.controller('TeacherInfoController', ['$scope','$http',function($scope, $http
             transformRequest: angular.identity
         }).success(
             alert("success")
-        ).error(alert("error")/*function(data){alert("error"+data);}*/);
+        ).error(alert("error al guardar imagen")/*function(data){alert("error"+data);}*/);
 
     };
 
@@ -68,7 +77,7 @@ app.controller('TeacherInfoController', ['$scope','$http',function($scope, $http
         var myJsonString = JSON.stringify($scope.edit);
         $http.post('modify-teacher/subjects', myJsonString)
             .success(alert("subido con exito"))
-            .error("falla al guardar")
+            .error(alert("falla al guardar subjects"))
     };
 }]);
 
