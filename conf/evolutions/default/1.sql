@@ -65,12 +65,6 @@ create table subject_user (
   user_id                        bigint not null,
   constraint pk_subject_user primary key (subject_id, user_id))
 ;
-
-create table user_subject (
-  user_id                        bigint not null,
-  subject_id                     bigint not null,
-  constraint pk_user_subject primary key (user_id, subject_id))
-;
 create sequence lesson_seq;
 
 create sequence student_seq;
