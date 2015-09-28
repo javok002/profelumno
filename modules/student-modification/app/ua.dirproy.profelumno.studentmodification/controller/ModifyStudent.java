@@ -6,12 +6,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import play.data.Form;
 import play.libs.Json;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.Result;
 import ua.dirproy.profelumno.common.models.Student;
+import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.studentmodification.view.html.*;
 import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -100,5 +103,28 @@ public class ModifyStudent extends Controller {
         return ok(Json.toJson(student));
     }
 
+    public static Result savePicture() {
+        final Http.MultipartFormData body = request().body().asMultipartFormData();
+        final Http.MultipartFormData.FilePart picture = body.getFile("fileInput");
+        if (picture != null) {
+            final String fileName = picture.getFilename();
+            final String suffix = fileName.substring((fileName.length() - 4));
+            System.out.println("suffix = " + suffix);
+            if (suffix.equals(".jpg") || suffix.equals("jpeg") || suffix.equals(".png") || suffix.equals(".bmp")) {
+                final String contentType = picture.getContentType();
+                final File file = picture.getFile();
+                if (contentType.contains("image")) {
+                    final long userId = Long.parseLong(session("id"));
+                    User user=User.finder.byId(userId);
+                    Student student = Student.finder.where().eq("user",user).findUnique();
+                    User studentU=student.getUser();
+                    student.setProfilePicture(file.toString().getBytes());
+                    Ebean.update(student);
+                    return ok(file);
+                }
+            }
+        }
+        return ok("yfvygfvyg");
+    }
 
 }

@@ -14,7 +14,12 @@ angular.module('register', [])
             taken: false,
             incomplete: false,
             teacherAge: false,
-            studentAge: false
+            studentAge: false,
+            passMismatch: false
+        };
+
+        $scope.confirmPasswordChange = function() {
+            $scope.errors.passMismatch = $scope.user.password != $scope.user.confirmPassword;
         };
 
         $scope.submit = function () {
@@ -44,7 +49,8 @@ angular.module('register', [])
             $scope.errors.studentAge = $scope.user.role == 'student' &&
                 (today.getYear() - birthday.getYear() < 6 ||
                 (today.getYear() - birthday.getYear() == 6 && today.getMonth() < birthday.getMonth()));
-            return !$scope.errors.incomplete && !$scope.errors.invalid && !$scope.errors.studentAge && !$scope.errors.teacherAge;
+            $scope.confirmPasswordChange();
+            return !$scope.errors.incomplete && !$scope.errors.invalid && !$scope.errors.studentAge && !$scope.errors.teacherAge && !$scope.errors.passMismatch;
         };
 
     }])

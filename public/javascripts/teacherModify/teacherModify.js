@@ -44,17 +44,23 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
     //TAGS
     edit.tags=$scope.tags;//meterias.json
 
-
+    $scope.errors = {
+        invalid: false,
+        incomplete: false,
+        teacherAge: false,
+        taken:false
+    };
     var verify = function () {
         var today = new Date();
-        var birthday = edit.u.user.birthday;
-        $scope.errors.teacherAge = (today.getYear() - birthday.getYear() < 6 || (today.getYear() - birthday.getYear() == 6 && today.getMonth() < birthday.getMonth()));
+        var birthday = $scope.date;
+        $scope.errors.teacherAge =(today.getYear() - birthday.getYear() < 6 ||(today.getYear() - birthday.getYear() == 6 && today.getMonth() < birthday.getMonth()));
         return !$scope.errors.incomplete && !$scope.errors.invalid && !$scope.errors.teacherAge;
     };
 
     $scope.loadTags = function (query) {
         return $scope.allSubjects;
     };
+
 
     $scope.submit = function () {
         if (!verify())
@@ -67,11 +73,11 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
         edit.u.homeClasses= $scope.radio=='yes';
         $http.post('modify-teacher/teacher-modification-post', edit.u)
             .success(function (data) {
-                $scope.errors = {incomplete: false, invalid: false, teacherAge: false};
+                $scope.errors = { incomplete:false, invalid: false, teacherAge: false };
                 alert(JSON.stringify(data));
             })
             .error(function (data) {
-                alert(data);
+                alert("error al guardar");
             });
     };
 
@@ -85,7 +91,7 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
         var myJsonString = JSON.stringify($scope.edit);
         $http.post('modify-teacher/subjects', myJsonString)
             .success(alert("subido con exito"))
-            .error("falla al guardar")
+            .error(alert("falla al guardar subjects"))
     };
 }]);
 

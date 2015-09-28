@@ -6,6 +6,7 @@ var app=angular.module( 'EditForm', ['ngTagsInput'] );
 app.controller("EditController", ['$http','$scope',function($http,$scope){
     edit=this;
     edit.u={};
+    edit.profilePicture='';
     edit.u.user={};
     edit.u.user.subjects=[];
 
@@ -59,10 +60,11 @@ app.controller("EditController", ['$http','$scope',function($http,$scope){
     $scope.gotoLocation = function (lat, lon) {
         if ($scope.lat != lat || $scope.lon != lon) {
             $scope.loc = { lat: lat, lon: lon };
+            $scope.marker={lat:$scope.loc.lat,lon:$scope.loc.lon};
+            $scope.$apply("marker");
             if (!$scope.$$phase) $scope.$apply("loc");
         }
     };
-
     $scope.geoCode = function () {
         if ($scope.search && $scope.search.length > 0) {
             if (!this.geocoder) this.geocoder = new google.maps.Geocoder();
@@ -80,6 +82,20 @@ app.controller("EditController", ['$http','$scope',function($http,$scope){
     };
     $scope.loc =$scope.geoCode();
 
+    //IMAGE
+    $scope.uploadImage = function(files) {
+        var fd = new FormData();
+        fd.append("file", files[0]);
+
+        $http.post("img", fd, {
+            withCredentials: true,
+            headers: {'Content-Type': "image" },
+            transformRequest: angular.identity
+        }).success(
+            alert("success")
+        ).error(alert("error")/*function(data){alert("error"+data);}*/);
+
+    };
     //SUBMIT
     $scope.errors = {
         invalid: false,

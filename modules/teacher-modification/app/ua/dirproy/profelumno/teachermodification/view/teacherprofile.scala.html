@@ -21,7 +21,7 @@
                             </div>
                         </div>
                         <div class="box-footer">
-                            <form role="form" ng-submit="uploadFile()" enctype="multipart/form-data">
+                            <form role="form" ng-submit="uploadFile()" enctype="multipart/form-data" name="modifyForm">
                                 <input id="inputFile" class="btn btn-info" type="file" name="file" ng-model="edit.fileToUpload" file-model="fileToUpload" accept="image/*" required/> @*onchange="angular.element(this).scope().submitImage(this.files)"/>*@
                                 <button class="btn btn-info" type="submit">Guardar</button>
                             </form>
@@ -35,7 +35,7 @@
                         <h4>Información personal</h4>
                         <a class="btn btn-info" style="float: right" href="@ua.dirproy.profelumno.subscription.controllers.routes.TeacherSubscription.subscriptionForm()">Modificar subscripcion</a>
                     </div>
-                    <form role="form" method="post" class="from-horizontal">
+                    <form role="form" method="post" name="modifyForm" class="from-horizontal"  ng-submit="submit()">
                         <div class="box-body">
                             <div class="input-group">
                                 <input type="text" class="form-control" id="teacherFirstName" ng-model="edit.u.user.name" placeholder="Nombre" required>
