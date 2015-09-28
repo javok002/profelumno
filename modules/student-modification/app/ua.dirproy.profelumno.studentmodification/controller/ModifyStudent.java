@@ -67,7 +67,6 @@ public class ModifyStudent extends Controller {
         Student student = Student.finder.where().eq("user",user).findUnique();
         if ((stu.getUser().getEmail()).equalsIgnoreCase(student.getUser().getEmail())||
                 User.validateEmailUnique(stu.getUser().getEmail())) {
-                    student.setProfilePicture(stu.getProfilePicture());
                     User studentU=student.getUser();
                     User stuU=stu.getUser();
                     studentU.setAddress(stuU.getAddress());
@@ -105,7 +104,7 @@ public class ModifyStudent extends Controller {
     }
 
     public static Result savePicture() {
-        final Http.MultipartFormData body = request().body().asMultipartFormData();
+        /*final Http.MultipartFormData body = request().body().asMultipartFormData();
         final Http.MultipartFormData.FilePart picture = body.getFile("fileInput");
         if (picture != null) {
             final String fileName = picture.getFilename();
@@ -124,7 +123,7 @@ public class ModifyStudent extends Controller {
                     return ok(file);
                 }
             }
-        }
+        }*/
         return ok("yfvygfvyg");
     }
 
