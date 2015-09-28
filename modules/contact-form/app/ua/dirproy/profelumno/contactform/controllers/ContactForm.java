@@ -15,6 +15,8 @@ public class ContactForm extends Controller {
         return ok(contactform.render());
     }
 
+    // TODO: send email to correct email address
+    // TODO: give a window confirmation after sending email then reload to another page
     public static void sendForm(String name, String email, String subject, String message) {
         try {
             MailSenderUtil.send(new String[]{"emailToSendTo@email.com"}, subject, message);
