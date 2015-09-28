@@ -31,14 +31,10 @@ public class TeacherSearches extends Controller {
             subjects.add(form.data().get("subjects["+index+"]"));
             index--;
         }
-        for (Teacher teacher : teachers) {
-            if(checkLessons(Integer.parseInt(form.data().get("lessons")),teacher) ||
-                    checkRanking(Integer.parseInt(form.data().get("ranking")),teacher) ||
-                    checkHome(Boolean.parseBoolean(form.data().get("homeClasses")),teacher) ||
-                    checkSubjects(subjects,teacher)){
-                    teachers.remove(teacher);
-            }
-        }
+        teachers.stream().filter(teacher -> checkLessons(Integer.parseInt(form.data().get("lessons")), teacher) ||
+                checkRanking(Integer.parseInt(form.data().get("ranking")), teacher) ||
+                checkHome(Boolean.parseBoolean(form.data().get("homeClasses")), teacher) ||
+                checkSubjects(subjects, teacher)).forEach(teachers::remove);
         return ok(toJson(teachers));
     }
 
