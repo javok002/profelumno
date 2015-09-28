@@ -37,7 +37,7 @@
                         <label for="ranking">Ranking</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-star"></i></span>
-                            <input id="ranking" class="form-control" type="number" min="0" max="10" name="ranking" ng-model="ranking">
+                            <input id="ranking" class="form-control" type="number" min="0" max="5" name="ranking" ng-model="ranking">
                         </div>
                         <label for="lessons">Cantidad de clases dictadas</label>
                         <div class="input-group">
@@ -62,13 +62,11 @@
                         <th>Hire</th>
                     </tr>
 
-                    <tr dir-paginate="teacher in teachers|orderBy:sortKey:reverse|itemsPerPage:2">
-                        <td>{{teacher.user.name}}</td>
+                    <tr dir-paginate="teacher in teachers|itemsPerPage:2">
+                        <td> {{teacher.user.surname}}, {{teacher.user.name}}</td>
                         <td>{{teacher.ranking}}</td>
                         <td>{{teacher.lessonsDictated}}</td>
-                        <td><div ng-app="profLesson">
-                            <hire-lesson teacher-id={{teacher.id}}></hire-lesson>
-                        </div></td>
+                        <td><hire-lesson teacherId="{{teacher.id}}"></hire-lesson></td>
                     </tr>
                 </tbody>
             </table>

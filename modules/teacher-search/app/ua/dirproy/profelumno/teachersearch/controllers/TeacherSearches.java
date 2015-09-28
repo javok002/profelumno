@@ -23,7 +23,8 @@ public class TeacherSearches extends Controller {
     }
 
     public static Result getTeachers(){
-        final List<Teacher> teachers = Teacher.list();
+        final List<Teacher> allTeachers = Teacher.list();
+        final List<Teacher> teachersToShow = Teacher.list();
         Form<Teacher> form = Form.form(Teacher.class).bindFromRequest();
         List<String> subjects = new ArrayList<>(form.data().size() - 3);
         int index =  form.data().size() - 4;
@@ -31,11 +32,11 @@ public class TeacherSearches extends Controller {
             subjects.add(form.data().get("subjects["+index+"]"));
             index--;
         }
-        teachers.stream().filter(teacher -> checkLessons(Integer.parseInt(form.data().get("lessons")), teacher) ||
+        allTeachers.stream().filter(teacher -> checkLessons(Integer.parseInt(form.data().get("lessons")), teacher) ||
                 checkRanking(Integer.parseInt(form.data().get("ranking")), teacher) ||
                 checkHome(Boolean.parseBoolean(form.data().get("homeClasses")), teacher) ||
-                checkSubjects(subjects, teacher)).forEach(teachers::remove);
-        return ok(toJson(teachers));
+                checkSubjects(subjects, teacher)).forEach(teachersToShow::remove);
+        return ok(toJson(teachersToShow));
     }
 
     private static boolean checkSubjects(List<String> subjects,Teacher teacher) {

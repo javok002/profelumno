@@ -5,6 +5,7 @@
 
 create table lesson (
   id                        bigint not null,
+  punctuation               float,
   date_time                 timestamp,
   duration                  time,
   address                   varchar(255),
@@ -18,7 +19,6 @@ create table lesson (
 create table student (
   id                        bigint not null,
   user_id                   bigint,
-  profile_picture           blob,
   constraint uq_student_user_id unique (user_id),
   constraint pk_student primary key (id))
 ;
@@ -36,10 +36,9 @@ create table teacher (
   renewal_date              timestamp,
   is_in_trial               boolean,
   has_card                  boolean,
-  profile_picture           blob,
   description               varchar(255),
   home_classes              boolean,
-  ranking                   integer,
+  ranking                   float,
   lessons_dictated          integer,
   price                     double,
   constraint uq_teacher_user_id unique (user_id),
@@ -57,6 +56,7 @@ create table user (
   address                   varchar(255),
   secure_question           varchar(255),
   secure_answer             varchar(255),
+  profile_picture           blob,
   constraint pk_user primary key (id))
 ;
 
