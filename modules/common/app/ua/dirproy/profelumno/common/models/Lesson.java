@@ -1,8 +1,6 @@
-package ua.dirproy.profelumno.hirelesson.models;
+package ua.dirproy.profelumno.common.models;
 
 import com.avaje.ebean.Model;
-import ua.dirproy.profelumno.common.models.Student;
-import ua.dirproy.profelumno.common.models.Teacher;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

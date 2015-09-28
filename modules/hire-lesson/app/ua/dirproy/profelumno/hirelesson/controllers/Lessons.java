@@ -1,12 +1,11 @@
 package ua.dirproy.profelumno.hirelesson.controllers;
 
-import play.Application;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
-import ua.dirproy.profelumno.hirelesson.models.Lesson;
+import ua.dirproy.profelumno.common.models.Lesson;
 import ua.dirproy.profelumno.hirelesson.views.html.hire;
 import ua.dirproy.profelumno.user.models.User;
 
