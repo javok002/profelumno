@@ -3,7 +3,7 @@
  */
 
 
-var teacherSearchApp = angular.module("teacherSearchApp", ['ngTagsInput', 'angularUtils.directives.dirPagination']);
+var teacherSearchApp = angular.module("teacherSearchApp", ['ngTagsInput', 'angularUtils.directives.dirPagination', 'profLesson']);
 teacherSearchApp.controller("searchController", function($scope, $http) {
     $scope.subjects = [];
     $scope.teachers = [];
