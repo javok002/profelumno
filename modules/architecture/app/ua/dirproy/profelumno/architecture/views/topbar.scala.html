@@ -126,8 +126,8 @@
 
 
 
-    <div id="confirm-close" class="modal fade" role="dialog">
-        <div class="modal-dialog">
+    <div id="confirm-close" class="modal fade" role="dialog" ng-app="app">
+        <div class="modal-dialog" ng-controller="DeleteController">
 
             <div class="modal-content">
                 <div class="modal-header">
@@ -141,15 +141,14 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-                    <a href="@ua.dirproy.profelumno.delete.controllers.routes.Delete.deleteUser()" class="btn btn-primary pull-right" data-dismiss="modal">Aceptar</a>
+                    <a data-dismiss="modal" class="btn btn-primary" ng-click="delete()">Aceptar</a>
                 </div>
             </div>
 
         </div>
     </div>
-    <script>
-    function goTo(url){
-        window.location = url;
-    }
-    </script>
+
+    <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
+    <script src="@routes.Assets.versioned("external/angularjs/angular.min.js")"></script>
+    <script src="@routes.Assets.versioned("javascripts/architecture/delete.js")"></script>
 }
