@@ -31,6 +31,7 @@ public class Delete extends Controller {
             if (aux.getUser().getId().equals(parseId)){
                 aux.delete();
                 deleteUser = true;
+                break;
             }
         }
         if (!deleteUser) {
@@ -39,10 +40,11 @@ public class Delete extends Controller {
                 Teacher aux = teachers.get(i);
                 if (aux.getUser().getId().equals(parseId)) {
                     aux.delete();
+                    break;
                 }
             }
         }
         user.delete();
-        return ok();
+        return redirect(ua.dirproy.profelumno.loginout.controllers.routes.Login.loginView());
     }
 }
