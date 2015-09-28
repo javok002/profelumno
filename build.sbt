@@ -56,12 +56,16 @@ lazy val loginout = (project in file("modules/loginout"))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(users, common)//, teacherSubscription, passwordRecovery)
 
+lazy val lessonReview = (project in file("modules/lesson-review"))
+  .enablePlugins(PlayJava, PlayEbean)
+  .dependsOn(common, architecture)
+
 lazy val root = (project in file("."))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(common,studentModification, users, teacherProfile, teacherSubscription, register, delete,
-    passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture, loginout)
+    passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture, loginout, lessonReview)
   .aggregate(common,studentModification, users, teacherProfile, teacherSubscription, register, delete,
-    passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture,loginout)
+    passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture,loginout, lessonReview)
 
 
 scalaVersion := "2.11.6"
