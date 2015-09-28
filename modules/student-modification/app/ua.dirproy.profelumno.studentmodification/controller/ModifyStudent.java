@@ -43,12 +43,12 @@ public class ModifyStudent extends Controller {
 
     //Hay que precargar las materias en la base de datos de alguna manera, por ahora las cargo aca.
     public static Result getSubjects(){
-//        Subject matematica=new Subject("Matematica");
-//        Subject quimica=new Subject("Quimica");
-//        Subject fisica=new Subject("Fisica");
-//        matematica.save();
-//        quimica.save();
-//        fisica.save();
+        Subject matematica=new Subject("Matematica");
+        Subject quimica=new Subject("Quimica");
+        Subject fisica=new Subject("Fisica");
+        matematica.save();
+        quimica.save();
+        fisica.save();
 
         List<Subject>subjects=Ebean.find(Subject.class).findList();
         JsonNode json=Json.toJson(subjects);
