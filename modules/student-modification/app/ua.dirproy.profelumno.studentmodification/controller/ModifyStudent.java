@@ -34,23 +34,19 @@ public class ModifyStudent extends Controller {
         final Long userId = Long.parseLong(session().get("id"));
         User user=User.finder.byId(userId);
         Student student = Student.finder.where().eq("user",user).findUnique();
-//        User a=new User();
-//        a.setName("Tom");
-//        a.setSurname("Batto");
-//        a.setEmail("tombatto@gmail.com");
-//        a.setBirthday(new Date(500));
-//        a.setGender("male");
-//        a.setPassword("alabama");
-//        a.setAddress("Palermo, Autonomous City of Buenos Aires, Argentina");
-//        Student student=new Student();
-//        student.setUser(a);
-//        a.save();
-//        student.save();
         JsonNode json= Json.toJson(student);
         return ok(json);
     }
 
+    //Hay que precargar las materias en la base de datos de alguna manera, por ahora las cargo aca.
     public static Result getSubjects(){
+//        Subject matematica=new Subject("Matematica");
+//        Subject quimica=new Subject("Quimica");
+//        Subject fisica=new Subject("Fisica");
+//        matematica.save();
+//        quimica.save();
+//        fisica.save();
+
         List<Subject>subjects=Ebean.find(Subject.class).findList();
         JsonNode json=Json.toJson(subjects);
         return ok(json);
@@ -64,7 +60,8 @@ public class ModifyStudent extends Controller {
             return badRequest("Error in form");
         }
         Student stu = form.get();
-        Student student = Ebean.find(Student.class,stu.getUser().getId());
+        User user=stu.getUser();
+        Student student = Student.finder.where().eq("user",user).findUnique();
         if ((stu.getUser().getEmail()).equalsIgnoreCase(student.getUser().getEmail())||
                 User.validateEmailUnique(stu.getUser().getEmail())) {
                     student.setProfilePicture(stu.getProfilePicture());
@@ -75,14 +72,16 @@ public class ModifyStudent extends Controller {
                     studentU.setEmail(stuU.getEmail());
                     studentU.setGender(stuU.getGender());
                     studentU.setName(stuU.getName());
-                    studentU.setPassword(stuU.getPassword());
                     studentU.setSurname(stuU.getSurname());
-                    studentU.setSubjects(stuU.getSubjects());
+                    studentU.getSubjects().clear();
+            for (Subject subject : stuU.getSubjects()) {
+                studentU.getSubjects().add(subject);
+            }
                     Ebean.save(student);
                     Ebean.save(student.getUser());
                     return ok(Json.toJson(student));
         }else {
-            return badRequest("Unique");
+            return badRequest("taken");
         }
     }
 
@@ -93,18 +92,13 @@ public class ModifyStudent extends Controller {
             return badRequest("Error in form");
         }
         Student stu = form.get();
-        Student student = Ebean.find(Student.class,stu.getUser().getId());
-        if (User.validateEmailUnique(stu.getUser().getEmail())) {
-            User studentU=student.getUser();
-            User stuU=stu.getUser();
-            studentU.setPassword(stuU.getPassword());
-            studentU.setSurname(stuU.getSurname());
-            Ebean.save(student);
-            Ebean.save(student.getUser());
-            return ok(Json.toJson(student));
-        }else {
-            return badRequest("Unique");
-        }
+        User user=stu.getUser();
+        Student student = Student.finder.where().eq("user",user).findUnique();
+        User studentU=student.getUser();
+        studentU.setPassword(user.getPassword());
+        Ebean.save(student);
+        Ebean.save(student.getUser());
+        return ok(Json.toJson(student));
     }
 
 

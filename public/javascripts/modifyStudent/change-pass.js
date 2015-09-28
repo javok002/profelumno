@@ -43,7 +43,7 @@ app.controller("EditController", ['$http','$scope',function($http,$scope){
         }
         edit.u.user.birthday=$scope.date;
         edit.u.user.password=$scope.password;
-        $http.post('student-modification', edit.u)
+        $http.post('save-pass', edit.u)
             .success(function (data) {
                 $scope.errors = { invalid: false, incomplete: false, teacherAge: false, studentAge: false };
                 alert(JSON.stringify(data));

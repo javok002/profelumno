@@ -5,16 +5,19 @@ var app = angular.module('teacherModify', ['ngTagsInput']);
 
 app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', function ($scope, $http, fileUpload) {
     edit = this;
-    edit.u = '';
-    edit.radio = '';
+    edit.u = {};
+    edit.u.user = {};
+    $scope.radio = '';
+    edit.u.user.subjects=[];
 
     $http.get('modify-teacher/user')
         .success(function (data, status, headers, config) {
             edit.u = data;
+            $scope.date=new Date(edit.u.user.birthday);
             if (edit.u.homeClasses) {
-                edit.radio = 'yesHome';
+                $scope.radio = 'yes';
             } else {
-                edit.radio = 'noHome';
+                $scope.radio = 'no';
             }
 
         }).
@@ -22,13 +25,26 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
             // log error
         });
 
-    $scope.subjects = [
-        {text: 'Matematica'},
-        {text: 'Lengua'},
-        {text: 'Fisica'}
-    ];//edit.u.user.materias
+    $http.get('modify-teacher/img')
+        .success(function (data, status, headers, config) {
+            edit.u.profilePicture = data;
+            alert(data);
+        }).
+        error(function (data, status, headers, config) {
+            // log error
+        });
 
-    edit.u.subjects = $scope.subjects;
+    $http.get("modify-teacher/subjects").
+        success(function(data, status, headers, config) {
+            $scope.allSubjects= data;
+        }).
+        error(function(data, status, headers, config) {
+            // log error
+        });
+    //TAGS
+    edit.tags=$scope.tags;//meterias.json
+
+
     var verify = function () {
         var today = new Date();
         var birthday = edit.u.user.birthday;
@@ -37,7 +53,7 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
     };
 
     $scope.loadTags = function (query) {
-        return [{text: 'Matematica'}, {text: 'Fisica'}, {text: 'Algebra'}, {text: 'Lengua'}, {text: 'Programación'}]
+        return $scope.allSubjects;
     };
 
     $scope.submit = function () {
@@ -47,6 +63,8 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
             errors.invalid = true;
             return;
         }
+        edit.u.user.birthday=$scope.date;
+        edit.u.homeClasses= $scope.radio=='yes';
         $http.post('modify-teacher/teacher-modification-post', edit.u)
             .success(function (data) {
                 $scope.errors = {incomplete: false, invalid: false, teacherAge: false};
@@ -60,7 +78,7 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
     $scope.uploadFile = function(){
         var file = $scope.fileToUpload;
         var uploadUrl = "modify-teacher/img";
-        fileUpload.uploadFileToUrl(file, uploadUrl);
+        fileUpload.uploadFileToUrl(file, uploadUrl);;
     };
 
     $scope.submitSubjects = function () {
@@ -114,8 +132,9 @@ app.service('fileUpload', ['$http', function ($http) {
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined}
         })
-            .success(function (result) {
-                $scope.edit.u.profilePicture=result;
+            .success(function (data, status, headers, config) {
+                edit.u.profilePicture = data;
+                alert(data);
             })
             .error(function () {
             });
