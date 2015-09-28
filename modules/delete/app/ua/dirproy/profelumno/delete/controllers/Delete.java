@@ -45,6 +45,6 @@ public class Delete extends Controller {
             }
         }
         user.delete();
-        return redirect(ua.dirproy.profelumno.loginout.controllers.routes.Login.loginView());
+        return ok();
     }
 }
