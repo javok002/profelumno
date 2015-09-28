@@ -8,9 +8,10 @@
 
 <div ng-app="teacherSearchApp">
     <div class="container-fluid"  ng-controller="searchController">
-        <h3 class="header">Buscar profesor</h3>
-        <form role="form" class="simple-form" ng-submit="search()">
-            <div class="row-fluid">
+        <div class="row-fluid">
+            <h3 class="header">Buscar profesor</h3>
+            <form role="form" class="simple-form" ng-submit="search()">
+                <div class="row-fluid">
                     <div class="col-sm-6 form-group">
                         <label>Materias</label>
                         <div class="input-group">
@@ -45,12 +46,11 @@
                         </div>
                     </div>
                 </div>
-            @*<button type="submit" class="btn btn-primary">Buscar</button>*@
-            <div class="row-fluid form-group">
-                <button type="submit" class="btn btn-primary">Buscar</button>
-            </div>
-        </form>
-
+                <div class="row-fluid form-group">
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                </div>
+            </form>
+        </div>
         <div class="row-fluid " ng-show="showResults">
             <h4>Resultado de la búsqueda</h4>
             <table class="table">
@@ -59,21 +59,21 @@
                         <th>Profesor</th>
                         <th>Ranking</th>
                         <th>Clases dictadas</th>
+                        <th>Hire</th>
                     </tr>
-                    <tr ng-repeat="teacher in teachers">
-                        <td>{{teacher.name}}</td>
-                        <td>{{teacher.ranking}}</td>
-                        <td>{{teacher.lessonsDictated}}</td>
-                    </tr>
-                    <tr dir-paginate="teacher in teachers|orderBy:sortKey:reverse|filter:search|itemsPerPage:5">
+
+                    <tr dir-paginate="teacher in teachers|orderBy:sortKey:reverse|itemsPerPage:2">
                         <td>{{teacher.user.name}}</td>
                         <td>{{teacher.ranking}}</td>
                         <td>{{teacher.lessonsDictated}}</td>
+                        <td><div ng-app="profLesson">
+                            <hire-lesson teacher-id={{teacher.id}}></hire-lesson>
+                        </div></td>
                     </tr>
                 </tbody>
             </table>
             <dir-pagination-controls
-                max-size="5"
+                max-size="2"
                 direction-links="true"
                 boundary-links="true" >
             </dir-pagination-controls>
@@ -85,5 +85,6 @@
     <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/teacherSearch/ng-tags-input.min.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/teacherSearch/dirPagination.js")"></script>
+    <script src="@routes.Assets.versioned("javascripts/hire-lesson/hire-lesson.js")"></script>
 
 }
