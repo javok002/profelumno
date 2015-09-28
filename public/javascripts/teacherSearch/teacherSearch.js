@@ -16,6 +16,8 @@ teacherSearchApp.controller("searchController", function($scope, $http) {
         for(var i = 0; i < $scope.subjects.length; i++){
             literalSubjects.push($scope.subjects[i].text);
         }
+        if($scope.ranking == null){$scope.ranking = 0}
+        if($scope.lessonsDictated == null){$scope.lessonsDictated = 0}
         $scope.data = {subjects: literalSubjects , ranking: $scope.ranking, lessons: $scope.lessonsDictated, homeClasses: $scope.homeClasses};
         $http.post('/teacher-search/getTeachers', $scope.data).
             then(function(response){

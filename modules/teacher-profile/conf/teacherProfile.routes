@@ -3,6 +3,5 @@
 # ~~~~
 
 # Home page
-GET     /create-mock                ua.dirproy.profelumno.teacherprofile.controllers.TeacherProfiles.createMockUser()
 
 # Map static resources from the /public folder to the /assets URL path
