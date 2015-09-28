@@ -39,7 +39,7 @@ public class Teacher extends Model {
 
     private boolean homeClasses;
 
-    private int ranking;
+    private float ranking;
 
     private int lessonsDictated;
 
@@ -59,6 +59,14 @@ public class Teacher extends Model {
     public static List<Teacher> list() { return finder.all(); }
 
     public static Teacher getTeacher(Long id) { return finder.byId(id);}
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public User getUser() {
         return user;
@@ -128,7 +136,7 @@ public class Teacher extends Model {
         return lessonsDictated;
     }
 
-    public int getRanking() {
+    public float getRanking() {
         return ranking;
     }
 
