@@ -3,6 +3,18 @@
 
 # --- !Ups
 
+create table lesson (
+  id                        bigint not null,
+  date_time                 timestamp,
+  duration                  time,
+  address                   varchar(255),
+  comment                   varchar(255),
+  price                     float,
+  teacher_id                bigint,
+  student_id                bigint,
+  constraint pk_lesson primary key (id))
+;
+
 create table student (
   id                        bigint not null,
   user_id                   bigint,
@@ -29,6 +41,7 @@ create table teacher (
   home_classes              boolean,
   ranking                   integer,
   lessons_dictated          integer,
+  price                     double,
   constraint uq_teacher_user_id unique (user_id),
   constraint pk_teacher primary key (id))
 ;
@@ -53,6 +66,8 @@ create table subject_user (
   user_id                        bigint not null,
   constraint pk_subject_user primary key (subject_id, user_id))
 ;
+create sequence lesson_seq;
+
 create sequence student_seq;
 
 create sequence subject_seq;
@@ -61,10 +76,14 @@ create sequence teacher_seq;
 
 create sequence user_seq;
 
-alter table student add constraint fk_student_user_1 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_student_user_1 on student (user_id);
-alter table teacher add constraint fk_teacher_user_2 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_teacher_user_2 on teacher (user_id);
+alter table lesson add constraint fk_lesson_teacher_1 foreign key (teacher_id) references teacher (id) on delete restrict on update restrict;
+create index ix_lesson_teacher_1 on lesson (teacher_id);
+alter table lesson add constraint fk_lesson_student_2 foreign key (student_id) references student (id) on delete restrict on update restrict;
+create index ix_lesson_student_2 on lesson (student_id);
+alter table student add constraint fk_student_user_3 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_student_user_3 on student (user_id);
+alter table teacher add constraint fk_teacher_user_4 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_teacher_user_4 on teacher (user_id);
 
 
 
@@ -75,6 +94,8 @@ alter table subject_user add constraint fk_subject_user_user_02 foreign key (use
 # --- !Downs
 
 SET REFERENTIAL_INTEGRITY FALSE;
+
+drop table if exists lesson;
 
 drop table if exists student;
 
@@ -87,6 +108,8 @@ drop table if exists teacher;
 drop table if exists user;
 
 SET REFERENTIAL_INTEGRITY TRUE;
+
+drop sequence if exists lesson_seq;
 
 drop sequence if exists student_seq;
 

@@ -95,7 +95,7 @@ angular.module('profLesson', [])
                                             '<textarea class="form-control" rows="3" placeholder="Enter ..." ng-model="comment"></textarea>' +
                                         '</div>' +
                                     '</div><!-- /.box-body -->' +
-                                    '<button ng-click="postLesson()" class="btn btn-primary">Submit</button>' +
+                                    '<button ng-click="postLesson()" class="btn btn-primary" data-dismiss="modal">Submit</button>' +
                             '</div><!-- /.box -->' +
                         '</div>' +
                         '<div class="modal-footer">' +

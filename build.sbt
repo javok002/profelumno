@@ -11,7 +11,7 @@ lazy val users = (project in file("modules/users"))
 
 lazy val teacherProfile = (project in file("modules/teacher-profile"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(users)
+  .dependsOn(users, common)
 
 lazy val architecture = (project in file("modules/architecture"))
   .enablePlugins(PlayJava, PlayEbean)
@@ -35,7 +35,7 @@ lazy val hireLesson = (project in file("modules/hire-lesson"))
 
 lazy val teacherModification = (project in file("modules/teacher-modification"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(teacherProfile, common, teacherSubscription)
+  .dependsOn(teacherProfile, common, teacherSubscription, architecture)
 
 lazy val teacherSearch = (project in file("modules/teacher-search"))
   .enablePlugins(PlayJava, PlayEbean)

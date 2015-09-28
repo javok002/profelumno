@@ -43,7 +43,7 @@ public class Teacher extends Model {
 
     private int lessonsDictated;
 
-
+    private double price;
 
     public Teacher(){}
 
@@ -140,5 +140,15 @@ public class Teacher extends Model {
         this.homeClasses = homeClasses;
     }
 
+    public boolean isHomeClasses() {
+        return homeClasses;
+    }
 
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 }
