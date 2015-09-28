@@ -1,48 +1,55 @@
 /**
  * Created by rudy on 19/09/15.
  */
-var app = angular.module('teacherModify', ['ngTagsInput', 'flow'] );
+var app = angular.module('teacherModify', ['ngTagsInput']);
 
-app.controller('TeacherInfoController', ['$scope','$http',function($scope, $http){
-    edit=this;
-    edit.u='';
+app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', function ($scope, $http, fileUpload) {
+    edit = this;
+    edit.u = '';
+    edit.radio = '';
 
-        $http.get('modify-teacher/user')
-            .success(function (data, status, headers, config) {
-                edit.u = data;
-            }).
-            error(function (data, status, headers, config) {
-                // log error
-            });
+    $http.get('modify-teacher/user')
+        .success(function (data, status, headers, config) {
+            edit.u = data;
+            if (edit.u.homeClasses) {
+                edit.radio = 'yesHome';
+            } else {
+                edit.radio = 'noHome';
+            }
+
+        }).
+        error(function (data, status, headers, config) {
+            // log error
+        });
 
     $scope.subjects = [
-        { text: 'Matematica' },
-        { text: 'Lengua' },
-        { text: 'Fisica' }
+        {text: 'Matematica'},
+        {text: 'Lengua'},
+        {text: 'Fisica'}
     ];//edit.u.user.materias
 
-    edit.u.subjects=$scope.subjects;
-    var verify = function() {
+    edit.u.subjects = $scope.subjects;
+    var verify = function () {
         var today = new Date();
         var birthday = edit.u.user.birthday;
-        $scope.errors.teacherAge =(today.getYear() - birthday.getYear() < 6 ||(today.getYear() - birthday.getYear() == 6 && today.getMonth() < birthday.getMonth()));
+        $scope.errors.teacherAge = (today.getYear() - birthday.getYear() < 6 || (today.getYear() - birthday.getYear() == 6 && today.getMonth() < birthday.getMonth()));
         return !$scope.errors.incomplete && !$scope.errors.invalid && !$scope.errors.teacherAge;
     };
 
-    $scope.loadTags = function(query) {
-        return [{text: 'Matematica'},{text: 'Fisica'},{text: 'Algebra'},{text: 'Lengua'},{text: 'Programación'}]
+    $scope.loadTags = function (query) {
+        return [{text: 'Matematica'}, {text: 'Fisica'}, {text: 'Algebra'}, {text: 'Lengua'}, {text: 'Programación'}]
     };
 
     $scope.submit = function () {
         if (!verify())
             return;
-        if(!$scope.modifyForm.$valid) {
+        if (!$scope.modifyForm.$valid) {
             errors.invalid = true;
             return;
         }
         $http.post('modify-teacher/teacher-modification-post', edit.u)
             .success(function (data) {
-                $scope.errors = { incomplete:false, invalid: false, teacherAge: false };
+                $scope.errors = {incomplete: false, invalid: false, teacherAge: false};
                 alert(JSON.stringify(data));
             })
             .error(function (data) {
@@ -50,22 +57,13 @@ app.controller('TeacherInfoController', ['$scope','$http',function($scope, $http
             });
     };
 
-
-    $scope.submitImage = function() {
-        var fd = new FormData();
-        fd.append("file", edit.u.profilePicture);
-
-        $http.post('modify-teacher/img', fd, {
-            withCredentials: true,
-            headers: {'Content-Type': "image" },
-            transformRequest: angular.identity
-        }).success(
-            alert("success")
-        ).error(alert("error")/*function(data){alert("error"+data);}*/);
-
+    $scope.uploadFile = function(){
+        var file = $scope.fileToUpload;
+        var uploadUrl = "modify-teacher/img";
+        fileUpload.uploadFileToUrl(file, uploadUrl);
     };
 
-    $scope.submitSubjects = function(){
+    $scope.submitSubjects = function () {
         var myJsonString = JSON.stringify($scope.edit);
         $http.post('modify-teacher/subjects', myJsonString)
             .success(alert("subido con exito"))
@@ -73,21 +71,53 @@ app.controller('TeacherInfoController', ['$scope','$http',function($scope, $http
     };
 }]);
 
-app.directive('googleplace', function() {
+app.directive('googleplace', function () {
     return {
         require: 'ngModel',
-        link: function(scope, element, attrs, model) {
+        link: function (scope, element, attrs, model) {
             var options = {
                 types: [],
                 componentRestrictions: {}
             };
             scope.gPlace = new google.maps.places.Autocomplete(element[0], options);
 
-            google.maps.event.addListener(scope.gPlace, 'place_changed', function() {
-                scope.$apply(function() {
+            google.maps.event.addListener(scope.gPlace, 'place_changed', function () {
+                scope.$apply(function () {
                     model.$setViewValue(element.val());
                 });
             });
         }
     };
 });
+
+app.directive('fileModel', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+
+            element.bind('change', function () {
+                scope.$apply(function () {
+                    modelSetter(scope, element[0].files[0]);
+                });
+            });
+        }
+    };
+}]);
+
+app.service('fileUpload', ['$http', function ($http) {
+    this.uploadFileToUrl = function (file, uploadUrl) {
+        var fd = new FormData();
+        fd.append('file', file);
+        $http.post(uploadUrl, fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        })
+            .success(function (result) {
+                $scope.edit.u.profilePicture=result;
+            })
+            .error(function () {
+            });
+    }
+}]);

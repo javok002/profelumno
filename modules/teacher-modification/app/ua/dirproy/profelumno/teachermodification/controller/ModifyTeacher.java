@@ -32,10 +32,10 @@ public class ModifyTeacher extends Controller {
     }
 
     public static Result getTeacher(){
-        /*final long userId=Long.parseLong(session("id"));
-        Teacher teacher = Ebean.find(Teacher.class, userId);*/
+        final long userId=Long.parseLong(session("id"));
+        Teacher teacher = Ebean.find(Teacher.class, userId);
         //usuario de prueba
-        Teacher teacher = new Teacher();
+        /*Teacher teacher = new Teacher();
         User user= new User();
         user.setName("Nicolas");
         user.setSurname("Rudolph");
@@ -53,10 +53,9 @@ public class ModifyTeacher extends Controller {
         teacher.setPrice(20.5);
         teacher.setHomeClasses(true);
         teacher.setDescription("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
-        teacher.setHomeClasses(true);
+        teacher.setHomeClasses(true);*/
 
         JsonNode json= Json.toJson(teacher);
-        System.out.println(json);
         return ok(json);
     }
 
@@ -100,10 +99,10 @@ public class ModifyTeacher extends Controller {
         Ebean.save(teacher);
         return ok();
     }
+
     public static Result savePicture() {
-        Form<Resource> form = Form.form(Resource.class).bindFromRequest();
         final Http.MultipartFormData body = request().body().asMultipartFormData();
-        final Http.MultipartFormData.FilePart picture = body.getFile("fileInput");
+        final Http.MultipartFormData.FilePart picture = body.getFile("file");
         if (picture != null) {
             final String fileName = picture.getFilename();
             final String suffix = fileName.substring((fileName.length() - 4));

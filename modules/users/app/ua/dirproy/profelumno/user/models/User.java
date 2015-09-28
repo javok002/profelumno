@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +37,10 @@ public class User extends Model {
     public static Finder<Long, User> finder = new Finder<>(User.class);
 
     public static List<User> list() { return finder.all(); }
+
+    public User() {
+        this.subjects = new ArrayList();
+    }
 
     public Long getId() { return id; }
 

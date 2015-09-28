@@ -7,8 +7,10 @@ import ua.dirproy.profelumno.common.models.Teacher;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.sql.Time;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Paca on 9/12/15.
@@ -19,11 +21,16 @@ public class Lesson extends Model {
 
     private Date dateTime;
     private Time duration;
-    private Teacher teacher;
-    private Student student;
-    private String place;
-    private String description;
+    private String address;
+    private String comment;
     private Float price;
+
+    @ManyToOne
+    private Teacher teacher;
+    @ManyToOne
+    private Student student;
+
+    public static Finder<Long, Lesson> finder = new Finder<>(Lesson.class);
 
     public Student getStudent() {
         return student;
@@ -65,20 +72,20 @@ public class Lesson extends Model {
         this.duration = duration;
     }
 
-    public String getPlace() {
-        return place;
+    public String getAddress() {
+        return address;
     }
 
-    public void setPlace(String place) {
-        this.place = place;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getDescription() {
-        return description;
+    public String getComment() {
+        return comment;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public Float getPrice() {
@@ -88,4 +95,8 @@ public class Lesson extends Model {
     public void setPrice(Float price) {
         this.price = price;
     }
+
+    public static List<Lesson> list() { return finder.all(); }
+
+
 }

@@ -30,6 +30,8 @@ public class Resource extends Model {
         this.type=type;
     }
 
+    public Resource(){}
+
     public static Finder<Long, Resource> find = new Finder<Long, Resource>(Long.class, Resource.class);
 
     public static Resource getById(long id){
