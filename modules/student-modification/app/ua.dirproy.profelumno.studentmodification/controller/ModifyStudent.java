@@ -64,7 +64,6 @@ public class ModifyStudent extends Controller {
         Student student = Student.finder.where().eq("user",user).findUnique();
         if ((stu.getUser().getEmail()).equalsIgnoreCase(student.getUser().getEmail())||
                 User.validateEmailUnique(stu.getUser().getEmail())) {
-                    student.setProfilePicture(stu.getProfilePicture());
                     User studentU=student.getUser();
                     User stuU=stu.getUser();
                     studentU.setAddress(stuU.getAddress());

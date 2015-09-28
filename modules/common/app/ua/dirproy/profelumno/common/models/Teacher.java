@@ -4,8 +4,7 @@ import com.avaje.ebean.Model;
 import ua.dirproy.profelumno.user.models.User;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.Id;;
 import javax.persistence.OneToOne;
 import java.util.Date;
 import java.util.List;
@@ -31,9 +30,6 @@ public class Teacher extends Model {
     private boolean isInTrial;
 
     private boolean hasCard;
-
-    @Lob
-    private byte[] profilePicture;
 
     private String description;
 
@@ -98,14 +94,6 @@ public class Teacher extends Model {
 
     public void setHasCard(boolean hasCard) {
         this.hasCard = hasCard;
-    }
-
-    public byte[] getProfilePicture() {
-        return profilePicture;
-    }
-
-    public void setProfilePicture(byte[] profilePicture) {
-        this.profilePicture = profilePicture;
     }
 
     public String getDescription() {

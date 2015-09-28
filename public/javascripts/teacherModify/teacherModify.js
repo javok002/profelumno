@@ -27,7 +27,7 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
 
     $http.get('modify-teacher/img')
         .success(function (data, status, headers, config) {
-            edit.u.profilePicture = data;
+            edit.u.user.profilePicture = data;
             alert(data);
         }).
         error(function (data, status, headers, config) {
@@ -133,7 +133,7 @@ app.service('fileUpload', ['$http', function ($http) {
             headers: {'Content-Type': undefined}
         })
             .success(function (data, status, headers, config) {
-                edit.u.profilePicture = data;
+                edit.u.user.profilePicture = data;
                 alert(data);
             })
             .error(function () {
