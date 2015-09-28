@@ -31,7 +31,7 @@
                     <div class="box-header">
                         <h4>Información personal</h4>
                     </div>
-                    <form role="form" method="post" class="from-horizontal">
+                    <form role="form" method="post" name="modifyForm" class="from-horizontal"  ng-submit="submit()">
                         <div class="box-body">
                             <div class="input-group">
                                 <input type="text" class="form-control" id="teacherFirstName" ng-model="edit.u.user.name" placeholder="Nombre" required>
@@ -46,7 +46,7 @@
                                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                             </div>
                             <div class="input-group">
-                                <input type="date" class="form-control" id="birthday" ng-model="edit.u.user.birthday" name="birthday" placeholder="Fecha de Nacimiento" name="birthday" required>
+                                <input type="date" class="form-control" id="birthday" ng-model="date" name="birthday" placeholder="Fecha de Nacimiento" name="birthday" required>
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                             </div>
                             <div class="input-group">
@@ -57,9 +57,9 @@
                             </div>
                             <div class="input-group">
                                 <label>Clases a domicilio: </label>
-                                <label class="radio"><input type="radio" name="homeClass" id="yesHome" ng-model="edit.u.homeClasses" value="yes" required>
+                                <label class="radio"><input type="radio" name="homeClass" id="yesHome" ng-model="edit.u.homeClasses" value="TRUE" required>
                                     Si</label>
-                                <label class="radio"><input type="radio" name="homeClass" id="noHome" ng-model="edit.u.homeClasses" value="no" required>
+                                <label class="radio"><input type="radio" name="homeClass" id="noHome" ng-model="edit.u.homeClasses" value="FALSE" required>
                                     No</label>
                             </div>
                             <div class="input-group">
