@@ -20,9 +20,7 @@ public class Register extends Controller {
             "En qué ciudad nació mi madre?",
             "Cómo se llama mi cantante/grupo favorito/a?",
             "Quién dejó salir a los perros?",
-            "Por qué sibarita es tan rica?",
-            "Quién fue primero, el huevo o la gallina?",
-            "Volverá Burrino alguna vez?"
+            "Por qué sibarita es tan rica?"
     };
 
     public static Result registerView() {
