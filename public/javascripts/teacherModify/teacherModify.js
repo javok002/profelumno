@@ -8,7 +8,7 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
     edit.u = {};
     edit.u.user = {};
     $scope.radio = '';
-    edit.u.user.subjects=[];
+    /*edit.u.user.subjects=[];*/
 
     $http.get('modify-teacher/user')
         .success(function (data, status, headers, config) {
@@ -33,7 +33,7 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
             // log error
         });
 
-    $http.get("modify-teacher/subjects").
+    /*$http.get("modify-teacher/subjects").
         success(function(data, status, headers, config) {
             $scope.allSubjects= data;
         }).
@@ -41,19 +41,24 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
             // log error
         });
     //TAGS
-    edit.tags=$scope.tags;//meterias.json
+    edit.tags=$scope.tags;//meterias.json*/
 
-
+    $scope.errors = {
+        invalid: false,
+        incomplete: false,
+        teacherAge: false,
+        taken:false
+    };
     var verify = function () {
         var today = new Date();
-        var birthday = edit.u.user.birthday;
+        var birthday = $scope.date;
         $scope.errors.teacherAge = (today.getYear() - birthday.getYear() < 6 || (today.getYear() - birthday.getYear() == 6 && today.getMonth() < birthday.getMonth()));
         return !$scope.errors.incomplete && !$scope.errors.invalid && !$scope.errors.teacherAge;
     };
 
-    $scope.loadTags = function (query) {
+   /* $scope.loadTags = function (query) {
         return $scope.allSubjects;
-    };
+    };*/
 
     $scope.submit = function () {
         if (!verify())
@@ -80,12 +85,12 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
         fileUpload.uploadFileToUrl(file, uploadUrl);;
     };
 
-    $scope.submitSubjects = function () {
+    /*$scope.submitSubjects = function () {
         var myJsonString = JSON.stringify($scope.edit);
         $http.post('modify-teacher/subjects', myJsonString)
             .success(alert("subido con exito"))
             .error("falla al guardar")
-    };
+    };*/
 }]);
 
 app.directive('googleplace', function () {
