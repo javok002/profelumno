@@ -63,7 +63,7 @@
                     </tr>
 
                     <tr dir-paginate="teacher in teachers|orderBy:sortKey:reverse|itemsPerPage:2">
-                        <td>{{teacher.user.name}}</td>
+                        <td> {{teacher.user.surname}}, {{teacher.user.name}}</td>
                         <td>{{teacher.ranking}}</td>
                         <td>{{teacher.lessonsDictated}}</td>
                         <td><div ng-app="profLesson">

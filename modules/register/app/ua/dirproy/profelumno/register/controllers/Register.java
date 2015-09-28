@@ -30,7 +30,6 @@ public class Register extends Controller {
     public static Result registerUser() {
         Form<User> form = Form.form(User.class).bindFromRequest();
         if (form.hasErrors()) {
-//            return badRequest(register.render());
             return badRequest("invalid");
         }
         String role = form.data().get("role");

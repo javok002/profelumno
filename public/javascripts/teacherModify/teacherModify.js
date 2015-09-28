@@ -28,7 +28,6 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
     $http.get('modify-teacher/img')
         .success(function (data, status, headers, config) {
             edit.u.user.profilePicture = data;
-            alert(data);
         }).
         error(function (data, status, headers, config) {
             // log error
@@ -134,7 +133,6 @@ app.service('fileUpload', ['$http', function ($http) {
         })
             .success(function (data, status, headers, config) {
                 edit.u.user.profilePicture = data;
-                alert(data);
             })
             .error(function () {
             });
