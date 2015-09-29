@@ -106,7 +106,7 @@
                                     <a href="" class="btn btn-default btn-flat" data-toggle="modal" data-target="#confirm-close">Cerrar Cuenta</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">Cerrar Sesión</a>
+                                    <a href="#" onclick="goTo('/log/out')" class="btn btn-default btn-flat">Cerrar Sesión</a>
                                 </div>
                             </li>
                                 <!-- /Menu Footer-->
@@ -141,10 +141,15 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-                    <a href="@ua.dirproy.profelumno.delete.controllers.routes.Delete.deleteUser()" class="btn btn-primary pull-right" data-dismiss="modal">Aceptar</a>
+                    @*<a href="@ua.dirproy.profelumno.delete.controllers.routes.Delete.deleteUser()" class="btn btn-primary pull-right" data-dismiss="modal">Aceptar</a>*@
                 </div>
             </div>
 
         </div>
     </div>
+    <script>
+    function goTo(url){
+        window.location = url;
+    }
+    </script>
 }

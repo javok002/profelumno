@@ -4,8 +4,8 @@ import play.data.Form;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
-import ua.dirproy.profelumno.register.models.Student;
-import ua.dirproy.profelumno.register.models.Teacher;
+import ua.dirproy.profelumno.common.models.Student;
+import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.register.views.html.register;
 import ua.dirproy.profelumno.user.models.User;
 

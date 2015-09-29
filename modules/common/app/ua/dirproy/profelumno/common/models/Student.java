@@ -1,4 +1,4 @@
-package ua.dirproy.profelumno.register.models;
+package ua.dirproy.profelumno.common.models;
 
 import com.avaje.ebean.Model;
 import ua.dirproy.profelumno.user.models.User;
@@ -35,6 +35,8 @@ public class Student extends Model {
         this.id = id;
         this.user = user;
     }
+
+    public static Student getStudent(Long id) { return finder.byId(id);}
 
     public static List<Student> list() { return finder.all(); }
 

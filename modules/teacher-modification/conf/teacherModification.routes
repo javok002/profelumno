@@ -3,6 +3,12 @@
 # ~~~~
 
 # Home page
-GET     /edit                    ua.dirproy.profelumno.teachermodification.controller.ModifyTeacher.profileView()
+GET         /                               ua.dirproy.profelumno.teachermodification.controller.ModifyTeacher.profileView()
+GET         /user                           ua.dirproy.profelumno.teachermodification.controller.ModifyTeacher.getTeacher()
+GET         /img                            ua.dirproy.profelumno.teachermodification.controller.ModifyTeacher.getPicture
+GET         /subjects                       ua.dirproy.profelumno.teachermodification.controller.ModifyTeacher.getSubject()
+POST        /img                            ua.dirproy.profelumno.teachermodification.controller.ModifyTeacher.savePicture()
+POST        /subjects                       ua.dirproy.profelumno.teachermodification.controller.ModifyTeacher.saveSubject()
+POST        /teacher-modification-post      ua.dirproy.profelumno.teachermodification.controller.ModifyTeacher.saveTeacherInfo()
 
 # Map static resources from the /public folder to the /assets URL path

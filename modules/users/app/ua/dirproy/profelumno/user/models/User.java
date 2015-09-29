@@ -2,9 +2,12 @@ package ua.dirproy.profelumno.user.models;
 
 import com.avaje.ebean.Model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -29,10 +32,16 @@ public class User extends Model {
     private String address;
     private String secureQuestion;
     private String secureAnswer;
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    private List<Subject> subjects;
 
     public static Finder<Long, User> finder = new Finder<>(User.class);
 
     public static List<User> list() { return finder.all(); }
+
+    public User() {
+        this.subjects = new ArrayList();
+    }
 
     public Long getId() { return id; }
 
@@ -108,5 +117,13 @@ public class User extends Model {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public List<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(List<Subject> subjects) {
+        this.subjects = subjects;
     }
 }

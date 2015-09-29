@@ -1,4 +1,4 @@
-package ua.dirproy.profelumno.register.models;
+package ua.dirproy.profelumno.common.models;
 
 import com.avaje.ebean.Model;
 import ua.dirproy.profelumno.user.models.User;
@@ -37,11 +37,17 @@ public class Teacher extends Model {
 
     private String description;
 
-    private String homeClasses;
+    private boolean homeClasses;
+
+    private int ranking;
+
+    private int lessonsDictated;
+
+    private double price;
 
     public Teacher(){}
 
-    public Teacher(long id, String description, String homeClasses, User user){
+    public Teacher(long id, String description, boolean homeClasses, User user){
         this.id=id;
         this.description=description;
         this.homeClasses=homeClasses;
@@ -51,6 +57,8 @@ public class Teacher extends Model {
     public static Finder<Long, Teacher> finder = new Finder<>(Teacher.class);
 
     public static List<Teacher> list() { return finder.all(); }
+
+    public static Teacher getTeacher(Long id) { return finder.byId(id);}
 
     public User getUser() {
         return user;
@@ -108,11 +116,39 @@ public class Teacher extends Model {
         this.description = description;
     }
 
-    public String getHomeClasses() {
+    public void setRanking(int ranking) {
+        this.ranking = ranking;
+    }
+
+    public void setLessonsDictated(int lessonsDictated) {
+        this.lessonsDictated = lessonsDictated;
+    }
+
+    public int getLessonsDictated() {
+        return lessonsDictated;
+    }
+
+    public int getRanking() {
+        return ranking;
+    }
+
+    public boolean getHomeClasses() {
         return homeClasses;
     }
 
-    public void setHomeClasses(String homeClasses) {
+    public void setHomeClasses(boolean homeClasses) {
         this.homeClasses = homeClasses;
+    }
+
+    public boolean isHomeClasses() {
+        return homeClasses;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

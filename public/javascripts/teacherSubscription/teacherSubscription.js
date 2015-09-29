@@ -2,8 +2,15 @@
     var formApp = angular.module('postApp', ['ngRoute']);
 
     formApp.controller('SubscriptionController', ['$http', '$scope', function ($http) {
-        // create a blank object to handle form data.
         var control = this;
+        $http.get("/subscription/cardNumber").
+            success(function (data, status, headers, config) {
+                control.cardNumber=data;
+            }).
+            error(function (data, status, headers, config) {
+                // log error
+            });
+        // create a blank object to handle form data.
         control.card = {};
         control.succeded = false;
         control.error = false;
@@ -13,7 +20,7 @@
         control.submitForm = function () {
             $http.post('/subscription/validate', this.card).
                 then(function(response) {
-                    control.succeded = true;
+                    window.location = response.data;
                 }, function(response) {
                     document.getElementById('cardNumber').style.borderColor = "red";
                     document.getElementById('cardNumber').value = "";

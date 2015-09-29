@@ -33,6 +33,10 @@
                     <i class="fa fa-times-circle"></i>
                     Debe tener al menos 6 años para ser alumno.
                 </div>
+                <div class="isa_warning" ng-show="errors.passMismatch">
+                    <i class="fa fa-warning"></i>
+                    Las contraseñas ingresadas deben coincidir.
+                </div>
                 <form role="form" name="registerForm" method="post" ng-submit="submit()">
                     <div class="box-body">
                         <div class="input-group">
@@ -48,11 +52,11 @@
                             <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
                         </div>
                         <div class="input-group">
-                            <input type="password" class="form-control" placeholder="Contraseña" name="password" required pattern=".{6,}" title="La contraseña debe contener al menos 6 caracteres."  ng-model="user.password">
+                            <input type="password" class="form-control" placeholder="Contraseña" name="password" required pattern=".{6,}" title="La contraseña debe contener al menos 6 caracteres." ng-change="confirmPasswordChange()" ng-model="user.password">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                         </div>
                         <div class="input-group">
-                            <input type="password" class="form-control" placeholder="Confirmar Contraseña" name="confirm" required pattern=".{6,}" compare-to="user.password" title="La contraseña coincidir con la ingresada arriba." ng-model="user.confirmPassword">
+                            <input type="password" class="form-control" placeholder="Confirmar Contraseña" name="confirm" required pattern=".{6,}" compare-to="user.password" ng-change="confirmPasswordChange()" title="La contraseña debe coincidir con la ingresada arriba." ng-model="user.confirmPassword">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                         </div>
                         <div class="input-group">
