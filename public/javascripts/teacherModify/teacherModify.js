@@ -72,7 +72,8 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
         $http.post('modify-teacher/teacher-modification-post', edit.u)
             .success(function (data) {
                 $scope.errors = {incomplete: false, invalid: false, teacherAge: false};
-                alert(JSON.stringify(data));
+                window.location.href = data;
+                /*alert(JSON.stringify(data));*/
             })
             .error(function (data) {
                 alert(data);

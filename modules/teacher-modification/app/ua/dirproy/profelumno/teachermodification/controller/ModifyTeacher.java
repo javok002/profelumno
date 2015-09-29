@@ -63,8 +63,8 @@ public class ModifyTeacher extends Controller {
             teacher.setDescription(tch.getDescription());
             Ebean.save(teacher);
             Ebean.save(teacher.getUser());
-            System.out.println(Teacher.list().get(0).getUser().getName());
-            return ok(Json.toJson(teacher));
+//            System.out.println(Teacher.list().get(0).getUser().getName());
+            return ok(routes.ModifyTeacher.profileView().url()) /*ok(Json.toJson(teacher))*/;
         }else {
             return badRequest("Unique");
         }
