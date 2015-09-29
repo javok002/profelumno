@@ -31,7 +31,7 @@ angular.module('profLesson', [])
                 scope.date = 'date';
             },
             template:
-            '<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#hire-modal">' +
+            '<button type="button" class="btn btn-success" data-toggle="modal" data-target="#hire-modal">' +
                 'Hire' +
             '</button>' +
 

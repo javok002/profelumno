@@ -16,6 +16,7 @@ import java.util.List;
 public class Lesson extends Model {
     @Id private Long id;
 
+    private float punctuation;
     private Date dateTime;
     private Time duration;
     private String address;
@@ -91,6 +92,14 @@ public class Lesson extends Model {
 
     public void setPrice(Float price) {
         this.price = price;
+    }
+
+    public float getPunctuation() {
+        return punctuation;
+    }
+
+    public void setPunctuation(float punctuation) {
+        this.punctuation = punctuation;
     }
 
     public static List<Lesson> list() { return finder.all(); }
