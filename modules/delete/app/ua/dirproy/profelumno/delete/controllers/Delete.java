@@ -26,11 +26,13 @@ public class Delete extends Controller {
         User user = User.finder.byId(parseId);
         List<Student> students = Student.list();
         boolean deleteUser = false;
+        session().clear();
         for (int i = 0; i <students.size() ; i++) {
             Student aux = students.get(i);
             if (aux.getUser().getId().equals(parseId)){
                 aux.delete();
                 deleteUser = true;
+                break;
             }
         }
         if (!deleteUser) {
@@ -39,6 +41,7 @@ public class Delete extends Controller {
                 Teacher aux = teachers.get(i);
                 if (aux.getUser().getId().equals(parseId)) {
                     aux.delete();
+                    break;
                 }
             }
         }

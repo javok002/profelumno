@@ -22,8 +22,8 @@ import java.util.Date;
 public class TeacherSubscription extends Controller{
 
     public static Result validateForm(){
-        //final long userId = Long.parseLong(session("id"));
-        final long userId = 1;
+        final long userId = Long.parseLong(session("id"));
+        //final long userId = 1;
         Teacher teacher = Teacher.finder.byId(userId);
 
         Card card = Form.form(Card.class).bindFromRequest().get();
@@ -55,6 +55,7 @@ public class TeacherSubscription extends Controller{
             teacher.setSubscription(card.getNumber());
             teacher.setHasCard(true);
             teacher.save();
+
             //todo mandar a perfiles
             return ok("/");
         }
@@ -71,6 +72,9 @@ public class TeacherSubscription extends Controller{
         cal.add(Calendar.MONTH, 1);
         Date date = cal.getTime();
         teacher.setRenewalDate(date);
+
+        ChargeTask charger = new ChargeTask();
+        charger.charge();
     }
 
     public static Result getCreditCardNumber(){
