@@ -5,6 +5,7 @@
 
 create table lesson (
   id                        bigint not null,
+  punctuation               float,
   date_time                 timestamp,
   duration                  time,
   address                   varchar(255),
@@ -37,7 +38,7 @@ create table teacher (
   has_card                  boolean,
   description               varchar(255),
   home_classes              boolean,
-  ranking                   integer,
+  ranking                   float,
   lessons_dictated          integer,
   price                     double,
   constraint uq_teacher_user_id unique (user_id),
