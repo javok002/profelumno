@@ -1,5 +1,7 @@
 package ua.dirproy.profelumno.hirelesson.controllers;
 
+
+
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -7,7 +9,9 @@ import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.common.models.Lesson;
 import ua.dirproy.profelumno.hirelesson.views.html.hire;
+import ua.dirproy.profelumno.mailsender.models.MailSenderUtil;
 import ua.dirproy.profelumno.user.models.User;
+import javax.mail.*;
 
 import java.util.Date;
 
@@ -16,7 +20,7 @@ import java.util.Date;
  */
 public class Lessons extends Controller {
 
-    public static Result newLesson() {
+    public static Result newLesson() throws MessagingException {
         Form<Lesson> lessonsForm = Form.form(Lesson.class).bindFromRequest();
 
         Lesson lesson = new Lesson();
@@ -49,10 +53,34 @@ public class Lessons extends Controller {
 
         lesson.save();
 
+        notifyTeacher(teacher.getUser().getEmail());
+
         return ok(); //todo redireccionar al index
     }
 
     public static Result redirect() {
         return ok(hire.render());
     }
+    private static void notifyTeacher(String emailTeacher) throws MessagingException {
+            MailSenderUtil.send(new String[]{emailTeacher},"ProfeLumno: Usted tiene una nueva clase.", "<body>\n" +
+                    "<div>\n" +
+                    "    <h1 align=\"center\"><b>Profe</b><span class=\"thin\">Lumno</span></h1>\n" +
+                    "    <div class=\"row\" style=\"margin-right: -15px;margin-left: -15px;\">\n" +
+                    "        <div class=\"col-md-4 col-sm-3\" style=\"position: relative;min-height: 1px;padding-right: 15px;padding-left: 15px;float: left;width: 33.33333333333333%;\"></div>\n" +
+                    "        <div class=\"col-md-4 col-sm-6\" style=\"position: relative;min-height: 1px;padding-right: 15px;padding-left: 15px;float: left;width: 33.33333333333333%;\">\n" +
+                    "            <div class=\"panel panel-primary\" style=\"margin-bottom: 20px;background-color: #fff;border: 1px solid transparent;border-radius: 4px;-webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.05);box-shadow: 0 1px 1px rgba(0,0,0,0.05);border-color: #428bca;\">\n" +
+                    "                <div class=\"panel-heading\" style=\"padding: 10px 15px;border-bottom: 1px solid transparent;border-top-right-radius: 3px;border-top-left-radius: 3px;color: #fff;background-color: #428bca;border-color: #428bca;\">\n" +
+                    "                    <h3 class=\"panel-title\" style=\"margin-top: 0;margin-bottom: 0;font-size: 16px;\">Nueva clase</h3>\n" +
+                    "                </div>\n" +
+                    "                <div class=\"panel-body\" style=\"padding: 15px;\">\n" +
+                    "                    Usted tiene una nueva clase. Por favor, responda a la solicitud. Gracias!\n" +
+                    "                </div>\n" +
+                    "                <div class=\"panel-footer\" align=\"right\" style=\"padding: 10px 15px;background-color: #f5f5f5;border-top: 1px solid #ddd;border-bottom-right-radius: 3px;border-bottom-left-radius: 3px;\"><b>Profe</b><span class=\"thin\">Lumno </span></div>\n" +
+                    "            </div>\n" +
+                    "        </div>\n" +
+                    "        <div class=\"col-md-4 col-sm-3\" style=\"position: relative;min-height: 1px;padding-right: 15px;padding-left: 15px;float: left;width: 33.33333333333333%;\"></div>\n" +
+                    "    </div>\n" +
+                    "</div>\n" +
+                    "</body>");
+        }
 }
