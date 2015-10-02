@@ -14,5 +14,126 @@
         <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/lessonReview/lessonsReview.css")">
         <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/AdminLTE.min.css")">
         <link rel="stylesheet" href="@routes.Assets.versioned("external/iCheck/square/blue.css")">
+        <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/lessonReview/star-rating.min.css")" media="all" type="text/css" />
         <script src="@routes.Assets.versioned("external/angularjs/angular.min.js")"></script>
+        <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/reviewLesson/star-rating.min.js")" type="text/javascript"></script>
     </head>
+
+    <div class="navbar-custom-menu"> </div>
+
+    <body ng-app="lessonReview">
+
+        <div class="col-md-6 col-md-offset-3" ng-controller="LessonReviewController as revCtrl">
+            <!-- Lesson Reviewed -->
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Clases calificadas</h3>
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <table class="table no-margin">
+                                <thead>
+                                    <tr>
+                                        <th>Usuario</th>
+                                        <th>Fecha</th>
+                                        <th>Calificacion</th>
+                                        <th>Comentario</th>
+                                    </tr>
+                                </thead>
+                                <tbody ng-repeat="reviewed in revCtrl.reviewedLessons">
+                                    <tr>
+                                        <td>{{reviewed.user}}</td>
+                                        <td>{{reviewed.date}}</td>
+                                        <td>{{reviewed.stars}}</td>
+                                        <td>{{reviewed.comment}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div><!-- /.table-responsive -->
+                    </div><!-- /.box-body -->
+                </div><!-- /.box-header with-border -->
+            </div><!-- /.box box-info -->
+
+            <!-- Lesson Non Reviewed -->
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Clases no calificadas</h3>
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <table class="table no-margin">
+                                <thead>
+                                    <tr>
+                                        <th>Usuario</th>
+                                        <th>Fecha</th>
+                                        <th>Calificacion</th>
+                                        <th>Comentario</th>
+                                    </tr>
+                                </thead>
+                                <tbody ng-repeat="nonReviewed in revCtrl.nonReviewedLessons">
+                                    <tr>
+                                        <td>{{nonReviewed.user}}</td>
+                                        <td>{{nonReviewed.date}}</td>
+                                        <td>{{nonReviewed.stars}}</td>
+                                        <td>{{nonReviewed.comment}}</td>
+                                        <td><button type="button" class="btn btn-block btn-primary btn-sm"
+                                            data-toggle="modal" data-target="#makeReviewModal">Calificar</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div><!-- /.table-responsive -->
+                    </div><!-- /.box-body -->
+                </div><!-- /.box-header with-border -->
+            </div><!-- /.box box-info -->
+        </div>
+
+        <!-- Make Review Modal -->
+        <div class="modal fade" id="makeReviewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-body">
+                <div class="col-md-6 col-md-offset-3" ng-controller="MakeReviewController as makeRevCtrl">
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Critica</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="input-group">
+                                <span class="input-group-addon">Email</span>
+                                <input type="email" class="form-control" ng-model="revEmail">
+                            </div>
+                            <br>
+                            <div>
+                                <label>Estrellas</label>
+                                <input type="number" id="stars-id" class="rating" data-stars="5" step=1 data-size="sm" data-rtl="false" data-show-clear="false">
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label>Comentario</label>
+                                <textarea class="form-control" rows="3" ng-model="revComment"></textarea>
+                            </div>
+                            <br>
+                            <div>
+                                <button class="btn btn-primary" ng-click="postReview()">Calificar</button>
+                                <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box box-info -->
+                </div> <!-- /.col-md-6 col-md-offset-3 -->
+            </div> <!-- /.modal-body -->
+        </div> <!-- /.modal fade -->
+
+        <!--
+        <input id="input-id" type="number" class="rating" data-stars="5" step=1 data-size="sm" data-rtl="false" data-show-clear="false">
+        <input ng-model="rev.Stars" ng-model-options="modelOptions" type="number" id="stars-id" class="rating" data-stars="5" step=1 data-size="sm" data-rtl="false" data-show-clear="false">
+        -->
+
+        <script type="text/javascript">
+            $('#stars-id').on('rating.change', function(event, value, caption) {
+        });
+
+        </script>
+
+
+        <script src="@routes.Assets.versioned("external/bootstrap/js/bootstrap.min.js")"></script>
+        <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/reviewLesson/review.js")"></script>
+    </body>
+</html>

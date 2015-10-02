@@ -10,8 +10,8 @@ public class ReviewController extends Controller {
 
     public static Result show(){
         return ok(ua.dirproy.profelumno.lessonReview.views.html.reviews.render());
-
     }
+
 
     public static Result getReviewedLessons(){
         return ok();
