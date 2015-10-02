@@ -13,6 +13,10 @@ lazy val teacherProfile = (project in file("modules/teacher-profile"))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(users, common)
 
+lazy val studentProfile = (project in file("modules/student-profile"))
+  .enablePlugins(PlayJava, PlayEbean)
+  .dependsOn(users, common)
+
 lazy val architecture = (project in file("modules/architecture"))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(teacherProfile, users, common, delete)
@@ -62,9 +66,9 @@ lazy val lessonReview = (project in file("modules/lesson-review"))
 
 lazy val root = (project in file("."))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(common,studentModification, users, teacherProfile, teacherSubscription, register, delete,
+  .dependsOn(common, studentProfile, studentModification, users, teacherProfile, teacherSubscription, register, delete,
     passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture, loginout, lessonReview)
-  .aggregate(common,studentModification, users, teacherProfile, teacherSubscription, register, delete,
+  .aggregate(common, studentProfile, studentModification, users, teacherProfile, teacherSubscription, register, delete,
     passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture,loginout, lessonReview)
 
 

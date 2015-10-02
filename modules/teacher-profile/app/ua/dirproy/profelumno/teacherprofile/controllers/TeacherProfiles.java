@@ -6,11 +6,8 @@ import play.mvc.Result;
 import ua.dirproy.profelumno.common.models.Lesson;
 import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.teacherprofile.views.html.teacherProfile;
-import ua.dirproy.profelumno.user.models.Subject;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by javier
@@ -60,12 +57,19 @@ public class TeacherProfiles extends Controller {
     }
 
     public static Result getSubjects(){
-        Teacher teacher = Teacher.getTeacher(idTeacher());
-        List<Subject> subjects = teacher.getUser().getSubjects();
-        return ok(Json.toJson(subjects));
+
+        Map<Integer, String> bestSubjects = new HashMap<Integer, String>();
+        List<Lesson> lessons = myLessons();
+        Collections.sort(lessons,new LessonComparator());
+        for (int i = 0; i <lessons.size() ; i++) {
+            Lesson aux = lessons.get(i);
+           // bestSubjects.put(aux.getPunctuation(),aux.getSubject);
+        }
+
+        return ok(Json.toJson(bestSubjects));
     }
 
-    public static Result getNextsLesson(){
+    public static Result getNextLessons(){
         List<Lesson> lessons = myLessons();
         List<Lesson> nextLessons = new ArrayList<>();
         Date date = new Date();
@@ -83,7 +87,7 @@ public class TeacherProfiles extends Controller {
         return ok(Json.toJson(nextLessons));
     }
 
-    public static Result getPreviousLesson(){
+    public static Result getPreviousLessons(){
         List<Lesson> lessons = myLessons();
         List<Lesson> previousLessons = new ArrayList<>();
         Date date = new Date();
