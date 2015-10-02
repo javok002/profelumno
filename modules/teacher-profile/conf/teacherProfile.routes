@@ -3,6 +3,7 @@
 # ~~~~
 
 # Home page
-GET        /acept-lesson       ua.dirproy.profelumno.teacherprofile.controllers.AceptLesson.aceptView()
-
+GET        /accept-lesson        ua.dirproy.profelumno.teacherprofile.controllers.AcceptLesson.acceptView()
+GET        /get-lessons          ua.dirproy.profelumno.teacherprofile.controllers.AcceptLesson.getLessons()
+GET        /decision             ua.dirproy.profelumno.teacherprofile.controllers.AcceptLesson.decision(answer: String, stringLessonId : String)
 # Map static resources from the /public folder to the /assets URL path

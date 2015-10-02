@@ -22,6 +22,7 @@ public class Lesson extends Model {
     private String address;
     private String comment;
     private Float price;
+    private Integer lessonState;//0 pendiente, 1 aceptado, 2 rechazada
 
     @ManyToOne
     private Teacher teacher;
@@ -113,6 +114,13 @@ public class Lesson extends Model {
         return studentReview;
     }
 
+    public int getLessonState() {
+        return lessonState;
+    }
+
+    public void setLessonState(Integer lessonState) {
+        this.lessonState = lessonState;
+    }
     public void setStudentReview(Review studentReview) {
         this.studentReview = studentReview;
     }
