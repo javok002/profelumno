@@ -9,6 +9,8 @@ import ua.dirproy.profelumno.common.models.Lesson;
 import ua.dirproy.profelumno.hirelesson.views.html.hire;
 import ua.dirproy.profelumno.user.models.User;
 
+import java.util.Date;
+
 /**
  * Created by Paca on 9/13/15. Oh yeah
  */
@@ -41,6 +43,9 @@ public class Lessons extends Controller {
         lesson.setAddress(address);
 
         lesson.setComment(lessonsForm.data().get("comment"));
+
+        lesson.setTeacherReview(null);
+        lesson.setStudentReview(null);
 
         lesson.save();
 

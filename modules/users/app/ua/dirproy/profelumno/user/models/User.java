@@ -29,6 +29,9 @@ public class User extends Model {
     private String address;
     private String secureQuestion;
     private String secureAnswer;
+    private long reviews;
+    private long totalStars;
+
     @Lob
     private byte[] profilePicture;
     @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL)
@@ -40,6 +43,8 @@ public class User extends Model {
 
     public User() {
         this.subjects = new ArrayList();
+        reviews = 0;
+        totalStars = 0;
     }
 
     public Long getId() { return id; }
@@ -132,5 +137,21 @@ public class User extends Model {
 
     public void setProfilePicture(byte[] profilePicture) {
         this.profilePicture = profilePicture;
+    }
+
+    public long getReviews() {
+        return reviews;
+    }
+
+    public void incrementReviews() {
+        reviews++;
+    }
+
+    public long getTotalStars() {
+        return totalStars;
+    }
+
+    public void addStars(long stars) {
+        totalStars += stars;
     }
 }
