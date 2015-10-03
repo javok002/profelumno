@@ -6,34 +6,67 @@
     var app = angular.module('lessonReview', []);
 
     app.controller('LessonReviewsController', function($scope) {
+        //Here a post is need in order to get the users reviews...
+        //Get the reviewed lessons
+        $http.post("/review-lesson/reviewed-lessons").success(function(response){
+            $scope.reviewedLessonsAux = response;
+            listReviewedLessons(response);
+            
+        });
+        //Get the non reviewed lessons
+        $http.post("/review-lesson/non-reviewed-lessons").success(function(response){
+            listNonReviewedLessons(response);
+        });
+
         this.reviewedLessons = reviews.reviewed;
         this.nonReviewedLessons = reviews.nonReviewed;
-
 
         /* Useful functions */
         //Used to know which review the user want to comment/review.
         $scope.setIndex = function(index){
             currentIndex = index;
+        };
+        //List the reviewed lesson get it from the controller
+        $scope.listReviewedLessons = function(rls){
+            for(i = 0; i < rls.length; i++){
+               reviews.reviewed[i].user = rls[i].userReviewed; 
+               reviews.reviewed[i].date = rls[i].reviewDate; 
+               reviews.reviewed[i].comment = rls[i].reviewComment; 
+               reviews.reviewed[i].stars = rls[i].reviewStars; 
+               reviews.reviewed[i].index = i; 
+            }
+        };
+        //List the non reviewed lesson get it from the controller
+        $scope.listNonReviewedLessons = function(nrls){
+            for(i = 0; i < nrls.length; i++){
+                reviews.nonReviewed[i].teacherName = nrls[i].teacherName;
+                reviews.nonReviewed[i].studentName = nrls[i].studentName;
+                reviews.nonReviewed[i].lessonDate = nrls[i].lessonDate;
+                reviews.nonReviewed[i].lessonDuration = nrls[i].lessonDuration;
+                reviews.nonReviewed[i].lessonPrice = nrls[i].lessonPrice;
+                reviews.nonReviewed[i].lessonId = nrls[i].lessonId;
+                reviews.nonReviewed[i].userToReview = nrls[i].userToReview;
+                reviews.nonReviewed[i].index = i;
+            }
         }
     });
 
     app.controller('MakeReviewController', function($scope){
         this.nonReviewedLessons = reviews.nonReviewed;
         this.currentStars ='';
+
         $scope.review = {
-            email: this.nonReviewedLessons[currentIndex].user,
+            comment: "",
             stars: 3, //Default value, It must be change!!!
-            comment: ""
+            email: this.nonReviewedLessons[currentIndex].user,
+            id: this.nonReviewedLessons[currentIndex].lessonId
         };
 
         $scope.postReview = function(){
-
-            /*
-            $http.post("/URL" + "Params").success(function(response){
-               //Do something with th response!!!
+            $http.post("/review-lesson/reviewed?comment=" + review.comment + "&stars=" + review.stars +"&toEmail=" + review.email + "&idLesson=" + review.id)
+                .success(function(response){
+                    window.location.replace("/");
             });
-            */
-
         };
 
         /* Useful functions */
@@ -50,28 +83,34 @@
         reviewed: [
             {   user: 'Here will appear the user name',
                 date: "12/2/15",
-                stars: 4,
-                comment: 'Here will appear the comment',
+                comment:'Here will appear the comment' ,
+                stars: 3,
                 index: countReviewed++
             },
             {   user: 'Here will appear the user name',
                 date: "12/2/15",
-                stars: 4,
-                comment: 'Here will appear the comment',
+                comment:'Here will appear the comment' ,
+                stars: 3,
                 index: countReviewed++
             }
         ],
         nonReviewed: [
-            {   user: 'user1@mail',
-                date: "12/2/15",
-                stars: '',
-                comment: '',
-                index: countNonReviewed ++
+            {   teacherName: 'user1@mail',
+                studentName: 'user2@mail',
+                lessonDate: '12/2/15',
+                lessonDuration: '2',
+                lessonPrice: '$23',
+                lessonId: 'id',
+                userToReview: 'userToRev',
+                index: countNonReviewed++
             },
-            {   user: 'user2@mail',
-                date: "12/2/15",
-                stars: '',
-                comment: '',
+            {   teacherName: 'user1@mail',
+                studentName: 'user2@mail',
+                lessonDate: '12/2/15',
+                lessonDuration: '2',
+                lessonPrice: '$23',
+                lessonId: 'id',
+                userToReview: 'userToRev',
                 index: countNonReviewed++
             }
         ]
