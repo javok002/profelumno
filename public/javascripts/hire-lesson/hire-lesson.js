@@ -11,7 +11,8 @@ angular.module('profLesson', [])
             data = {
                 address:$scope.address,
                 comment:$scope.comment,
-                teacherId:$scope.teacherId
+                teacherId:$scope.teacherId,
+                subjectId:$scope.subjectId
             };
             $http.post('/hire-lesson/new', data).then(successCallback);
         };
@@ -25,7 +26,8 @@ angular.module('profLesson', [])
         return {
             restrict: 'E',
             scope : {
-                teacherId : '=teacherId' //todo quien se encargue de buscar profesores tiene que setear este atributo
+                teacherId : '=teacherId', //todo quien se encargue de buscar profesores tiene que setear este atributo y la subject
+                subjectId : '='
             },
             link : function(scope){
                 scope.date = 'date';
