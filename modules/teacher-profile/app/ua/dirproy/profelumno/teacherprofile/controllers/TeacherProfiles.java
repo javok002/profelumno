@@ -60,7 +60,7 @@ public class TeacherProfiles extends Controller {
 
         Map<String, Long> bestSubjects = new HashMap<>();
         List<Lesson> lessons = myLessons();
-        Collections.sort(lessons,new LessonComparator());
+       // Collections.sort(lessons,new LessonComparator());
         for (int i = 0; i <lessons.size() ; i++) {
             Lesson aux = lessons.get(i);
             if (!bestSubjects.containsKey(aux.getSubject().getName())) {

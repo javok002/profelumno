@@ -1,5 +1,6 @@
 package ua.dirproy.profelumno.teachermodification.controller;
 
+import actions.Authenticate;
 import com.avaje.ebean.Ebean;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.io.Files;
@@ -8,6 +9,7 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
+import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.teachermodification.view.html.*;
 import ua.dirproy.profelumno.user.models.Subject;
@@ -16,15 +18,12 @@ import ua.dirproy.profelumno.user.models.User;
 import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
  * Created by francisco on 13/09/15.
  */
+@Authenticate({Teacher.class})
 public class ModifyTeacher extends Controller {
 
     public static Result profileView() {
