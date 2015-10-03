@@ -9,6 +9,8 @@ import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.common.views.html.sidebar;
 import ua.dirproy.profelumno.common.views.html.topbar;
+import ua.dirproy.profelumno.common.views.html.teacherSidebarContent;
+import ua.dirproy.profelumno.common.views.html.studentSidebarContent;
 import ua.dirproy.profelumno.user.models.User;
 
 /**
@@ -25,15 +27,16 @@ public class Common extends Controller {
         return ok(topbar.render());
     }
 
-    /*final long userId = Long.parseLong(session("id"));
-    User user = Ebean.find(User.class, userId);*/
-
-    private static boolean isTeacher(User user) {
-        return Teacher.finder.where().eq("user", user).findUnique() != null;
+    public static Html sidebarContent() {
+        return userIsTeacher() ? teacherSidebarContent.render() : studentSidebarContent.render();
     }
 
-    private static boolean isStudent(User user) {
-        return Student.finder.where().eq("user", user).findUnique() != null;
+    private static boolean userIsTeacher() {
+        return Teacher.finder.where().eq("user", Ebean.find(User.class, Long.parseLong(session("id")))).findUnique() != null;
+    }
+
+    private static boolean userIsStudent() {
+        return Student.finder.where().eq("user", Ebean.find(User.class, Long.parseLong(session("id")))).findUnique() != null;
     }
 
 }
