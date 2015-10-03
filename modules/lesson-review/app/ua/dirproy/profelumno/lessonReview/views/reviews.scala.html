@@ -24,7 +24,7 @@
 
     <body ng-app="lessonReview">
 
-        <div class="col-md-6 col-md-offset-3" ng-controller="LessonReviewController as revCtrl">
+        <div class="col-md-6 col-md-offset-3" ng-controller="LessonReviewsController as revCtrl">
             <!-- Lesson Reviewed -->
             <div class="box box-info">
                 <div class="box-header with-border">
@@ -75,8 +75,9 @@
                                         <td>{{nonReviewed.date}}</td>
                                         <td>{{nonReviewed.stars}}</td>
                                         <td>{{nonReviewed.comment}}</td>
+
                                         <td><button type="button" class="btn btn-block btn-primary btn-sm"
-                                            data-toggle="modal" data-target="#makeReviewModal">Calificar</button></td>
+                                            data-toggle="modal" data-target="#makeReviewModal" ng-click="setIndex(nonReviewed.index)">Calificar</button></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -89,15 +90,17 @@
         <!-- Make Review Modal -->
         <div class="modal fade" id="makeReviewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-body">
-                <div class="col-md-6 col-md-offset-3" ng-controller="MakeReviewController as makeRevCtrl">
+               <!-- <form name="reviewForm" ng-controller="MakeReviewController as makeRevCtrl" novalidate> -->
+                <div class="col-md-6 col-md-offset-3">
                     <div class="box box-info">
                         <div class="box-header with-border">
                             <h3 class="box-title">Critica</h3>
                         </div>
+                        <form name="reviewForm" ng-controller="MakeReviewController as makeRevCtrl" ng-submit="reviewForm.$valid && postReview()" novalidate>
                         <div class="box-body">
                             <div class="input-group">
                                 <span class="input-group-addon">Email</span>
-                                <input type="email" class="form-control" ng-model="revEmail">
+                                <input type="email" class="form-control" ng-model="review.email" readonly>
                             </div>
                             <br>
                             <div>
@@ -107,29 +110,50 @@
                             <br>
                             <div class="form-group">
                                 <label>Comentario</label>
-                                <textarea class="form-control" rows="3" ng-model="revComment"></textarea>
+                                <textarea class="form-control" rows="3" ng-model="review.comment" required></textarea>
                             </div>
                             <br>
                             <div>
-                                <button class="btn btn-primary" ng-click="postReview()">Calificar</button>
-                                <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Cancelar</button>
+                                <button type="submit" value="submit" class="btn btn-primary">Calificar</button>
+                                <button type="button" class="btn btn-primary pull-right" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                             </div>
                         </div><!-- /.box-body -->
+                        </form> <!-- /.form -->
                     </div><!-- /.box box-info -->
                 </div> <!-- /.col-md-6 col-md-offset-3 -->
+                <!--</form>-->
             </div> <!-- /.modal-body -->
         </div> <!-- /.modal fade -->
 
-        <!--
-        <input id="input-id" type="number" class="rating" data-stars="5" step=1 data-size="sm" data-rtl="false" data-show-clear="false">
-        <input ng-model="rev.Stars" ng-model-options="modelOptions" type="number" id="stars-id" class="rating" data-stars="5" step=1 data-size="sm" data-rtl="false" data-show-clear="false">
-        -->
 
-        <script type="text/javascript">
+
+
+
+        <!-- Scripts -->
+        <script>
+            //Used for the stars rating
             $('#stars-id').on('rating.change', function(event, value, caption) {
-        });
-
+                //angular.element(document.getElementById('MakeReviewController')).scope().setStars(value);
+                //$('#hidden-stars-div').text(value);
+            });
         </script>
+
+        <script>
+            //Used when a the modal is hide
+            $('#makeReviewModal').on('hide.bs.modal', function () {
+                   //$(this).data('modal').$element.removeData();
+                   $(this).removeData('bs.modal');
+                })
+        </script>
+
+        <script>
+            //Used to know th current review index
+            function setIndex(index){
+                //var index = angular.element(document.getElementById('LessonReviewsController')).scope().
+                angular.element(document.getElementById('LessonReviewsController')).scope().setIndex(index);
+            }
+        </script>
+
 
 
         <script src="@routes.Assets.versioned("external/bootstrap/js/bootstrap.min.js")"></script>
