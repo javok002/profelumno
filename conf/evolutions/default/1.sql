@@ -5,7 +5,6 @@
 
 create table lesson (
   id                        bigint not null,
-  punctuation               float,
   date_time                 timestamp,
   duration                  time,
   address                   varchar(255),
