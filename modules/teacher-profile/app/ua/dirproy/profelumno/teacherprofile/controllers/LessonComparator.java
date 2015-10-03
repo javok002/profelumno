@@ -11,9 +11,9 @@ public class LessonComparator implements Comparator<Lesson> {
 
     @Override
     public int compare(Lesson o1, Lesson o2) {
-        if (o1.getStudentReview().getStars() > o2.getStudentReview().getStars()){
+        if (o1.getStudentReview().getStars() < o2.getStudentReview().getStars()){
             return 1;
-        }else if (o1.getStudentReview().getStars() < o2.getStudentReview().getStars()){
+        }else if (o1.getStudentReview().getStars() > o2.getStudentReview().getStars()){
             return -1;
         }
         else

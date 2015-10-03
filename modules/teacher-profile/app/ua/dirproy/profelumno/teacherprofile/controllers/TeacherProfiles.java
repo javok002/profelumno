@@ -58,12 +58,14 @@ public class TeacherProfiles extends Controller {
 
     public static Result getBestSubjects(){
 
-        Map<Long, String> bestSubjects = new HashMap<>();
+        Map<String, Long> bestSubjects = new HashMap<>();
         List<Lesson> lessons = myLessons();
         Collections.sort(lessons,new LessonComparator());
         for (int i = 0; i <lessons.size() ; i++) {
             Lesson aux = lessons.get(i);
-            bestSubjects.put(aux.getStudentReview().getStars(),aux.getSubject().getName());
+            if (!bestSubjects.containsKey(aux.getSubject().getName())) {
+                bestSubjects.put(aux.getSubject().getName(), aux.getStudentReview().getStars());
+            }
         }
 
         return ok(Json.toJson(bestSubjects));
