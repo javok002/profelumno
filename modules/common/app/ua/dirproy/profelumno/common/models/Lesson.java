@@ -1,6 +1,7 @@
 package ua.dirproy.profelumno.common.models;
 
 import com.avaje.ebean.Model;
+import ua.dirproy.profelumno.user.models.Subject;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -22,6 +23,7 @@ public class Lesson extends Model {
     private String address;
     private String comment;
     private Float price;
+    private Subject subject;
     private Integer lessonState;//0 pendiente, 1 aceptado, 2 rechazada
 
     @ManyToOne
@@ -123,5 +125,13 @@ public class Lesson extends Model {
     }
     public void setStudentReview(Review studentReview) {
         this.studentReview = studentReview;
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
 }

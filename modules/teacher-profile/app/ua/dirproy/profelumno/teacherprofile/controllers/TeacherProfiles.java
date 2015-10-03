@@ -56,14 +56,16 @@ public class TeacherProfiles extends Controller {
         return ok(Json.toJson(ranking));
     }
 
-    public static Result getSubjects(){
+    public static Result getBestSubjects(){
 
-        Map<Integer, String> bestSubjects = new HashMap<Integer, String>();
+        Map<String, Long> bestSubjects = new HashMap<>();
         List<Lesson> lessons = myLessons();
         Collections.sort(lessons,new LessonComparator());
         for (int i = 0; i <lessons.size() ; i++) {
             Lesson aux = lessons.get(i);
-           // bestSubjects.put(aux.getPunctuation(),aux.getSubject);
+            if (!bestSubjects.containsKey(aux.getSubject().getName())) {
+                bestSubjects.put(aux.getSubject().getName(), aux.getStudentReview().getStars());
+            }
         }
 
         return ok(Json.toJson(bestSubjects));
