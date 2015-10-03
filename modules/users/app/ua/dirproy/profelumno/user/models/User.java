@@ -2,10 +2,7 @@ package ua.dirproy.profelumno.user.models;
 
 import com.avaje.ebean.Model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -32,6 +29,11 @@ public class User extends Model {
     private String address;
     private String secureQuestion;
     private String secureAnswer;
+    private long reviews;
+    private long totalStars;
+
+    @Lob
+    private byte[] profilePicture;
     @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL)
     private List<Subject> subjects;
 
@@ -41,6 +43,8 @@ public class User extends Model {
 
     public User() {
         this.subjects = new ArrayList();
+        reviews = 0;
+        totalStars = 0;
     }
 
     public Long getId() { return id; }
@@ -125,5 +129,29 @@ public class User extends Model {
 
     public void setSubjects(List<Subject> subjects) {
         this.subjects = subjects;
+    }
+
+    public byte[] getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(byte[] profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+    public long getReviews() {
+        return reviews;
+    }
+
+    public void incrementReviews() {
+        reviews++;
+    }
+
+    public long getTotalStars() {
+        return totalStars;
+    }
+
+    public void addStars(long stars) {
+        totalStars += stars;
     }
 }

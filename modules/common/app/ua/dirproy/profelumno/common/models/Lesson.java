@@ -5,6 +5,7 @@ import com.avaje.ebean.Model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
@@ -21,11 +22,17 @@ public class Lesson extends Model {
     private String address;
     private String comment;
     private Float price;
+    private Integer lessonState;//0 pendiente, 1 aceptado, 2 rechazada
 
     @ManyToOne
     private Teacher teacher;
+    @OneToOne
+    private Review teacherReview;
+
     @ManyToOne
     private Student student;
+    @OneToOne
+    private Review studentReview;
 
     public static Finder<Long, Lesson> finder = new Finder<>(Lesson.class);
 
@@ -95,5 +102,26 @@ public class Lesson extends Model {
 
     public static List<Lesson> list() { return finder.all(); }
 
+    public Review getTeacherReview() {
+        return teacherReview;
+    }
 
+    public void setTeacherReview(Review teacherReview) {
+        this.teacherReview = teacherReview;
+    }
+
+    public Review getStudentReview() {
+        return studentReview;
+    }
+
+    public int getLessonState() {
+        return lessonState;
+    }
+
+    public void setLessonState(Integer lessonState) {
+        this.lessonState = lessonState;
+    }
+    public void setStudentReview(Review studentReview) {
+        this.studentReview = studentReview;
+    }
 }

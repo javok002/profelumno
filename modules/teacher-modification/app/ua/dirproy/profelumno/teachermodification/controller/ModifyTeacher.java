@@ -2,6 +2,7 @@ package ua.dirproy.profelumno.teachermodification.controller;
 
 import com.avaje.ebean.Ebean;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.common.io.Files;
 import play.data.Form;
 import play.libs.Json;
 import play.mvc.Controller;
@@ -13,6 +14,7 @@ import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Base64;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -57,10 +59,12 @@ public class ModifyTeacher extends Controller {
             teacherU.setName(tchU.getName());
             teacherU.setPassword(tchU.getPassword());
             teacherU.setSurname(tchU.getSurname());
+            teacher.setPrice(tch.getPrice());
+            teacher.setDescription(tch.getDescription());
             Ebean.save(teacher);
             Ebean.save(teacher.getUser());
-            System.out.println(Teacher.list().get(0).getUser().getName());
-            return ok(Json.toJson(teacher));
+//            System.out.println(Teacher.list().get(0).getUser().getName());
+            return ok(routes.ModifyTeacher.profileView().url()) /*ok(Json.toJson(teacher))*/;
         }else {
             return badRequest("Unique");
         }
@@ -88,8 +92,7 @@ public class ModifyTeacher extends Controller {
         final long userId=Long.parseLong(session("id"));
         User user = Ebean.find(User.class, userId);
         Teacher teacher =Teacher.finder.where().eq("user",user).findUnique();
-        byte[] picture = teacher.getProfilePicture();
-        return ok(picture);
+        return ok(teacher.getUser().getProfilePicture());
     }
 
     public static Result savePicture() {
@@ -104,9 +107,16 @@ public class ModifyTeacher extends Controller {
                 if (contentType.contains("image")) {
                     final long userId = Long.parseLong(session("id"));
                     Teacher teacher = Ebean.find(Teacher.class, userId);
-                    teacher.setProfilePicture(Base64.getEncoder().encode(file.toString().getBytes()));
-                    Ebean.update(teacher);
-                    return ok(teacher.getProfilePicture());
+                    byte[] bfile=null;
+                    try {
+                        bfile=Files.toByteArray(file);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    teacher.getUser().setProfilePicture(Base64.getEncoder().encode(bfile));
+                    Ebean.save(teacher);
+                    Ebean.save(teacher.getUser());
+                    return ok(teacher.getUser().getProfilePicture());
                 }
             }
         }

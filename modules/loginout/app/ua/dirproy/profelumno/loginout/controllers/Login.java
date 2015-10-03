@@ -49,7 +49,7 @@ public class Login extends Controller {
             }
 
             //System.out.println("ok");
-            return redirect("/");
+            return redirect("/");//todo redireccionar al dashboard del alumno o teacher depende que sea
         }
     }
 

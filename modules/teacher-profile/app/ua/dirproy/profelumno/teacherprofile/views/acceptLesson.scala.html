@@ -1,0 +1,62 @@
+@()
+@ua.dirproy.profelumno.common.views.html.main("Accept Lesson") {
+    <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
+    <script src="@routes.Assets.versioned("external/angularjs/angular.min.js")"></script>
+    <script src="@routes.Assets.versioned("/javascripts/teacherProfile/accept-lesson.js")"></script>
+
+    <div class="container" ng-app="acceptLesson">
+        <div ng-controller="AcceptController as ctrl">
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-6">
+                    <div class="page-header">Clases pendientes: </div>
+                    <div ng-repeat="lesson in teacherLessons">
+                        <div ng-if="lesson.lessonState == 0">
+                            <div class="panel panel-primary" id="{{lesson.id}}">
+                                <div class="panel-body">
+                                    El alumno {{lesson.student.user.name}} {{lesson.student.user.surname}} ha solicitado una nueva clase:
+                                    <br>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">Fecha: {{lesson.dateTime}}</li>
+                                        <li class="list-group-item">Duración: {{lesson.duration}}</li>
+                                        <li class="list-group-item">Dirección: {{lesson.address}}</li>
+                                        <li class="list-group-item">Comentario:
+                                            <div class="well">
+                                                {{lesson.comment}}
+                                            </div></li>
+                                    </ul>
+                                    <br>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-success" ng-click="decision(lesson.id, true)">
+                                            Aceptar</button>
+                                        <div class="col-xs-1"></div>
+                                        <button type="button" class="btn btn-danger" ng-click="decision(lesson.id, false)">
+                                            Rechazar</button>
+                                    </div>
+                                </div>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" data-toggle="modal" id="showModal" data-target="#success" style="display : none"></button>
+                    <div class="modal fade" role="dialog" id="success">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" data-dismiss="modal" class="close"><span class="glyphicon glyphicon-remove"></span></button>
+                                </div>
+                                <div class="modal-body">
+                                    La respuesta fue enviada con éxito.
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
