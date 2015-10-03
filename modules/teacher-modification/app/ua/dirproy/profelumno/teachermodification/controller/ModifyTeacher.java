@@ -59,10 +59,12 @@ public class ModifyTeacher extends Controller {
             teacherU.setName(tchU.getName());
             teacherU.setPassword(tchU.getPassword());
             teacherU.setSurname(tchU.getSurname());
+            teacher.setPrice(tch.getPrice());
+            teacher.setDescription(tch.getDescription());
             Ebean.save(teacher);
             Ebean.save(teacher.getUser());
-            System.out.println(Teacher.list().get(0).getUser().getName());
-            return ok(Json.toJson(teacher));
+//            System.out.println(Teacher.list().get(0).getUser().getName());
+            return ok(routes.ModifyTeacher.profileView().url()) /*ok(Json.toJson(teacher))*/;
         }else {
             return badRequest("Unique");
         }

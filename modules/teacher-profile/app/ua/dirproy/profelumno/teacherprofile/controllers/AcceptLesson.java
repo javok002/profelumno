@@ -1,71 +1,66 @@
-package ua.dirproy.profelumno.hirelesson.controllers;
+package ua.dirproy.profelumno.teacherprofile.controllers;
 
-
-import play.data.Form;
+import play.libs.*;
 import play.mvc.Controller;
 import play.mvc.Result;
+import ua.dirproy.profelumno.common.models.Lesson;
 import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
-import ua.dirproy.profelumno.common.models.Lesson;
-import ua.dirproy.profelumno.hirelesson.views.html.hire;
 import ua.dirproy.profelumno.mailsender.models.MailSenderUtil;
-import ua.dirproy.profelumno.user.models.User;
+import ua.dirproy.profelumno.teacherprofile.views.html.acceptLesson;
 
-import javax.mail.*;
-
-import java.util.Date;
+import javax.mail.MessagingException;
+import java.util.List;
 
 /**
- * Created by Paca on 9/13/15. Oh yeah
+ * Created by facundo on 28/9/15.
  */
-public class Lessons extends Controller {
+public class AcceptLesson extends Controller {
+    public static Result acceptView() {
+        return ok(acceptLesson.render());
+    }
 
-    public static Result newLesson() throws MessagingException {
-        Form<Lesson> lessonsForm = Form.form(Lesson.class).bindFromRequest();
+    public static Result getLessons() {
+        Teacher teacher = Teacher.finder.where().eq("USER_ID", Long.parseLong(session("id"))).findUnique();
+        List<Lesson> lessons = Lesson.finder.where().eq("TEACHER_ID", teacher.getId()).findList();
+        for (Lesson lesson : lessons) {
+            System.out.println(lesson.toString());
+        }
+        return ok(Json.toJson(lessons));
+    }
 
-        Lesson lesson = new Lesson();
-
-        final Teacher teacher = Teacher.getTeacher(Long.parseLong(lessonsForm.data().get("teacherId")));
-        lesson.setTeacher(teacher);
-
-        User user = User.finder.byId(Long.parseLong(session("id")));
-        Student student = Student.finder.where().eq("user", user).findUnique();
-        lesson.setStudent(student);
-
-        String address;
-        switch (lessonsForm.data().get("address")) {
-            case "student":
-                address = student.getUser().getAddress();
-                break;
-            case "teacher":
-                address = teacher.getUser().getAddress();
+    public static Result decision(String answer, String stringLessonId) throws MessagingException {
+        boolean answerBool;
+        System.out.println(answer);
+        switch (answer) {
+            case "true":
+                answerBool = true;
                 break;
             default:
-                address = "unknow";
-                break;
+                answerBool = false;
         }
-        lesson.setAddress(address);
-
-        lesson.setComment(lessonsForm.data().get("comment"));
-
-        lesson.setTeacherReview(null);
-        lesson.setStudentReview(null);
-
-        lesson.setLessonState(0);
-
-        lesson.save();
-
-        notifyTeacher(teacher.getUser().getEmail());
-
-        return ok(); //todo redireccionar al index
+        boolean action = updateLesson(answerBool, Long.parseLong(stringLessonId));
+        notifyStudent(Long.parseLong(stringLessonId));
+        return action? ok(): badRequest();
     }
 
-    public static Result redirect() {
-        return ok(hire.render());
+    private static boolean updateLesson(boolean answerBool, long lessonId) {
+        try {
+            Lesson lesson = Lesson.finder.byId(lessonId);
+            lesson.setLessonState(answerBool ? 1 : 2);
+            lesson.update();
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
-    private static void notifyTeacher(String emailTeacher) throws MessagingException {
-        MailSenderUtil.send(new String[]{emailTeacher}, "ProfeLumno: Usted tiene una nueva clase.", "<body style=\"-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;margin: 0;font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif;font-size: 14px;line-height: 1.428571429;color: #333;background-color: #fff;\">\n" +
+    private static void notifyStudent(long lessonId) throws MessagingException {
+        Lesson lesson = Lesson.finder.where().eq("id", lessonId).findUnique();
+        Student student = Student.finder.byId(lesson.getStudent().getId());
+        Teacher teacher = Teacher.finder.byId(lesson.getTeacher().getId());
+        MailSenderUtil.send(new String[]{student.getUser().getEmail()}, "ProfeLumno: Han respondido tu solicitud de clase.", "<body style=\"-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;margin: 0;font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif;font-size: 14px;line-height: 1.428571429;color: #333;background-color: #fff;\">\n" +
                 "<div style=\"-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;\">\n" +
                 "    <h1 align=\"center\" style=\"-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;margin: .67em 0;font-size: 36px;font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif;font-weight: 500;line-height: 1.1;color: inherit;margin-top: 20px;margin-bottom: 10px;\"><b style=\"-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;font-weight: bold;\">Profe</b><span class=\"thin\" style=\"-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;\">Lumno</span></h1>\n" +
                 "    <div class=\"row\" style=\"-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;margin-right: -15px;margin-left: -15px;\">\n" +
@@ -73,10 +68,10 @@ public class Lessons extends Controller {
                 "        <div class=\"col-md-4 col-sm-6\" style=\"-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;position: relative;min-height: 1px;padding-right: 15px;padding-left: 15px;float: left;width: 33.33333333333333%;\">\n" +
                 "            <div class=\"panel panel-primary\" style=\"-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;margin-bottom: 20px;background-color: #fff;border: 1px solid transparent;border-radius: 4px;-webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.05);box-shadow: 0 1px 1px rgba(0,0,0,0.05);border-color: #428bca;\">\n" +
                 "                <div class=\"panel-heading\" style=\"-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;padding: 10px 15px;border-bottom: 1px solid transparent;border-top-right-radius: 3px;border-top-left-radius: 3px;color: #fff;background-color: #428bca;border-color: #428bca;\">\n" +
-                "                    <h3 class=\"panel-title\" style=\"-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;orphans: 3;widows: 3;page-break-after: avoid;font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif;font-weight: 500;line-height: 1.1;color: inherit;margin-top: 0;margin-bottom: 0;font-size: 16px;\">Nueva clase</h3>\n" +
+                "                    <h3 class=\"panel-title\" style=\"-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;orphans: 3;widows: 3;page-break-after: avoid;font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif;font-weight: 500;line-height: 1.1;color: inherit;margin-top: 0;margin-bottom: 0;font-size: 16px;\">Han respondido a tu solicitud</h3>\n" +
                 "                </div>\n" +
                 "                <div class=\"panel-body\" style=\"-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;padding: 15px;\">\n" +
-                "                    Usted tiene una nueva clase. Por favor, responda a la solicitud. Gracias!\n" +
+                "                    "+ teacher.getUser().getName()+" "+teacher.getUser().getSurname()+" ha "+(lesson.getLessonState() == 1?"aceptado":"rechazado")+" tu solicitud de clase. Entra para ver su respuesta!\n" +
                 "                </div>\n" +
                 "                <div class=\"panel-footer\" align=\"right\" style=\"-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;padding: 10px 15px;background-color: #f5f5f5;border-top: 1px solid #ddd;border-bottom-right-radius: 3px;border-bottom-left-radius: 3px;\"><b style=\"-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;font-weight: bold;\">Profe</b><span class=\"thin\" style=\"-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;\">Lumno </span></div>\n" +
                 "            </div>\n" +
@@ -85,30 +80,5 @@ public class Lessons extends Controller {
                 "    </div>\n" +
                 "</div>\n" +
                 "</body>");
-    }
-
-    private static void createLesson() throws MessagingException {
-
-
-        Lesson lesson = new Lesson();
-        long i = 1;
-        final Teacher teacher = Teacher.getTeacher(i);
-        lesson.setTeacher(teacher);
-
-        User user = User.finder.byId(Long.parseLong(session("id")));
-        Student student = Student.finder.where().eq("user", user).findUnique();
-        lesson.setStudent(student);
-
-
-        lesson.setAddress("pepoito");
-
-        lesson.setComment("prueba");
-
-        lesson.setLessonState(0);
-
-        lesson.save();
-
-        notifyTeacher(teacher.getUser().getEmail());
-        System.out.println("se creo");
     }
 }

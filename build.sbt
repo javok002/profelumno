@@ -9,7 +9,14 @@ lazy val common = (project in file("modules/common"))
 lazy val users = (project in file("modules/users"))
   .enablePlugins(PlayJava, PlayEbean)
 
+lazy val mailSender = (project in file("modules/mail-sender"))
+  .enablePlugins(PlayJava, PlayEbean)
+
 lazy val teacherProfile = (project in file("modules/teacher-profile"))
+  .enablePlugins(PlayJava, PlayEbean)
+  .dependsOn(users, common, mailSender)
+
+lazy val studentProfile = (project in file("modules/student-profile"))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(users, common)
 
@@ -31,7 +38,7 @@ lazy val teacherSubscription = (project in file("modules/teacher-subscription"))
 
 lazy val hireLesson = (project in file("modules/hire-lesson"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(teacherSearch, common)
+  .dependsOn(teacherSearch, common, mailSender)
 
 lazy val teacherModification = (project in file("modules/teacher-modification"))
   .enablePlugins(PlayJava, PlayEbean)
@@ -49,9 +56,6 @@ lazy val passwordRecovery = (project in file("modules/password-recovery"))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(users, mailSender, common)
 
-lazy val mailSender = (project in file("modules/mail-sender"))
-  .enablePlugins(PlayJava, PlayEbean)
-
 lazy val loginout = (project in file("modules/loginout"))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(users, common)//, teacherSubscription, passwordRecovery)
@@ -62,9 +66,9 @@ lazy val lessonReview = (project in file("modules/lesson-review"))
 
 lazy val root = (project in file("."))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(common,studentModification, users, teacherProfile, teacherSubscription, register, delete,
+  .dependsOn(common, studentProfile, studentModification, users, teacherProfile, teacherSubscription, register, delete,
     passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture, loginout, lessonReview)
-  .aggregate(common,studentModification, users, teacherProfile, teacherSubscription, register, delete,
+  .aggregate(common, studentProfile, studentModification, users, teacherProfile, teacherSubscription, register, delete,
     passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture,loginout, lessonReview)
 
 
