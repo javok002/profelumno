@@ -1,6 +1,6 @@
 package ua.dirproy.profelumno.teachermodification.controller;
 
-import actions.Authenticate;
+import authenticate.Authenticate;
 import com.avaje.ebean.Ebean;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.io.Files;
@@ -9,7 +9,6 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
-import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.teachermodification.view.html.*;
 import ua.dirproy.profelumno.user.models.Subject;

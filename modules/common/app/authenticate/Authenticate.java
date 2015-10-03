@@ -1,4 +1,4 @@
-package actions;
+package authenticate;
 
 import play.mvc.With;
 

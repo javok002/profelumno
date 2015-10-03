@@ -1,4 +1,4 @@
-package actions;
+package authenticate;
 
 import com.avaje.ebean.Ebean;
 import play.libs.F;
