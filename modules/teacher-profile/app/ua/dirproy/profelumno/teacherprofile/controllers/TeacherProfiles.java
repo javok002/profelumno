@@ -84,17 +84,24 @@ public class TeacherProfiles extends Controller {
 
     private static Map<String, Long> mapProm(Map<Subject,List<Long>> subjectListLong,List<Subject> subjects) {
         Map<String, Long> bestSubjects = new HashMap<>();
-        Map<Long, String> aux = new HashMap<>();
+        Map<String, Long> aux = new HashMap<>();
         List<Long> listProm = new ArrayList<>();
         for (int i = 0; i <subjectListLong.size() ; i++) {
-            aux.put(getProm(subjectListLong.get(subjects.get(i))), subjects.get(i).getName());
+            aux.put( subjects.get(i).getName(),getProm(subjectListLong.get(subjects.get(i))));
             listProm.add(getProm(subjectListLong.get(subjects.get(i))));
         }
 
         Collections.sort(listProm);
 
-        for (long j = listProm.size() -1; j > listProm.size() -4 ; j--) {
-            bestSubjects.put(aux.get(j),j);
+        for (int j = listProm.size() -1; j > listProm.size() -4 ; j--) {
+            float prom = listProm.get(j);
+            for (int k = 0; k <subjects.size() ; k++) {
+                String subject = subjects.get(k).getName();
+                long value = aux.get(subject);
+                if (value >= prom){
+                    bestSubjects.put(subject,value);
+                }
+            }
         }
 
         return bestSubjects;
