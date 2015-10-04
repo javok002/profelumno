@@ -1,5 +1,6 @@
 package ua.dirproy.profelumno.teachermodification.controller;
 
+import authenticate.Authenticate;
 import com.avaje.ebean.Ebean;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.io.Files;
@@ -16,15 +17,12 @@ import ua.dirproy.profelumno.user.models.User;
 import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
  * Created by francisco on 13/09/15.
  */
+@Authenticate({Teacher.class})
 public class ModifyTeacher extends Controller {
 
     public static Result profileView() {

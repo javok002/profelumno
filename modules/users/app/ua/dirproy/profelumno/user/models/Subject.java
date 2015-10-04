@@ -28,6 +28,8 @@ public class Subject extends Model{
     @ManyToMany(cascade = CascadeType.ALL)
     private List<User> users;
 
+    public static Finder<Long, Subject> finder = new Finder<>(Subject.class);
+
     public Subject() {
         users = new ArrayList<>();
     }
@@ -61,4 +63,6 @@ public class Subject extends Model{
     public void setUsers(List<User> users) {
         this.users = users;
     }
+
+    public static Subject getStudent(Long id) { return finder.byId(id);}
 }

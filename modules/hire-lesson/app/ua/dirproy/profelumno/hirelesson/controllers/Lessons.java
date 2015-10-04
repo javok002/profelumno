@@ -9,6 +9,7 @@ import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.common.models.Lesson;
 import ua.dirproy.profelumno.hirelesson.views.html.hire;
 import ua.dirproy.profelumno.mailsender.models.MailSenderUtil;
+import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
 
 import javax.mail.*;
@@ -31,6 +32,9 @@ public class Lessons extends Controller {
         User user = User.finder.byId(Long.parseLong(session("id")));
         Student student = Student.finder.where().eq("user", user).findUnique();
         lesson.setStudent(student);
+
+        final Subject subject = Subject.finder.byId(Long.parseLong(lessonsForm.data().get("subjectId")));
+        lesson.setSubject(subject);
 
         String address;
         switch (lessonsForm.data().get("address")) {

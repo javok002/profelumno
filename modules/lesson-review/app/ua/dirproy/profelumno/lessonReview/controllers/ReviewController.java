@@ -44,14 +44,6 @@ public class ReviewController extends Controller {
             final long stars;
 
             if (teacher != null){
-                node.put("userReviewed", temp.getStudent().getUser().getName() + " "
-                        + temp.getStudent().getUser().getSurname());
-                date = temp.getStudentReview().getDate().getDate() + "/"
-                        + (temp.getStudentReview().getDate().getMonth() + 1)
-                        + "/" + (temp.getStudentReview().getDate().getYear() + 1900);
-                comment = temp.getStudentReview().getComment();
-                stars = temp.getStudentReview().getStars();
-            } else {
                 node.put("userReviewed", temp.getTeacher().getUser().getName() + " "
                         + temp.getTeacher().getUser().getSurname());
                 date = temp.getTeacherReview().getDate().getDate() + "/"
@@ -60,6 +52,14 @@ public class ReviewController extends Controller {
 
                 comment = temp.getTeacherReview().getComment();
                 stars = temp.getTeacherReview().getStars();
+            } else {
+                node.put("userReviewed", temp.getStudent().getUser().getName() + " "
+                        + temp.getStudent().getUser().getSurname());
+                date = temp.getStudentReview().getDate().getDate() + "/"
+                        + (temp.getStudentReview().getDate().getMonth() + 1)
+                        + "/" + (temp.getStudentReview().getDate().getYear() + 1900);
+                comment = temp.getStudentReview().getComment();
+                stars = temp.getStudentReview().getStars();
             }
 
             node.put("reviewDate", date);
