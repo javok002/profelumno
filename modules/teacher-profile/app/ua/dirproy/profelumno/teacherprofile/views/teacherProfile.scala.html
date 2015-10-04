@@ -1,7 +1,15 @@
-@(teacherId: Long)
+@()
 
-@ua.dirproy.profelumno.common.views.html.main("Perfil") {
+@ua.dirproy.profelumno.common.views.html.tidyMain("Perfil") {
+    @ua.dirproy.profelumno.common.views.html.topbar()
+    @ua.dirproy.profelumno.common.views.html.sidebar()
 
+    <div ng-app="app" ng-controller="DashboardController">
+        {{ ranking }}
+    </div>
 
-
+} {
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/teacherProfile/teacher-profile.css")">
+} {
+    <script src="@routes.Assets.versioned("javascripts/teacherProfile/teacherProfile.js")"></script>
 }

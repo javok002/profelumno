@@ -1,0 +1,44 @@
+@(title: String)(content: Html)(styles: Html)(scripts: Html)
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head><meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Profelumno - @title</title>
+            <!-- Tell the browser to be responsive to screen width -->
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+            <!-- Bootstrap 3.3.5 -->
+        <link rel="stylesheet" href="@routes.Assets.versioned("external/bootstrap/css/bootstrap.min.css")">
+            <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+            <!-- Ionicons -->
+        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+            <!-- Theme style -->
+        <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/AdminLTE.min.css")">
+
+            <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+        <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/skins/_all-skins.min.css")">
+        @styles
+
+    </head>
+    <body class="hold-transition skin-blue sidebar-mini">
+        @content
+
+            <!-- jQuery 2.1.4 -->
+        <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
+            <!-- Angular.js -->
+        <script src="@routes.Assets.versioned("external/angularjs/angular.min.js")"></script>
+            <!-- jQuery UI 1.11.4 -->
+        <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+            <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+        <script>
+      $.widget.bridge('uibutton', $.ui.button);
+    </script>
+            <!-- Bootstrap 3.3.5 -->
+        <script src="@routes.Assets.versioned("external/bootstrap/js/bootstrap.min.js")"></script>
+        @scripts
+
+    </body>
+</html>

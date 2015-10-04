@@ -17,11 +17,11 @@ import java.util.*;
 public class TeacherProfiles extends Controller {
 
     public static Result teacherProfileView() {
-        long id = idTeacher();
+        /*long id = idTeacher();
         if (id == -1){
             return badRequest("invalid");
-        }
-        return ok(teacherProfile.render(id));
+        }*/
+        return ok(teacherProfile.render());
     }
 
     private static long idTeacher() {
@@ -61,7 +61,7 @@ public class TeacherProfiles extends Controller {
         Map<String, Long> bestSubjects = new HashMap<>();
         List<Lesson> lessons = myLessons();
        // Collections.sort(lessons,new LessonComparator());
-        for (int i = 0; i <lessons.size() ; i++) {
+        for (int i = 0; i < lessons.size() && i < 3; i++) {
             Lesson aux = lessons.get(i);
             if (!bestSubjects.containsKey(aux.getSubject().getName())) {
                 bestSubjects.put(aux.getSubject().getName(), aux.getStudentReview().getStars());
