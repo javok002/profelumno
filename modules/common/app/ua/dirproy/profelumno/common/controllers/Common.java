@@ -39,4 +39,8 @@ public class Common extends Controller {
         return Student.finder.where().eq("user", Ebean.find(User.class, Long.parseLong(session("id")))).findUnique() != null;
     }
 
+    public static String getUsername(){
+        return Ebean.find(User.class, Long.parseLong(session("id"))).getName();
+    }
+
 }
