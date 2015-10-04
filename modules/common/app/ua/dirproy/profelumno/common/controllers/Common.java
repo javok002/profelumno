@@ -27,6 +27,10 @@ public class Common extends Controller {
         return ok(topbar.render());
     }
 
+    public static Result userImage() {
+        return ok(Ebean.find(User.class, Long.parseLong(session("id"))).getProfilePicture());
+    }
+
     public static Html sidebarContent() {
         return userIsTeacher() ? teacherSidebarContent.render() : studentSidebarContent.render();
     }
