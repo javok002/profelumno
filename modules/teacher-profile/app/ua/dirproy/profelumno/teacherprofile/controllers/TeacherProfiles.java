@@ -50,6 +50,10 @@ public class TeacherProfiles extends Controller {
         return myLessons;
     }
 
+    public static Result getTeacher() {
+        return ok(Json.toJson(Teacher.getTeacher(idTeacher())));
+    }
+
     public static Result getRanking(){
         Teacher teacher = Teacher.getTeacher(idTeacher());
         float ranking = teacher.getRanking();
