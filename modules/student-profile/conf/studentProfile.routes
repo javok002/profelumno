@@ -4,6 +4,6 @@
 
 # Home page
 GET        /student-dashboard        ua.dirproy.profelumno.studentprofile.controllers.StudentProfile.dashboard
-GET        /get-all-info             ua.dirproy.profelumno.studentprofile.controllers.StudentProfile.getAllInfo
+GET        /get-info             ua.dirproy.profelumno.studentprofile.controllers.StudentProfile.getAllInfo
 
 # Map static resources from the /public folder to the /assets URL path

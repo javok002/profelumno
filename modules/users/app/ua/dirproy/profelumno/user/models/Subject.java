@@ -65,4 +65,8 @@ public class Subject extends Model{
     }
 
     public static Subject getStudent(Long id) { return finder.byId(id);}
+
+    public static boolean noSubjects(){
+        return finder.all().isEmpty();
+    }
 }
