@@ -98,8 +98,13 @@ public class TeacherProfiles extends Controller {
             for (int k = 0; k <subjects.size() ; k++) {
                 String subject = subjects.get(k).getName();
                 long value = aux.get(subject);
-                if (value >= prom){
-                    bestSubjects.put(subject,value);
+                if ( bestSubjects.size() < 3) {
+                    if (value >= prom) {
+                        bestSubjects.put(subject, value);
+                    }
+                }
+                else {
+                    break;
                 }
             }
         }
