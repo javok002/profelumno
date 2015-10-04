@@ -4,6 +4,7 @@
 
 GET        /                     ua.dirproy.profelumno.teacherprofile.controllers.TeacherProfiles.teacherProfileView()
 GET        /ranking              ua.dirproy.profelumno.teacherprofile.controllers.TeacherProfiles.getRanking()
+GET        /top-subjects         ua.dirproy.profelumno.teacherprofile.controllers.TeacherProfiles.getBestSubjects()
 
 GET        /accept-lesson        ua.dirproy.profelumno.teacherprofile.controllers.AcceptLesson.acceptView()
 GET        /get-lessons          ua.dirproy.profelumno.teacherprofile.controllers.AcceptLesson.getLessons()

@@ -4,8 +4,30 @@
     @ua.dirproy.profelumno.common.views.html.topbar()
     @ua.dirproy.profelumno.common.views.html.sidebar()
 
-    <div ng-app="app" ng-controller="DashboardController">
-        {{ ranking }}
+    <div class="content-wrapper" ng-app="app" ng-controller="DashboardController">
+        <section class="content-header">
+            <h1>
+                Dashboard
+                <small></small>
+            </h1>
+        </section>
+
+        <section class="content">
+                <!-- Apply any bg-* class to to the info-box to color it -->
+            <div class="info-box bg-yellow">
+                <span class="info-box-icon"><i class="fa fa-star"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Ranking</span>
+                    <span class="info-box-number">{{ ranking }}</span>
+
+                    <div class="progress">
+                        <div class="progress-bar" style="width: {{ ranking * 10 }}%"></div>
+                    </div>
+                </div><!-- /.info-box-content -->
+            </div><!-- /.info-box -->
+        </section>
+
+
     </div>
 
 } {
