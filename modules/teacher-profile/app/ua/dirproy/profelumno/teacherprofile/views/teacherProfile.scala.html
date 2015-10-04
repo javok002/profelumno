@@ -13,18 +13,59 @@
         </section>
 
         <section class="content">
-                <!-- Apply any bg-* class to to the info-box to color it -->
-            <div class="info-box bg-yellow">
-                <span class="info-box-icon"><i class="fa fa-star"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Ranking</span>
-                    <span class="info-box-number">{{ ranking }}</span>
-
-                    <div class="progress">
-                        <div class="progress-bar" style="width: {{ ranking * 10 }}%"></div>
-                    </div>
-                </div><!-- /.info-box-content -->
-            </div><!-- /.info-box -->
+            <div class="row">    <!-- Apply any bg-* class to to the info-box to color it -->
+                <div class="col-md-4">
+                    <div class="info-box bg-yellow">
+                        <span class="info-box-icon"><i class="fa fa-star-o"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Rating</span>
+                            <span class="info-box-number">{{ teacher.ranking }}</span>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: {{ teacher.ranking * 10 }}%"></div>
+                            </div>
+                        </div><!-- /.info-box-content -->
+                    </div><!-- /.info-box -->
+                </div>
+                <div class="col-md-4">
+                    <div class="info-box bg-purple">
+                        <span class="info-box-icon"><i class="fa fa-credit-card"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Suscripción</span>
+                            <span class="info-box-number">{{ teacher.subscription }}</span>
+                        </div><!-- /.info-box-content -->
+                    </div><!-- /.info-box -->
+                </div>
+                <div class="col-md-4">
+                    <div class="info-box bg-red">
+                        <span class="info-box-icon"><i class="fa fa-calendar-plus-o"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Renovación</span>
+                            <span class="info-box-number">{{ teacher.renewalDate }}</span>
+                        </div><!-- /.info-box-content -->
+                    </div><!-- /.info-box -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="box box-solid box-success">
+                        <div class="box-header">
+                            <h3 class="box-title">Materias Mejor Puntuadas</h3>
+                        </div><!-- /.box-header -->
+                        <div class="box-body bg-gray-light">
+                            <div class="col-sm-4" ng-repeat="(subject, score) in topSubjects">
+                                <div class="info-box">
+                                        <!-- Apply any bg-* class to to the icon to color it -->
+                                    <span class="info-box-icon bg-aqua"><i class="fa fa-book"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">{{ subject }}</span>
+                                        <span class="info-box-number">{{ score }}</span>
+                                    </div><!-- /.info-box-content -->
+                                </div><!-- /.info-box -->
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                </div>
+            </div>
         </section>
 
 

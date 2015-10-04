@@ -1,5 +1,6 @@
 package ua.dirproy.profelumno.teacherprofile.controllers;
 
+import authenticate.Authenticate;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -9,18 +10,10 @@ import ua.dirproy.profelumno.teacherprofile.views.html.teacherProfile;
 
 import java.util.*;
 
-/**
- * Created by javier
- * Date: 9/7/15
- * Project profelumno
- */
+@Authenticate({Teacher.class})
 public class TeacherProfiles extends Controller {
 
     public static Result teacherProfileView() {
-        /*long id = idTeacher();
-        if (id == -1){
-            return badRequest("invalid");
-        }*/
         return ok(teacherProfile.render());
     }
 
@@ -48,6 +41,10 @@ public class TeacherProfiles extends Controller {
             }
         }
         return myLessons;
+    }
+
+    public static Result getTeacher() {
+        return ok(Json.toJson(Teacher.getTeacher(idTeacher())));
     }
 
     public static Result getRanking(){
