@@ -29,6 +29,20 @@ angular.module('app', [])
                 })
                 .error(function(data) {
                 //    TODO warning message
+                });
+            $http.get('/teacher-profile/previous-lessons')
+                .success(function(data) {
+                    $scope.prevLessons = data;
+                })
+                .error(function(data) {
+                //    TODO warning message
+                });
+            $http.get('/teacher-profile/next-lessons')
+                .success(function(data) {
+                    $scope.nextLessons = data;
+                })
+                .error(function(data) {
+                //    TODO warning message
                 });*/
         };
 
