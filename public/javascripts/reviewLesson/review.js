@@ -5,7 +5,7 @@
 (function(){
     var app = angular.module('lessonReview', []);
 
-    app.controller('LessonReviewsController', function($scope) {
+    app.controller('LessonReviewsController', function($scope, $http) {
         //Here a post is need in order to get the users reviews...
         //Get the reviewed lessons
         $http.post("/review-lesson/reviewed-lessons").success(function(response){
@@ -51,7 +51,7 @@
         }
     });
 
-    app.controller('MakeReviewController', function($scope){
+    app.controller('MakeReviewController', function($scope, $http){
         this.nonReviewedLessons = reviews.nonReviewed;
         this.currentStars ='';
 
