@@ -7,6 +7,7 @@ import play.mvc.Result;
 import ua.dirproy.profelumno.common.models.Lesson;
 import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.teacherprofile.views.html.teacherProfile;
+import ua.dirproy.profelumno.user.models.Subject;
 
 import java.util.*;
 
@@ -55,17 +56,58 @@ public class TeacherProfiles extends Controller {
 
     public static Result getBestSubjects(){
 
-        Map<String, Long> bestSubjects = new HashMap<>();
+        Map<Subject,List<Long>> subjectList = new HashMap<>();
         List<Lesson> lessons = myLessons();
-       // Collections.sort(lessons,new LessonComparator());
-        for (int i = 0; i < lessons.size() && i < 3; i++) {
-            Lesson aux = lessons.get(i);
-            if (!bestSubjects.containsKey(aux.getSubject().getName())) {
-                bestSubjects.put(aux.getSubject().getName(), aux.getStudentReview().getStars());
+        List<Subject> subjects = new ArrayList<>();
+
+        for (int j = 0; j <lessons.size() ; j++) {
+            Subject aux = lessons.get(j).getSubject();
+            if (!subjects.contains(aux)){
+                subjects.add(aux);
             }
         }
 
-        return ok(Json.toJson(bestSubjects));
+        for (int k = 0; k <subjects.size() ; k++) {
+            List<Long> listLong = new ArrayList<>();
+            Subject subject = subjects.get(k);
+            for (int p = 0; p <lessons.size() ; p++) {
+                Lesson lesson = lessons.get(p);
+                if (subject.equals(lesson.getSubject())){
+                    listLong.add(lesson.getStudentReview().getStars());
+                }
+            }
+            subjectList.put(subject,listLong);
+        }
+
+        return ok(Json.toJson(mapProm(subjectList,subjects)));
+    }
+
+    private static Map<String, Long> mapProm(Map<Subject,List<Long>> subjectListLong,List<Subject> subjects) {
+        Map<String, Long> bestSubjects = new HashMap<>();
+        Map<Long, String> aux = new HashMap<>();
+        List<Long> listProm = new ArrayList<>();
+        for (int i = 0; i <subjectListLong.size() ; i++) {
+            aux.put(getProm(subjectListLong.get(subjects.get(i))), subjects.get(i).getName());
+            listProm.add(getProm(subjectListLong.get(subjects.get(i))));
+        }
+
+        Collections.sort(listProm);
+
+        for (long j = listProm.size() -1; j > listProm.size() -4 ; j--) {
+            bestSubjects.put(aux.get(j),j);
+        }
+
+        return bestSubjects;
+
+    }
+
+    private static Long getProm(List<Long> list){
+        long prom = 0;
+        for (Long aux : list) {
+            prom += aux;
+        }
+        prom /= list.size();
+        return prom;
     }
 
     public static Result getNextLessons(){
