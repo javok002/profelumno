@@ -8,7 +8,7 @@ angular.module('img', [])
                 $scope.profileImage = data;
             })
             .error(function() {
-
+                $scope.profileImage = null;
             });
     }]);
 $(function() {
