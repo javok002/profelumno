@@ -42,6 +42,8 @@ angular.module('app', [])
         $scope.init = function () {
             $http.get('/teacher-profile/teacher')
                 .success(function (data) {
+                    var date = new Date(data.renewalDate);
+                    data.renewalDate = date.getDay() + "/" + date.getMonth() + '/' + date.getFullYear();
                     $scope.teacher = data;
                 })
                 .error(function (data) {
@@ -57,6 +59,10 @@ angular.module('app', [])
                 });
             $http.get('/teacher-profile/previous-lessons')
                 .success(function (data) {
+                    data.forEach(function(lesson) {
+                        var date = new Date(lesson.dateTime);
+                        lesson.date = date.getDay() + "/" + date.getMonth() + '/' + date.getFullYear();
+                    });
                     $scope.prevLessons = data;
                 })
                 .error(function (data) {
@@ -64,6 +70,10 @@ angular.module('app', [])
                 });
             $http.get('/teacher-profile/next-lessons')
                 .success(function (data) {
+                    data.forEach(function(lesson) {
+                        var date = new Date(lesson.dateTime);
+                        lesson.date = date.getDay() + "/" + date.getMonth() + '/' + date.getFullYear();
+                    });
                     $scope.nextLessons = data;
                 })
                 .error(function (data) {

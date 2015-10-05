@@ -8,6 +8,7 @@ import ua.dirproy.profelumno.common.models.Lesson;
 import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.teacherprofile.views.html.teacherProfile;
 import ua.dirproy.profelumno.user.models.Subject;
+import ua.dirproy.profelumno.user.models.User;
 
 import java.util.*;
 
@@ -17,6 +18,8 @@ public class TeacherProfiles extends Controller {
     public static Result teacherProfileView() {
         return ok(teacherProfile.render());
     }
+
+
 
     private static long idTeacher() {
         String id = session("id");
@@ -48,12 +51,6 @@ public class TeacherProfiles extends Controller {
         return ok(Json.toJson(Teacher.getTeacher(idTeacher())));
     }
 
-    public static Result getRanking(){
-        Teacher teacher = Teacher.getTeacher(idTeacher());
-        float ranking = teacher.getRanking();
-        return ok(Json.toJson(ranking));
-    }
-
     public static Result getBestSubjects(){
 
         Map<Subject,List<Long>> subjectList = new HashMap<>();
@@ -79,7 +76,7 @@ public class TeacherProfiles extends Controller {
             subjectList.put(subject,listLong);
         }
 
-        return ok(Json.toJson(mapProm(subjectList,subjects)));
+        return ok(Json.toJson(mapProm(subjectList, subjects)));
     }
 
     private static Map<String, Long> mapProm(Map<Subject,List<Long>> subjectListLong,List<Subject> subjects) {

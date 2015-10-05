@@ -89,7 +89,7 @@
                                         <!-- Apply any bg-* class to to the icon to color it -->
                                     <span class="info-box-icon bg-olive"><i class="fa fa-calendar-o"></i></span>
                                     <div class="info-box-content">
-                                        <span class="info-box-text">{{ lesson.subject }}</span>
+                                        <span class="info-box-text">{{ lesson.subject.text }}</span>
                                         <span class="info-box-number">{{ lesson.date }}</span>
                                     </div><!-- /.info-box-content -->
                                 </div><!-- /.info-box -->
@@ -104,7 +104,7 @@
                 <div class="col-sm-12">
                     <div class="box box-solid box-primary">
                         <div class="box-header">
-                            <h3 class="box-title">Clases Pasadas</h3>
+                            <h3 class="box-title"><a href="/review-lesson">Clases Pasadas</a></h3>
                             <div class="box-tools pull-right">
                                 <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                             </div><!-- /.box-tools -->
@@ -116,8 +116,8 @@
                                         <!-- Apply any bg-* class to to the icon to color it -->
                                     <span class="info-box-icon bg-yellow"><i class="fa fa-calendar-check-o"></i></span>
                                     <div class="info-box-content">
-                                        <span class="info-box-text">{{ lesson.subject }}</span>
-                                        <span class="info-box-number">{{ lesson.date }}</span>
+                                        <span class="info-box-text">{{ lesson.subject.text }}</span>
+                                        <span class="info-box-number"><a href="/review-lesson">{{ lesson.date }}</a></span>
                                     </div><!-- /.info-box-content -->
                                 </div><!-- /.info-box -->
                             </div>

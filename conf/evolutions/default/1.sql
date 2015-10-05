@@ -10,11 +10,13 @@ create table lesson (
   address                   varchar(255),
   comment                   varchar(255),
   price                     float,
+  subject_id                bigint,
   lesson_state              integer,
   teacher_id                bigint,
   teacher_review_id         bigint,
   student_id                bigint,
   student_review_id         bigint,
+  constraint uq_lesson_subject_id unique (subject_id),
   constraint uq_lesson_teacher_review_id unique (teacher_review_id),
   constraint uq_lesson_student_review_id unique (student_review_id),
   constraint pk_lesson primary key (id))
@@ -94,18 +96,20 @@ create sequence teacher_seq;
 
 create sequence user_seq;
 
-alter table lesson add constraint fk_lesson_teacher_1 foreign key (teacher_id) references teacher (id) on delete restrict on update restrict;
-create index ix_lesson_teacher_1 on lesson (teacher_id);
-alter table lesson add constraint fk_lesson_teacherReview_2 foreign key (teacher_review_id) references review (id) on delete restrict on update restrict;
-create index ix_lesson_teacherReview_2 on lesson (teacher_review_id);
-alter table lesson add constraint fk_lesson_student_3 foreign key (student_id) references student (id) on delete restrict on update restrict;
-create index ix_lesson_student_3 on lesson (student_id);
-alter table lesson add constraint fk_lesson_studentReview_4 foreign key (student_review_id) references review (id) on delete restrict on update restrict;
-create index ix_lesson_studentReview_4 on lesson (student_review_id);
-alter table student add constraint fk_student_user_5 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_student_user_5 on student (user_id);
-alter table teacher add constraint fk_teacher_user_6 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_teacher_user_6 on teacher (user_id);
+alter table lesson add constraint fk_lesson_subject_1 foreign key (subject_id) references subject (id) on delete restrict on update restrict;
+create index ix_lesson_subject_1 on lesson (subject_id);
+alter table lesson add constraint fk_lesson_teacher_2 foreign key (teacher_id) references teacher (id) on delete restrict on update restrict;
+create index ix_lesson_teacher_2 on lesson (teacher_id);
+alter table lesson add constraint fk_lesson_teacherReview_3 foreign key (teacher_review_id) references review (id) on delete restrict on update restrict;
+create index ix_lesson_teacherReview_3 on lesson (teacher_review_id);
+alter table lesson add constraint fk_lesson_student_4 foreign key (student_id) references student (id) on delete restrict on update restrict;
+create index ix_lesson_student_4 on lesson (student_id);
+alter table lesson add constraint fk_lesson_studentReview_5 foreign key (student_review_id) references review (id) on delete restrict on update restrict;
+create index ix_lesson_studentReview_5 on lesson (student_review_id);
+alter table student add constraint fk_student_user_6 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_student_user_6 on student (user_id);
+alter table teacher add constraint fk_teacher_user_7 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_teacher_user_7 on teacher (user_id);
 
 
 
