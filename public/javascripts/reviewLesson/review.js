@@ -30,7 +30,10 @@
         };
         $scope.getCurrentEmail = function(){
             //return reviews.nonReviewed[currentIndex].userToReview;
-            return nonReviewed[currentIndex].userToReview;
+            return reviews.nonReviewed[currentIndex].userToReview;
+        };
+        $scope.getCurrentId = function(){
+            return reviews.nonReviewed[currentIndex].lessonId;
         };
         //List the reviewed lesson get it from the controller
         $scope.listReviewedLessons = function(rls){
@@ -40,9 +43,19 @@
                     reviewDate: rls[i].reviewDate,
                     reviewComment: rls[i].reviewComment,
                     reviewStars: rls[i].reviewStars,
-                    index: i+1
+                    index: i
                 };
-                reviews.reviewed.push(auxObj);
+                if(reviews.reviewed[0].userReviewed == null){
+                    reviews.reviewed[0].userReviewed = auxObj.userReviewed;
+                    reviews.reviewed[0].reviewDate = auxObj.reviewDate;
+                    reviews.reviewed[0].reviewComment = auxObj.reviewComment;
+                    reviews.reviewed[0].reviewStars = auxObj.reviewStars;
+                    reviews.reviewed[0].index = auxObj.index;
+                }
+                else{
+                    reviews.reviewed.push(auxObj);
+                }
+
             }
         };
         //List the non reviewed lesson get it from the controller
@@ -56,26 +69,44 @@
                     lessonPrice: nrls[i].lessonPrice,
                     lessonId: nrls[i].lessonId,
                     userToReview: nrls[i].userToReview,
-                    index: i+1
+                    index: i
                 };
-                reviews.nonReviewed.push(auxObj);
+                if(reviews.nonReviewed[0].teacherName == null){
+                    reviews.nonReviewed[0].teacherName = auxObj.teacherName;
+                    reviews.nonReviewed[0].studentName = auxObj.studentName;
+                    reviews.nonReviewed[0].lessonDate = auxObj.lessonDate;
+                    reviews.nonReviewed[0].lessonDuration = auxObj.lessonDuration;
+                    reviews.nonReviewed[0].lessonPrice = auxObj.lessonPrice;
+                    reviews.nonReviewed[0].lessonId = auxObj.lessonId;
+                    reviews.nonReviewed[0].userToReview = auxObj.userToReview;
+                    reviews.nonReviewed[0].index = auxObj.index;
+                }
+                else{
+                    reviews.nonReviewed.push(auxObj);
+                }
             }
         };
 
-        $scope.currentReview = {
+        this.currentReview = {
+            toEmail: this.nonReviewedLessons[currentIndex].userToReviewed,
             stars: 4,
-            comment: null
+            comment: null,
+            idLesson: this.nonReviewedLessons[currentIndex].lessonId
         };
 
         $scope.postReview = function(){
-            var comment = "Comentarioooo"; //Default!! change it!!!
+            var comment = this.currentReview.comment;
             var stars = 4; //Default!! change it!!!
-            var toEmail = "user.student@gmail.com"; //Default!! change it!!!
-            var idLesson = 6; //Default!! change it!!!
+            var toEmail = this.getCurrentEmail();
+            var idLesson = this.getCurrentId();
+
+
             $http.post("/review-lesson/review?comment=" + comment + "&stars=" + stars +"&toEmail=" + toEmail + "&idLesson=" + idLesson)
                 .success(function(response){
                     window.location.replace("/");
                 });
+
+            //alert(comment + " " + stars + " " + toEmail + " " + idLesson);
         };
 
 
@@ -107,5 +138,6 @@
             }
         ]
     };
+
 
 })();
