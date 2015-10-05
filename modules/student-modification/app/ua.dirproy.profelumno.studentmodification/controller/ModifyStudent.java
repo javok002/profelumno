@@ -104,7 +104,7 @@ public class ModifyStudent extends Controller {
         Ebean.save(student);
         Ebean.save(student.getUser());
 //        return ok(Json.toJson(student));
-        return redirect("/student-profile/student-dashboard");
+        return ok(ua.dirproy.profelumno.studentprofile.controllers.routes.StudentProfile.dashboard().url());
     }
 
     public static Result savePicture() {
