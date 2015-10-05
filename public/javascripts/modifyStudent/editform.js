@@ -3,12 +3,12 @@
  */
 var app=angular.module( 'EditForm', ['ngTagsInput'] );
 
-app.controller("EditController", ['$http','$scope',function($http,$scope){
+app.controller("EditController", ['$http','$scope', 'fileUpload',function($http,$scope, fileUpload){
     edit=this;
     edit.u={};
-    edit.profilePicture='';
     edit.u.user={};
     edit.u.user.subjects=[];
+    $scope.imageUrl='';
 
     $http.get("user").
         success(function(data, status, headers, config) {
@@ -26,6 +26,14 @@ app.controller("EditController", ['$http','$scope',function($http,$scope){
             $scope.allSubjects= data;
         }).
         error(function(data, status, headers, config) {
+            // log error
+        });
+
+    $http.get('img')
+        .success(function (data, status, headers, config) {
+            $scope.imageUrl=data;
+        }).
+        error(function (data, status, headers, config) {
             // log error
         });
 
@@ -83,18 +91,10 @@ app.controller("EditController", ['$http','$scope',function($http,$scope){
     $scope.loc =$scope.geoCode();
 
     //IMAGE
-    $scope.uploadImage = function(files) {
-        var fd = new FormData();
-        fd.append("file", files[0]);
-
-        $http.post("img", fd, {
-            withCredentials: true,
-            headers: {'Content-Type': "image" },
-            transformRequest: angular.identity
-        }).success(
-            alert("success")
-        ).error(alert("error")/*function(data){alert("error"+data);}*/);
-
+    $scope.uploadFile = function(){
+        var file = $scope.fileToUpload;
+        var uploadUrl = "img";
+        fileUpload.uploadFileToUrl(file, uploadUrl, $scope);;
     };
     //SUBMIT
     $scope.errors = {
@@ -128,7 +128,8 @@ app.controller("EditController", ['$http','$scope',function($http,$scope){
         $http.post('student-modification', edit.u)
             .success(function (data) {
                 $scope.errors = { invalid: false, incomplete: false, teacherAge: false, studentAge: false,take:false};
-                alert(JSON.stringify(data));
+                //alert(JSON.stringify(data));
+                window.location.href = data;
             })
             .error(function (data) {
                 $scope.errors.taken=true;
@@ -313,3 +314,36 @@ app.directive("compareTo", function () {
         }
     }
 });
+
+app.directive('fileModel', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+
+            element.bind('change', function () {
+                scope.$apply(function () {
+                    modelSetter(scope, element[0].files[0]);
+                });
+            });
+        }
+    };
+}]);
+
+app.service('fileUpload', ['$http', function ($http) {
+    this.uploadFileToUrl = function (file, uploadUrl, scope) {
+        var fd = new FormData();
+        fd.append('file', file);
+        $http.post(uploadUrl, fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        })
+            .success(function (data, status, headers, config) {
+                edit.u.user.profilePicture = data;
+                scope.imageUrl=data;
+            })
+            .error(function () {
+            });
+    }
+}]);

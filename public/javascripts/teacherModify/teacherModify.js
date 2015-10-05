@@ -9,6 +9,7 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
     edit.u.user = {};
     $scope.radio = '';
     edit.u.subjects=[];
+    $scope.imageUrl='';
 
     $http.get('modify-teacher/user')
         .success(function (data, status, headers, config) {
@@ -29,7 +30,7 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
 
     $http.get('modify-teacher/img')
         .success(function (data, status, headers, config) {
-            edit.u.user.profilePicture = data;
+            $scope.imageUrl=data;
         }).
         error(function (data, status, headers, config) {
             // log error
@@ -58,7 +59,7 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
     var verify = function () {
         var today = new Date();
         var birthday = $scope.date;
-        $scope.errors.teacherAge = (today.getYear() - birthday.getYear() < 6 || (today.getYear() - birthday.getYear() == 6 && today.getMonth() < birthday.getMonth()));
+        $scope.errors.teacherAge = (today.getYear() - birthday.getYear() < 16 || (today.getYear() - birthday.getYear() == 16 && today.getMonth() < birthday.getMonth()));
         return !$scope.errors.incomplete && !$scope.errors.invalid && !$scope.errors.teacherAge;
     };
 
@@ -73,29 +74,34 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
         edit.u.homeClasses= $scope.radio=='yes';
         $http.post('modify-teacher/teacher-modification-post', edit.u)
             .success(function (data) {
-                $scope.errors = {incomplete: false, invalid: false, teacherAge: false};
+                $scope.errors = {incomplete: false, invalid: false, teacherAge: false, taken: false, length: false};
                 window.location.href = data;
                 /*alert(JSON.stringify(data));*/
             })
             .error(function (data) {
-                alert(data);
+                //alert(data);
             });
     };
 
     $scope.uploadFile = function(){
         var file = $scope.fileToUpload;
         var uploadUrl = "modify-teacher/img";
-        fileUpload.uploadFileToUrl(file, uploadUrl);;
+        fileUpload.uploadFileToUrl(file, uploadUrl, $scope);
     };
 
     $scope.submitSubjects = function () {
+        if (!$scope.subjectsForm.$valid) {
+            return;
+        }
         //var myJsonString = JSON.stringify($scope.edit);
         var literalSubjects = [];
         for(var i = 0; i < edit.u.user.subjects.length; i++){
             literalSubjects.push(edit.u.user.subjects[i].text);
         }
         $http.post('modify-teacher/subjects', literalSubjects)
-            .success("")
+            .success(function(response){
+                window.location.href = "/teacher-profile"
+            })
             .error("falla al guardar")
     };
 }]);
@@ -136,7 +142,7 @@ app.directive('fileModel', ['$parse', function ($parse) {
 }]);
 
 app.service('fileUpload', ['$http', function ($http) {
-    this.uploadFileToUrl = function (file, uploadUrl) {
+    this.uploadFileToUrl = function (file, uploadUrl, scope) {
         var fd = new FormData();
         fd.append('file', file);
         $http.post(uploadUrl, fd, {
@@ -145,6 +151,8 @@ app.service('fileUpload', ['$http', function ($http) {
         })
             .success(function (data, status, headers, config) {
                 edit.u.user.profilePicture = data;
+                scope.imageUrl=data;
+                //window.location.href=data;
             })
             .error(function () {
             });

@@ -19,6 +19,7 @@ GET        /                         ua.dirproy.profelumno.controllers.Applicati
 ->         /password-recovery        passwordRecovery.Routes
 ->         /hire-lesson              hireLesson.Routes
 ->         /modify-student           studentModification.Routes
+->         /contact-form             contactForm.Routes
 ->         /review-lesson            lessonReview.Routes
 ->         /student-profile          studentProfile.Routes
 

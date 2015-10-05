@@ -60,8 +60,8 @@ public class ModifyTeacher extends Controller {
             teacherU.setSurname(tchU.getSurname());
             teacher.setPrice(tch.getPrice());
             teacher.setDescription(tch.getDescription());
-            Ebean.save(teacher);
             Ebean.save(teacher.getUser());
+            Ebean.save(teacher);
 //            System.out.println(Teacher.list().get(0).getUser().getName());
             return ok(routes.ModifyTeacher.profileView().url()) /*ok(Json.toJson(teacher))*/;
         }else {
@@ -153,8 +153,8 @@ public class ModifyTeacher extends Controller {
                         e.printStackTrace();
                     }
                     teacher.getUser().setProfilePicture(Base64.getEncoder().encode(bfile));
-                    Ebean.save(teacher);
                     Ebean.save(teacher.getUser());
+                    Ebean.save(teacher);
                     return ok(teacher.getUser().getProfilePicture());
                 }
             }

@@ -1,8 +1,10 @@
 package ua.dirproy.profelumno.teachersearch.controllers;
 
+import authenticate.Authenticate;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.user.models.Subject;
 
@@ -17,6 +19,7 @@ import static play.libs.Json.toJson;
  * Date: 9/13/15
  * Project profelumno
  */
+@Authenticate({Student.class, Teacher.class})
 public class TeacherSearches extends Controller {
 
     public static Result teacherSearchView(){
