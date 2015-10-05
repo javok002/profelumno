@@ -46,8 +46,8 @@ public class ReviewController extends Controller {
             final long stars;
 
             if (teacher != null){
-                node.put("userReviewed", temp.getTeacher().getUser().getName() + " "
-                        + temp.getTeacher().getUser().getSurname());
+                node.put("userReviewed", temp.getStudent().getUser().getName() + " "
+                        + temp.getStudent().getUser().getSurname());
                 date = temp.getTeacherReview().getDate().getDate() + "/"
                         + (temp.getTeacherReview().getDate().getMonth() + 1)
                         + "/" + (temp.getTeacherReview().getDate().getYear() + 1900);
@@ -55,8 +55,8 @@ public class ReviewController extends Controller {
                 comment = temp.getTeacherReview().getComment();
                 stars = temp.getTeacherReview().getStars();
             } else {
-                node.put("userReviewed", temp.getStudent().getUser().getName() + " "
-                        + temp.getStudent().getUser().getSurname());
+                node.put("userReviewed", temp.getTeacher().getUser().getName() + " "
+                        + temp.getTeacher().getUser().getSurname());
                 date = temp.getStudentReview().getDate().getDate() + "/"
                         + (temp.getStudentReview().getDate().getMonth() + 1)
                         + "/" + (temp.getStudentReview().getDate().getYear() + 1900);
@@ -81,11 +81,11 @@ public class ReviewController extends Controller {
 
         if (teacher != null){
             lessons = Lesson.finder.where().eq("teacher", teacher).eq("studentReview", null)
-                    .gt("dateTime", new Date()).findList().iterator();
+                    .lt("dateTime", new Date()).findList().iterator();
         } else {
             final Student student = Student.finder.where().eq("user.id", userId).findUnique();
             lessons = Lesson.finder.where().eq("student", student).eq("teacherReview", null)
-                    .gt("dateTime", new Date()).findList().iterator();
+                    .lt("dateTime", new Date()).findList().iterator();
         }
 
         while (lessons.hasNext()){
@@ -181,10 +181,10 @@ public class ReviewController extends Controller {
         final Lesson lesson3 = new Lesson();
         final Lesson lesson4 = new Lesson();
 
-        lesson1.setDateTime(new Date(115, 9, 27));
-        lesson2.setDateTime(new Date(115, 9, 28));
-        lesson3.setDateTime(new Date(115, 9, 29));
-        lesson4.setDateTime(new Date(115, 11, 26));
+        lesson1.setDateTime(new Date(115, 8, 27));
+        lesson2.setDateTime(new Date(115, 8, 28));
+        lesson3.setDateTime(new Date(115, 8, 29));
+        lesson4.setDateTime(new Date(115, 10, 26));
 
         lesson1.setPrice(new Float(100.0));
         lesson2.setPrice(new Float(110.0));
@@ -203,25 +203,25 @@ public class ReviewController extends Controller {
 
         final Review review1 = new Review();
         review1.setComment("El alumno estuvo muy atento");
-        review1.setDate(new Date(115, 9, 28));
+        review1.setDate(new Date(115, 8, 28));
         review1.setStars((long) 5);
         review1.save();
 
         final Review review2 = new Review();
         review2.setComment("El profesor me ayudo a sacarme un 8 en la prueba");
-        review2.setDate(new Date(115, 9, 28));
+        review2.setDate(new Date(115, 8, 28));
         review2.setStars((long) 4);
         review2.save();
 
         final Review review3 = new Review();
         review3.setComment("El profesor es mal educado");
-        review3.setDate(new Date(115, 9, 29));
+        review3.setDate(new Date(115, 8, 29));
         review3.setStars((long) 2);
         review3.save();
 
         final Review review4 = new Review();
         review4.setComment("El alumno no presta atención");
-        review4.setDate(new Date(115, 9, 30));
+        review4.setDate(new Date(115, 8, 30));
         review4.setStars((long) 3);
         review4.save();
 
