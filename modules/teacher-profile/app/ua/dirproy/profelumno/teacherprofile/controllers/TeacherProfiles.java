@@ -48,12 +48,6 @@ public class TeacherProfiles extends Controller {
         return ok(Json.toJson(Teacher.getTeacher(idTeacher())));
     }
 
-    public static Result getRanking(){
-        Teacher teacher = Teacher.getTeacher(idTeacher());
-        float ranking = teacher.getRanking();
-        return ok(Json.toJson(ranking));
-    }
-
     public static Result getBestSubjects(){
 
         Map<Subject,List<Long>> subjectList = new HashMap<>();
@@ -79,7 +73,7 @@ public class TeacherProfiles extends Controller {
             subjectList.put(subject,listLong);
         }
 
-        return ok(Json.toJson(mapProm(subjectList,subjects)));
+        return ok(Json.toJson(mapProm(subjectList, subjects)));
     }
 
     private static Map<String, Long> mapProm(Map<Subject,List<Long>> subjectListLong,List<Subject> subjects) {

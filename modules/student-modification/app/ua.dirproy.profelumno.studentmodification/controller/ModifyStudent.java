@@ -82,6 +82,8 @@ public class ModifyStudent extends Controller {
             studentU.setSurname(stuU.getSurname());
             studentU.setLatitude(stuU.getLatitude());
             studentU.setLongitude(stuU.getLongitude());
+            studentU.setNeighbourhood(stuU.getNeighbourhood());
+            studentU.setCity(stuU.getCity());
             studentU.getSubjects().clear();
             for (Subject subject : stuU.getSubjects()) {
                 studentU.getSubjects().add(subject);
