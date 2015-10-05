@@ -23,7 +23,6 @@ import java.util.List;
 /**
  * Created by francisco on 13/09/15.
  */
-@Authenticate({Teacher.class})
 public class ModifyTeacher extends Controller {
 
     public static Result profileView() {
