@@ -6,7 +6,7 @@
 create table lesson (
   id                        bigint not null,
   date_time                 timestamp,
-  duration                  time,
+  duration                  bigint,
   address                   varchar(255),
   comment                   varchar(255),
   price                     float,
