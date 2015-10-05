@@ -8,7 +8,6 @@ import ua.dirproy.profelumno.common.models.Lesson;
 import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.teacherprofile.views.html.teacherProfile;
 import ua.dirproy.profelumno.user.models.Subject;
-import ua.dirproy.profelumno.user.models.User;
 
 import java.util.*;
 
@@ -18,8 +17,6 @@ public class TeacherProfiles extends Controller {
     public static Result teacherProfileView() {
         return ok(teacherProfile.render());
     }
-
-
 
     private static long idTeacher() {
         String id = session("id");

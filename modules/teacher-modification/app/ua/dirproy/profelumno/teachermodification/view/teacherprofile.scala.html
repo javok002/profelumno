@@ -97,6 +97,8 @@
                                 <input class="form-control" name="address" ng-model="edit.u.user.address" ng-enter="geoCode()"  googleplace/>
                                 <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
                             </div>
+                            <app-map class="map" center="loc" markers="[marker]" zoom="17"></app-map>
+
                         </div>
                         <div class="box-footer " role="group">
                             <div class="btn-group buttonAlign">
@@ -123,6 +125,7 @@
                         </div>
                     </form>
                 </div>
+
             </div>
         </div>
     </div>

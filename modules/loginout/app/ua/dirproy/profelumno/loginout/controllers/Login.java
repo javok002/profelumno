@@ -1,15 +1,13 @@
 package ua.dirproy.profelumno.loginout.controllers;
 
 import play.data.Form;
-import play.db.ebean.Model;
 import play.mvc.Controller;
 import play.mvc.Result;
 import ua.dirproy.profelumno.common.models.Lesson;
 import ua.dirproy.profelumno.common.models.Review;
+import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.loginout.models.UserLogger;
 import ua.dirproy.profelumno.loginout.views.html.login;
-import ua.dirproy.profelumno.loginout.views.html.main;
-import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
 
@@ -23,16 +21,7 @@ import java.util.GregorianCalendar;
 public class Login extends Controller {
 
     public static Result loginView (){
-        /*User user = new User();
-        user.setName("Pepe");
-        user.setSurname("Castro");
-        user.setEmail("pepe@gmail.com");
-        user.setBirthday(new Date());
-        user.setGender("M");
-        user.setPassword("pepehola");
-        user.setSecureAnswer("Fazzo");
-        user.setSecureQuestion("aaaa");
-        user.save();*/
+
         createMockTeacherProfile();
         return ok(login.render());}
 
@@ -56,10 +45,10 @@ public class Login extends Controller {
         teacher.setUser(user);
 
         final Subject subject =new Subject();
-        subject.setName("M");
+        subject.setName("Matematica");
 
         final Subject subject1 =new Subject();
-        subject1.setName("L");
+        subject1.setName("Lengua");
 
         Review review = new Review();
         review.setStars((long) 7);

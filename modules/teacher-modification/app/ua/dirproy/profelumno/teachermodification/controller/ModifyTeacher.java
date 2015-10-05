@@ -59,6 +59,10 @@ public class ModifyTeacher extends Controller {
             teacherU.setPassword(tchU.getPassword());
             teacherU.setSurname(tchU.getSurname());
             teacher.setPrice(tch.getPrice());
+            teacherU.setLatitude(tchU.getLatitude());
+            teacherU.setLongitude(tchU.getLongitude());
+            teacherU.setCity(tchU.getCity());
+            teacherU.setNeighbourhood(tchU.getNeighbourhood());
             teacher.setDescription(tch.getDescription());
             Ebean.save(teacher.getUser());
             Ebean.save(teacher);

@@ -70,6 +70,8 @@ create table user (
   address                   varchar(255),
   latitude                  varchar(255),
   longitude                 varchar(255),
+  city                      varchar(255),
+  neighbourhood             varchar(255),
   secure_question           varchar(255),
   secure_answer             varchar(255),
   reviews                   bigint,

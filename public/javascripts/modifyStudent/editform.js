@@ -2,6 +2,7 @@
  * Created by tombatto on 14/09/15.
  */
 var app=angular.module( 'EditForm', ['ngTagsInput'] );
+var arrAddress;
 
 app.controller("EditController", ['$http','$scope', 'fileUpload',function($http,$scope, fileUpload){
     edit=this;
@@ -79,6 +80,7 @@ app.controller("EditController", ['$http','$scope', 'fileUpload',function($http,
             this.geocoder.geocode({ 'address': $scope.search }, function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                     var loc = results[0].geometry.location;
+                    arrAddress = results[0].address_components;
                     $scope.search = results[0].formatted_address;
                     $scope.gotoLocation(loc.lat(), loc.lng());
                     return loc;
@@ -89,6 +91,27 @@ app.controller("EditController", ['$http','$scope', 'fileUpload',function($http,
         }
     };
     $scope.loc =$scope.geoCode();
+
+    $scope.getCity = function () {
+        for(var i=0;i<arrAddress.length;i++)
+        {
+            if (arrAddress[i].types[0] == "locality") {
+                return arrAddress[i].long_name;
+            }
+        }
+        return null;
+    }
+
+    $scope.getNeighbourhood = function () {
+        for(var i=0;i<arrAddress.length;i++)
+        {
+            if (arrAddress[i].types.length>=2 && arrAddress[i].types[1] == "sublocality") {
+                return arrAddress[i].long_name;
+            }
+        }
+        return null;
+    }
+
 
     //IMAGE
     $scope.uploadFile = function(){
@@ -123,6 +146,8 @@ app.controller("EditController", ['$http','$scope', 'fileUpload',function($http,
         edit.u.user.birthday=$scope.date;
         edit.u.user.latitude = $scope.loc.lat;
         edit.u.user.longitude = $scope.loc.lon;
+        edit.u.user.city= $scope.getCity();
+        edit.u.user.neighbourhood= $scope.getNeighbourhood();
 
         //edit.u.user.subjects;
         $http.post('student-modification', edit.u)

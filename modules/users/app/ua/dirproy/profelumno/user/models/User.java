@@ -28,6 +28,8 @@ public class User extends Model {
     private String address;
     private String latitude;
     private String longitude;
+    private String city;
+    private String neighbourhood;
     private String secureQuestion;
     private String secureAnswer;
     private long reviews;
@@ -49,6 +51,22 @@ public class User extends Model {
     }
 
     public Long getId() { return id; }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getNeighbourhood() {
+        return neighbourhood;
+    }
+
+    public void setNeighbourhood(String neighbourhood) {
+        this.neighbourhood = neighbourhood;
+    }
 
     public void setId(Long id) { this.id = id; }
 
