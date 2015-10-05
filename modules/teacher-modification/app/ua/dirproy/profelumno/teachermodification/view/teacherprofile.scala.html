@@ -22,8 +22,11 @@
                         </div>
                         <div class="box-footer">
                             <form role="form" ng-submit="uploadFile()" enctype="multipart/form-data" name="modifyForm">
-                                <input id="inputFile" class="btn btn-info" type="file" name="file" ng-model="edit.fileToUpload" file-model="fileToUpload" accept="image/*" required/> @*onchange="angular.element(this).scope().submitImage(this.files)"/>*@
-                                <button class="btn btn-info" type="submit">Guardar</button>
+                                <input id="inputFile" class="btn btn-info buttonAlign" type="file" name="file" ng-model="edit.fileToUpload" file-model="fileToUpload" accept="image/*" required/> @*onchange="angular.element(this).scope().submitImage(this.files)"/>*@
+                                <div class="btn-group buttonAlign" role="group">
+                                    <button class="btn btn-primary" type="submit">Guardar</button>
+                                    <a href="" class="btn btn-danger" type="button">Cancelar</a>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -33,7 +36,7 @@
                 <div class="box box-primary">
                     <div class="box-header">
                         <h4>Información personal</h4>
-                        <a class="btn btn-info" style="float: right" href="@ua.dirproy.profelumno.subscription.controllers.routes.TeacherSubscription.subscriptionForm()">Modificar subscripcion</a>
+                        <a class="btn btn-info buttonAlign" href="@ua.dirproy.profelumno.subscription.controllers.routes.TeacherSubscription.subscriptionForm()">Modificar subscripcion</a>
                     </div>
                     <form role="form" method="post" name="modifyForm" class="from-horizontal"  ng-submit="submit()">
                         <div class="box-body">
@@ -79,10 +82,13 @@
                                 <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
                             </div>
                         </div>
-                        <div class="box-footer">
-                            <div class="input-group"><button type="submit" class="btn btn-primary">Guardar</button></div>
-                            <div class="input-group"><a href=""><button type="button">Cancelar</button></a></div>
+                        <div class="box-footer " role="group">
+                            <div class="btn-group buttonAlign">
+                            @*<div class="input-group">*@<button type="submit" class="btn btn-primary">Guardar</button>@*</div>*@
+                            @*<div class="input-group"><a href="">*@<a href="" class="btn btn-danger" type="button">Cancelar</a>@*</a></div>*@
+                            </div>
                         </div>
+                        <br>
                     </form>
                 </div>
                 @*<div class="box">
