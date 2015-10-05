@@ -1,20 +1,25 @@
 angular.module('studentProfile', [])
 
-    .controller('HireCtrl',['$scope', '$http', function($scope, $http) {
-        var data;
+    .controller('StudentCtrl',['$scope', '$http', function($scope, $http) {
+        $scope.data = '';
+        $scope.classes = ['danger', 'info', 'warning', 'success'];
 
-        $http({
-            method: 'GET',
-            url: '/student-profile/get-info'
-        }).then(function successCallback(response) {
-            data = response.data;
-        });
+        $http.get('/student-profile/get-info', config).then(successCallback);
 
+        succesCallback = function(response) {
+            $scope.data = response.data;
+        };
     }])
 
-    .directive('subjects', function(){
+    .directive('subjects', function() {
         return {
             restrict: 'E',
+            scope : {
+                data : '=data'
+            },
+            link : function (scope){
+               var i = 1;
+            },
             template:
                 <!-- Main content -->
             '<section class="content">' +
@@ -26,17 +31,10 @@ angular.module('studentProfile', [])
                                 '<h3 class="box-title"> Materias</h3>' +
                             '</div> <!-- /.box-header -->' +
                             '<div class="box-body">' +
-                                '<div class="callout callout-danger">' +
-                                    '<h4> I am a danger callout!</h4>' +
-                                '</div>' +
-                                '<div class="callout callout-info">' +
-                                    '<h4> I am an info callout!</h4>' +
-                                '</div>' +
-                                '<div class="callout callout-warning">' +
-                                    '<h4> I am a warning callout! </h4>' +
-                                '</div>' +
-                                '<div class="callout callout-success">' +
-                                    '<h4> I am a success callout! </h4>' +
+                                '<div ng-repeat="subject in data.subjects">' +
+                                    '<div class="callout callout-{{classes[$index % 4]}}">' +
+                                        '<h4>{{ subject.text }}</h4>' +
+                                    '</div>' +
                                 '</div>' +
                             '</div> <!-- /.box-body -->' +
                         '</div>' +
