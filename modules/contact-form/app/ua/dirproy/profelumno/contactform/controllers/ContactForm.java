@@ -1,5 +1,8 @@
 package ua.dirproy.profelumno.contactform.controllers;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import play.data.DynamicForm;
+import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
@@ -17,11 +20,23 @@ public class ContactForm extends Controller {
 
     // TODO: send email to correct email address
     // TODO: give a window confirmation after sending email then reload to another page
-    public static void sendForm(String name, String email, String subject, String message) {
+    public static Result sendForm() {
+        DynamicForm requestData = DynamicForm.form().bindFromRequest();
+        String name, email, subject, message;
+        name = requestData.get("name");
+        email = requestData.get("email");
+        subject = requestData.get("subject");
+        message = requestData.get("message");
+        final ObjectNode result = Json.newObject();
+        result.put("name", name);
+        result.put("email", email);
+        result.put("subject",subject);
+        result.put("message",message);
         try {
-            MailSenderUtil.send(new String[]{"emailToSendTo@email.com"}, subject, message);
+            MailSenderUtil.send(new String[]{"francisco.di@ing.austral.edu.ar"}, subject, message);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return ok(result);
     }
 }
