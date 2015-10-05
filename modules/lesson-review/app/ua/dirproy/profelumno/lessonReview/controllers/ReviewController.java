@@ -17,7 +17,7 @@ import java.time.Duration;
 import java.util.Date;
 import java.util.Iterator;
 
-@Authenticate({Teacher.class,Student.class})
+
 public class ReviewController extends Controller {
 
     public static Result show(){
