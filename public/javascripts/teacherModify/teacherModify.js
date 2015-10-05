@@ -7,6 +7,7 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
     edit = this;
     edit.u = {};
     edit.u.user = {};
+    edit.u.description=' ';
     $scope.radio = '';
     edit.u.subjects=[];
     $scope.imageUrl='';
@@ -54,7 +55,8 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
         invalid: false,
         incomplete: false,
         teacherAge: false,
-        taken:false
+        taken:false,
+        length: false
     };
     var verify = function () {
         var today = new Date();
@@ -63,6 +65,9 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
         return !$scope.errors.incomplete && !$scope.errors.invalid && !$scope.errors.teacherAge;
     };
 
+    $scope.verifyDesc= function(){
+        $scope.errors.length=edit.u.description.length<50;
+    };
     $scope.submit = function () {
         if (!verify())
             return;
