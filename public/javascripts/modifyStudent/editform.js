@@ -121,6 +121,9 @@ app.controller("EditController", ['$http','$scope',function($http,$scope){
         edit.u.user.password=$scope.password;
         edit.u.user.address=$scope.search;
         edit.u.user.birthday=$scope.date;
+        edit.u.user.latitude = $scope.loc.lat;
+        edit.u.user.longitude = $scope.loc.lon;
+
         //edit.u.user.subjects;
         $http.post('student-modification', edit.u)
             .success(function (data) {
