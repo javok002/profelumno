@@ -16,6 +16,7 @@ import ua.dirproy.profelumno.user.models.User;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -78,12 +79,49 @@ public class ModifyTeacher extends Controller {
         Form<Teacher> form = Form.form(Teacher.class).bindFromRequest();
         if (form.hasErrors())
             return badRequest("Error in form");
-        Teacher aux=form.get();
+//        Teacher aux=form.get();
         final long userId=Long.parseLong(session("id"));
         Teacher teacher = Ebean.find(Teacher.class, userId);
+        List<Subject> currentSubjects = new ArrayList<>(form.data().size());
+        //Creo las materias que no existen
+        for (String currentSubject : form.data().values()) {
+            if(!existsSubject(currentSubject, currentSubjects)){
+                Subject newSubject = new Subject(currentSubject);
+                Ebean.save(newSubject);
+                currentSubjects.add(newSubject);
+            }
+        }
+
+        //Saco del teacher las materias que elimino
+        for (Subject subject : teacher.getUser().getSubjects()) {
+            if(!currentSubjects.contains(subject)){
+                subject.getUsers().remove(teacher.getUser());
+                teacher.getUser().getSubjects().remove(subject);
+            }
+        }
+        //Le agrego al teacher las nuevas materias que dicta
+        for (Subject currentSubject : currentSubjects) {
+            if(!teacher.getUser().getSubjects().contains(currentSubject)){
+                teacher.getUser().getSubjects().add(currentSubject);
+                currentSubject.getUsers().add(teacher.getUser());
+            }
+        }
+
         //teacher.setSubjects(aux.getSubjects());
-        Ebean.save(teacher);
+        Ebean.update(teacher);
+        Ebean.update(teacher.getUser());
         return ok();
+    }
+
+    private static boolean existsSubject(String currentSubject, List<Subject> listToAddSubject) {
+        List<Subject> persistedSubjects = Subject.finder.findList();
+        for (Subject persistedSubject : persistedSubjects) {
+            if (persistedSubject.getName().equals(currentSubject)) {
+                listToAddSubject.add(persistedSubject);
+                return true;
+            }
+        }
+        return false;
     }
 
     public static Result getPicture(){
