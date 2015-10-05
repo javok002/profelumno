@@ -28,7 +28,16 @@ public class Common extends Controller {
     }
 
     public static Result userImage() {
-        return ok(Ebean.find(User.class, Long.parseLong(session("id"))).getProfilePicture());
+        byte[] picture = Ebean.find(User.class, Long.parseLong(session("id"))).getProfilePicture();
+        return picture != null ? ok(picture) : badRequest();
+    }
+
+    public static String editProfileUrl() {
+        return userIsStudent() ? "/modify-student/edit" : "/modify-teacher";
+    }
+
+    public static String dashboardUrl() {
+        return userIsStudent() ? "/student-profile/student-dashboard" : "/teacher-profile";
     }
 
     public static Html sidebarContent() {

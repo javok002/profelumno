@@ -50,7 +50,7 @@ lazy val teacherSearch = (project in file("modules/teacher-search"))
 
 lazy val studentModification = (project in file("modules/student-modification"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(users,register,common,architecture)
+  .dependsOn(users, register, common, architecture)
 
 lazy val passwordRecovery = (project in file("modules/password-recovery"))
   .enablePlugins(PlayJava, PlayEbean)
@@ -58,18 +58,24 @@ lazy val passwordRecovery = (project in file("modules/password-recovery"))
 
 lazy val loginout = (project in file("modules/loginout"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(users, common)//, teacherSubscription, passwordRecovery)
+  .dependsOn(users, common) //, teacherSubscription, passwordRecovery)
 
 lazy val lessonReview = (project in file("modules/lesson-review"))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(common, architecture)
 
+lazy val contactForm = (project in file("modules/contact-form"))
+  .enablePlugins(PlayJava, PlayEbean)
+  .dependsOn(mailSender, common)
+
 lazy val root = (project in file("."))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(common, studentProfile, studentModification, users, teacherProfile, teacherSubscription, register, delete,
-    passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture, loginout, lessonReview)
+    passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture, loginout, lessonReview,
+    contactForm)
   .aggregate(common, studentProfile, studentModification, users, teacherProfile, teacherSubscription, register, delete,
-    passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture,loginout, lessonReview)
+    passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture, loginout, lessonReview,
+    contactForm)
 
 
 scalaVersion := "2.11.6"
@@ -82,7 +88,7 @@ libraryDependencies ++= Common.dependencies
 // other, legacy style, accesses its actions statically.
 routesGenerator := InjectedRoutesGenerator
 
-includeFilter in (Assets, LessKeys.less) := "*.less"
+includeFilter in(Assets, LessKeys.less) := "*.less"
 
 
 fork in run := true

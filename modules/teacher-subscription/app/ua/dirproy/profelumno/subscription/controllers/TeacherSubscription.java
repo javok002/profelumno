@@ -1,5 +1,6 @@
 package ua.dirproy.profelumno.subscription.controllers;
 
+import authenticate.Authenticate;
 import org.apache.commons.validator.CreditCardValidator;
 import play.data.Form;
 import play.mvc.Controller;
@@ -19,6 +20,7 @@ import java.util.Date;
  * Time: 12:53 PM
  * To change this template use File | Settings | File Templates.
  */
+@Authenticate({Teacher.class})
 public class TeacherSubscription extends Controller{
 
     public static Result validateForm(){

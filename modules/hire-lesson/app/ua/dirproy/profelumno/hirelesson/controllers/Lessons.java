@@ -1,6 +1,7 @@
 package ua.dirproy.profelumno.hirelesson.controllers;
 
 
+import authenticate.Authenticate;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -19,6 +20,7 @@ import java.util.Date;
 /**
  * Created by Paca on 9/13/15. Oh yeah
  */
+@Authenticate(Student.class)
 public class Lessons extends Controller {
 
     public static Result newLesson() throws MessagingException {

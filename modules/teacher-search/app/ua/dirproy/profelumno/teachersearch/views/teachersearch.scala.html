@@ -13,7 +13,7 @@
                     <div class="col-sm-6 form-group">
                         <label>Materias</label>
                         <div class="input-group">
-                            <tags-input ng-model="subjects" name="subjects" add-on-paste="true">
+                            <tags-input ng-model="subjects" name="subjects" add-from-autocomplete-only="true" add-on-enter="false" add-on-paste="true">
                                 <auto-complete source="loadTags($query)"></auto-complete>
                             </tags-input>
                             <span class="input-group-addon"><i class="fa fa-book"></i></span>
@@ -64,7 +64,7 @@
                         <td> {{teacher.user.surname}}, {{teacher.user.name}}</td>
                         <td>{{teacher.ranking}}</td>
                         <td>{{teacher.lessonsDictated}}</td>
-                        <td><hire-lesson teacher-id=teacher.id></hire-lesson></td>
+                        <td><hire-lesson teacher-id=teacher.id index=$index></hire-lesson></td>
                     </tr>
                 </tbody>
             </table>

@@ -1,9 +1,12 @@
 package ua.dirproy.profelumno.teachersearch.controllers;
 
+import authenticate.Authenticate;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
+import ua.dirproy.profelumno.user.models.Subject;
 
 
 import java.util.ArrayList;
@@ -16,6 +19,7 @@ import static play.libs.Json.toJson;
  * Date: 9/13/15
  * Project profelumno
  */
+@Authenticate({Student.class, Teacher.class})
 public class TeacherSearches extends Controller {
 
     public static Result teacherSearchView(){
@@ -40,8 +44,11 @@ public class TeacherSearches extends Controller {
     }
 
     private static boolean checkSubjects(List<String> subjects,Teacher teacher) {
-
-        return !teacher.getUser().getSubjects().containsAll(subjects);
+        List<String> currentSubjects = new ArrayList<>();
+        for (Subject subject : teacher.getUser().getSubjects()) {
+            currentSubjects.add(subject.getName());
+        }
+        return !currentSubjects.containsAll(subjects);
     }
 
     private static boolean checkRanking(Integer ranking, Teacher teacher) {
