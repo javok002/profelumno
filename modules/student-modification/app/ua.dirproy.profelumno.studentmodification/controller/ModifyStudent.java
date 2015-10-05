@@ -10,6 +10,7 @@ import play.mvc.Result;
 import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.studentmodification.view.html.changepassword;
 import ua.dirproy.profelumno.studentmodification.view.html.modifystudent;
+import ua.dirproy.profelumno.studentprofile.controllers.*;
 import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
 
@@ -31,43 +32,43 @@ public class ModifyStudent extends Controller {
         return ok(changepassword.render());
     }
 
-    public static Result getStudent(){
+    public static Result getStudent() {
         final Long userId = Long.parseLong(session().get("id"));
-        User user=User.finder.byId(userId);
-        Student student = Student.finder.where().eq("user",user).findUnique();
-        JsonNode json= Json.toJson(student);
+        User user = User.finder.byId(userId);
+        Student student = Student.finder.where().eq("user", user).findUnique();
+        JsonNode json = Json.toJson(student);
         return ok(json);
     }
 
     //si no hay ninguna materia carga 3 materias
-    public static Result getSubjects(){
+    public static Result getSubjects() {
         if (Subject.noSubjects()) {
-            Subject matematica=new Subject("Matematica");
-            Subject quimica=new Subject("Quimica");
-            Subject fisica=new Subject("Fisica");
+            Subject matematica = new Subject("Matematica");
+            Subject quimica = new Subject("Quimica");
+            Subject fisica = new Subject("Fisica");
             matematica.save();
             quimica.save();
             fisica.save();
         }
 
-        List<Subject>subjects=Ebean.find(Subject.class).findList();
-        JsonNode json=Json.toJson(subjects);
+        List<Subject> subjects = Ebean.find(Subject.class).findList();
+        JsonNode json = Json.toJson(subjects);
         return ok(json);
     }
 
 
-    public static Result saveStudent(){
+    public static Result saveStudent() {
         Form<Student> form = Form.form(Student.class).bindFromRequest();
         if (form.hasErrors()) {
 //            return badRequest(register.render());
             return badRequest("Error in form");
         }
         Student stu = form.get();
-        User user=stu.getUser();
-        Student student = Student.finder.where().eq("user",user).findUnique();
-        if ((stu.getUser().getEmail()).equalsIgnoreCase(student.getUser().getEmail())|| User.validateEmailUnique(stu.getUser().getEmail())) {
-            User studentU=student.getUser();
-            User stuU=stu.getUser();
+        User user = stu.getUser();
+        Student student = Student.finder.where().eq("user", user).findUnique();
+        if ((stu.getUser().getEmail()).equalsIgnoreCase(student.getUser().getEmail()) || User.validateEmailUnique(stu.getUser().getEmail())) {
+            User studentU = student.getUser();
+            User stuU = stu.getUser();
             studentU.setAddress(stuU.getAddress());
             studentU.setBirthday(stuU.getBirthday());
             studentU.setEmail(stuU.getEmail());
@@ -80,28 +81,30 @@ public class ModifyStudent extends Controller {
             for (Subject subject : stuU.getSubjects()) {
                 studentU.getSubjects().add(subject);
             }
-                    Ebean.save(student);
-                    Ebean.save(student.getUser());
-                    return ok(Json.toJson(student));
-        }else {
+            Ebean.save(student);
+            Ebean.save(student.getUser());
+//                    return ok(Json.toJson(student));
+            return ok(ua.dirproy.profelumno.studentprofile.controllers.routes.StudentProfile.dashboard().url());
+        } else {
             return badRequest("taken");
         }
     }
 
-    public static Result savePassword(){
+    public static Result savePassword() {
         Form<Student> form = Form.form(Student.class).bindFromRequest();
         if (form.hasErrors()) {
 //            return badRequest(register.render());
             return badRequest("Error in form");
         }
         Student stu = form.get();
-        User user=stu.getUser();
-        Student student = Student.finder.where().eq("user",user).findUnique();
-        User studentU=student.getUser();
+        User user = stu.getUser();
+        Student student = Student.finder.where().eq("user", user).findUnique();
+        User studentU = student.getUser();
         studentU.setPassword(user.getPassword());
         Ebean.save(student);
         Ebean.save(student.getUser());
-        return ok(Json.toJson(student));
+//        return ok(Json.toJson(student));
+        return redirect("/student-profile/student-dashboard");
     }
 
     public static Result savePicture() {
