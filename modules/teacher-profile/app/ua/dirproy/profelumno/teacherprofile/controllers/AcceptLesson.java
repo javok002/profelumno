@@ -1,5 +1,6 @@
 package ua.dirproy.profelumno.teacherprofile.controllers;
 
+import authenticate.Authenticate;
 import play.libs.*;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -15,6 +16,7 @@ import java.util.List;
 /**
  * Created by facundo on 28/9/15.
  */
+@Authenticate({Teacher.class})
 public class AcceptLesson extends Controller {
     public static Result acceptView() {
         return ok(acceptLesson.render());

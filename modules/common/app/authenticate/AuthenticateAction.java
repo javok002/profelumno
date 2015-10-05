@@ -17,10 +17,19 @@ public class AuthenticateAction extends Action<Authenticate> {
 
     @Override
     public F.Promise<Result> call(Http.Context context) throws Throwable {
-        final long userId = Long.parseLong(session("id"));
-        User user = Ebean.find(User.class, userId);
-        Teacher teacher = Teacher.finder.where().eq("user", user).findUnique();
-        Student student = Student.finder.where().eq("user", user).findUnique();
+        final long userId;
+        User user;
+        Teacher teacher;
+        Student student;
+        try {
+            userId= Long.parseLong(session("id"));
+            user = Ebean.find(User.class, userId);
+            teacher = Teacher.finder.where().eq("user", user).findUnique();
+            student = Student.finder.where().eq("user", user).findUnique();
+        }catch (NumberFormatException E){
+            teacher=null;
+            student=null;
+        }
         if (teacher != null) {
             if (check(Teacher.class)) {
                 return delegate.call(context);
@@ -30,11 +39,9 @@ public class AuthenticateAction extends Action<Authenticate> {
             if (check(Student.class)) {
                 return delegate.call(context);
             }
-            return F.Promise.pure(redirect("student-profile"));
-        }if (check(User.class)){
-            return delegate.call(context);
+            return F.Promise.pure(redirect("student-profile/student-dashboard"));
         }
-        return F.Promise.pure(redirect("/register"));
+        return F.Promise.pure(redirect("/log/in"));
 
 
     }

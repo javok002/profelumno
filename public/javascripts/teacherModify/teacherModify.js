@@ -13,9 +13,9 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
     $http.get('modify-teacher/user')
         .success(function (data, status, headers, config) {
             edit.u = data;
-            for(var i = 0; i < edit.u.user.subjects; i++){
-                edit.u.subjects.push({"text": edit.u.user.subjects[i]});
-            }
+            //for(var i = 0; i < edit.u.user.subjects; i++){
+            //    edit.u.subjects.push({"text": edit.u.user.subjects[i]});
+            //}
             $scope.date=new Date(edit.u.user.birthday);
             if (edit.u.homeClasses) {
                 $scope.radio = 'yes';
@@ -91,8 +91,8 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
     $scope.submitSubjects = function () {
         //var myJsonString = JSON.stringify($scope.edit);
         var literalSubjects = [];
-        for(var i = 0; i < edit.u.subjects.length; i++){
-            literalSubjects.push(edit.u.subjects[i].text);
+        for(var i = 0; i < edit.u.user.subjects.length; i++){
+            literalSubjects.push(edit.u.user.subjects[i].text);
         }
         $http.post('modify-teacher/subjects', literalSubjects)
             .success("")

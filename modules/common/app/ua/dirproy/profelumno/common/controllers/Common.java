@@ -32,6 +32,14 @@ public class Common extends Controller {
         return picture != null ? ok(picture) : badRequest();
     }
 
+    public static String editProfileUrl() {
+        return userIsStudent() ? "/modify-student/edit" : "/modify-teacher";
+    }
+
+    public static String dashboardUrl() {
+        return userIsStudent() ? "/student-profile/student-dashboard" : "/teacher-profile";
+    }
+
     public static Html sidebarContent() {
         return userIsTeacher() ? teacherSidebarContent.render() : studentSidebarContent.render();
     }

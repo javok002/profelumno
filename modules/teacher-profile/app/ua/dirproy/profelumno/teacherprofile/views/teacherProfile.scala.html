@@ -13,6 +13,7 @@
         </section>
 
         <section class="content">
+
             <div class="row">    <!-- Apply any bg-* class to to the info-box to color it -->
                 <div class="col-md-4">
                     <div class="info-box bg-yellow">
@@ -45,14 +46,19 @@
                     </div><!-- /.info-box -->
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-sm-12">
                     <div class="box box-solid box-success">
                         <div class="box-header">
                             <h3 class="box-title">Materias Mejor Puntuadas</h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            </div><!-- /.box-tools -->
                         </div><!-- /.box-header -->
                         <div class="box-body bg-gray-light">
-                            <div class="col-sm-4" ng-repeat="(subject, score) in topSubjects">
+                            <span ng-show="noTopSubjects">No hay información disponible</span>
+                            <div class="col-md-4 col-sm-6" ng-repeat="(subject, score) in topSubjects">
                                 <div class="info-box">
                                         <!-- Apply any bg-* class to to the icon to color it -->
                                     <span class="info-box-icon bg-aqua"><i class="fa fa-book"></i></span>
@@ -66,6 +72,60 @@
                     </div><!-- /.box -->
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="box box-solid box-primary">
+                        <div class="box-header">
+                            <h3 class="box-title">Próximas Clases</h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            </div><!-- /.box-tools -->
+                        </div><!-- /.box-header -->
+                        <div class="box-body bg-gray-light">
+                            <span ng-show="nextLessons.length == 0">No hay información disponible</span>
+                            <div class="col-md-4 col-sm-6" ng-repeat="lesson in nextLessons">
+                                <div class="info-box">
+                                        <!-- Apply any bg-* class to to the icon to color it -->
+                                    <span class="info-box-icon bg-olive"><i class="fa fa-calendar-o"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">{{ lesson.subject }}</span>
+                                        <span class="info-box-number">{{ lesson.date }}</span>
+                                    </div><!-- /.info-box-content -->
+                                </div><!-- /.info-box -->
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="box box-solid box-primary">
+                        <div class="box-header">
+                            <h3 class="box-title">Clases Pasadas</h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            </div><!-- /.box-tools -->
+                        </div><!-- /.box-header -->
+                        <div class="box-body bg-gray-light">
+                            <span ng-show="prevLessons.length == 0">No hay información disponible</span>
+                            <div class="col-md-4 col-sm-6" ng-repeat="lesson in prevLessons">
+                                <div class="info-box">
+                                        <!-- Apply any bg-* class to to the icon to color it -->
+                                    <span class="info-box-icon bg-yellow"><i class="fa fa-calendar-check-o"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">{{ lesson.subject }}</span>
+                                        <span class="info-box-number">{{ lesson.date }}</span>
+                                    </div><!-- /.info-box-content -->
+                                </div><!-- /.info-box -->
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                </div>
+            </div>
+
         </section>
 
 
