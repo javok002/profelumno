@@ -62,20 +62,27 @@
             }
         };
 
-        $scope.currentReview = {
+        this.currentReview = {
+            toEmail: this.nonReviewedLessons[currentIndex].userToReviewed,
             stars: 4,
             comment: null
         };
-
+        /*$scope.currentReview = {
+            stars: 4,
+            comment: null
+        };
+*/
         $scope.postReview = function(){
-            var comment = "Comentarioooo"; //Default!! change it!!!
+            var comment = this.currentReview.comment;
             var stars = 4; //Default!! change it!!!
             var toEmail = "user.student@gmail.com"; //Default!! change it!!!
             var idLesson = 6; //Default!! change it!!!
+            /*
             $http.post("/review-lesson/review?comment=" + comment + "&stars=" + stars +"&toEmail=" + toEmail + "&idLesson=" + idLesson)
                 .success(function(response){
                     window.location.replace("/");
-                });
+                });*/
+            //alert("Comment: " + comment + "user: " + toEmail)
         };
 
 
