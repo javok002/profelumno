@@ -35,7 +35,7 @@ angular.module('profLesson', [])
             },
             template:
             '<button type="button" class="btn btn-success" data-toggle="modal" data-target="#hire-modal{{index}}">' +
-                'Hire' +
+                'Contratar' +
             '</button>' +
 
             '<!-- Modal -->' +
@@ -45,7 +45,7 @@ angular.module('profLesson', [])
                     '<div class="modal-content">' +
                         '<div class="modal-header">' +
                             '<button type="button" class="close" data-dismiss="modal">&times;</button>' +
-                            '<h4 class="modal-title">Hire lesson</h4>' +
+                            '<h4 class="modal-title">Contratar Clase</h4>' +
                         '</div>' +
                         '<div class="modal-body">' +
                             '<div ng-controller="HireCtrl">' +
@@ -94,15 +94,15 @@ angular.module('profLesson', [])
                                             '<input type="email" class="form-control" placeholder="Fecha y horario" required="">' +
                                         '</div>' +
                                         '<div class="form-group">' +
-                                            '<label>Textarea</label>' +
-                                            '<textarea class="form-control" rows="3" placeholder="Enter ..." ng-model="comment"></textarea>' +
+                                            '<label>Comentario</label>' +
+                                            '<textarea class="form-control" rows="3" placeholder="Dejar comentario ..." ng-model="comment"></textarea>' +
                                         '</div>' +
                                     '</div><!-- /.box-body -->' +
-                                    '<button ng-click="postLesson(teacherId , subjectId)" class="btn btn-primary" data-dismiss="modal">Submit</button>' +
+                                    '<button ng-click="postLesson(teacherId , subjectId)" class="btn btn-primary" data-dismiss="modal">Enviar</button>' +
                             '</div><!-- /.box -->' +
                         '</div>' +
                         '<div class="modal-footer">' +
-                            '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' +
+                            '<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>' +
                         '</div>' +
                     '</div>' +
                 '</div>'+

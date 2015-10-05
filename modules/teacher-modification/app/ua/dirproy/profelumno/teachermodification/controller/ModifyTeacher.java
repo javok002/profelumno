@@ -93,12 +93,15 @@ public class ModifyTeacher extends Controller {
         }
 
         //Saco del teacher las materias que elimino
+
+        final List<Subject> removedSubjects = new ArrayList<>();
         for (Subject subject : teacher.getUser().getSubjects()) {
             if(!currentSubjects.contains(subject)){
                 subject.getUsers().remove(teacher.getUser());
-                teacher.getUser().getSubjects().remove(subject);
+                removedSubjects.add(subject);
             }
         }
+        teacher.getUser().getSubjects().removeAll(removedSubjects);
         //Le agrego al teacher las nuevas materias que dicta
         for (Subject currentSubject : currentSubjects) {
             if(!teacher.getUser().getSubjects().contains(currentSubject)){

@@ -1,10 +1,9 @@
 @()
 
-@ua.dirproy.profelumno.common.views.html.main("Modify student") {
-    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/register/register.css")">
-    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifystudent/ng-tags-input.min.css")">
-    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifystudent/ng-tags-input.bootstrap.min.css")">
-    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifystudent/modify-student.css")">
+@ua.dirproy.profelumno.common.views.html.tidyMain("Modify student") {
+    @ua.dirproy.profelumno.common.views.html.topbar()
+    @ua.dirproy.profelumno.common.views.html.sidebar()
+
     <div class="row" ng-app="EditForm">
         <div ng-controller="EditController as edit">
             <div class="col-md-3">
@@ -39,11 +38,11 @@
                     <form role="form" name="modifyForm" method="post" class="from-horizontal" ng-submit="submit()">
                         <div class="box-body">
                             <div class="input-group">
-                                <input type="text" class="form-control" id="studentFirstName" name="name"  ng-model="edit.u.user.name" placeholder="Nombre" required>
+                                <input type="text" class="form-control" id="studentFirstName" name="name" ng-model="edit.u.user.name" placeholder="Nombre" required>
                                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
                             </div>
                             <div class="input-group">
-                                <input type="text" class="form-control" id="studentLastName"  ng-model="edit.u.user.surname" surname="surname" placeholder="Apellido" required>
+                                <input type="text" class="form-control" id="studentLastName" ng-model="edit.u.user.surname" surname="surname" placeholder="Apellido" required>
                                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
                             </div>
                             <div class="input-group">
@@ -51,7 +50,7 @@
                                     <i class="fa fa-times-circle"></i>
                                     El email ya está relacionado a una cuenta.
                                 </div>
-                               <input type="email" class="form-control" id="studentEmail" name="email" ng-model="edit.u.user.email" required>
+                                <input type="email" class="form-control" id="studentEmail" name="email" ng-model="edit.u.user.email" required>
                                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                             </div>
                             <div class="input-group">
@@ -63,8 +62,10 @@
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                             </div>
                             <div class="input-group">
-                                <label class="radio"><input type="radio" name="gender" id="male" ng-model="edit.u.user.gender" value="male" required>Masculino</label>
-                                <label class="radio"><input type="radio" name="gender" id="female" ng-model="edit.u.user.gender"  value="female" required>Femenino</label>
+                                <label class="radio"><input type="radio" name="gender" id="male" ng-model="edit.u.user.gender" value="male" required>
+                                    Masculino</label>
+                                <label class="radio"><input type="radio" name="gender" id="female" ng-model="edit.u.user.gender" value="female" required>
+                                    Femenino</label>
                             </div>
                             <hr>
                             <h4>Materias de interes:</h4>
@@ -77,32 +78,30 @@
                             <hr>
                             <h4>Direccion</h4>
                             <div class="input-group">
-                                <input class="form-control" name="address" ng-model="search" ng-enter="geoCode()"  googleplace/>
+                                <input class="form-control" name="address" ng-model="search" ng-enter="geoCode()" googleplace/>
                                 <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
                             </div>
                             <app-map class="map" center="loc" markers="[marker]" zoom="17"></app-map>
                             <hr>
-                            <a type="button" href="@ua.dirproy.profelumno.studentmodification.controller.routes.ModifyStudent.changePasswordView()"><h4>Cambiar Contraseña</h4></a>
+                            <a type="button" href="@ua.dirproy.profelumno.studentmodification.controller.routes.ModifyStudent.changePasswordView()"><h4>
+                                Cambiar Contraseña</h4></a>
                         </div>
                         <div class="box-footer">
                             <div class="input-group"><button type="submit" class="btn btn-primary">Guardar</button></div>
-                            <div class="input-group"><a href="/"><button  type="button">Cancelar</button></div>
+                            <div class="input-group"><a href="/"><button type="button">Cancelar</button></div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-
+} {
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/register/register.css")">
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifystudent/ng-tags-input.min.css")">
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifystudent/ng-tags-input.bootstrap.min.css")">
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifystudent/modify-student.css")">
+} {
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
-    <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
-    <script src="@routes.Assets.versioned("external/angularjs/angular.min.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/modifyStudent/editform.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/modifyStudent/ng-tags-input.min.js")"></script>
-
-
-
-
-
-
 }

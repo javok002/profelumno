@@ -93,7 +93,7 @@ public class TeacherProfiles extends Controller {
 
         Collections.sort(listProm);
 
-        for (int j = listProm.size() -1; j > listProm.size() -4 ; j--) {
+        for (int j = listProm.size() -1; j > listProm.size() -4 && j >= 0 ; j--) {
             float prom = listProm.get(j);
             for (int k = 0; k <subjects.size() ; k++) {
                 String subject = subjects.get(k).getName();
@@ -127,7 +127,7 @@ public class TeacherProfiles extends Controller {
         List<Lesson> nextLessons = new ArrayList<>();
         Date date = new Date();
         for (int i = 0; i <lessons.size() ; i++) {
-            if (nextLessons.size() <= 5) {
+            if (nextLessons.size() <= 6) {
                 Lesson aux = lessons.get(i);
                 if (aux.getDateTime().after(date)) {
                     nextLessons.add(aux);
@@ -145,7 +145,7 @@ public class TeacherProfiles extends Controller {
         List<Lesson> previousLessons = new ArrayList<>();
         Date date = new Date();
         for (int i = 0; i <lessons.size() ; i++) {
-            if (previousLessons.size() <= 5) {
+            if (previousLessons.size() <= 6) {
                 Lesson aux = lessons.get(i);
                 if (aux.getDateTime().before(date)){
                 previousLessons.add(aux);
