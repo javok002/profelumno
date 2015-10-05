@@ -129,47 +129,6 @@
             </div> <!-- /.modal fade -->
         </div><!-- /.col-md-6 col-md-offset-3 -->
 
-        @*<!-- Make Review Modal -->
-        <div class="modal fade" id="makeReviewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-body">
-               <!-- <form name="reviewForm" ng-controller="MakeReviewController as makeRevCtrl" novalidate> -->
-                <div class="col-md-6 col-md-offset-3">
-                    <div class="box box-info">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Critica</h3>
-                        </div>
-                        <form name="reviewForm"  ng-submit="reviewForm.$valid && postReview()" novalidate>
-                        <div class="box-body">
-                            <div class="input-group">
-                                <span class="input-group-addon">Email</span>
-                                <input type="email" class="form-control" ng-model="makeRevCtrl.nonReviewedLessons[getIndex()].userToReview" readonly>
-                            </div>
-                            <br>
-                            <div>
-                                <label>Estrellas</label>
-                                <input type="number" id="stars-id" class="rating" data-stars="5" step=1 data-size="sm" data-rtl="false" data-show-clear="false">
-                            </div>
-                            <br>
-                            <div class="form-group">
-                                <label>Comentario</label>
-                                <textarea class="form-control" rows="3" ng-model="currentReview.comment" required></textarea>
-                            </div>
-                            <br>
-                            <div>
-                                <button type="submit" value="submit" class="btn btn-primary">Calificar</button>
-                                <button type="button" class="btn btn-primary pull-right" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                            </div>
-                        </div><!-- /.box-body -->
-                        </form> <!-- /.form -->
-                    </div><!-- /.box box-info -->
-                </div> <!-- /.col-md-6 col-md-offset-3 -->
-                <!--</form>-->
-            </div> <!-- /.modal-body -->
-        </div> <!-- /.modal fade -->*@
-
-
-
-
 
         <!-- Scripts -->
         <script>
@@ -187,16 +146,6 @@
                    $(this).removeData('bs.modal');
                 })
         </script>
-
-       @* <script>
-            //Used to know th current review index
-            function setIndex(index){
-                //var index = angular.element(document.getElementById('LessonReviewsController')).scope().
-                angular.element(document.getElementById('LessonReviewsController')).scope().setIndex(index);
-            }
-        </script>*@
-
-
 
         <script src="@routes.Assets.versioned("external/bootstrap/js/bootstrap.min.js")"></script>
         <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
