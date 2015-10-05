@@ -5,7 +5,6 @@ import com.avaje.ebean.Model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +26,8 @@ public class User extends Model {
     private Date birthday;
     private String gender;
     private String address;
+    private String latitude;
+    private String longitude;
     private String secureQuestion;
     private String secureAnswer;
     private long reviews;
@@ -153,5 +154,21 @@ public class User extends Model {
 
     public void addStars(long stars) {
         totalStars += stars;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 }

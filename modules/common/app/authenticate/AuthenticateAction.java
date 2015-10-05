@@ -30,7 +30,7 @@ public class AuthenticateAction extends Action<Authenticate> {
             if (check(Student.class)) {
                 return delegate.call(context);
             }
-            return F.Promise.pure(redirect("/register"));
+            return F.Promise.pure(redirect("student-profile"));
         }if (check(User.class)){
             return delegate.call(context);
         }

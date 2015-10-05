@@ -27,6 +27,10 @@ public class Common extends Controller {
         return ok(topbar.render());
     }
 
+    public static Result userImage() {
+        return ok(Ebean.find(User.class, Long.parseLong(session("id"))).getProfilePicture());
+    }
+
     public static Html sidebarContent() {
         return userIsTeacher() ? teacherSidebarContent.render() : studentSidebarContent.render();
     }
@@ -37,6 +41,10 @@ public class Common extends Controller {
 
     private static boolean userIsStudent() {
         return Student.finder.where().eq("user", Ebean.find(User.class, Long.parseLong(session("id")))).findUnique() != null;
+    }
+
+    public static String getUsername(){
+        return Ebean.find(User.class, Long.parseLong(session("id"))).getName();
     }
 
 }

@@ -66,6 +66,8 @@ create table user (
   birthday                  timestamp,
   gender                    varchar(255),
   address                   varchar(255),
+  latitude                  varchar(255),
+  longitude                 varchar(255),
   secure_question           varchar(255),
   secure_answer             varchar(255),
   reviews                   bigint,
