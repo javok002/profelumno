@@ -28,7 +28,8 @@ public class Common extends Controller {
     }
 
     public static Result userImage() {
-        return ok(Ebean.find(User.class, Long.parseLong(session("id"))).getProfilePicture());
+        byte[] picture = Ebean.find(User.class, Long.parseLong(session("id"))).getProfilePicture();
+        return picture != null ? ok(picture) : badRequest();
     }
 
     public static Html sidebarContent() {
