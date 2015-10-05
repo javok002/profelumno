@@ -128,7 +128,8 @@ app.controller("EditController", ['$http','$scope',function($http,$scope){
         $http.post('student-modification', edit.u)
             .success(function (data) {
                 $scope.errors = { invalid: false, incomplete: false, teacherAge: false, studentAge: false,take:false};
-                alert(JSON.stringify(data));
+                //alert(JSON.stringify(data));
+                window.location.href = data;
             })
             .error(function (data) {
                 $scope.errors.taken=true;
