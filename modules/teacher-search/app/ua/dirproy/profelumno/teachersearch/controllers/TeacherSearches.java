@@ -4,6 +4,7 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import ua.dirproy.profelumno.common.models.Teacher;
+import ua.dirproy.profelumno.user.models.Subject;
 
 
 import java.util.ArrayList;
@@ -40,8 +41,11 @@ public class TeacherSearches extends Controller {
     }
 
     private static boolean checkSubjects(List<String> subjects,Teacher teacher) {
-
-        return !teacher.getUser().getSubjects().containsAll(subjects);
+        List<String> currentSubjects = new ArrayList<>();
+        for (Subject subject : teacher.getUser().getSubjects()) {
+            currentSubjects.add(subject.getName());
+        }
+        return !currentSubjects.containsAll(subjects);
     }
 
     private static boolean checkRanking(Integer ranking, Teacher teacher) {
