@@ -42,10 +42,10 @@
                                 </thead>
                                 <tbody ng-repeat="reviewed in revCtrl.reviewedLessons">
                                     <tr>
-                                        <td>{{reviewed.user}}</td>
-                                        <td>{{reviewed.date}}</td>
-                                        <td>{{reviewed.stars}}</td>
-                                        <td>{{reviewed.comment}}</td>
+                                        <td>{{reviewed.userReviewed}}</td>
+                                        <td>{{reviewed.reviewDate}}</td>
+                                        <td>{{reviewed.reviewStars}}</td>
+                                        <td>{{reviewed.reviewComment}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -63,18 +63,22 @@
                             <table class="table no-margin">
                                 <thead>
                                     <tr>
-                                        <th>Usuario</th>
-                                        <th>Fecha</th>
-                                        <th>Calificacion</th>
-                                        <th>Comentario</th>
+                                        <th>Nombre del Profesor</th>
+                                        <th>Nombre del alumno</th>
+                                        <th>Fecha de la clase</th>
+                                        <th>Duracion de la clase</th>
+                                        <th>Precio de la clase</th>
+                                        <th>Usuario a calificar</th>
                                     </tr>
                                 </thead>
                                 <tbody ng-repeat="nonReviewed in revCtrl.nonReviewedLessons">
                                     <tr>
-                                        <td>{{nonReviewed.user}}</td>
-                                        <td>{{nonReviewed.date}}</td>
-                                        <td>{{nonReviewed.stars}}</td>
-                                        <td>{{nonReviewed.comment}}</td>
+                                        <td>{{nonReviewed.teacherName}}</td>
+                                        <td>{{nonReviewed.studentName}}</td>
+                                        <td>{{nonReviewed.lessonDate}}</td>
+                                        <td>{{nonReviewed.lessonDuration}}</td>
+                                        <td>{{nonReviewed.lessonPrice}}</td>
+                                        <td>{{nonReviewed.userToReview}}</td>
 
                                         <td><button type="button" class="btn btn-block btn-primary btn-sm"
                                             data-toggle="modal" data-target="#makeReviewModal" ng-click="setIndex(nonReviewed.index)">Calificar</button></td>
@@ -96,11 +100,11 @@
                         <div class="box-header with-border">
                             <h3 class="box-title">Critica</h3>
                         </div>
-                        <form name="reviewForm" ng-controller="MakeReviewController as makeRevCtrl" ng-submit="reviewForm.$valid && postReview()" novalidate>
+                        <form name="reviewForm" ng-controller="LessonReviewsController as makeRevCtrl" ng-submit="reviewForm.$valid && postReview()" novalidate>
                         <div class="box-body">
                             <div class="input-group">
                                 <span class="input-group-addon">Email</span>
-                                <input type="email" class="form-control" ng-model="review.email" readonly>
+                                <input type="email" class="form-control" ng-model="currentReview.email" readonly>
                             </div>
                             <br>
                             <div>
@@ -110,7 +114,7 @@
                             <br>
                             <div class="form-group">
                                 <label>Comentario</label>
-                                <textarea class="form-control" rows="3" ng-model="review.comment" required></textarea>
+                                <textarea class="form-control" rows="3" ng-model="currentReview.comment" required></textarea>
                             </div>
                             <br>
                             <div>
@@ -146,13 +150,13 @@
                 })
         </script>
 
-        <script>
+       @* <script>
             //Used to know th current review index
             function setIndex(index){
                 //var index = angular.element(document.getElementById('LessonReviewsController')).scope().
                 angular.element(document.getElementById('LessonReviewsController')).scope().setIndex(index);
             }
-        </script>
+        </script>*@
 
 
 

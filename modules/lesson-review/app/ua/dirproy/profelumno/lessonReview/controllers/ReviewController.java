@@ -11,6 +11,8 @@ import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.user.models.User;
 
+import java.sql.Time;
+import java.time.Duration;
 import java.util.Date;
 import java.util.Iterator;
 
@@ -65,6 +67,7 @@ public class ReviewController extends Controller {
             node.put("reviewDate", date);
             node.put("reviewComment", comment);
             node.put("reviewStars", stars);
+            results.add(node);
         }
 
         return ok(results);
@@ -95,7 +98,7 @@ public class ReviewController extends Controller {
             node.put("studentName", temp.getStudent().getUser().getName() + " "
                     + temp.getStudent().getUser().getSurname());
             node.put("lessonDate", date);
-            node.put("lessonDuration", temp.getDuration().toString());
+            node.put("lessonDuration", temp.getDuration().toHours());
             node.put("lessonPrice", temp.getPrice());
             node.put("lessonId", temp.getId());
 
@@ -226,13 +229,18 @@ public class ReviewController extends Controller {
         lesson1.setTeacherReview(review2);
         lesson1.save();
 
+        Duration oneHour = Duration.ofHours(1);
+
         lesson2.setTeacherReview(review3);
+        lesson2.setDuration(oneHour);
         lesson2.save();
 
         lesson3.setStudentReview(review4);
         lesson3.save();
 
+        lesson4.setDuration(oneHour);
         lesson4.save();
+
 
         return redirect(routes.ReviewController.show());
     }
