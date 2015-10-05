@@ -17,7 +17,7 @@
                                 <img src="@routes.Assets.versioned("images/userDefault.jpeg")">
                             </div>
                             <div class="thumbnail" ng-show="edit.u.user.profilePicture">
-                                <img ng-src="data:image/*;base64,{{edit.u.user.profilePicture}}"/>
+                                <img ng-src="data:image/*;base64,{{imageUrl}}"/>
                             </div>
                         </div>
                         <div class="box-footer">
@@ -49,10 +49,18 @@
                                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
                             </div>
                             <div class="input-group">
+                                <div class="isa_error" ng-show="errors.taken">
+                                    <i class="fa fa-times-circle"></i>
+                                    El email ya está relacionado a una cuentano es valido.
+                                </div>
                                 <input type="email" class="form-control" id="teacherEmail" ng-model="edit.u.user.email" placeholder="Email" required>
                                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                             </div>
                             <div class="input-group">
+                                <div class="isa_error" ng-show="errors.teacherAge">
+                                    <i class="fa fa-times-circle"></i>
+                                    Debe tener al menos 16 años para ser profesor.
+                                </div>
                                 <input type="date" class="form-control" id="birthday" ng-model="date" name="birthday" placeholder="Fecha de Nacimiento" name="birthday" required>
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                             </div>
@@ -63,6 +71,10 @@
                                     Femenino</label>
                             </div>
                             <div class="input-group" ng-init="homeClass={{edit.radio}}">
+                                <div class="isa_error" ng-show="modifyTeacher.homeClass.$invalid">
+                                    <i class="fa fa-times-circle"></i>
+                                    Debe tener al menos 6 años para ser alumno.
+                                </div>
                                 <label>Clases a domicilio: </label>
                                 <label class="radio"><input type="radio" name="homeClass" id="yesHome" ng-model="radio" value="yes" required>
                                     Si</label>
@@ -78,6 +90,10 @@
                             </div>
                             <h4>Direccion</h4>
                             <div class="input-group">
+                                <div class="isa_error" ng-show="modifyForm.address.$invalid">
+                                    <i class="fa fa-times-circle"></i>
+                                    Debe ingresar una direccion valida
+                                </div>
                                 <input class="form-control" name="address" ng-model="edit.u.user.address" ng-enter="geoCode()"  googleplace/>
                                 <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
                             </div>
@@ -118,5 +134,4 @@
     <script src="@routes.Assets.versioned("lib/angular/angular.min.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/teacherModify/teacherModify.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/modifyStudent/ng-tags-input.min.js")"></script>
-    <script src="@routes.Assets.versioned("external/ng-flow/ng-flow-standalone.min.js")"></script>
 }
