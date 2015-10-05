@@ -9,9 +9,12 @@ lazy val common = (project in file("modules/common"))
 lazy val users = (project in file("modules/users"))
   .enablePlugins(PlayJava, PlayEbean)
 
+lazy val mailSender = (project in file("modules/mail-sender"))
+  .enablePlugins(PlayJava, PlayEbean)
+
 lazy val teacherProfile = (project in file("modules/teacher-profile"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(users, common)
+  .dependsOn(users, common, mailSender)
 
 lazy val studentProfile = (project in file("modules/student-profile"))
   .enablePlugins(PlayJava, PlayEbean)
@@ -35,7 +38,7 @@ lazy val teacherSubscription = (project in file("modules/teacher-subscription"))
 
 lazy val hireLesson = (project in file("modules/hire-lesson"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(teacherSearch, common)
+  .dependsOn(teacherSearch, common, mailSender)
 
 lazy val teacherModification = (project in file("modules/teacher-modification"))
   .enablePlugins(PlayJava, PlayEbean)
@@ -52,9 +55,6 @@ lazy val studentModification = (project in file("modules/student-modification"))
 lazy val passwordRecovery = (project in file("modules/password-recovery"))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(users, mailSender, common)
-
-lazy val mailSender = (project in file("modules/mail-sender"))
-  .enablePlugins(PlayJava, PlayEbean)
 
 lazy val loginout = (project in file("modules/loginout"))
   .enablePlugins(PlayJava, PlayEbean)

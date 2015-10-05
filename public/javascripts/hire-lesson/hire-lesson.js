@@ -7,11 +7,12 @@ angular.module('profLesson', [])
         $scope.comment = '';
         $scope.address= '';
 
-        $scope.postLesson = function() {
+        $scope.postLesson = function(teacherId,subjectId) {
             data = {
                 address:$scope.address,
                 comment:$scope.comment,
-                teacherId:$scope.teacherId
+                teacherId:teacherId,
+                subjectId:subjectId
             };
             $http.post('/hire-lesson/new', data).then(successCallback);
         };
@@ -25,18 +26,20 @@ angular.module('profLesson', [])
         return {
             restrict: 'E',
             scope : {
-                teacherId : '=teacherId' //todo quien se encargue de buscar profesores tiene que setear este atributo
+                teacherId : '=', //todo quien se encargue de buscar profesores tiene que setear este atributo y la subject
+                subjectId : '=',
+                index : '='
             },
             link : function(scope){
                 scope.date = 'date';
             },
             template:
-            '<button type="button" class="btn btn-success" data-toggle="modal" data-target="#hire-modal">' +
+            '<button type="button" class="btn btn-success" data-toggle="modal" data-target="#hire-modal{{index}}">' +
                 'Hire' +
             '</button>' +
 
             '<!-- Modal -->' +
-            '<div class="modal fade" id="hire-modal" role="dialog">' +
+            '<div class="modal fade" id="hire-modal{{index}}" role="dialog">' +
                 '<div class="modal-dialog">'+
                     '<!-- Modal content-->' +
                     '<div class="modal-content">' +
@@ -95,7 +98,7 @@ angular.module('profLesson', [])
                                             '<textarea class="form-control" rows="3" placeholder="Enter ..." ng-model="comment"></textarea>' +
                                         '</div>' +
                                     '</div><!-- /.box-body -->' +
-                                    '<button ng-click="postLesson()" class="btn btn-primary" data-dismiss="modal">Submit</button>' +
+                                    '<button ng-click="postLesson(teacherId , subjectId)" class="btn btn-primary" data-dismiss="modal">Submit</button>' +
                             '</div><!-- /.box -->' +
                         '</div>' +
                         '<div class="modal-footer">' +

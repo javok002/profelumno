@@ -4,8 +4,6 @@
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/teachersearch/ng-tags-input.min.css")">
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/teachersearch/ng-tags-input.bootstrap.min.css")">
 
-    <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
-
 <div ng-app="teacherSearchApp">
     <div class="container-fluid"  ng-controller="searchController">
         <div class="row-fluid">
@@ -66,7 +64,7 @@
                         <td> {{teacher.user.surname}}, {{teacher.user.name}}</td>
                         <td>{{teacher.ranking}}</td>
                         <td>{{teacher.lessonsDictated}}</td>
-                        <td><hire-lesson teacherId="{{teacher.id}}"></hire-lesson></td>
+                        <td><hire-lesson teacher-id=teacher.id></hire-lesson></td>
                     </tr>
                 </tbody>
             </table>

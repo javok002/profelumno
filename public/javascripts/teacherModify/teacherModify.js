@@ -8,18 +8,20 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
     edit.u = {};
     edit.u.user = {};
     $scope.radio = '';
-    /*edit.u.user.subjects=[];*/
+    edit.u.subjects=[];
 
     $http.get('modify-teacher/user')
         .success(function (data, status, headers, config) {
             edit.u = data;
+            for(var i = 0; i < edit.u.user.subjects; i++){
+                edit.u.subjects.push({"text": edit.u.user.subjects[i]});
+            }
             $scope.date=new Date(edit.u.user.birthday);
             if (edit.u.homeClasses) {
                 $scope.radio = 'yes';
             } else {
                 $scope.radio = 'no';
             }
-
         }).
         error(function (data, status, headers, config) {
             // log error
@@ -43,6 +45,10 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
     //TAGS
     edit.tags=$scope.tags;//meterias.json*/
 
+    $scope.loadTags = function(query) {
+        return [{text: 'Lengua'},{text: 'Matematica'},{text: 'Fisica'},{text: 'Quimica'},{text: 'Algebra'}]
+    };
+
     $scope.errors = {
         invalid: false,
         incomplete: false,
@@ -55,10 +61,6 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
         $scope.errors.teacherAge = (today.getYear() - birthday.getYear() < 6 || (today.getYear() - birthday.getYear() == 6 && today.getMonth() < birthday.getMonth()));
         return !$scope.errors.incomplete && !$scope.errors.invalid && !$scope.errors.teacherAge;
     };
-
-   /* $scope.loadTags = function (query) {
-        return $scope.allSubjects;
-    };*/
 
     $scope.submit = function () {
         if (!verify())
@@ -86,12 +88,16 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
         fileUpload.uploadFileToUrl(file, uploadUrl);;
     };
 
-    /*$scope.submitSubjects = function () {
-        var myJsonString = JSON.stringify($scope.edit);
-        $http.post('modify-teacher/subjects', myJsonString)
-            .success(alert("subido con exito"))
+    $scope.submitSubjects = function () {
+        //var myJsonString = JSON.stringify($scope.edit);
+        var literalSubjects = [];
+        for(var i = 0; i < edit.u.subjects.length; i++){
+            literalSubjects.push(edit.u.subjects[i].text);
+        }
+        $http.post('modify-teacher/subjects', literalSubjects)
+            .success("")
             .error("falla al guardar")
-    };*/
+    };
 }]);
 
 app.directive('googleplace', function () {

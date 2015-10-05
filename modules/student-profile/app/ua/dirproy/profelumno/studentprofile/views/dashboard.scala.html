@@ -1,0 +1,25 @@
+@()
+@ua.dirproy.profelumno.common.views.html.main("Student dashboard"){
+    @ua.dirproy.profelumno.common.views.html.topbar()
+    @ua.dirproy.profelumno.common.views.html.sidebar()
+
+    <div class="content-wrapper" ng-app="studentProfile" >
+            <!-- Content Header (Page header) -->
+        <section class="content-header" ng-controller="StudentCtrl">
+            <h1>
+                General UI
+                <small>Preview of UI elements</small>
+            </h1>
+            <section class="content">
+                <div class="row">
+                    <teachers></teachers>
+                    <subjects></subjects>
+                </div> <!-- /.row -->
+            </section> <!-- /.content -->
+        </section>
+    </div><!-- /.content-wrapper -->
+
+    <script src="@routes.Assets.versioned("external/angularjs/angular.min.js")"></script>
+    <script src="@routes.Assets.versioned("javascripts/studentProfile/studentProfile.js")"></script>
+
+}
