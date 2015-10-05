@@ -1,5 +1,6 @@
 package ua.dirproy.profelumno.studentmodification.controller;
 
+import authenticate.Authenticate;
 import com.avaje.ebean.Ebean;
 import com.fasterxml.jackson.databind.JsonNode;
 import play.data.Form;
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  * Created by tombatto on 14/09/15.
  */
+@Authenticate({Student.class})
 public class ModifyStudent extends Controller {
 
     public static Result modifyStudentView() {

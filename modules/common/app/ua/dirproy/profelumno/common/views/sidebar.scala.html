@@ -1,17 +1,22 @@
 @()
 
-    <aside class="main-sidebar">
-            <!-- sidebar -->
-        <section class="sidebar">
-                     <!-- Sidebar menu -->
-            <ul class="sidebar-menu">
-                <li class="header">MAIN NAVIGATION</li>
-                <li class="treeview">
+<aside class="main-sidebar">
+        <!-- sidebar -->
+    <section class="sidebar">
+            <!-- Sidebar menu -->
+        <ul class="sidebar-menu">
+            <li class="header">MAIN NAVIGATION</li>
+            <li class="treeview">
+            <li>
+                <a href="@ua.dirproy.profelumno.common.controllers.Common.dashboardUrl()"><i class="fa fa-tachometer"></i> <span>Dashboard</span></a>
+            </li>
+            <li>
+                <a href="@ua.dirproy.profelumno.common.controllers.Common.editProfileUrl()"><i class="fa fa-user"></i> <span>Editar Perfil</span></a>
+            </li>
+            @ua.dirproy.profelumno.common.controllers.Common.sidebarContent()
 
-                    @ua.dirproy.profelumno.common.controllers.Common.sidebarContent()
-
-            </ul>
-                <!-- /Sidebar menu -->
-        </section>
-            <!-- /Sidebar -->
-    </aside>
+        </ul>
+            <!-- /Sidebar menu -->
+    </section>
+        <!-- /Sidebar -->
+</aside>
