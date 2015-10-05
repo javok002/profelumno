@@ -3,6 +3,7 @@ package ua.dirproy.profelumno.hirelesson.controllers;
 
 import authenticate.Authenticate;
 import play.data.Form;
+import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import ua.dirproy.profelumno.common.models.Student;
@@ -16,6 +17,7 @@ import ua.dirproy.profelumno.user.models.User;
 import javax.mail.*;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Paca on 9/13/15. Oh yeah
@@ -116,5 +118,12 @@ public class Lessons extends Controller {
 
         notifyTeacher(teacher.getUser().getEmail());
         System.out.println("se creo");
+    }
+
+    public static Result getSubjects(String teacherIdString){
+        long teacherId = Long.parseLong(teacherIdString);
+        Teacher teacher = Teacher.getTeacher(teacherId);
+        List<Subject> subjects = teacher.getUser().getSubjects();
+        return ok(Json.toJson(subjects));
     }
 }

@@ -6,13 +6,23 @@ angular.module('profLesson', [])
     .controller('HireCtrl',['$scope', '$http', function($scope, $http) {
         $scope.comment = '';
         $scope.address= '';
+        $scope.subjects = {};
+        $scope.subjectSelected = -1;
 
-        $scope.postLesson = function(teacherId,subjectId) {
+        $scope.setSubjects = function (teacherId) {
+            $http.get("/hire-lesson/get-lessons?teacherIdString="+teacherId)
+                .success(function (subjects) {
+                    $scope.subjects = subjects;
+                })
+        };
+
+
+        $scope.postLesson = function(teacherId) {
             data = {
                 address:$scope.address,
                 comment:$scope.comment,
                 teacherId:teacherId,
-                subjectId:subjectId
+                subjectId: $scope.subjectSelected
             };
             $http.post('/hire-lesson/new', data).then(successCallback);
         };
@@ -27,7 +37,6 @@ angular.module('profLesson', [])
             restrict: 'E',
             scope : {
                 teacherId : '=', //todo quien se encargue de buscar profesores tiene que setear este atributo y la subject
-                subjectId : '=',
                 index : '='
             },
             link : function(scope){
@@ -39,7 +48,7 @@ angular.module('profLesson', [])
             '</button>' +
 
             '<!-- Modal -->' +
-            '<div class="modal fade" id="hire-modal{{index}}" role="dialog">' +
+            '<div class="modal fade" id="hire-modal{{index}}" role="dialog" ng-load="setSubjects(teacherId)">' +
                 '<div class="modal-dialog">'+
                     '<!-- Modal content-->' +
                     '<div class="modal-content">' +
@@ -51,6 +60,10 @@ angular.module('profLesson', [])
                             '<div ng-controller="HireCtrl">' +
                                 '<div class="box-body">' +
                                     '<div class="form-group">' +
+                                        '<label for="sel1">Seleccionar materia:</label>'+
+                                            '<select class="form-control" id="sel1" ng-model="subjectSelected">'+
+                                                '<option ng-repeat="subject in subjects" value="{{subject.id}}">{{subject.name}}</option>'+
+                                                '</select>'+
                                         '<div class="radio"> ' +
                                             '<label> ' +
                                                 '<input type="radio" name="optionsRadios" id="optionsRadios1" value="teacher" ng-model="address" ng-required="!address"> ' +
