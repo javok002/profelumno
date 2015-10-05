@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import java.sql.Time;
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class Lesson extends Model {
     @Id private Long id;
 
     private Date dateTime;
-    private Time duration;
+    private Duration duration;
     private String address;
     private String comment;
     private Float price;
@@ -70,11 +71,11 @@ public class Lesson extends Model {
         this.dateTime = dateTime;
     }
 
-    public Time getDuration() {
+    public Duration getDuration() {
         return duration;
     }
 
-    public void setDuration(Time duration) {
+    public void setDuration(Duration duration) {
         this.duration = duration;
     }
 

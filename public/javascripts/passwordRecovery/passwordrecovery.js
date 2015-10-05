@@ -53,13 +53,13 @@ var showWarning = function(){
 
 var validating = function () {
     var button = $('#next');
-    button.disable(true);
     button.innerHTML = "Cargando ";
+    angular.element(document.getElementById('next'))[0].disabled = true;
 
 };
 
 var validationFinished = function () {
     var button = $('#next');
-    button.disable(false);
     button.innerHTML = "Continuar";
+    angular.element(document.getElementById('next'))[0].disabled = false;
 };
