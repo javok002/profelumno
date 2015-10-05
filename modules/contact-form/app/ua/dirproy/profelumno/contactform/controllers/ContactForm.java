@@ -30,10 +30,12 @@ public class ContactForm extends Controller {
         final ObjectNode result = Json.newObject();
         result.put("name", name);
         result.put("email", email);
-        result.put("subject",subject);
-        result.put("message",message);
+        result.put("subject", subject);
+        result.put("message", message);
+
+        String messageToSend = "New message from " + name + " at " + email + "\n\n" + message;
         try {
-            MailSenderUtil.send(new String[]{"francisco.di@ing.austral.edu.ar"}, subject, message);
+            MailSenderUtil.send(new String[]{"francisco.di@ing.austral.edu.ar"}, subject, messageToSend);
         } catch (Exception e) {
             e.printStackTrace();
         }
