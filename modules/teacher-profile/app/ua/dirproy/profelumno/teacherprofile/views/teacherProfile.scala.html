@@ -57,6 +57,7 @@
                             </div><!-- /.box-tools -->
                         </div><!-- /.box-header -->
                         <div class="box-body bg-gray-light">
+                            <span ng-show="noTopSubjects">No hay información disponible</span>
                             <div class="col-md-4 col-sm-6" ng-repeat="(subject, score) in topSubjects">
                                 <div class="info-box">
                                         <!-- Apply any bg-* class to to the icon to color it -->
@@ -82,6 +83,7 @@
                             </div><!-- /.box-tools -->
                         </div><!-- /.box-header -->
                         <div class="box-body bg-gray-light">
+                            <span ng-show="nextLessons.length == 0">No hay información disponible</span>
                             <div class="col-md-4 col-sm-6" ng-repeat="lesson in nextLessons">
                                 <div class="info-box">
                                         <!-- Apply any bg-* class to to the icon to color it -->
@@ -108,6 +110,7 @@
                             </div><!-- /.box-tools -->
                         </div><!-- /.box-header -->
                         <div class="box-body bg-gray-light">
+                            <span ng-show="prevLessons.length == 0">No hay información disponible</span>
                             <div class="col-md-4 col-sm-6" ng-repeat="lesson in prevLessons">
                                 <div class="info-box">
                                         <!-- Apply any bg-* class to to the icon to color it -->
