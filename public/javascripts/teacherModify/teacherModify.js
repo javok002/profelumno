@@ -85,17 +85,22 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
     $scope.uploadFile = function(){
         var file = $scope.fileToUpload;
         var uploadUrl = "modify-teacher/img";
-        fileUpload.uploadFileToUrl(file, uploadUrl);;
+        fileUpload.uploadFileToUrl(file, uploadUrl);
     };
 
     $scope.submitSubjects = function () {
+        if (!$scope.subjectsForm.$valid) {
+            return;
+        }
         //var myJsonString = JSON.stringify($scope.edit);
         var literalSubjects = [];
         for(var i = 0; i < edit.u.user.subjects.length; i++){
             literalSubjects.push(edit.u.user.subjects[i].text);
         }
         $http.post('modify-teacher/subjects', literalSubjects)
-            .success("")
+            .success(function(response){
+                window.location.href = "/teacher-profile"
+            })
             .error("falla al guardar")
     };
 }]);
