@@ -8,18 +8,20 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
     edit.u = {};
     edit.u.user = {};
     $scope.radio = '';
-    edit.u.user.subjects=[];
+    edit.u.subjects=[];
 
     $http.get('modify-teacher/user')
         .success(function (data, status, headers, config) {
             edit.u = data;
+            for(var i = 0; i < edit.u.user.subjects; i++){
+                edit.u.subjects.push({"text": edit.u.user.subjects[i]});
+            }
             $scope.date=new Date(edit.u.user.birthday);
             if (edit.u.homeClasses) {
                 $scope.radio = 'yes';
             } else {
                 $scope.radio = 'no';
             }
-
         }).
         error(function (data, status, headers, config) {
             // log error
@@ -28,13 +30,12 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
     $http.get('modify-teacher/img')
         .success(function (data, status, headers, config) {
             edit.u.user.profilePicture = data;
-            alert(data);
         }).
         error(function (data, status, headers, config) {
             // log error
         });
 
-    $http.get("modify-teacher/subjects").
+    /*$http.get("modify-teacher/subjects").
         success(function(data, status, headers, config) {
             $scope.allSubjects= data;
         }).
@@ -42,18 +43,23 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
             // log error
         });
     //TAGS
-    edit.tags=$scope.tags;//meterias.json
+    edit.tags=$scope.tags;//meterias.json*/
 
-
-    var verify = function () {
-        var today = new Date();
-        var birthday = edit.u.user.birthday;
-        $scope.errors.teacherAge = (today.getYear() - birthday.getYear() < 6 || (today.getYear() - birthday.getYear() == 6 && today.getMonth() < birthday.getMonth()));
-        return !$scope.errors.incomplete && !$scope.errors.invalid && !$scope.errors.teacherAge;
+    $scope.loadTags = function(query) {
+        return [{text: 'Lengua'},{text: 'Matematica'},{text: 'Fisica'},{text: 'Quimica'},{text: 'Algebra'}]
     };
 
-    $scope.loadTags = function (query) {
-        return $scope.allSubjects;
+    $scope.errors = {
+        invalid: false,
+        incomplete: false,
+        teacherAge: false,
+        taken:false
+    };
+    var verify = function () {
+        var today = new Date();
+        var birthday = $scope.date;
+        $scope.errors.teacherAge = (today.getYear() - birthday.getYear() < 6 || (today.getYear() - birthday.getYear() == 6 && today.getMonth() < birthday.getMonth()));
+        return !$scope.errors.incomplete && !$scope.errors.invalid && !$scope.errors.teacherAge;
     };
 
     $scope.submit = function () {
@@ -68,7 +74,8 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
         $http.post('modify-teacher/teacher-modification-post', edit.u)
             .success(function (data) {
                 $scope.errors = {incomplete: false, invalid: false, teacherAge: false};
-                alert(JSON.stringify(data));
+                window.location.href = data;
+                /*alert(JSON.stringify(data));*/
             })
             .error(function (data) {
                 alert(data);
@@ -82,9 +89,13 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
     };
 
     $scope.submitSubjects = function () {
-        var myJsonString = JSON.stringify($scope.edit);
-        $http.post('modify-teacher/subjects', myJsonString)
-            .success(alert("subido con exito"))
+        //var myJsonString = JSON.stringify($scope.edit);
+        var literalSubjects = [];
+        for(var i = 0; i < edit.u.subjects.length; i++){
+            literalSubjects.push(edit.u.subjects[i].text);
+        }
+        $http.post('modify-teacher/subjects', literalSubjects)
+            .success("")
             .error("falla al guardar")
     };
 }]);
@@ -134,7 +145,6 @@ app.service('fileUpload', ['$http', function ($http) {
         })
             .success(function (data, status, headers, config) {
                 edit.u.user.profilePicture = data;
-                alert(data);
             })
             .error(function () {
             });

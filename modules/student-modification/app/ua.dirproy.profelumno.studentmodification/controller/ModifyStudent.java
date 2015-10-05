@@ -2,20 +2,16 @@ package ua.dirproy.profelumno.studentmodification.controller;
 
 import com.avaje.ebean.Ebean;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import play.data.Form;
 import play.libs.Json;
 import play.mvc.Controller;
-import play.mvc.Http;
 import play.mvc.Result;
 import ua.dirproy.profelumno.common.models.Student;
-import ua.dirproy.profelumno.common.models.Teacher;
-import ua.dirproy.profelumno.studentmodification.view.html.*;
+import ua.dirproy.profelumno.studentmodification.view.html.changepassword;
+import ua.dirproy.profelumno.studentmodification.view.html.modifystudent;
 import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
 
-import java.io.File;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,14 +37,16 @@ public class ModifyStudent extends Controller {
         return ok(json);
     }
 
-    //Hay que precargar las materias en la base de datos de alguna manera, por ahora las cargo aca.
+    //si no hay ninguna materia carga 3 materias
     public static Result getSubjects(){
-//        Subject matematica=new Subject("Matematica");
-//        Subject quimica=new Subject("Quimica");
-//        Subject fisica=new Subject("Fisica");
-//        matematica.save();
-//        quimica.save();
-//        fisica.save();
+        if (Subject.noSubjects()) {
+            Subject matematica=new Subject("Matematica");
+            Subject quimica=new Subject("Quimica");
+            Subject fisica=new Subject("Fisica");
+            matematica.save();
+            quimica.save();
+            fisica.save();
+        }
 
         List<Subject>subjects=Ebean.find(Subject.class).findList();
         JsonNode json=Json.toJson(subjects);
@@ -65,17 +63,18 @@ public class ModifyStudent extends Controller {
         Student stu = form.get();
         User user=stu.getUser();
         Student student = Student.finder.where().eq("user",user).findUnique();
-        if ((stu.getUser().getEmail()).equalsIgnoreCase(student.getUser().getEmail())||
-                User.validateEmailUnique(stu.getUser().getEmail())) {
-                    User studentU=student.getUser();
-                    User stuU=stu.getUser();
-                    studentU.setAddress(stuU.getAddress());
-                    studentU.setBirthday(stuU.getBirthday());
-                    studentU.setEmail(stuU.getEmail());
-                    studentU.setGender(stuU.getGender());
-                    studentU.setName(stuU.getName());
-                    studentU.setSurname(stuU.getSurname());
-                    studentU.getSubjects().clear();
+        if ((stu.getUser().getEmail()).equalsIgnoreCase(student.getUser().getEmail())|| User.validateEmailUnique(stu.getUser().getEmail())) {
+            User studentU=student.getUser();
+            User stuU=stu.getUser();
+            studentU.setAddress(stuU.getAddress());
+            studentU.setBirthday(stuU.getBirthday());
+            studentU.setEmail(stuU.getEmail());
+            studentU.setGender(stuU.getGender());
+            studentU.setName(stuU.getName());
+            studentU.setSurname(stuU.getSurname());
+            studentU.setLatitude(stuU.getLatitude());
+            studentU.setLongitude(stuU.getLongitude());
+            studentU.getSubjects().clear();
             for (Subject subject : stuU.getSubjects()) {
                 studentU.getSubjects().add(subject);
             }

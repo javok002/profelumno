@@ -6,7 +6,7 @@ angular.module('app', [])
 
         $scope.delete = function() {
             $http.post('/delete').success(function(data) {
-                window.location.href = '/';
+                window.location.href = '/log/in';
             });
         };
 

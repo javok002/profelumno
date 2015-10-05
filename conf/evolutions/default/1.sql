@@ -6,13 +6,26 @@
 create table lesson (
   id                        bigint not null,
   date_time                 timestamp,
-  duration                  time,
+  duration                  bigint,
   address                   varchar(255),
   comment                   varchar(255),
   price                     float,
+  lesson_state              integer,
   teacher_id                bigint,
+  teacher_review_id         bigint,
   student_id                bigint,
+  student_review_id         bigint,
+  constraint uq_lesson_teacher_review_id unique (teacher_review_id),
+  constraint uq_lesson_student_review_id unique (student_review_id),
   constraint pk_lesson primary key (id))
+;
+
+create table review (
+  id                        bigint not null,
+  comment                   varchar(255),
+  stars                     bigint,
+  date                      timestamp,
+  constraint pk_review primary key (id))
 ;
 
 create table student (
@@ -37,7 +50,7 @@ create table teacher (
   has_card                  boolean,
   description               varchar(255),
   home_classes              boolean,
-  ranking                   integer,
+  ranking                   float,
   lessons_dictated          integer,
   price                     double,
   constraint uq_teacher_user_id unique (user_id),
@@ -53,8 +66,12 @@ create table user (
   birthday                  timestamp,
   gender                    varchar(255),
   address                   varchar(255),
+  latitude                  varchar(255),
+  longitude                 varchar(255),
   secure_question           varchar(255),
   secure_answer             varchar(255),
+  reviews                   bigint,
+  total_stars               bigint,
   profile_picture           blob,
   constraint pk_user primary key (id))
 ;
@@ -67,6 +84,8 @@ create table subject_user (
 ;
 create sequence lesson_seq;
 
+create sequence review_seq;
+
 create sequence student_seq;
 
 create sequence subject_seq;
@@ -77,12 +96,16 @@ create sequence user_seq;
 
 alter table lesson add constraint fk_lesson_teacher_1 foreign key (teacher_id) references teacher (id) on delete restrict on update restrict;
 create index ix_lesson_teacher_1 on lesson (teacher_id);
-alter table lesson add constraint fk_lesson_student_2 foreign key (student_id) references student (id) on delete restrict on update restrict;
-create index ix_lesson_student_2 on lesson (student_id);
-alter table student add constraint fk_student_user_3 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_student_user_3 on student (user_id);
-alter table teacher add constraint fk_teacher_user_4 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_teacher_user_4 on teacher (user_id);
+alter table lesson add constraint fk_lesson_teacherReview_2 foreign key (teacher_review_id) references review (id) on delete restrict on update restrict;
+create index ix_lesson_teacherReview_2 on lesson (teacher_review_id);
+alter table lesson add constraint fk_lesson_student_3 foreign key (student_id) references student (id) on delete restrict on update restrict;
+create index ix_lesson_student_3 on lesson (student_id);
+alter table lesson add constraint fk_lesson_studentReview_4 foreign key (student_review_id) references review (id) on delete restrict on update restrict;
+create index ix_lesson_studentReview_4 on lesson (student_review_id);
+alter table student add constraint fk_student_user_5 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_student_user_5 on student (user_id);
+alter table teacher add constraint fk_teacher_user_6 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_teacher_user_6 on teacher (user_id);
 
 
 
@@ -95,6 +118,8 @@ alter table subject_user add constraint fk_subject_user_user_02 foreign key (use
 SET REFERENTIAL_INTEGRITY FALSE;
 
 drop table if exists lesson;
+
+drop table if exists review;
 
 drop table if exists student;
 
@@ -109,6 +134,8 @@ drop table if exists user;
 SET REFERENTIAL_INTEGRITY TRUE;
 
 drop sequence if exists lesson_seq;
+
+drop sequence if exists review_seq;
 
 drop sequence if exists student_seq;
 

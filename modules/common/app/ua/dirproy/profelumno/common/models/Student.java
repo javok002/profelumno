@@ -1,6 +1,7 @@
 package ua.dirproy.profelumno.common.models;
 
 import com.avaje.ebean.Model;
+import org.omg.CORBA.PRIVATE_MEMBER;
 import ua.dirproy.profelumno.user.models.User;
 
 import javax.persistence.Entity;
@@ -22,6 +23,7 @@ public class Student extends Model {
 
     @OneToOne
     private User user;
+
 
     public static Finder<Long, Student> finder = new Finder<>(Student.class);
 

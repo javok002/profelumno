@@ -6,6 +6,7 @@
         $http.get("/subscription/cardNumber").
             success(function (data, status, headers, config) {
                 control.cardNumber=data;
+                document.getElementById('cancel').hidden = false;
             }).
             error(function (data, status, headers, config) {
                 // log error
