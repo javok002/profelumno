@@ -30,7 +30,10 @@
         };
         $scope.getCurrentEmail = function(){
             //return reviews.nonReviewed[currentIndex].userToReview;
-            return nonReviewed[currentIndex].userToReview;
+            return reviews.nonReviewed[currentIndex].userToReview;
+        };
+        $scope.getCurrentId = function(){
+            return reviews.nonReviewed[currentIndex].lessonId;
         };
         //List the reviewed lesson get it from the controller
         $scope.listReviewedLessons = function(rls){
@@ -87,23 +90,23 @@
         this.currentReview = {
             toEmail: this.nonReviewedLessons[currentIndex].userToReviewed,
             stars: 4,
-            comment: null
+            comment: null,
+            idLesson: this.nonReviewedLessons[currentIndex].lessonId
         };
-        /*$scope.currentReview = {
-            stars: 4,
-            comment: null
-        };
-*/
+
         $scope.postReview = function(){
             var comment = this.currentReview.comment;
             var stars = 4; //Default!! change it!!!
-            var toEmail = "user.student@gmail.com"; //Default!! change it!!!
-            var idLesson = 2; //Default!! change it!!!
+            var toEmail = this.getCurrentEmail();
+            var idLesson = this.getCurrentId();
+
 
             $http.post("/review-lesson/review?comment=" + comment + "&stars=" + stars +"&toEmail=" + toEmail + "&idLesson=" + idLesson)
                 .success(function(response){
                     window.location.replace("/");
                 });
+
+            //alert(comment + " " + stars + " " + toEmail + " " + idLesson);
         };
 
 
@@ -135,5 +138,6 @@
             }
         ]
     };
+
 
 })();

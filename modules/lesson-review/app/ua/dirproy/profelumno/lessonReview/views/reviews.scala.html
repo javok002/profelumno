@@ -81,7 +81,7 @@
                                         <td>{{nonReviewed.userToReview}}</td>
 
                                         <td><button type="button" class="btn btn-block btn-primary btn-sm"
-                                            data-toggle="modal" data-target="#makeReviewModal" ng-click="setIndex(nonReviewed.index)">Calificar</button></td>
+                                            data-toggle="modal" data-target="#makeReviewModal" ng-click="setIndex(nonReviewed.index)" ng-show="nonReviewed.teacherName != null">Calificar</button></td>
                                     </tr>
                                 </tbody>
                             </table>
