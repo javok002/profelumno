@@ -1,11 +1,10 @@
 @()
 
-@ua.dirproy.profelumno.common.views.html.main("Edit Teacher") {
-    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/register/register.css")">
-    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifyteacher/modify-teacher.css")">
-    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifystudent/ng-tags-input.min.css")">
-    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifystudent/ng-tags-input.bootstrap.min.css")">
-    
+@ua.dirproy.profelumno.common.views.html.tidyMain("Edit Teacher") {
+    @ua.dirproy.profelumno.common.views.html.topbar()
+    @ua.dirproy.profelumno.common.views.html.sidebar()
+
+
     <div class="row" ng-app="teacherModify">
         <div ng-controller="TeacherInfoController as edit">
             <div class="col-md-3">
@@ -129,12 +128,13 @@
             </div>
         </div>
     </div>
-
+}{
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/register/register.css")">
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifyteacher/modify-teacher.css")">
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifystudent/ng-tags-input.min.css")">
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifystudent/ng-tags-input.bootstrap.min.css")">
+}{
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
-    <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
-    <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
-    <script src="@routes.Assets.versioned("external/datepicker/bootstrap-datepicker.js")"></script>
-    <script src="@routes.Assets.versioned("lib/angular/angular.min.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/teacherModify/teacherModify.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/modifyStudent/ng-tags-input.min.js")"></script>
 }

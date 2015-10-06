@@ -37,14 +37,14 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
         });
 
     /*$http.get("modify-teacher/subjects").
-        success(function(data, status, headers, config) {
-            $scope.allSubjects= data;
-        }).
-        error(function(data, status, headers, config) {
-            // log error
-        });
-    //TAGS
-    edit.tags=$scope.tags;//meterias.json*/
+     success(function(data, status, headers, config) {
+     $scope.allSubjects= data;
+     }).
+     error(function(data, status, headers, config) {
+     // log error
+     });
+     //TAGS
+     edit.tags=$scope.tags;//meterias.json*/
 
     $scope.loadTags = function(query) {
         return [{text: 'Lengua'},{text: 'Matematica'},{text: 'Fisica'},{text: 'Quimica'},{text: 'Algebra'}]
@@ -152,7 +152,7 @@ app.service('fileUpload', ['$http', function ($http) {
             .success(function (data, status, headers, config) {
                 edit.u.user.profilePicture = data;
                 scope.imageUrl=data;
-                  //window.location.href=data;
+                //window.location.href=data;
             })
             .error(function () {
             });
