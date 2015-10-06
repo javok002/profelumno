@@ -35,7 +35,7 @@ angular.module('profLesson', [])
             },
             template:
             '<button type="button" class="btn btn-success" data-toggle="modal" data-target="#hire-modal{{index}}">' +
-                'Hire' +
+                'Contratar' +
             '</button>' +
 
             '<!-- Modal -->' +
