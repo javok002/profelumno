@@ -108,12 +108,13 @@
                                         <input class="form-control" name="address" ng-model="edit.u.user.address" ng-enter="geoCode()" googleplace/>
                                         <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
                                     </div>
-                                    <app-map class="map" center="loc" markers="[marker]" zoom="17"></app-map>
                                 </div>
                                 <div class="box-footer " role="group">
                                     <div class="btn-group buttonAlign">
-                                        @*<div class="input-group">*@<button type="submit" class="btn btn-primary">Guardar</button>@*</div>*@
-                                        @*<div class="input-group"><a href="">*@<a href="" class="btn btn-danger" ng-click="back()" type="button">Cancelar</a>@*</a></div>*@
+                                        @*<div class="input-group">*@<button type="submit" class="btn btn-primary">
+                                        Guardar</button>@*</div>*@
+                                        @*<div class="input-group"><a href="">*@<a href="" class="btn btn-danger" ng-click="back()" type="button">
+                                        Cancelar</a>@*</a></div>*@
                                     </div>
                                 </div>
                                 <br>
@@ -131,7 +132,8 @@
                                     </div>
                                 </div>
                                 <div class="box-footer">
-                                    <div class="input-group"><button type="submit" class="btn btn-primary">Guardar</button></div>
+                                    <div class="input-group"><button type="submit" class="btn btn-primary">
+                                        Guardar</button></div>
                                 </div>
                             </form>
                         </div>
@@ -147,7 +149,6 @@
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifyteacher/modify-teacher.css")">
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifystudent/ng-tags-input.min.css")">
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifystudent/ng-tags-input.bootstrap.min.css")">
-
 } {
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
     <script src="@routes.Assets.versioned("external/datepicker/bootstrap-datepicker.js")"></script>

@@ -7,7 +7,6 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
     edit = this;
     edit.u = {};
     edit.u.user = {};
-    edit.u.description=' ';
     $scope.radio = '';
     edit.u.subjects=[];
     $scope.imageUrl='';
@@ -38,14 +37,14 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
         });
 
     /*$http.get("modify-teacher/subjects").
-        success(function(data, status, headers, config) {
-            $scope.allSubjects= data;
-        }).
-        error(function(data, status, headers, config) {
-            // log error
-        });
-    //TAGS
-    edit.tags=$scope.tags;//meterias.json*/
+     success(function(data, status, headers, config) {
+     $scope.allSubjects= data;
+     }).
+     error(function(data, status, headers, config) {
+     // log error
+     });
+     //TAGS
+     edit.tags=$scope.tags;//meterias.json*/
 
     $scope.loadTags = function(query) {
         return [{text: 'Lengua'},{text: 'Matematica'},{text: 'Fisica'},{text: 'Quimica'},{text: 'Algebra'}]
@@ -55,8 +54,7 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
         invalid: false,
         incomplete: false,
         teacherAge: false,
-        taken:false,
-        length: false
+        taken:false
     };
     var verify = function () {
         var today = new Date();
