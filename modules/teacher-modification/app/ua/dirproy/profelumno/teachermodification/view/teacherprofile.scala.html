@@ -101,13 +101,11 @@
                                     </div>
                                     <h4>Direccion</h4>
                                     <div class="input-group">
-                                        <div class="isa_error" ng-show="modifyForm.address.$invalid">
-                                            <i class="fa fa-times-circle"></i>
-                                            Debe ingresar una direccion valida
-                                        </div>
-                                        <input class="form-control" name="address" ng-model="edit.u.user.address" ng-enter="geoCode()" googleplace/>
+                                        <input class="form-control" name="address" ng-model="search" ng-enter="geoCode()" googleplace/>
                                         <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
                                     </div>
+                                    <app-map class="map" id="map" center="loc" markers="[marker]" zoom="17"></app-map>
+
                                 </div>
                                 <div class="box-footer " role="group">
                                     <div class="btn-group buttonAlign">

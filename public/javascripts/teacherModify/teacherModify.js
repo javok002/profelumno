@@ -17,7 +17,10 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
             //for(var i = 0; i < edit.u.user.subjects; i++){
             //    edit.u.subjects.push({"text": edit.u.user.subjects[i]});
             //}
+            $scope.search = edit.u.user.address+"";
+
             $scope.date=new Date(edit.u.user.birthday);
+            $scope.geoCode();
             if (edit.u.homeClasses) {
                 $scope.radio = 'yes';
             } else {
@@ -137,11 +140,17 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
             return;
         }
         edit.u.user.birthday=$scope.date;
+        edit.u.user.address=$scope.search;
         edit.u.homeClasses= $scope.radio=='yes';
+        edit.u.user.latitude = $scope.loc.lat;
+        edit.u.user.longitude = $scope.loc.lon;
+        edit.u.user.city= $scope.getCity();
+        edit.u.user.neighbourhood= $scope.getNeighbourhood();
+
         $http.post('modify-teacher/teacher-modification-post', edit.u)
             .success(function (data) {
                 $scope.errors = {incomplete: false, invalid: false, teacherAge: false, taken: false, length: false};
-                window.location.href = "/teacher-profile"
+                window.location.href = "/teacher-profile";
                 /*alert(JSON.stringify(data));*/
             })
             .error(function (data) {

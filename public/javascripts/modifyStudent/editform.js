@@ -100,7 +100,7 @@ app.controller("EditController", ['$http','$scope', 'fileUpload',function($http,
             }
         }
         return null;
-    }
+    };
 
     $scope.getNeighbourhood = function () {
         for(var i=0;i<arrAddress.length;i++)
@@ -110,7 +110,7 @@ app.controller("EditController", ['$http','$scope', 'fileUpload',function($http,
             }
         }
         return null;
-    }
+    };
 
 
     //IMAGE
