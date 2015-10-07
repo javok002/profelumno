@@ -1,10 +1,18 @@
 @()
 
-@ua.dirproy.profelumno.common.views.html.main("Teacher search") {
-    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/teachersearch/ng-tags-input.min.css")">
-    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/teachersearch/ng-tags-input.bootstrap.min.css")">
+@ua.dirproy.profelumno.common.views.html.tidyMain("Buscar profesor") {
+    @ua.dirproy.profelumno.common.views.html.topbar()
+    @ua.dirproy.profelumno.common.views.html.sidebar()
 
-<div ng-app="teacherSearchApp">
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                Buscar profesor
+                <small></small>
+            </h1>
+        </section>
+        <section class="content">
+            <div ng-app="teacherSearchApp">
     <div class="container-fluid"  ng-controller="searchController">
         <div class="row-fluid">
             <h3 class="header">Buscar profesor</h3>
@@ -13,7 +21,7 @@
                     <div class="col-sm-6 form-group">
                         <label>Materias</label>
                         <div class="input-group">
-                            <tags-input ng-model="subjects" name="subjects" add-from-autocomplete-only="true" add-on-enter="false" add-on-paste="true">
+                            <tags-input ng-keyup="sort()" ng-model="subjects" name="subjects" add-from-autocomplete-only="true" add-on-enter="false" add-on-paste="true">
                                 <auto-complete source="loadTags($query)"></auto-complete>
                             </tags-input>
                             <span class="input-group-addon"><i class="fa fa-book"></i></span>
@@ -60,7 +68,7 @@
                         <th>Hire</th>
                     </tr>
 
-                    <tr dir-paginate="teacher in teachers|itemsPerPage:2">
+                    <tr dir-paginate="teacher in teachers|itemsPerPage:8">
                         <td> {{teacher.user.surname}}, {{teacher.user.name}}</td>
                         <td>{{teacher.ranking}}</td>
                         <td>{{teacher.lessonsDictated}}</td>
@@ -69,18 +77,22 @@
                 </tbody>
             </table>
             <dir-pagination-controls
-                max-size="2"
+                max-size="8"
                 direction-links="true"
                 boundary-links="true" >
             </dir-pagination-controls>
         </div>
     </div>
 </div>
-    <script src="@routes.Assets.versioned("external/angularjs/angular.min.js")"></script>
+        </section>
+    </div>
+
+} {
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/teachersearch/ng-tags-input.min.css")">
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/teachersearch/ng-tags-input.bootstrap.min.css")">
+} {
     <script src="@routes.Assets.versioned("javascripts/teacherSearch/teacherSearch.js")"></script>
-    <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/teacherSearch/ng-tags-input.min.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/teacherSearch/dirPagination.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/hire-lesson/hire-lesson.js")"></script>
-
 }

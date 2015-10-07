@@ -119,12 +119,13 @@
                             </form>
                         </div>
                         <div class="box">
+                            <div flash-message="5000"></div>
                             <div class="box-header"><h4>Materias que dicto:</h4></div>
                             <form role="form" method="post" class="from-horizontal" ng-submit="submitSubjects()" name="subjectsForm">
                                 <div class="box-body">
                                     <div class="input-group">
-                                        <tags-input ng-model="edit.u.user.subjects" add-from-autocomplete-only="true" load-on-focus="true" add-on-enter="{false}">
-                                            <auto-complete source="loadTags($query)" ></auto-complete>
+                                        <tags-input ng-keyup="sort()" ng-model="edit.u.user.subjects" add-from-autocomplete-only="true" >
+                                            <auto-complete source="loadTags($query)" load-on-focus="true" loadOnFocus="true"></auto-complete>
                                         </tags-input>
                                         <span class="input-group-addon"><i class="fa fa-book"></i></span>
                                     </div>
@@ -152,4 +153,8 @@
     <script src="@routes.Assets.versioned("external/datepicker/bootstrap-datepicker.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/teacherModify/teacherModify.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/modifyStudent/ng-tags-input.min.js")"></script>
+    <script src="@routes.Assets.versioned("javascripts/teacherModify/angular-flash.js")"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-animate.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+
 }

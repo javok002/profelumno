@@ -11,6 +11,8 @@ teacherSearchApp.controller("searchController", function($scope, $http) {
     $scope.ranking = 0;
     $scope.lessonsDictated = 0;
     $scope.homeClasses = false;
+    $scope.allSubjects = [];
+    $scope.subjectsFiltered = [];
     $scope.search = function search(){
         var literalSubjects = [];
         for(var i = 0; i < $scope.subjects.length; i++){
@@ -29,8 +31,35 @@ teacherSearchApp.controller("searchController", function($scope, $http) {
             })
     };
 
+    $http.get("teacher-search/subjects").
+        success(function(data, status, headers, config) {
+            $scope.allSubjects = data.length != 0 ? data : [{text: 'Lengua'},{text: 'Matematica'},{text: 'Fisica'},{text: 'Quimica'},{text: 'Algebra'}];
+        }).
+        error(function(data, status, headers, config) {
+            console.log("error subjects")
+        });
+
     $scope.loadTags = function(query) {
-        return [{text: 'Lengua'},{text: 'Matematica'},{text: 'Fisica'},{text: 'Quimica'},{text: 'Algebra'}]
+        return $scope.subjectsFiltered.length == 0 ? $scope.allSubjects : $scope.subjectsFiltered;
+    };
+
+    $scope.sort = function(){
+        $scope.subjectsFiltered = [];
+        if(typeof $scope.allSubjects == 'undefined'){
+            $http.get("teacher-search/subjects").
+                success(function(data, status, headers, config) {
+                    $scope.allSubjects = data.length != 0 ? data : [{text: 'Lengua'},{text: 'Matematica'},{text: 'Fisica'},{text: 'Quimica'},{text: 'Algebra'}];
+                }).
+                error(function(data, status, headers, config) {
+                    console.log("error subjects")
+                });
+        }
+        var currentTag = document.getElementsByName("currentTag")[0].value;
+        for(var i = 0; i < $scope.allSubjects.length; i++){
+            if($scope.allSubjects[i].text.substring(0,currentTag.length).toLowerCase() == currentTag.toLowerCase()){
+                $scope.subjectsFiltered.push($scope.allSubjects[i]);
+            }
+        }
     };
 });
 

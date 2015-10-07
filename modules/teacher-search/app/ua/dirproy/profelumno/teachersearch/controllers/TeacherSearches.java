@@ -1,7 +1,10 @@
 package ua.dirproy.profelumno.teachersearch.controllers;
 
 import authenticate.Authenticate;
+import com.avaje.ebean.Ebean;
+import com.fasterxml.jackson.databind.JsonNode;
 import play.data.Form;
+import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import ua.dirproy.profelumno.common.models.Student;
@@ -19,7 +22,7 @@ import static play.libs.Json.toJson;
  * Date: 9/13/15
  * Project profelumno
  */
-@Authenticate({Student.class, Teacher.class})
+@Authenticate({Student.class})
 public class TeacherSearches extends Controller {
 
     public static Result teacherSearchView(){
@@ -57,6 +60,12 @@ public class TeacherSearches extends Controller {
 
     private static boolean checkLessons(Integer lessons, Teacher teacher) {
         return teacher.getLessonsDictated() < lessons;
+    }
+
+    public static Result getSubject(){
+        List<Subject> subjects= Ebean.find(Subject.class).findList();
+        JsonNode json= Json.toJson(subjects);
+        return ok(json);
     }
 
     private static boolean checkHome(Boolean home, Teacher teacher) {

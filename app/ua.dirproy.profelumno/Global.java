@@ -26,28 +26,32 @@ public class Global extends GlobalSettings {
         private static List<Subject> subjects = new ArrayList<>();
 
         public static void setSubjects() {
-            Subject subject1 = new Subject();
-            subject1.setName("Matematica");
-            subject1.save();
 
-            Subject subject2 = new Subject();
-            subject2.setName("Algebra");
-            subject2.save();
-            Subject subject3 = new Subject();
-            subject3.setName("LCD");
-            subject3.save();
-            Subject subject4 = new Subject();
-            subject4.setName("Anaydis");
-            subject4.save();
-            Subject subject5 = new Subject();
-            subject5.setName("Lab2");
-            subject5.save();
+            if(Subject.finder.all().isEmpty()) {
+                Subject subject1 = new Subject();
+                subject1.setName("Matematica");
+                subject1.save();
 
-            subjects.add(0, subject1);
-            subjects.add(1, subject2);
-            subjects.add(2, subject3);
-            subjects.add(3, subject4);
-            subjects.add(4, subject5);
+                Subject subject2 = new Subject();
+                subject2.setName("Algebra");
+                subject2.save();
+                Subject subject3 = new Subject();
+                subject3.setName("LCD");
+                subject3.save();
+                Subject subject4 = new Subject();
+                subject4.setName("Anaydis");
+                subject4.save();
+                Subject subject5 = new Subject();
+                subject5.setName("Lab2");
+                subject5.save();
+
+                subjects.add(0, subject1);
+                subjects.add(1, subject2);
+                subjects.add(2, subject3);
+                subjects.add(3, subject4);
+                subjects.add(4, subject5);
+
+            }
         }
 
 

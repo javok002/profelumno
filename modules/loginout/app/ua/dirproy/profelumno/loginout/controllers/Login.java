@@ -22,7 +22,7 @@ public class Login extends Controller {
 
     public static Result loginView (){
 
-        createMockTeacherProfile();
+        //createMockTeacherProfile();
         return ok(login.render());}
 
     private static void createMockTeacherProfile(){

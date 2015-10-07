@@ -1,22 +1,25 @@
 /**
  * Created by rudy on 19/09/15.
  */
-var app = angular.module('teacherModify', ['ngTagsInput']);
+var app = angular.module('teacherModify', ['ngRoute', 'ngTagsInput', 'flash', 'ngAnimate']);
 
-app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', function ($scope, $http, fileUpload) {
+app.controller('TeacherInfoController', ['$rootScope', '$scope', '$http', 'fileUpload', 'Flash', function ($rootScope, $scope, $http, fileUpload, Flash) {
     edit = this;
     edit.u = {};
     edit.u.user = {};
     $scope.radio = '';
-    edit.u.subjects=[];
+    edit.u.allSubjects = [];
+    edit.u.subjectsFiltered = [];
     $scope.imageUrl='';
+
+    $scope.successAlert = function () {
+        var message = '<strong>¡Bien hecho! </strong> Actualizaste con éxito tus materias.';
+        Flash.create('success', message);
+    };
 
     $http.get('modify-teacher/user')
         .success(function (data, status, headers, config) {
             edit.u = data;
-            //for(var i = 0; i < edit.u.user.subjects; i++){
-            //    edit.u.subjects.push({"text": edit.u.user.subjects[i]});
-            //}
             $scope.search = edit.u.user.address+"";
 
             $scope.date=new Date(edit.u.user.birthday);
@@ -39,18 +42,35 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
             // log error
         });
 
-    /*$http.get("modify-teacher/subjects").
+    $http.get("modify-teacher/subjects").
      success(function(data, status, headers, config) {
-     $scope.allSubjects= data;
-     }).
+            edit.u.allSubjects = data.length != 0 ? data : [{text: 'Lengua'},{text: 'Matematica'},{text: 'Fisica'},{text: 'Quimica'},{text: 'Algebra'}];
+        }).
      error(function(data, status, headers, config) {
-     // log error
+            console.log("error subjects")
      });
-     //TAGS
-     edit.tags=$scope.tags;//meterias.json*/
 
     $scope.loadTags = function(query) {
-        return [{text: 'Lengua'},{text: 'Matematica'},{text: 'Fisica'},{text: 'Quimica'},{text: 'Algebra'}]
+        return edit.u.subjectsFiltered.length == 0 ? edit.u.allSubjects : edit.u.subjectsFiltered;
+    };
+
+    $scope.sort = function(){
+        edit.u.subjectsFiltered = [];
+        if(typeof edit.u.allSubjects == 'undefined'){
+            $http.get("modify-teacher/subjects").
+                success(function(data, status, headers, config) {
+                    edit.u.allSubjects = data.length != 0 ? data : [{text: 'Lengua'},{text: 'Matematica'},{text: 'Fisica'},{text: 'Quimica'},{text: 'Algebra'}];
+                }).
+                error(function(data, status, headers, config) {
+                    console.log("error subjects")
+                });
+        }
+        var currentTag = document.getElementsByName("currentTag")[0].value;
+        for(var i = 0; i < edit.u.allSubjects.length; i++){
+            if(edit.u.allSubjects[i].text.substring(0,currentTag.length).toLowerCase() == currentTag.toLowerCase()){
+                edit.u.subjectsFiltered.push(edit.u.allSubjects[i]);
+            }
+        }
     };
 
     $scope.errors = {
@@ -175,7 +195,8 @@ app.controller('TeacherInfoController', ['$scope', '$http', 'fileUpload', functi
         }
         $http.post('modify-teacher/subjects', literalSubjects)
             .success(function(response){
-                window.location.href = "/teacher-profile"
+                $scope.successAlert();
+                //window.location.href = "/teacher-profile"
             })
             .error("falla al guardar")
     };
