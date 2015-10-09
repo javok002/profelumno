@@ -10,7 +10,7 @@ import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.mailsender.models.MailSenderUtil;
 import ua.dirproy.profelumno.teacherprofile.views.html.acceptLesson;
 
-import javax.mail.MessagingException;
+import javax.mail.*;
 import java.util.List;
 
 /**

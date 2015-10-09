@@ -6,13 +6,21 @@ angular.module('profLesson', [])
     .controller('HireCtrl',['$scope', '$http', function($scope, $http) {
         $scope.comment = '';
         $scope.address= '';
-
-        $scope.postLesson = function(teacherId,subjectId) {
+        $scope.setSubjects = function (teacherId) {
+            var subs = {};
+            $http.get('/hire-lesson/get-subjects?teacherId='+teacherId)
+                .success(function (data) {
+                    subs = data;
+                });
+            return subs;
+        };
+        $scope.selected = {};
+        $scope.postLesson = function(teacherId) {
             data = {
                 address:$scope.address,
                 comment:$scope.comment,
                 teacherId:teacherId,
-                subjectId:subjectId
+                subjectId:$scope.selected
             };
             $http.post('/hire-lesson/new', data).then(successCallback);
         };
@@ -27,8 +35,8 @@ angular.module('profLesson', [])
             restrict: 'E',
             scope : {
                 teacherId : '=', //todo quien se encargue de buscar profesores tiene que setear este atributo y la subject
-                subjectId : '=',
-                index : '='
+                index : '=',
+                teacherSubs: '='
             },
             link : function(scope){
                 scope.date = 'date';
@@ -50,6 +58,10 @@ angular.module('profLesson', [])
                         '<div class="modal-body">' +
                             '<div ng-controller="HireCtrl">' +
                                 '<div class="box-body">' +
+                                    '<label for="selectSub">Seleccione una materia:</label>' +
+                                    '<select class="form-control" id="selectSub" ng-model="selected">'+
+                                       '<option ng-repeat="subject in teacherSubs" value="{{subject.id}}">{{subject.text}}</option>'+
+                                        '</select>'+
                                     '<div class="form-group">' +
                                         '<div class="radio"> ' +
                                             '<label> ' +
@@ -98,7 +110,7 @@ angular.module('profLesson', [])
                                             '<textarea class="form-control" rows="3" placeholder="Dejar comentario ..." ng-model="comment"></textarea>' +
                                         '</div>' +
                                     '</div><!-- /.box-body -->' +
-                                    '<button ng-click="postLesson(teacherId , subjectId)" class="btn btn-primary" data-dismiss="modal">Enviar</button>' +
+                                    '<button ng-click="postLesson(teacherId)" class="btn btn-primary" data-dismiss="modal">Enviar</button>' +
                             '</div><!-- /.box -->' +
                         '</div>' +
                         '<div class="modal-footer">' +

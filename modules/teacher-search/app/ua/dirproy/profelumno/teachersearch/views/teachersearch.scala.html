@@ -72,7 +72,7 @@
                         <td> {{teacher.user.surname}}, {{teacher.user.name}}</td>
                         <td>{{teacher.ranking}}</td>
                         <td>{{teacher.lessonsDictated}}</td>
-                        <td><hire-lesson teacher-id=teacher.id index=$index></hire-lesson></td>
+                        <td><hire-lesson teacher-id=teacher.id index=$index teacher-subs=teacher.user.subjects></hire-lesson></td>
                     </tr>
                 </tbody>
             </table>

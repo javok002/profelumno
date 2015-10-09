@@ -3,7 +3,8 @@
 # ~~~~
 
 # Home page
-POST        /new                    ua.dirproy.profelumno.hirelesson.controllers.Lessons.newLesson()
-GET         /                       ua.dirproy.profelumno.hirelesson.controllers.Lessons.redirect()
+POST        /new                 ua.dirproy.profelumno.hirelesson.controllers.Lessons.newLesson()
+GET         /                    ua.dirproy.profelumno.hirelesson.controllers.Lessons.redirect()
+GET         /get-subjects        ua.dirproy.profelumno.hirelesson.controllers.Lessons.getTeacherSubjects(teacherId: String)
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file           controllers.Assets.versioned(path="/public", file: Asset)
+GET         /assets/*file        controllers.Assets.versioned(path="/public", file: Asset)
