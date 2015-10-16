@@ -1,5 +1,7 @@
 @()
 @ua.dirproy.profelumno.common.views.html.main("Accept Lesson") {
+    @ua.dirproy.profelumno.common.views.html.topbar()
+    @ua.dirproy.profelumno.common.views.html.sidebar()
     <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
     <script src="@routes.Assets.versioned("external/angularjs/angular.min.js")"></script>
     <script src="@routes.Assets.versioned("/javascripts/teacherProfile/accept-lesson.js")"></script>
@@ -10,11 +12,11 @@
                 <div class="col-sm-2"></div>
                 <div class="col-sm-6">
                     <div class="page-header">Clases pendientes: </div>
-                    <div ng-repeat="lesson in teacherLessons">
+                    <div ng-repeat="lesson in teacherLessons" >
                         <div ng-if="lesson.lessonState == 0">
                             <div class="panel panel-primary" id="{{lesson.id}}">
                                 <div class="panel-body">
-                                    El alumno {{lesson.student.user.name}} {{lesson.student.user.surname}} ha solicitado una nueva clase:
+                                   El alumno {{lesson.student.user.name}} {{lesson.student.user.surname}} ha solicitado una nueva clase:
                                     <br>
                                     <ul class="list-group">
                                         <li class="list-group-item">Fecha: {{lesson.dateTime}}</li>
@@ -28,10 +30,10 @@
                                     </ul>
                                     <br>
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-success" ng-click="decision(lesson.id, true)">
+                                        <button type="button" class="btn btn-success" ng-click="decision(lesson.id, true, $event)">
                                             Aceptar</button>
                                         <div class="col-xs-1"></div>
-                                        <button type="button" class="btn btn-danger" ng-click="decision(lesson.id, false)">
+                                        <button type="button" class="btn btn-danger" ng-click="decision(lesson.id, false, $event)">
                                             Rechazar</button>
                                     </div>
                                 </div>
@@ -39,6 +41,7 @@
                             </div>
                         </div>
                     </div>
+                    <h3 class="special-text">No hay más clases pendientes</h3>
                     <button type="button" data-toggle="modal" id="showModal" data-target="#success" style="display : none"></button>
                     <div class="modal fade" role="dialog" id="success">
                         <div class="modal-dialog">
