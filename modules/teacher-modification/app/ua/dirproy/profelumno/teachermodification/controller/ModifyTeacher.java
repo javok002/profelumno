@@ -9,6 +9,7 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
+import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.teachermodification.view.html.*;
 import ua.dirproy.profelumno.user.models.Subject;
@@ -45,7 +46,9 @@ public class ModifyTeacher extends Controller {
             return badRequest("Error in form");
         }
         Teacher tch = form.get();
-        Teacher teacher = Ebean.find(Teacher.class, tch.getUser().getId());
+        User user = tch.getUser();
+        Teacher teacher = Teacher.finder.where().eq("user", user).findUnique();
+
         if ((tch.getUser().getEmail()).equalsIgnoreCase(teacher.getUser().getEmail())||
                 User.validateEmailUnique(tch.getUser().getEmail())) {
             //teacher.setProfilePicture(tch.getProfilePicture());
