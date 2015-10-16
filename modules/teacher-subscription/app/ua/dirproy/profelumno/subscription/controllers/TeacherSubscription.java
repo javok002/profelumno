@@ -54,7 +54,6 @@ public class TeacherSubscription extends Controller{
         //validate teacher's credit card
         if(!validator.isValid(card.getNumber())) return badRequest();
         else {
-            System.out.println("------lo seteo true");
             teacher.setSubscription(card.getNumber());
             teacher.setHasCard(true);
             teacher.save();
@@ -83,7 +82,6 @@ public class TeacherSubscription extends Controller{
         final long userID=Long.parseLong(session().get("id"));
         //final long userID = 1;
         Teacher teacher= Teacher.finder.byId(userID);
-        System.out.println("---------------"+teacher.hasCard());
         if (teacher.hasCard()) {
             String number = teacher.getSubscription();
             int len = number.length();
