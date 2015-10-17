@@ -60,12 +60,7 @@ public class Lessons extends Controller {
                 break;
         }
         lesson.setAddress(address);
-        String date = lessonsForm.data().get("date");
-        String year = date.substring(0, 4);
-        String month = date.substring(5, 7);
-        String day = date.substring(8, 10);
-        lesson.setDateString(day+"/"+month+"/"+year);
-        lesson.setDateTime(new Date(Integer.parseInt(year),Integer.parseInt(month),Integer.parseInt(day)));
+        lesson.setDateString(dateTime.substring(8,10)+"/"+dateTime.substring(5,7)+"/"+dateTime.substring(0,4));
         lesson.setComment(lessonsForm.data().get("comment"));
         lesson.setTeacherReview(null);
         lesson.setStudentReview(null);
