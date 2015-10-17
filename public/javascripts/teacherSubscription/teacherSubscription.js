@@ -9,6 +9,7 @@
                 document.getElementById('cancel').hidden = false;
             }).
             error(function (data, status, headers, config) {
+
                 // log error
             });
         // create a blank object to handle form data.

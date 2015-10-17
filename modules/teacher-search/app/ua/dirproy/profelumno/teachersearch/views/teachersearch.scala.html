@@ -15,7 +15,7 @@
             <div ng-app="teacherSearchApp">
     <div class="container-fluid"  ng-controller="searchController">
         <div class="row-fluid">
-            <h3 class="header">Buscar profesor</h3>
+            @*<h3 class="header">Buscar profesor</h3>*@
             <form role="form" class="simple-form" ng-submit="search()">
                 <div class="row-fluid">
                     <div class="col-sm-6 form-group">
@@ -62,17 +62,17 @@
             <table class="table">
                 <tbody>
                     <tr>
-                        <th>Profesor</th>
-                        <th>Ranking</th>
-                        <th>Clases dictadas</th>
-                        <th>Hire</th>
+                        <th class="text-center">Profesor</th>
+                        <th class="text-center">Ranking</th>
+                        <th class="text-center">Clases dictadas</th>
+                        <th class="text-center">Contratar</th>
                     </tr>
 
                     <tr dir-paginate="teacher in teachers|itemsPerPage:8">
-                        <td> {{teacher.user.surname}}, {{teacher.user.name}}</td>
-                        <td>{{teacher.ranking}}</td>
-                        <td>{{teacher.lessonsDictated}}</td>
-                        <td><hire-lesson teacher-id=teacher.id index=$index teacher-subs=teacher.user.subjects></hire-lesson></td>
+                        <td class="text-center"> {{teacher.user.surname}}, {{teacher.user.name}}</td>
+                        <td class="text-center">{{teacher.ranking}}</td>
+                        <td class="text-center">{{teacher.lessonsDictated}}</td>
+                        <td class="text-center"><hire-lesson teacher-id=teacher.id index=$index teacher-subs=teacher.user.subjects></hire-lesson></td>
                     </tr>
                 </tbody>
             </table>

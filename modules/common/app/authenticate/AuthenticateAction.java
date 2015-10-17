@@ -21,6 +21,8 @@ public class AuthenticateAction extends Action<Authenticate> {
         User user;
         Teacher teacher;
         Student student;
+        String path=context.request().path();
+
         try {
             userId= Long.parseLong(session("id"));
             user = Ebean.find(User.class, userId);
@@ -32,7 +34,13 @@ public class AuthenticateAction extends Action<Authenticate> {
         }
         if (teacher != null) {
             if (check(Teacher.class)) {
-                return delegate.call(context);
+                if (!teacher.hasCard() &&(!(path.equals("/subscription")))){
+                    if(path.equals("/subscription/cardNumber")||path.equals("/subscription/validate")){
+                        return delegate.call(context);
+                    }
+                    return F.Promise.pure(redirect("/subscription"));
+                }
+                    return delegate.call(context);
             }
             return F.Promise.pure(redirect("/teacher-profile"));
         } else if (student != null) {

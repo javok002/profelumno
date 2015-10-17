@@ -44,6 +44,8 @@ public class Lessons extends Controller {
         final Subject subject = Subject.finder.byId(Long.parseLong(lessonsForm.data().get("subjectId")));
         lesson.setSubject(subject);
 
+        final String dateTime = lessonsForm.data().get("dateTime");
+        lesson.setDateTime(new Date(Integer.parseInt(dateTime.substring(0, 4)) - 1900, Integer.parseInt(dateTime.substring(5, 7)), Integer.parseInt(dateTime.substring(8, 10))));
 
         String address;
         switch (lessonsForm.data().get("address")) {

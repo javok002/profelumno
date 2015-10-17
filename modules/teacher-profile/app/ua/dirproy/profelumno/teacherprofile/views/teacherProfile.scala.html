@@ -8,11 +8,11 @@
         <section class="content-header">
             <h1>
                 Dashboard
-                <small></small>
+                <small>{{ teacher.user.name }} {{ teacher.user.surname }}</small>
             </h1>
         </section>
 
-        <section class="content">
+        <section class="content" ng-cloak>
 
             <div class="row">    <!-- Apply any bg-* class to to the info-box to color it -->
                 <div class="col-md-4">
@@ -31,8 +31,8 @@
                     <div class="info-box bg-purple">
                         <span class="info-box-icon"><i class="fa fa-credit-card"></i></span>
                         <div class="info-box-content">
-                            <span class="info-box-text">Suscripción</span>
-                            <span class="info-box-number">{{ teacher.subscription }}</span>
+                            <span class="info-box-text">Tarjeta Asociada</span>
+                            <span class="info-box-number">{{ 'XXXX XXXX XXXX ' + teacher.subscription }}</span>
                         </div><!-- /.info-box-content -->
                     </div><!-- /.info-box -->
                 </div>
@@ -127,9 +127,9 @@
             </div>
 
 
-            <div>
+            @*<div>
                 <a href="/teacher-profile/accept-lesson" class="btn btn-primary">Clases pendientes</a>
-            </div>
+            </div>*@
         </section>
 
 
