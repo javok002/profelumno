@@ -35,8 +35,6 @@ public class ModifyTeacher extends Controller {
         final long userId=Long.parseLong(session("id"));
         User user = Ebean.find(User.class, userId);
         Teacher teacher =Teacher.finder.where().eq("user",user).findUnique();
-        System.out.println("-----------"+teacher.getUser().getBirthday());
-        System.out.println("-----------"+teacher.getRenewalDate());
         JsonNode json= Json.toJson(teacher);
         return ok(json);
     }
