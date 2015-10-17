@@ -40,6 +40,9 @@ public class Lessons extends Controller {
         final Subject subject = Subject.finder.byId(Long.parseLong(lessonsForm.data().get("subjectId")));
         lesson.setSubject(subject);
 
+        final String dateTime = lessonsForm.data().get("dateTime");
+        lesson.setDateTime(new Date(Integer.parseInt(dateTime.substring(0, 4)) - 1900, Integer.parseInt(dateTime.substring(5, 7)), Integer.parseInt(dateTime.substring(8, 10))));
+
         String address;
         switch (lessonsForm.data().get("address")) {
             case "student":
@@ -53,19 +56,16 @@ public class Lessons extends Controller {
                 break;
         }
         lesson.setAddress(address);
-
         lesson.setComment(lessonsForm.data().get("comment"));
-
         lesson.setTeacherReview(null);
         lesson.setStudentReview(null);
-
         lesson.setLessonState(0);
 
         lesson.save();
 
         notifyTeacher(teacher.getUser().getEmail());
 
-        return ok(); //todo redireccionar al index
+        return ok();
     }
 
     public static Result redirect() {
