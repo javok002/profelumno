@@ -76,6 +76,7 @@ public class TeacherSubscription extends Controller{
         cal.add(Calendar.MONTH, 1);
         Date date = cal.getTime();
         teacher.setRenewalDate(date);
+        System.out.println(teacher.getRenewalDate());
         ChargeTask charger = new ChargeTask();
         charger.charge();
     }

@@ -23,6 +23,7 @@ app.controller('TeacherInfoController', ['$rootScope', '$scope', '$http', 'fileU
             $scope.search = edit.u.user.address+"";
 
             $scope.date=new Date(edit.u.user.birthday);
+            $scope.renewalDate=new Date(edit.u.renewalDate);
             $scope.geoCode();
             if (edit.u.homeClasses) {
                 $scope.radio = 'yes';
@@ -166,6 +167,8 @@ app.controller('TeacherInfoController', ['$rootScope', '$scope', '$http', 'fileU
         edit.u.user.longitude = $scope.loc.lon;
         edit.u.user.city= $scope.getCity();
         edit.u.user.neighbourhood= $scope.getNeighbourhood();
+        edit.u.renewalDate=$scope.renewalDate;
+
 
         $http.post('modify-teacher/teacher-modification-post', edit.u)
             .success(function (data) {
