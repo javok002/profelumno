@@ -6,6 +6,7 @@ angular.module('profLesson', [])
     .controller('HireCtrl',['$scope', '$http', function($scope, $http) {
         $scope.comment = '';
         $scope.address= '';
+        $scope.lessonDate= '';
         $scope.setSubjects = function (teacherId) {
             var subs = {};
             $http.get('/hire-lesson/get-subjects?teacherId='+teacherId)
@@ -20,7 +21,8 @@ angular.module('profLesson', [])
                 address:$scope.address,
                 comment:$scope.comment,
                 teacherId:teacherId,
-                subjectId:$scope.selected
+                subjectId:$scope.selected,
+                date:$scope.lessonDate
             };
             $http.post('/hire-lesson/new', data).then(successCallback);
         };
@@ -103,7 +105,7 @@ angular.module('profLesson', [])
 
                                         '<div class="input-group">' +
                                             '<span class="input-group-addon"><i class="fa fa-calendar"></i></span>' +
-                                            '<input type="email" class="form-control" placeholder="Fecha y horario" required="">' +
+                                            '<input type="date" class="form-control" placeholder="Fecha y horario" required="" ng-model="lessonDate">' +
                                         '</div>' +
                                         '<div class="form-group">' +
                                             '<label>Comentario</label>' +

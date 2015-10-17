@@ -5,6 +5,7 @@
 
 create table lesson (
   id                        bigint not null,
+  date_string               varchar(255),
   date_time                 timestamp,
   duration                  bigint,
   address                   varchar(255),
