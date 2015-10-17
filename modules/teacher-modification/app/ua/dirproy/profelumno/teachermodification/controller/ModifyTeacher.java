@@ -152,7 +152,8 @@ public class ModifyTeacher extends Controller {
                 final File file = picture.getFile();
                 if (contentType.contains("image")) {
                     final long userId = Long.parseLong(session("id"));
-                    Teacher teacher = Ebean.find(Teacher.class, userId);
+                    User user = Ebean.find(User.class, userId);
+                    Teacher teacher =Teacher.finder.where().eq("user",user).findUnique();
                     byte[] bfile=null;
                     try {
                         bfile=Files.toByteArray(file);
