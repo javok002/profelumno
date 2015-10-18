@@ -12,12 +12,11 @@ import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.user.models.User;
 
-import java.sql.Time;
 import java.time.Duration;
 import java.util.Date;
 import java.util.Iterator;
 
-
+@Authenticate({Teacher.class, Student.class})
 public class ReviewController extends Controller {
 
     public static Result show(){
@@ -300,7 +299,6 @@ public class ReviewController extends Controller {
 
         lesson5.setDuration(oneHour);
         lesson5.save();
-
 
         return redirect(routes.ReviewController.show());
     }

@@ -1,6 +1,8 @@
 package ua.dirproy.profelumno.teacherprofile.controllers;
 
 import authenticate.Authenticate;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -135,22 +137,36 @@ public class TeacherProfiles extends Controller {
     }
 
     public static Result getPreviousLessons(){
-        List<Lesson> lessons = myLessons();
-        List<Lesson> previousLessons = new ArrayList<>();
-        Date date = new Date();
-        for (int i = 0; i <lessons.size() ; i++) {
-            if (previousLessons.size() <= 6) {
-                Lesson aux = lessons.get(i);
-                if (aux.getDateTime().before(date)){
-                previousLessons.add(aux);
-                 }
+        final Long userId = Long.parseLong(session().get("id"));
+        Iterator<Lesson> previousLessons = getPreviousLessons(userId);
+
+        final ArrayNode results = Json.newArray();
+        while (previousLessons.hasNext()){
+            final Lesson temp = previousLessons.next();
+            final ObjectNode node = Json.newObject();
+
+            node.put("date", temp.getDateTime().getDate() + "/"
+                    + (temp.getDateTime().getMonth() + 1) + "/"
+                    + (temp.getDateTime().getYear() + 1900));
+
+            if (temp.getSubject() == null){
+                node.put("subject", "Clase");
+            } else {
+                node.put("subject", temp.getSubject().getName());
             }
-            else {
-                break;
-            }
+            node.put("studentName", temp.getStudent().getUser().getName() + " "
+                    + temp.getStudent().getUser().getSurname());
+            node.put("studentEmail", temp.getStudent().getUser().getEmail());
+            node.put("idLesson", temp.getId());
+            node.put("review", temp.getStudentReview() == null);
+            results.add(node);
         }
-        return ok(Json.toJson(previousLessons));
+        return ok(results);
     }
 
+    private static Iterator<Lesson> getPreviousLessons(Long userId){
+        final Teacher teacher = Teacher.finder.where().eq("user.id", userId).findUnique();
+        return Lesson.finder.where().eq("teacher", teacher).lt("dateTime", new Date()).findList().iterator();
+    }
 
 }
