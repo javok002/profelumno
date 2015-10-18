@@ -39,6 +39,9 @@ public class ModifyTeacher extends Controller {
         return ok(json);
     }
 
+    public static Result changePasswordView() {
+        return ok(changepassword.render());
+    }
     public static Result saveTeacherInfo(){
         Form<Teacher> form = Form.form(Teacher.class).bindFromRequest();
         if (form.hasErrors()) {
@@ -169,4 +172,20 @@ public class ModifyTeacher extends Controller {
         }
         return ok("yfvygfvyg");
     }
+
+    public static Result savePassword() {
+        Form<Teacher> form = Form.form(Teacher.class).bindFromRequest();
+        if (form.hasErrors()) {
+//            return badRequest(register.render());
+            return badRequest(form.errors().toString());
+        }
+        Teacher tch = form.get();
+        User user = tch.getUser();
+        Teacher teacher = Teacher.finder.where().eq("user", user).findUnique();
+        User studentU = teacher.getUser();
+        studentU.setPassword(user.getPassword());
+        Ebean.save(teacher);
+        Ebean.save(teacher.getUser());
+//        return ok(Json.toJson(student));
+        return ok(routes.ModifyTeacher.profileView().url());    }
 }
