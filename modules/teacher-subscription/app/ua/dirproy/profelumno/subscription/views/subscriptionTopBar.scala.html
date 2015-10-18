@@ -1,9 +1,9 @@
 @()
 
 @ua.dirproy.profelumno.common.views.html.main("Suscripción"){
-    <div id="bars">
+    @ua.dirproy.profelumno.common.views.html.topbar()
+    @ua.dirproy.profelumno.common.views.html.sidebar()
 
-    </div>
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/teachersubscription/teacherSubscription.css")">
     <link rel="stylesheet" href="@routes.Assets.versioned("external/bootstrap-select/bootstrap-select.css")">
     <div class="row" ng-app="postApp">
