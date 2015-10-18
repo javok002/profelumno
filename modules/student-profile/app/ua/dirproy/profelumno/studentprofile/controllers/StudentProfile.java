@@ -52,13 +52,18 @@ public class StudentProfile extends Controller {
             }
         }
 
+        //rating del alumno
+        final ArrayList<Long> rating = new ArrayList<>();
+        rating.add(student.getUser().getReviews());
+
         //map que voy a devolver
         Map<String, Collection> answer = new HashMap<>();
+        answer.put("rating", rating);
         answer.put("Subjects", subjects);
         answer.put("Lessons", lastLessonsStudent);
         answer.put("Teachers", lastTeachers);
         answer.put("Teacher's subject", teacherSubject);
-        answer.put("Lessons with no review", lessonsWithNoReview);
+        answer.put("Lessons with no rating", lessonsWithNoReview);
         return ok(Json.toJson(answer));
     }
 }
