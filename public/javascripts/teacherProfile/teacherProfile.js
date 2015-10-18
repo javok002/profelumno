@@ -48,7 +48,7 @@ angular.module('app', [])
                     $scope.teacher = data;
                 })
                 .error(function (data) {
-                    //    TODO warning message
+                    $scope.teacher = {};
                 });
             $http.get('/teacher-profile/top-subjects')
                 .success(function (data) {
@@ -56,14 +56,14 @@ angular.module('app', [])
                     $scope.noTopSubjects = Object.keys($scope.topSubjects).length == 0;
                 })
                 .error(function (data) {
-                    //    TODO warning message
+                    $scope.noTopSubjects = true;
                 });
             $http.get('/teacher-profile/previous-lessons')
                 .success(function (data) {
                     $scope.prevLessons = data;
                 })
                 .error(function (data) {
-                    //    TODO warning message
+                    $scope.prevLessons = [];
                 });
             $http.get('/teacher-profile/next-lessons')
                 .success(function (data) {
@@ -74,7 +74,7 @@ angular.module('app', [])
                     $scope.nextLessons = data;
                 })
                 .error(function (data) {
-                    //    TODO warning message
+                    $scope.nextLessons = [];
                 });
         };
 
