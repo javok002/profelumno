@@ -6,8 +6,11 @@
         $http.get("/subscription/cardNumber").
             success(function (data, status, headers, config) {
                 control.cardNumber=data;
+                document.getElementById('cancel').style.visibility = "visible";
             }).
             error(function (data, status, headers, config) {
+                document.getElementById('cancel').style.visibility = "hidden";
+
                 // log error
             });
         // create a blank object to handle form data.
@@ -47,3 +50,44 @@
         };
     }]);
 })();
+
+function checkType() {
+    var type=document.getElementById("type").value;
+    //if(isNaN(type)){
+    //    document.getElementById("cardNumberDiv").innerHTML = "<input type=\"text\" class=\"form-control\" name=\"cardNumber\" required=\"required\" id=\"cardNumber\" ng-model=\"control.card.number\" maxlength=\"20\">";
+    //    document.getElementById("cardNumber").className += " input-error";
+    //}
+        if(type!="AMEX"){
+            if(document.getElementById('cardNumber').value.length <= 16){
+                document.getElementById("cardNumberDiv").innerHTML = "<input type=\"text\" class=\"form-control\" name=\"cardNumber\" required=\"required\" id=\"cardNumber\" ng-model=\"control.card.number\" maxlength=\"16\" value="+document.getElementById('cardNumber').value+">";
+            }
+            else{
+                document.getElementById("cardNumberDiv").innerHTML = "<input type=\"text\" class=\"form-control\" name=\"cardNumber\" required=\"required\" id=\"cardNumber\" ng-model=\"control.card.number\" maxlength=\"16\">";
+                document.getElementById("cardNumber").className += " input-error";
+
+            }
+            if(document.getElementById('secCode').value.length != 3){
+                document.getElementById("secCodeDiv").innerHTML = "<input type=\"password\" class=\"form-control\" name=\"secCode\" id=\"secCode\" required=\"required\" maxlength=\"3\" >"
+                document.getElementById("secCode").className += " input-error";
+
+            }
+        }
+        else{
+            if(document.getElementById('cardNumber').value.length <= 15){
+                document.getElementById("cardNumberDiv").innerHTML = "<input type=\"text\" class=\"form-control\" name=\"cardNumber\" required=\"required\" id=\"cardNumber\" ng-model=\"control.card.number\" maxlength=\"15\" value="+document.getElementById('cardNumber').value+">";
+            }
+            else{
+                document.getElementById("cardNumberDiv").innerHTML = "<input type=\"text\" class=\"form-control\" name=\"cardNumber\" required=\"required\" id=\"cardNumber\" ng-model=\"control.card.number\" maxlength=\"15\">";
+                document.getElementById("cardNumber").className += " input-error";
+
+            }
+            if(document.getElementById('secCode').value.length != 4){
+                document.getElementById("secCodeDiv").innerHTML = "<input type=\"password\" class=\"form-control\" name=\"secCode\" id=\"secCode\" required=\"required\" maxlength=\"4\" >"
+                document.getElementById("secCode").className += " input-error";
+
+            }
+        }
+
+
+
+}

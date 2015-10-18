@@ -19,6 +19,10 @@ GET        /                         ua.dirproy.profelumno.controllers.Applicati
 ->         /password-recovery        passwordRecovery.Routes
 ->         /hire-lesson              hireLesson.Routes
 ->         /modify-student           studentModification.Routes
+->         /contact-form             contactForm.Routes
+->         /review-lesson            lessonReview.Routes
+->         /student-profile          studentProfile.Routes
+->         /institutional            institutional.Routes
 
 # Map static resources from the /public folder to the /assets URL path
 GET        /assets/*file             controllers.Assets.versioned(path="/public", file: Asset)

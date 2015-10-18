@@ -1,5 +1,6 @@
 package ua.dirproy.profelumno.teachermodification.controller;
 
+import authenticate.Authenticate;
 import com.avaje.ebean.Ebean;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.io.Files;
@@ -8,6 +9,7 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
+import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.teachermodification.view.html.*;
 import ua.dirproy.profelumno.user.models.Subject;
@@ -15,16 +17,14 @@ import ua.dirproy.profelumno.user.models.User;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Base64;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Base64;
 import java.util.List;
 
 /**
  * Created by francisco on 13/09/15.
  */
+@Authenticate({Teacher.class})
 public class ModifyTeacher extends Controller {
 
     public static Result profileView() {
@@ -46,7 +46,9 @@ public class ModifyTeacher extends Controller {
             return badRequest("Error in form");
         }
         Teacher tch = form.get();
-        Teacher teacher = Ebean.find(Teacher.class, tch.getUser().getId());
+        User user = tch.getUser();
+        Teacher teacher = Teacher.finder.where().eq("user", user).findUnique();
+
         if ((tch.getUser().getEmail()).equalsIgnoreCase(teacher.getUser().getEmail())||
                 User.validateEmailUnique(tch.getUser().getEmail())) {
             //teacher.setProfilePicture(tch.getProfilePicture());
@@ -59,10 +61,16 @@ public class ModifyTeacher extends Controller {
             teacherU.setName(tchU.getName());
             teacherU.setPassword(tchU.getPassword());
             teacherU.setSurname(tchU.getSurname());
-            Ebean.save(teacher);
+            teacher.setPrice(tch.getPrice());
+            teacherU.setLatitude(tchU.getLatitude());
+            teacherU.setLongitude(tchU.getLongitude());
+            teacherU.setCity(tchU.getCity());
+            teacherU.setNeighbourhood(tchU.getNeighbourhood());
+            teacher.setDescription(tch.getDescription());
             Ebean.save(teacher.getUser());
-            System.out.println(Teacher.list().get(0).getUser().getName());
-            return ok(Json.toJson(teacher));
+            Ebean.save(teacher);
+//            System.out.println(Teacher.list().get(0).getUser().getName());
+            return ok(routes.ModifyTeacher.profileView().url()) /*ok(Json.toJson(teacher))*/;
         }else {
             return badRequest("Unique");
         }
@@ -78,12 +86,52 @@ public class ModifyTeacher extends Controller {
         Form<Teacher> form = Form.form(Teacher.class).bindFromRequest();
         if (form.hasErrors())
             return badRequest("Error in form");
-        Teacher aux=form.get();
+//        Teacher aux=form.get();
         final long userId=Long.parseLong(session("id"));
         Teacher teacher = Ebean.find(Teacher.class, userId);
+        List<Subject> currentSubjects = new ArrayList<>(form.data().size());
+        //Creo las materias que no existen
+        for (String currentSubject : form.data().values()) {
+            if(!existsSubject(currentSubject, currentSubjects)){
+                Subject newSubject = new Subject(currentSubject);
+                Ebean.save(newSubject);
+                currentSubjects.add(newSubject);
+            }
+        }
+
+        //Saco del teacher las materias que elimino
+
+        final List<Subject> removedSubjects = new ArrayList<>();
+        for (Subject subject : teacher.getUser().getSubjects()) {
+            if(!currentSubjects.contains(subject)){
+                subject.getUsers().remove(teacher.getUser());
+                removedSubjects.add(subject);
+            }
+        }
+        teacher.getUser().getSubjects().removeAll(removedSubjects);
+        //Le agrego al teacher las nuevas materias que dicta
+        for (Subject currentSubject : currentSubjects) {
+            if(!teacher.getUser().getSubjects().contains(currentSubject)){
+                teacher.getUser().getSubjects().add(currentSubject);
+                currentSubject.getUsers().add(teacher.getUser());
+            }
+        }
+
         //teacher.setSubjects(aux.getSubjects());
-        Ebean.save(teacher);
+        Ebean.update(teacher);
+        Ebean.update(teacher.getUser());
         return ok();
+    }
+
+    private static boolean existsSubject(String currentSubject, List<Subject> listToAddSubject) {
+        List<Subject> persistedSubjects = Subject.finder.findList();
+        for (Subject persistedSubject : persistedSubjects) {
+            if (persistedSubject.getName().equals(currentSubject)) {
+                listToAddSubject.add(persistedSubject);
+                return true;
+            }
+        }
+        return false;
     }
 
     public static Result getPicture(){
@@ -104,7 +152,8 @@ public class ModifyTeacher extends Controller {
                 final File file = picture.getFile();
                 if (contentType.contains("image")) {
                     final long userId = Long.parseLong(session("id"));
-                    Teacher teacher = Ebean.find(Teacher.class, userId);
+                    User user = Ebean.find(User.class, userId);
+                    Teacher teacher =Teacher.finder.where().eq("user",user).findUnique();
                     byte[] bfile=null;
                     try {
                         bfile=Files.toByteArray(file);
@@ -112,8 +161,8 @@ public class ModifyTeacher extends Controller {
                         e.printStackTrace();
                     }
                     teacher.getUser().setProfilePicture(Base64.getEncoder().encode(bfile));
-                    Ebean.save(teacher);
                     Ebean.save(teacher.getUser());
+                    Ebean.save(teacher);
                     return ok(teacher.getUser().getProfilePicture());
                 }
             }

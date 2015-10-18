@@ -1,5 +1,7 @@
 package ua.dirproy.profelumno.subscription.controllers;
 
+import authenticate.Authenticate;
+import com.avaje.ebean.Ebean;
 import org.apache.commons.validator.CreditCardValidator;
 import play.data.Form;
 import play.mvc.Controller;
@@ -7,6 +9,8 @@ import play.mvc.Result;
 import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.subscription.models.Card;
 import ua.dirproy.profelumno.subscription.views.html.subscription;
+import ua.dirproy.profelumno.subscription.views.html.subscriptionTopBar;
+import ua.dirproy.profelumno.user.models.User;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -19,12 +23,13 @@ import java.util.Date;
  * Time: 12:53 PM
  * To change this template use File | Settings | File Templates.
  */
+@Authenticate({Teacher.class})
 public class TeacherSubscription extends Controller{
 
     public static Result validateForm(){
-        final long userId = Long.parseLong(session("id"));
-        //final long userId = 1;
-        Teacher teacher = Teacher.finder.byId(userId);
+        final long userId= Long.parseLong(session("id"));
+        User user = Ebean.find(User.class, userId);
+        Teacher teacher = Teacher.finder.where().eq("user", user).findUnique();
 
         Card card = Form.form(Card.class).bindFromRequest().get();
         CreditCardValidator validator;
@@ -72,16 +77,14 @@ public class TeacherSubscription extends Controller{
         cal.add(Calendar.MONTH, 1);
         Date date = cal.getTime();
         teacher.setRenewalDate(date);
-
         ChargeTask charger = new ChargeTask();
         charger.charge();
     }
 
     public static Result getCreditCardNumber(){
-        //final long userID=Long.parseLong(session().get("id"));
-        final long userID = 1;
-        Teacher teacher= Teacher.finder.byId(userID);
-        teacher.setHasCard(true);
+        final long userId= Long.parseLong(session("id"));
+        User user = Ebean.find(User.class, userId);
+        Teacher teacher = Teacher.finder.where().eq("user", user).findUnique();
         if (teacher.hasCard()) {
             String number = teacher.getSubscription();
             int len = number.length();
@@ -89,5 +92,9 @@ public class TeacherSubscription extends Controller{
             hiddenNumber = hiddenNumber + number.substring(len - 4, len);
             return ok("Tu numero de tarjeta actual es: "+hiddenNumber);
         }else return badRequest();
+    }
+
+    public static Result subscriptionWTopBar(){
+        return ok(subscriptionTopBar.render());
     }
 }

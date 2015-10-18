@@ -5,7 +5,6 @@ import com.avaje.ebean.Model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -27,8 +26,15 @@ public class User extends Model {
     private Date birthday;
     private String gender;
     private String address;
+    private String latitude;
+    private String longitude;
+    private String city;
+    private String neighbourhood;
     private String secureQuestion;
     private String secureAnswer;
+    private long reviews;
+    private long totalStars;
+
     @Lob
     private byte[] profilePicture;
     @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL)
@@ -40,9 +46,29 @@ public class User extends Model {
 
     public User() {
         this.subjects = new ArrayList();
+        reviews = 0;
+        totalStars = 0;
     }
 
+    public static User getUser(Long id) { return finder.byId(id);}
+
     public Long getId() { return id; }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getNeighbourhood() {
+        return neighbourhood;
+    }
+
+    public void setNeighbourhood(String neighbourhood) {
+        this.neighbourhood = neighbourhood;
+    }
 
     public void setId(Long id) { this.id = id; }
 
@@ -132,5 +158,37 @@ public class User extends Model {
 
     public void setProfilePicture(byte[] profilePicture) {
         this.profilePicture = profilePicture;
+    }
+
+    public long getReviews() {
+        return reviews;
+    }
+
+    public void incrementReviews() {
+        reviews++;
+    }
+
+    public long getTotalStars() {
+        return totalStars;
+    }
+
+    public void addStars(long stars) {
+        totalStars += stars;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 }

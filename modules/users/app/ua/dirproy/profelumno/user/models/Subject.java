@@ -1,14 +1,13 @@
 package ua.dirproy.profelumno.user.models;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-
 import com.avaje.ebean.Model;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,12 +27,15 @@ public class Subject extends Model{
     @ManyToMany(cascade = CascadeType.ALL)
     private List<User> users;
 
+    public static Finder<Long, Subject> finder = new Finder<>(Subject.class);
+
     public Subject() {
         users = new ArrayList<>();
     }
     public Subject(String name){
         this.name = name;
     }
+
     public Subject(String name,Long id){
         this.name=name;
         this.id=id;
@@ -60,5 +62,11 @@ public class Subject extends Model{
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public static Subject getStudent(Long id) { return finder.byId(id);}
+
+    public static boolean noSubjects(){
+        return finder.all().isEmpty();
     }
 }

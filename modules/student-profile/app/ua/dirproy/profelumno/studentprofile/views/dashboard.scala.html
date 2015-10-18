@@ -1,0 +1,39 @@
+@()
+@ua.dirproy.profelumno.common.views.html.tidyMain("Student dashboard"){
+    @ua.dirproy.profelumno.common.views.html.topbar()
+    @ua.dirproy.profelumno.common.views.html.sidebar()
+
+    <div class="content-wrapper" ng-app="studentProfile" >
+            <!-- Content Header (Page header) -->
+        <section class="content-header" ng-controller="StudentCtrl">
+            <h1>
+                Dashboard
+                <small> alumno</small>
+            </h1>
+            <section class="content">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="info-box bg-yellow">
+                            <span class="info-box-icon"><i class="fa fa-star-o"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Rating</span>
+                                <span class="info-box-number">{{ data.rating[0] }}</span>
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: {{ teacher.ranking * 10 }}%"></div>
+                                </div>
+                            </div><!-- /.info-box-content -->
+                        </div><!-- /.info-box -->
+                    </div>
+                </div>
+                <teachers></teachers>
+                <lessons></lessons>
+                <subjects></subjects>
+            </section> <!-- /.content -->
+        </section>
+    </div><!-- /.content-wrapper -->
+
+} {
+    <link/>
+} {  <script src="@routes.Assets.versioned("javascripts/studentProfile/studentProfile.js")"></script>
+
+}

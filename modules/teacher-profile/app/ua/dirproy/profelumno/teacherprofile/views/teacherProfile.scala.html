@@ -1,2 +1,195 @@
-@(teacherId: Long)
+@()
 
+@ua.dirproy.profelumno.common.views.html.tidyMain("Perfil") {
+    @ua.dirproy.profelumno.common.views.html.topbar()
+    @ua.dirproy.profelumno.common.views.html.sidebar()
+
+    <div class="content-wrapper" ng-app="app" ng-controller="DashboardController">
+        <section class="content-header">
+            <h1>
+                Dashboard
+                <small>{{ teacher.user.name }} {{ teacher.user.surname }}</small>
+            </h1>
+        </section>
+
+        <section class="content" ng-cloak>
+
+            <div class="row">    <!-- Apply any bg-* class to to the info-box to color it -->
+                <div class="col-md-4">
+                    <div class="info-box bg-yellow">
+                        <span class="info-box-icon"><i class="fa fa-star-o"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Rating</span>
+                            <span class="info-box-number">{{ teacher.ranking }}</span>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: {{ teacher.ranking * 10 }}%"></div>
+                            </div>
+                        </div><!-- /.info-box-content -->
+                    </div><!-- /.info-box -->
+                </div>
+                <div class="col-md-4">
+                    <div class="info-box bg-purple">
+                        <span class="info-box-icon"><i class="fa fa-credit-card"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Tarjeta Asociada</span>
+                            <span class="info-box-number">{{ 'XXXX XXXX XXXX ' + teacher.subscription }}</span>
+                        </div><!-- /.info-box-content -->
+                    </div><!-- /.info-box -->
+                </div>
+                <div class="col-md-4">
+                    <div class="info-box bg-red">
+                        <span class="info-box-icon"><i class="fa fa-calendar-plus-o"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Renovación</span>
+                            <span class="info-box-number">{{ teacher.renewalDate }}</span>
+                        </div><!-- /.info-box-content -->
+                    </div><!-- /.info-box -->
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="box box-solid box-success">
+                        <div class="box-header">
+                            <h3 class="box-title">Materias Mejor Puntuadas</h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            </div><!-- /.box-tools -->
+                        </div><!-- /.box-header -->
+                        <div class="box-body bg-gray-light">
+                            <span ng-show="noTopSubjects">No hay información disponible</span>
+                            <div class="col-md-4 col-sm-6" ng-repeat="(subject, score) in topSubjects">
+                                <div class="info-box">
+                                        <!-- Apply any bg-* class to to the icon to color it -->
+                                    <span class="info-box-icon bg-aqua"><i class="fa fa-book"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">{{ subject }}</span>
+                                        <span class="info-box-number">{{ score }}</span>
+                                    </div><!-- /.info-box-content -->
+                                </div><!-- /.info-box -->
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="box box-solid box-primary">
+                        <div class="box-header">
+                            <h3 class="box-title">Próximas Clases</h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            </div><!-- /.box-tools -->
+                        </div><!-- /.box-header -->
+                        <div class="box-body bg-gray-light">
+                            <span ng-show="nextLessons.length == 0">No hay información disponible</span>
+                            <div class="col-md-4 col-sm-6" ng-repeat="lesson in nextLessons">
+                                <div class="info-box">
+                                        <!-- Apply any bg-* class to to the icon to color it -->
+                                    <span class="info-box-icon bg-olive"><i class="fa fa-calendar-o"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">{{ lesson.subject.text }}</span>
+                                        <span class="info-box-number">{{ lesson.date }}</span>
+                                    </div><!-- /.info-box-content -->
+                                </div><!-- /.info-box -->
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="box box-solid box-primary">
+                        <div class="box-header">
+                            <h3 class="box-title"><a href="/review-lesson">Clases Pasadas</a></h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            </div><!-- /.box-tools -->
+                        </div><!-- /.box-header -->
+                        <div class="box-body bg-gray-light">
+                            <span ng-show="prevLessons.length == 0">No hay información disponible</span>
+                            <div class="col-md-4 col-sm-6" ng-repeat="lesson in prevLessons">
+                                <div class="info-box">
+                                        <!-- Apply any bg-* class to to the icon to color it -->
+                                    <span class="info-box-icon bg-yellow"><i class="fa fa-calendar-check-o"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">{{ lesson.subject }} a {{ lesson.studentName }}</span>
+                                        <span class="info-box-number">{{ lesson.date }}</span>
+                                        <button type="button" data-toggle="modal" data-target="#makeReviewModal" ng-show="lesson.review" ng-click="setModal($index)" class="btn btn-primary">Calificar alumno</button>
+                                    </div><!-- /.info-box-content -->
+                                </div><!-- /.info-box -->
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                </div>
+            </div>
+
+
+            @*<div>
+                <a href="/teacher-profile/accept-lesson" class="btn btn-primary">Clases pendientes</a>
+            </div>*@
+        </section>
+
+            <!-- Make Review Modal -->
+        <div class="modal fade" id="makeReviewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-body">
+                    <!-- <form name="reviewForm" ng-controller="MakeReviewController as makeRevCtrl" novalidate> -->
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Critica</h3>
+                        </div>
+                        <form name="reviewForm">
+                            <div class="box-body">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Email</span>
+                                    <input type="email" class="form-control" id="emailModal" readonly>
+                                </div>
+                                <br>
+                                <div>
+                                    <label>Estrellas (obligatorio)</label>
+                                    <input type="number" id="starsModal" class="rating" data-stars="5" step=1 data-size="sm" data-rtl="false" data-show-clear="false">
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label>Comentario (obligatorio)</label>
+                                    <textarea class="form-control" rows="3" id="commentModal" required></textarea>
+                                </div>
+                                <br>
+                                <div>
+                                    <button type="button" ng-click="review()" class="btn btn-primary">Calificar</button>
+                                    <button type="button" class="btn btn-primary pull-right" data-dismiss="modal" aria-hidden="true">
+                                        Cancelar</button>
+                                </div>
+                            </div><!-- /.box-body -->
+                        </form> <!-- /.form -->
+                    </div><!-- /.box box-info -->
+                </div> <!-- /.col-md-6 col-md-offset-3 -->
+                <!--</form>-->
+            </div> <!-- /.modal-body -->
+        </div> <!-- /.modal fade -->
+
+    </div>
+
+} {
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/teacherProfile/teacher-profile.css")">
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/lessonReview/star-rating.min.css")" media="all" type="text/css" />
+} {
+    <script>
+        //Used for the stars rating
+        $('#starsModal').on('rating.change', function(event, value, caption) {
+
+        });
+    </script>
+    <script>
+        //Used when a the modal is hide
+        $('#makeReviewModal').on('hide.bs.modal', function () {
+            $(this).removeData('bs.modal');
+        });
+    </script>
+    <script src="@routes.Assets.versioned("javascripts/reviewLesson/star-rating.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("javascripts/teacherProfile/teacherProfile.js")"></script>
+}

@@ -1,11 +1,14 @@
 package ua.dirproy.profelumno.common.models;
 
 import com.avaje.ebean.Model;
+import ua.dirproy.profelumno.user.models.Subject;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import java.sql.Time;
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 
@@ -15,18 +18,26 @@ import java.util.List;
 @Entity
 public class Lesson extends Model {
     @Id private Long id;
-
-    private float punctuation;
+    private String dateString;
     private Date dateTime;
-    private Time duration;
+    private Duration duration;
     private String address;
     private String comment;
     private Float price;
 
+    @OneToOne
+    private Subject subject;
+    private int lessonState = 0;//0 pendiente, 1 aceptado, 2 rechazada
+
     @ManyToOne
     private Teacher teacher;
+    @OneToOne
+    private Review teacherReview;
+
     @ManyToOne
     private Student student;
+    @OneToOne
+    private Review studentReview;
 
     public static Finder<Long, Lesson> finder = new Finder<>(Lesson.class);
 
@@ -62,11 +73,11 @@ public class Lesson extends Model {
         this.dateTime = dateTime;
     }
 
-    public Time getDuration() {
+    public Duration getDuration() {
         return duration;
     }
 
-    public void setDuration(Time duration) {
+    public void setDuration(Duration duration) {
         this.duration = duration;
     }
 
@@ -94,15 +105,45 @@ public class Lesson extends Model {
         this.price = price;
     }
 
-    public float getPunctuation() {
-        return punctuation;
-    }
-
-    public void setPunctuation(float punctuation) {
-        this.punctuation = punctuation;
-    }
-
     public static List<Lesson> list() { return finder.all(); }
 
+    public Review getTeacherReview() {
+        return teacherReview;
+    }
 
+    public void setTeacherReview(Review teacherReview) {
+        this.teacherReview = teacherReview;
+    }
+
+    public Review getStudentReview() {
+        return studentReview;
+    }
+
+    public int getLessonState() {
+        return lessonState;
+    }
+
+    public void setLessonState(Integer lessonState) {
+        this.lessonState = lessonState;
+    }
+    public void setStudentReview(Review studentReview) {
+        this.studentReview = studentReview;
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
+
+    public String getDateString() {
+        return dateString;
+    }
+
+    public void setDateString(String dateString) {
+        this.dateString = dateString;
+    }
 }

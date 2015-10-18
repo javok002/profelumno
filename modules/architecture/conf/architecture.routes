@@ -3,8 +3,6 @@
 # ~~~~
 
 # Home page
-GET        /sidebar                   ua.dirproy.profelumno.architecture.controllers.Architecture.sidebar()
-GET        /topbar                    ua.dirproy.profelumno.architecture.controllers.Architecture.topbar()
 
 # Map static resources from the /public folder to the /assets URL path
 GET        /assets/*file        controllers.Assets.versioned(path="/public", file: Asset)

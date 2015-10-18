@@ -1,21 +1,27 @@
 @()
 
-@ua.dirproy.profelumno.common.views.html.main("Teacher search") {
-    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/teachersearch/ng-tags-input.min.css")">
-    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/teachersearch/ng-tags-input.bootstrap.min.css")">
+@ua.dirproy.profelumno.common.views.html.tidyMain("Buscar profesor") {
+    @ua.dirproy.profelumno.common.views.html.topbar()
+    @ua.dirproy.profelumno.common.views.html.sidebar()
 
-    <script src="@routes.Assets.versioned("external/iCheck/icheck.min.js")"></script>
-
-<div ng-app="teacherSearchApp">
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                Buscar profesor
+                <small></small>
+            </h1>
+        </section>
+        <section class="content">
+            <div ng-app="teacherSearchApp">
     <div class="container-fluid"  ng-controller="searchController">
         <div class="row-fluid">
-            <h3 class="header">Buscar profesor</h3>
+            @*<h3 class="header">Buscar profesor</h3>*@
             <form role="form" class="simple-form" ng-submit="search()">
                 <div class="row-fluid">
                     <div class="col-sm-6 form-group">
                         <label>Materias</label>
                         <div class="input-group">
-                            <tags-input ng-model="subjects" name="subjects" add-on-paste="true">
+                            <tags-input ng-keyup="sort()" ng-model="subjects" name="subjects" add-from-autocomplete-only="true" add-on-enter="false" add-on-paste="true">
                                 <auto-complete source="loadTags($query)"></auto-complete>
                             </tags-input>
                             <span class="input-group-addon"><i class="fa fa-book"></i></span>
@@ -37,7 +43,7 @@
                         <label for="ranking">Ranking</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-star"></i></span>
-                            <input id="ranking" class="form-control" type="number" min="0" max="10" name="ranking" ng-model="ranking">
+                            <input id="ranking" class="form-control" type="number" min="0" max="5" name="ranking" ng-model="ranking">
                         </div>
                         <label for="lessons">Cantidad de clases dictadas</label>
                         <div class="input-group">
@@ -56,35 +62,37 @@
             <table class="table">
                 <tbody>
                     <tr>
-                        <th>Profesor</th>
-                        <th>Ranking</th>
-                        <th>Clases dictadas</th>
-                        <th>Hire</th>
+                        <th class="text-center">Profesor</th>
+                        <th class="text-center">Ranking</th>
+                        <th class="text-center">Clases dictadas</th>
+                        <th class="text-center">Contratar</th>
                     </tr>
 
-                    <tr dir-paginate="teacher in teachers|orderBy:sortKey:reverse|itemsPerPage:2">
-                        <td> {{teacher.user.surname}}, {{teacher.user.name}}</td>
-                        <td>{{teacher.ranking}}</td>
-                        <td>{{teacher.lessonsDictated}}</td>
-                        <td><div ng-app="profLesson">
-                            <hire-lesson teacher-id={{teacher.id}}></hire-lesson>
-                        </div></td>
+                    <tr dir-paginate="teacher in teachers|itemsPerPage:8">
+                        <td class="text-center"> {{teacher.user.surname}}, {{teacher.user.name}}</td>
+                        <td class="text-center">{{teacher.ranking}}</td>
+                        <td class="text-center">{{teacher.lessonsDictated}}</td>
+                        <td class="text-center"><hire-lesson teacher-id=teacher.id index=$index teacher-subs=teacher.user.subjects></hire-lesson></td>
                     </tr>
                 </tbody>
             </table>
             <dir-pagination-controls
-                max-size="2"
+                max-size="8"
                 direction-links="true"
                 boundary-links="true" >
             </dir-pagination-controls>
         </div>
     </div>
 </div>
-    <script src="@routes.Assets.versioned("external/angularjs/angular.min.js")"></script>
+        </section>
+    </div>
+
+} {
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/teachersearch/ng-tags-input.min.css")">
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/teachersearch/ng-tags-input.bootstrap.min.css")">
+} {
     <script src="@routes.Assets.versioned("javascripts/teacherSearch/teacherSearch.js")"></script>
-    <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/teacherSearch/ng-tags-input.min.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/teacherSearch/dirPagination.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/hire-lesson/hire-lesson.js")"></script>
-
 }

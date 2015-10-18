@@ -4,6 +4,7 @@
 
 # Home page
 
-GET        /        ua.dirproy.profelumno.teachersearch.controllers.TeacherSearches.teacherSearchView()
+GET         /                   ua.dirproy.profelumno.teachersearch.controllers.TeacherSearches.teacherSearchView()
+GET         /subjects           ua.dirproy.profelumno.teachersearch.controllers.TeacherSearches.getSubject()
 POST        /getTeachers        ua.dirproy.profelumno.teachersearch.controllers.TeacherSearches.getTeachers()
 # Map static resources from the /public folder to the /assets URL path

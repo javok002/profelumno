@@ -10,6 +10,7 @@ POST        /student-modification        ua.dirproy.profelumno.studentmodificati
 POST        /save-pass                   ua.dirproy.profelumno.studentmodification.controller.ModifyStudent.savePassword()
 GET         /subjects                    ua.dirproy.profelumno.studentmodification.controller.ModifyStudent.getSubjects()
 POST        /img                         ua.dirproy.profelumno.studentmodification.controller.ModifyStudent.savePicture()
+GET         /img                         ua.dirproy.profelumno.studentmodification.controller.ModifyStudent.getPicture()
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                controllers.Assets.versioned(path="/public", file: Asset)

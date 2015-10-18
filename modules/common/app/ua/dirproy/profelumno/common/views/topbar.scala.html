@@ -1,0 +1,80 @@
+@()
+
+<header class="main-header">
+        <!-- Logo -->
+    <a href="#" class="logo">
+            <!-- mini logo-->
+        <span class="logo-mini"><b>P</b>L</span>
+            <!-- logo -->
+        <span class="logo-lg"><b>Profe</b>Lumno</span>
+    </a>
+        <!-- Header Navbar-->
+    <nav class="navbar navbar-static-top" role="navigation">
+            <!-- Sidebar toggle button-->
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+        </a>
+            <!-- /Sidebar toggle button-->
+
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+
+                    <!-- User Account-->
+                <li class="dropdown user user-menu" id="img-app" ng-controller="ImageController">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img class="user-image" alt="Imagen de Perfil" ng-src="data:image/*;base64,{{ profileImage }}" ng-show="profileImage != null"/>
+                        <img class="user-image" src="@routes.Assets.versioned("images/userDefault.jpeg")" ng-show="profileImage == null">
+                        <span class="hidden-xs">@ua.dirproy.profelumno.common.controllers.Common.getUsername</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                            <!-- User image -->
+                        <li class="user-header">
+                            <img ng-src="data:image/*;base64,{{ profileImage }}" class="img-circle" alt="Imagen de Perfil" ng-show="profileImage != null">
+                            <img src="@routes.Assets.versioned("images/userDefault.jpeg")" class="img-circle" ng-show="profileImage == null">
+                            <p>
+                                @ua.dirproy.profelumno.common.controllers.Common.getUsername
+                            </p>
+                        </li>
+                            <!-- /User image -->
+
+                            <!-- Menu Footer-->
+                        <li class="user-footer">
+                            <div class="pull-left">
+                                <a href="@ua.dirproy.profelumno.common.controllers.Common.editProfileUrl()" class="btn btn-default btn-flat">Editar Perfil</a>
+                            </div>
+                            <div class="pull-right">
+                                <a href="/log/out" class="btn btn-default btn-flat">Cerrar Sesión</a>
+                            </div>
+                        </li>
+                            <!-- /Menu Footer-->
+                    </ul>
+                </li>
+                    <!-- /User Account-->
+            </ul>
+        </div>
+    </nav>
+</header>
+
+
+
+@*<div id="confirm-close" class="modal fade" role="dialog" ng-app="app">
+    <div class="modal-dialog" ng-controller="DeleteController">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">¿Cerrar Cuenta?</h3>
+            </div>
+            <div class="modal-body">
+                <h4>¿Está seguro que desea cerrar su cuenta?</h4>
+                <p>Al cerrar la cuenta, esta se borrará del sistema permanentemente, y no podrá contactarse con nadie.</p>
+                <p><i>Recuerde que si cierra la cuenta puede registrarse nuevamente.</i></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
+                <a data-dismiss="modal" class="btn btn-primary" href="/delete">Aceptar</a>
+            </div>
+        </div>
+
+    </div>
+</div>*@

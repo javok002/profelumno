@@ -9,7 +9,14 @@ lazy val common = (project in file("modules/common"))
 lazy val users = (project in file("modules/users"))
   .enablePlugins(PlayJava, PlayEbean)
 
+lazy val mailSender = (project in file("modules/mail-sender"))
+  .enablePlugins(PlayJava, PlayEbean)
+
 lazy val teacherProfile = (project in file("modules/teacher-profile"))
+  .enablePlugins(PlayJava, PlayEbean)
+  .dependsOn(users, common, mailSender)
+
+lazy val studentProfile = (project in file("modules/student-profile"))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(users, common)
 
@@ -31,11 +38,11 @@ lazy val teacherSubscription = (project in file("modules/teacher-subscription"))
 
 lazy val hireLesson = (project in file("modules/hire-lesson"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(teacherSearch, common)
+  .dependsOn(teacherSearch, common, mailSender)
 
 lazy val teacherModification = (project in file("modules/teacher-modification"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(teacherProfile, common, teacherSubscription, architecture)
+  .dependsOn(teacherProfile, common, teacherSubscription, architecture, teacherProfile)
 
 lazy val teacherSearch = (project in file("modules/teacher-search"))
   .enablePlugins(PlayJava, PlayEbean)
@@ -43,29 +50,36 @@ lazy val teacherSearch = (project in file("modules/teacher-search"))
 
 lazy val studentModification = (project in file("modules/student-modification"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(users,register,common,architecture)
+  .dependsOn(users, register, common, architecture, studentProfile)
 
 lazy val passwordRecovery = (project in file("modules/password-recovery"))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(users, mailSender, common)
 
-lazy val mailSender = (project in file("modules/mail-sender"))
-  .enablePlugins(PlayJava, PlayEbean)
-
 lazy val loginout = (project in file("modules/loginout"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(users, common)//, teacherSubscription, passwordRecovery)
+  .dependsOn(users, common) //, teacherSubscription, passwordRecovery)
 
 lazy val lessonReview = (project in file("modules/lesson-review"))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(common, architecture)
 
+lazy val contactForm = (project in file("modules/contact-form"))
+  .enablePlugins(PlayJava, PlayEbean)
+  .dependsOn(mailSender, common)
+
+lazy val institutional = (project in file("modules/institutional"))
+  .enablePlugins(PlayJava, PlayEbean)
+  .dependsOn(mailSender, common, contactForm, register, loginout)
+
 lazy val root = (project in file("."))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(common,studentModification, users, teacherProfile, teacherSubscription, register, delete,
-    passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture, loginout, lessonReview)
-  .aggregate(common,studentModification, users, teacherProfile, teacherSubscription, register, delete,
-    passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture,loginout, lessonReview)
+  .dependsOn(common, studentProfile, studentModification, users, teacherProfile, teacherSubscription, register, delete,
+    passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture, loginout, lessonReview,
+    contactForm, institutional)
+  .aggregate(common, studentProfile, studentModification, users, teacherProfile, teacherSubscription, register, delete,
+    passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture, loginout, lessonReview,
+    contactForm, institutional)
 
 
 scalaVersion := "2.11.6"
@@ -78,7 +92,7 @@ libraryDependencies ++= Common.dependencies
 // other, legacy style, accesses its actions statically.
 routesGenerator := InjectedRoutesGenerator
 
-includeFilter in (Assets, LessKeys.less) := "*.less"
+includeFilter in(Assets, LessKeys.less) := "*.less"
 
 
 fork in run := true

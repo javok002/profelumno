@@ -1,3 +1,7 @@
+body {
+    background-color: #D2D6DE;
+}
+
 label{
     text-align: left;
 }
@@ -12,4 +16,24 @@ label{
     padding-right: 20px;
     border-radius: 6px;
     margin-top: 30px;
+}
+
+.box-header, .box-body, .box-footer {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.center-text {
+    text-align: center;
+}
+.box-title {
+    padding: 20px 0 10px;
+}
+.box{
+    padding: 10px 10px 10px 10px;
+    margin-top: 20px;
+}
+
+.input-error{
+    border:1px solid #dd4b39;
 }
