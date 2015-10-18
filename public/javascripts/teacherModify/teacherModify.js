@@ -90,6 +90,9 @@ app.controller('TeacherInfoController', ['$rootScope', '$scope', '$http', 'fileU
     $scope.back=function(){
         window.location.href = "/teacher-profile"
     };
+    $scope.selectFile=function(){
+        angular.element($('#inputFile')).trigger('click');
+    };
     $scope.verifyDesc= function(){
         $scope.errors.length=edit.u.description.length<50;
     };

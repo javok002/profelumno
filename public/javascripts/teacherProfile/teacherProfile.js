@@ -60,10 +60,6 @@ angular.module('app', [])
                 });
             $http.get('/teacher-profile/previous-lessons')
                 .success(function (data) {
-                    data.forEach(function(lesson) {
-                        var date = new Date(lesson.dateTime);
-                        lesson.date = dateToString(date);
-                    });
                     $scope.prevLessons = data;
                 })
                 .error(function (data) {
@@ -82,9 +78,32 @@ angular.module('app', [])
                 });
         };
 
+        $scope.setModal = function(index){
+            var prevLesson = $scope.prevLessons[index];
+            currentIndex = index;
+            $('#emailModal').val(prevLesson.studentEmail);
+            $('#commentModal').val("");
+            $('#starsModal').rating('reset');
+        };
+
+        $scope.review = function(){
+            var prevLesson = $scope.prevLessons[currentIndex];
+            var comment = $('#commentModal').val();
+            var stars = parseInt($('#starsModal').val());
+            var toEmail =  $('#emailModal').val();
+            var idLesson = prevLesson.idLesson;
+
+            $http.post("/review-lesson/review?comment=" + comment + "&stars=" + stars + "&toEmail=" + toEmail + "&idLesson=" + idLesson)
+                .success(function (response) {
+                    window.location.replace("/teacher-profile");
+                });
+        };
+
         $scope.init();
 
     }]);
+
+var currentIndex;
 
 var dateToString = function (date) {
     return date.getDate() + "/" + (date.getMonth() + 1) + '/' + date.getFullYear();

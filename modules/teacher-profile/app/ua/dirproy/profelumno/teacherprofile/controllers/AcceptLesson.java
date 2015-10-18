@@ -11,6 +11,9 @@ import ua.dirproy.profelumno.mailsender.models.MailSenderUtil;
 import ua.dirproy.profelumno.teacherprofile.views.html.acceptLesson;
 
 import javax.mail.*;
+import java.text.ParseException;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -22,10 +25,15 @@ public class AcceptLesson extends Controller {
         return ok(acceptLesson.render());
     }
 
-    public static Result getLessons() {
+    public static Result getLessons() throws ParseException {
         Teacher teacher = Teacher.finder.where().eq("USER_ID", Long.parseLong(session("id"))).findUnique();
         List<Lesson> lessons = Lesson.finder.where().eq("TEACHER_ID", teacher.getId()).findList();
+        SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy");
         for (Lesson lesson : lessons) {
+            String date = format.format(lesson.getDateTime());
+            System.out.println(date);
+            System.out.println(format.parse(date));
+
             System.out.println(lesson.toString());
         }
         return ok(Json.toJson(lessons));

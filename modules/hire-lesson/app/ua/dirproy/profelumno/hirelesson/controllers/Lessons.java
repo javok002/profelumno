@@ -14,8 +14,12 @@ import ua.dirproy.profelumno.mailsender.models.MailSenderUtil;
 import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import javax.mail.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +29,7 @@ import java.util.List;
 @Authenticate(Student.class)
 public class Lessons extends Controller {
 
-    public static Result newLesson() throws MessagingException {
+    public static Result newLesson() throws MessagingException, ParseException {
         Form<Lesson> lessonsForm = Form.form(Lesson.class).bindFromRequest();
 
         Lesson lesson = new Lesson();
@@ -40,6 +44,9 @@ public class Lessons extends Controller {
         final Subject subject = Subject.finder.byId(Long.parseLong(lessonsForm.data().get("subjectId")));
         lesson.setSubject(subject);
 
+        final String dateTime = lessonsForm.data().get("dateTime");
+        lesson.setDateTime(new Date(Integer.parseInt(dateTime.substring(0, 4)) - 1900, Integer.parseInt(dateTime.substring(5, 7)), Integer.parseInt(dateTime.substring(8, 10))));
+
         String address;
         switch (lessonsForm.data().get("address")) {
             case "student":
@@ -53,18 +60,13 @@ public class Lessons extends Controller {
                 break;
         }
         lesson.setAddress(address);
-
+        lesson.setDateString(dateTime.substring(8,10)+"/"+dateTime.substring(5,7)+"/"+dateTime.substring(0,4));
         lesson.setComment(lessonsForm.data().get("comment"));
-
         lesson.setTeacherReview(null);
         lesson.setStudentReview(null);
-
         lesson.setLessonState(0);
-
         lesson.save();
-
         notifyTeacher(teacher.getUser().getEmail());
-
         return ok(); //todo redireccionar al index
     }
 
@@ -72,7 +74,7 @@ public class Lessons extends Controller {
         return ok(hire.render());
     }
 
-    public static Result getTeacherSubjects (String teacherId){
+    public static Result getTeacherSubjects(String teacherId) {
         Teacher teacher = Teacher.getTeacher(Long.parseLong(teacherId));
         List<Subject> subjects = teacher.getUser().getSubjects();
         return ok(Json.toJson(subjects));

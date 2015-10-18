@@ -28,10 +28,10 @@
                                 </div>
                                 <div class="box-footer">
                                     <form role="form" ng-submit="uploadFile()" enctype="multipart/form-data" name="modifyForm">
-                                        <input id="inputFile" class="btn btn-info buttonAlign" type="file" name="file" ng-model="edit.fileToUpload" file-model="fileToUpload" accept="image/*" required/> @*onchange="angular.element(this).scope().submitImage(this.files)"/>*@
+                                        <input id="inputFile" class="btn btn-info buttonAlign" type="file" name="file" ng-model="edit.fileToUpload" file-model="fileToUpload" accept="image/*" ng-show="false" required/>
                                         <div class="btn-group buttonAlign" role="group">
+                                            <a href="" class="btn btn-info" type="button" ng-click="selectFile()">Cambiar</a>
                                             <button class="btn btn-primary" type="submit">Guardar</button>
-                                            <a href="" class="btn btn-danger" type="button" ng-click="back()">Cancelar</a>
                                         </div>
                                     </form>
                                 </div>
@@ -136,13 +136,37 @@
                                 </div>
                             </form>
                         </div>
+
+                        <button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#confirm-close">
+                            Cerrar Cuenta</button>
+
                     </div>
                 </div>
             </div>
         </section>
     </div>
 
+    <div id="confirm-close" class="modal fade" role="dialog" ng-app="app">
+        <div class="modal-dialog" ng-controller="DeleteController">
 
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title">¿Cerrar Cuenta?</h3>
+                </div>
+                <div class="modal-body">
+                    <h4>¿Está seguro que desea cerrar su cuenta?</h4>
+                    <p>Al cerrar la cuenta, esta se borrará del sistema permanentemente, y no podrá contactarse con nadie.</p>
+                    <p><i>Recuerde que si cierra la cuenta puede registrarse nuevamente.</i></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
+                    <a class="btn btn-primary" href="/delete">Aceptar</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
 } {
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/register/register.css")">
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/modifyteacher/modify-teacher.css")">
