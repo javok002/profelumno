@@ -38,15 +38,32 @@ public class StudentProfile extends Controller {
 
         //ultimos profesores con los que tuve contacto
         final HashSet<Teacher> lastTeachers = new HashSet<>();
+        final ArrayList<Subject> teacherSubject = new ArrayList<>();
         for (Lesson lesson : lastLessonsStudent) {
             lastTeachers.add(lesson.getTeacher());
+            teacherSubject.add(lesson.getSubject());
         }
+
+        //lessons que no estan con rating
+        final ArrayList<Lesson> lessonsWithNoReview = new ArrayList<>();
+        for (Lesson lesson : lastLessonsStudent) {
+            if (lesson.getStudentReview() == null){
+                lessonsWithNoReview.add(lesson);
+            }
+        }
+
+        //rating del alumno
+        final ArrayList<Long> rating = new ArrayList<>();
+        rating.add(student.getUser().getReviews());
 
         //map que voy a devolver
         Map<String, Collection> answer = new HashMap<>();
+        answer.put("rating", rating);
         answer.put("Subjects", subjects);
         answer.put("Lessons", lastLessonsStudent);
         answer.put("Teachers", lastTeachers);
+        answer.put("Teacher's subject", teacherSubject);
+        answer.put("Lessons with no rating", lessonsWithNoReview);
         return ok(Json.toJson(answer));
     }
 }

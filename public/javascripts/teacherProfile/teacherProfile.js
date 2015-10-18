@@ -43,7 +43,8 @@ angular.module('app', [])
             $http.get('/teacher-profile/teacher')
                 .success(function (data) {
                     var date = new Date(data.renewalDate);
-                    data.renewalDate = date.getDay() + "/" + date.getMonth() + '/' + date.getFullYear();
+                    data.renewalDate = dateToString(date);
+                    data.subscription = data.subscription.substring(data.subscription.length - 4);
                     $scope.teacher = data;
                 })
                 .error(function (data) {
@@ -68,7 +69,7 @@ angular.module('app', [])
                 .success(function (data) {
                     data.forEach(function(lesson) {
                         var date = new Date(lesson.dateTime);
-                        lesson.date = date.getDay() + "/" + date.getMonth() + '/' + date.getFullYear();
+                        lesson.date = dateToString(date);
                     });
                     $scope.nextLessons = data;
                 })
@@ -103,3 +104,7 @@ angular.module('app', [])
     }]);
 
 var currentIndex;
+
+var dateToString = function (date) {
+    return date.getDate() + "/" + (date.getMonth() + 1) + '/' + date.getFullYear();
+};

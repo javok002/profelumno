@@ -4,7 +4,6 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
-import ua.dirproy.profelumno.delete.views.html.delete;
 import ua.dirproy.profelumno.user.models.User;
 
 import java.util.List;
@@ -15,10 +14,6 @@ import java.util.List;
  * Date: 9/12/15
  */
 public class Delete extends Controller {
-
-    public static Result deleteView() {
-        return ok(delete.render());
-    }
 
     public static Result deleteUser() {
         String id = session("id");
@@ -46,6 +41,6 @@ public class Delete extends Controller {
             }
         }
         user.delete();
-        return ok();
+        return redirect("/");
     }
 }

@@ -18,12 +18,13 @@ import java.util.List;
 @Entity
 public class Lesson extends Model {
     @Id private Long id;
-
+    private String dateString;
     private Date dateTime;
     private Duration duration;
     private String address;
     private String comment;
     private Float price;
+
     @OneToOne
     private Subject subject;
     private Integer lessonState;//0 pendiente, 1 aceptado, 2 rechazada
@@ -135,5 +136,14 @@ public class Lesson extends Model {
 
     public void setSubject(Subject subject) {
         this.subject = subject;
+    }
+
+
+    public String getDateString() {
+        return dateString;
+    }
+
+    public void setDateString(String dateString) {
+        this.dateString = dateString;
     }
 }

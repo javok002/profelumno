@@ -3,96 +3,132 @@
 @ua.dirproy.profelumno.common.views.html.tidyMain("Modify student") {
     @ua.dirproy.profelumno.common.views.html.topbar()
     @ua.dirproy.profelumno.common.views.html.sidebar()
-
-    <div class="row" ng-app="EditForm">
-        <div ng-controller="EditController as edit">
-            <div class="col-md-3">
-                <div>
-                    <div class="box box-primary">
-                        <div class="box-header"><h4>Imagen de perfil</h4></div>
-                        <div class="box-body">
-                            <div class="thumbnail" ng-hide="edit.u.user.profilePicture">
-                                <img src="@routes.Assets.versioned("images/userDefault.jpeg")">
-                            </div>
-                            <div class="thumbnail" ng-show="edit.u.user.profilePicture">
-                                <img ng-src="data:image/*;base64,{{imageUrl}}"/>
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                Editar Perfil
+                <small></small>
+            </h1>
+        </section>
+        <section class="content">
+            <div class="row" ng-app="EditForm">
+                <div ng-controller="EditController as edit">
+                    <div class="col-md-3">
+                        <div>
+                            <div class="box box-primary">
+                                <div class="box-header"><h4>Imagen de perfil</h4></div>
+                                <div class="box-body">
+                                    <div class="thumbnail" ng-hide="edit.u.user.profilePicture">
+                                        <img src="@routes.Assets.versioned("images/userDefault.jpeg")">
+                                    </div>
+                                    <div class="thumbnail" ng-show="edit.u.user.profilePicture">
+                                        <img ng-src="data:image/*;base64,{{imageUrl}}"/>
+                                    </div>
+                                </div>
+                                <div class="box-footer">
+                                    <form role="form" ng-submit="uploadFile()" enctype="multipart/form-data" name="modifyForm">
+                                        <input id="inputFile" class="btn btn-info buttonAlign" type="file" name="file" ng-model="edit.fileToUpload" file-model="fileToUpload" accept="image/*" required/> @*onchange="angular.element(this).scope().submitImage(this.files)"/>*@
+                                        <div class="btn-group buttonAlign" role="group">
+                                            <button class="btn btn-primary" type="submit">Guardar</button>
+                                            <a href="" class="btn btn-danger" type="button">Cancelar</a>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                        <div class="box-footer">
-                            <form role="form" ng-submit="uploadFile()" enctype="multipart/form-data" name="modifyForm">
-                                <input id="inputFile" class="btn btn-info buttonAlign" type="file" name="file" ng-model="edit.fileToUpload" file-model="fileToUpload" accept="image/*" required/> @*onchange="angular.element(this).scope().submitImage(this.files)"/>*@
-                                <div class="btn-group buttonAlign" role="group">
-                                    <button class="btn btn-primary" type="submit">Guardar</button>
-                                    <a href="" class="btn btn-danger" type="button">Cancelar</a>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="box box-primary">
+                            <div class="box-header">
+                                <h4>Editar perfil</h4>
+                            </div>
+                            <form role="form" name="modifyForm" method="post" class="from-horizontal" ng-submit="submit()">
+                                <div class="box-body">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="studentFirstName" name="name" ng-model="edit.u.user.name" placeholder="Nombre" required>
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                    </div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="studentLastName" ng-model="edit.u.user.surname" surname="surname" placeholder="Apellido" required>
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                    </div>
+                                    <div class="input-group">
+                                        <div class="isa_error" ng-show="errors.taken">
+                                            <i class="fa fa-times-circle"></i>
+                                            El email ya está relacionado a una cuenta.
+                                        </div>
+                                        <input type="email" class="form-control" id="studentEmail" name="email" ng-model="edit.u.user.email" required>
+                                        <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                    </div>
+                                    <div class="input-group">
+                                        <div class="isa_error" ng-show="errors.studentAge">
+                                            <i class="fa fa-times-circle"></i>
+                                            Debe tener al menos 6 años para ser alumno.
+                                        </div>
+                                        <input type="date" class="form-control" id="birthday" ng-model="date" name="birthday" placeholder="Fecha de Nacimiento" name="birthday" required>
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                    <div class="input-group">
+                                        <label class="radio"><input type="radio" name="gender" id="male" ng-model="edit.u.user.gender" value="male" required>
+                                            Masculino</label>
+                                        <label class="radio"><input type="radio" name="gender" id="female" ng-model="edit.u.user.gender" value="female" required>
+                                            Femenino</label>
+                                    </div>
+                                    <hr>
+                                    <h4>Materias de interes:</h4>
+                                    <div class="input-group">
+                                        <tags-input ng-model="edit.u.user.subjects" add-on-paste="true">
+                                            <auto-complete source="loadTags($query)"></auto-complete>
+                                        </tags-input>
+                                        <span class="input-group-addon"><i class="fa fa-book"></i></span>
+                                    </div>
+                                    <hr>
+                                    <h4>Direccion</h4>
+                                    <div class="input-group">
+                                        <input class="form-control" name="address" ng-model="search" ng-enter="geoCode()" googleplace/>
+                                        <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+                                    </div>
+                                    <app-map class="map" center="loc" markers="[marker]" zoom="17"></app-map>
+                                    <hr>
+                                    <a type="button" href="@ua.dirproy.profelumno.studentmodification.controller.routes.ModifyStudent.changePasswordView()"><h4>
+                                        Cambiar Contraseña</h4></a>
+                                </div>
+                                <div class="box-footer">
+                                    <div class="input-group"><button type="submit" class="btn btn-primary">
+                                        Guardar</button></div>
+                                    <div class="input-group"><a href="/"><button type="button">Cancelar</button></a></div>
                                 </div>
                             </form>
                         </div>
+
+                        <button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#confirm-close">
+                            Cerrar Cuenta</button>
+
                     </div>
                 </div>
             </div>
-            <div class="col-md-9">
-                <div class="box box-primary">
-                    <div class="box-header">
-                        <h4>Editar perfil</h4>
-                    </div>
-                    <form role="form" name="modifyForm" method="post" class="from-horizontal" ng-submit="submit()">
-                        <div class="box-body">
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="studentFirstName" name="name" ng-model="edit.u.user.name" placeholder="Nombre" required>
-                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                            </div>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="studentLastName" ng-model="edit.u.user.surname" surname="surname" placeholder="Apellido" required>
-                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                            </div>
-                            <div class="input-group">
-                                <div class="isa_error" ng-show="errors.taken">
-                                    <i class="fa fa-times-circle"></i>
-                                    El email ya está relacionado a una cuenta.
-                                </div>
-                                <input type="email" class="form-control" id="studentEmail" name="email" ng-model="edit.u.user.email" required>
-                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                            </div>
-                            <div class="input-group">
-                                <div class="isa_error" ng-show="errors.studentAge">
-                                    <i class="fa fa-times-circle"></i>
-                                    Debe tener al menos 6 años para ser alumno.
-                                </div>
-                                <input type="date" class="form-control" id="birthday" ng-model="date" name="birthday" placeholder="Fecha de Nacimiento" name="birthday" required>
-                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                            </div>
-                            <div class="input-group">
-                                <label class="radio"><input type="radio" name="gender" id="male" ng-model="edit.u.user.gender" value="male" required>
-                                    Masculino</label>
-                                <label class="radio"><input type="radio" name="gender" id="female" ng-model="edit.u.user.gender" value="female" required>
-                                    Femenino</label>
-                            </div>
-                            <hr>
-                            <h4>Materias de interes:</h4>
-                            <div class="input-group">
-                                <tags-input ng-model="edit.u.user.subjects" add-on-paste="true">
-                                    <auto-complete source="loadTags($query)"></auto-complete>
-                                </tags-input>
-                                <span class="input-group-addon"><i class="fa fa-book"></i></span>
-                            </div>
-                            <hr>
-                            <h4>Direccion</h4>
-                            <div class="input-group">
-                                <input class="form-control" name="address" ng-model="search" ng-enter="geoCode()" googleplace/>
-                                <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
-                            </div>
-                            <app-map class="map" center="loc" markers="[marker]" zoom="17"></app-map>
-                            <hr>
-                            <a type="button" href="@ua.dirproy.profelumno.studentmodification.controller.routes.ModifyStudent.changePasswordView()"><h4>
-                                Cambiar Contraseña</h4></a>
-                        </div>
-                        <div class="box-footer">
-                            <div class="input-group"><button type="submit" class="btn btn-primary">Guardar</button></div>
-                            <div class="input-group"><a href="/"><button type="button">Cancelar</button></div>
-                        </div>
-                    </form>
+        </section>
+    </div>
+
+    <div id="confirm-close" class="modal fade" role="dialog" ng-app="app">
+        <div class="modal-dialog" ng-controller="DeleteController">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title">¿Cerrar Cuenta?</h3>
+                </div>
+                <div class="modal-body">
+                    <h4>¿Está seguro que desea cerrar su cuenta?</h4>
+                    <p>Al cerrar la cuenta, esta se borrará del sistema permanentemente, y no podrá contactarse con nadie.</p>
+                    <p><i>Recuerde que si cierra la cuenta puede registrarse nuevamente.</i></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
+                    <a class="btn btn-primary" href="/delete">Aceptar</a>
                 </div>
             </div>
+
         </div>
     </div>
 } {

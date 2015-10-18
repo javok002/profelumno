@@ -6,6 +6,7 @@ angular.module('profLesson', [])
     .controller('HireCtrl',['$scope', '$http', function($scope, $http) {
         $scope.comment = '';
         $scope.address= '';
+        $scope.lessonDate= '';
         $scope.setSubjects = function (teacherId) {
             var subs = {};
             $http.get('/hire-lesson/get-subjects?teacherId='+teacherId)
@@ -20,7 +21,8 @@ angular.module('profLesson', [])
                 address:$scope.address,
                 comment:$scope.comment,
                 teacherId:teacherId,
-                subjectId:$scope.selected
+                subjectId:$scope.selected,
+                dateTime:$scope.dateTime
             };
             $http.post('/hire-lesson/new', data).then(successCallback);
         };
@@ -82,24 +84,13 @@ angular.module('profLesson', [])
                                             ' </label> ' +
                                         ' </div> ' +
                                     ' </div> ' +
-                                    '<!-- Calendar --> ' +
-                                    '<div class="box box-solid bg-blue-gradient"> ' +
-                                        '<div class="box-header">' +
-                                            '<i class="fa fa-calendar"></i> ' +
-                                            '<h3 class="box-title">Calendar</h3> ' +
-                                            '<!-- tools box --> ' +
-                                            '<div class="pull-right box-tools"> ' +
-                                                '<!-- button with a dropdown --> ' +
-                                                '<button class="btn btn-success btn-sm bg-blue-gradient" data-widget="collapse"><i class="fa fa-minus"></i></button> ' +
-                                            '</div><!-- /. tools --> ' +
-                                        '</div><!-- /.box-header --> ' +
-                                        '<div class="box-body no-padding"> ' +
-                                            '<!--The calendar --> ' +
-                                            '<div id="calendar" style="width: 100%">' +
-                                            '</div> ' +
-                                        '</div><!-- /.box-body --> ' +
-                                    '</div><!-- /.box --> ' +
 
+                                    '<div class="input-group">' +
+                                        '<!--<input type="text" class="form-control datepicker" datepicker="user.birthday" placeholder="Fecha de Nacimiento" name="birthday" required ng-model="user.birthday">' +
+                                        '<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>--!>' +
+                                        '<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>' +
+                                        '<input ng-model="dateTime" type="date" class="form-control" name="birthday" required ng-model="user.birthday" ng-class="{&#39;default-option&#39;: user.birthday == undefined}">' +
+                                    '</div>'+
 
                                         '<div class="input-group">' +
                                             '<span class="input-group-addon"><i class="fa fa-calendar"></i></span>' +
