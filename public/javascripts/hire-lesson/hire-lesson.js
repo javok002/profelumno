@@ -91,11 +91,6 @@ angular.module('profLesson', [])
                                         '<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>' +
                                         '<input ng-model="dateTime" type="date" class="form-control" name="birthday" required ng-model="user.birthday" ng-class="{&#39;default-option&#39;: user.birthday == undefined}">' +
                                     '</div>'+
-
-                                        '<div class="input-group">' +
-                                            '<span class="input-group-addon"><i class="fa fa-calendar"></i></span>' +
-                                            '<input type="email" class="form-control" placeholder="Fecha y horario" required="">' +
-                                        '</div>' +
                                         '<div class="form-group">' +
                                             '<label>Comentario</label>' +
                                             '<textarea class="form-control" rows="3" placeholder="Dejar comentario ..." ng-model="comment"></textarea>' +

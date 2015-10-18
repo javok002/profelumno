@@ -50,6 +50,8 @@ public class User extends Model {
         totalStars = 0;
     }
 
+    public static User getUser(Long id) { return finder.byId(id);}
+
     public Long getId() { return id; }
 
     public String getCity() {
