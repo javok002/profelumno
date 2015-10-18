@@ -28,10 +28,10 @@
                                 </div>
                                 <div class="box-footer">
                                     <form role="form" ng-submit="uploadFile()" enctype="multipart/form-data" name="modifyForm">
-                                        <input id="inputFile" class="btn btn-info buttonAlign" type="file" name="file" ng-model="edit.fileToUpload" file-model="fileToUpload" accept="image/*" required/> @*onchange="angular.element(this).scope().submitImage(this.files)"/>*@
+                                        <input id="inputFile" class="btn btn-info buttonAlign" type="file" name="file" ng-model="edit.fileToUpload" file-model="fileToUpload" accept="image/*" ng-show="false" required/>
                                         <div class="btn-group buttonAlign" role="group">
+                                            <a href="" class="btn btn-info" type="button" ng-click="selectFile()">Cambiar</a>
                                             <button class="btn btn-primary" type="submit">Guardar</button>
-                                            <a href="" class="btn btn-danger" type="button" ng-click="back()">Cancelar</a>
                                         </div>
                                     </form>
                                 </div>
