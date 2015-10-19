@@ -28,12 +28,7 @@ public class AcceptLesson extends Controller {
     public static Result getLessons() throws ParseException {
         Teacher teacher = Teacher.finder.where().eq("USER_ID", Long.parseLong(session("id"))).findUnique();
         List<Lesson> lessons = Lesson.finder.where().eq("TEACHER_ID", teacher.getId()).findList();
-        SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy");
         for (Lesson lesson : lessons) {
-            String date = format.format(lesson.getDateTime());
-            System.out.println(date);
-            System.out.println(format.parse(date));
-
             System.out.println(lesson.toString());
         }
         return ok(Json.toJson(lessons));
