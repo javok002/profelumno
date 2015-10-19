@@ -80,7 +80,7 @@
                                     <div class="input-group" ng-init="homeClass={{edit.radio}}">
                                         <div class="isa_error" ng-show="modifyTeacher.homeClass.$invalid">
                                             <i class="fa fa-times-circle"></i>
-                                            Debe tener al menos 6 años para ser alumno.
+                                            Debe indicar si da clases a domicilio.
                                         </div>
                                         <label>Clases a domicilio: </label>
                                         <label class="radio"><input type="radio" name="homeClass" id="yesHome" ng-model="radio" value="yes" required>
@@ -93,13 +93,14 @@
                                         <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
                                     </div>
                                     <div class="input-group col-md-11">
-                                        <div class="isa_error" ng-show="errors.length">
+                                        <div class="isa_error" ng-show="errlength">
                                             <i class="fa fa-times-circle"></i>
                                             Minimo 50 carateres.
                                         </div>
                                         <textarea type="text" class="form-control" ng-change="verifyDesc()" id="teacherDescription" ng-model="edit.u.description" placeholder="Descripcion" value="{{edit.u.description}}" rows="3" ng-minlength="50" required></textarea>
-                                        <a type="button" href="@ua.dirproy.profelumno.teachermodification.controller.routes.ModifyTeacher.changePasswordView()"><h4>
-                                            Cambiar Contraseña</h4></a>
+                                    </div>
+                                    <div class="input-group">
+                                        <a type="button" class="btn btn-info buttonAlign" href="@ua.dirproy.profelumno.teachermodification.controller.routes.ModifyTeacher.changePasswordView()">Cambiar Contraseña</a>
                                     </div>
                                     <h4>Direccion</h4>
                                     <div class="input-group">
