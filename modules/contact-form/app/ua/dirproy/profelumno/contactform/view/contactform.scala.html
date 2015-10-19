@@ -1,6 +1,6 @@
 @()
 
-@ua.dirproy.profelumno.common.views.html.tidyMain("Contact Form"){
+@ua.dirproy.profelumno.common.views.html.tidyMain("Contact Form") {
     <br>
     <div class="row">
         <div>
@@ -16,20 +16,26 @@
                             <input type="text" class="form-control" name="name" id="name" placeholder="Nombre" required>
                             <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                         </div>
+                        <br>
                         <div class="input-group">
                             <input type="email" class="form-control" name="email" id="email" placeholder="Email">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
                         </div>
+                        <br>
                         <div class="input-group">
                             <input type="text" class="form-control" name="subject" id="subject" placeholder="Asunto" required>
                             <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
                         </div>
+                        <br>
                         <div class="input-group">
                             <textarea class="form-control" name="message" id="message" placeholder="Mensaje..." required></textarea>
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
                         </div>
+                        <br>
                         <div class="box-footer">
-                            <div class="input-group"><button type="submit" class="btn btn-primary">Enviar</button></div>
-                            <div class="input-group"><a href="/institutional"><button type="button">Cancelar</button></a></div>
+                            <div class="input-group"><button type="submit" class="btn btn-success">
+                                Enviar</button><a href="/institutional"><button class="btn btn-default">
+                                Cancelar</button></a></div>
                         </div>
                     </form>
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3289.858761446588!2d-58.85907500000003!3d-34.455732999999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bc9c69a29aaf17%3A0x2a995fa87be27dd9!2sUniversidad+Austral+%7C+Campus+Pilar!5e0!3m2!1ses!2sar!4v1440765534191" width="100%;" height="216" frameborder="0" style="border : 0 ;" ></iframe>
@@ -37,8 +43,10 @@
             </div>
         </div>
     </div>
-}{<link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/contactform/contactform.css")">}{
-        <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
-        <script src="@routes.Assets.versioned("external/angularjs/angular.min.js")"></script>
-        <script src="@routes.Assets.versioned("javascripts/modifyStudent/change-pass.js")"></script>
-    }
+} {
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/contactform/contactform.css")">
+} {
+    <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
+    <script src="@routes.Assets.versioned("external/angularjs/angular.min.js")"></script>
+    <script src="@routes.Assets.versioned("javascripts/modifyStudent/change-pass.js")"></script>
+}
