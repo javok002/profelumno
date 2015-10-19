@@ -5,28 +5,73 @@ angular.module('studentProfile', [])
         $http.get('/student-profile/get-info').then(function(data) {
             $scope.data = data.data;
         });
+
+        $scope.redirect = function(){
+
+        };
     }])
 
     .directive('subjects', function() {
         return {
             restrict: 'E',
             template:
-            '<div class="col-md-6">' +
-                '<div class="box box-default">' +
-                    '<div class="box-header with-border">' +
-                        '<i class="fa fa-book"> </i>' +
-                        '<h3 class="box-title"> Subjects</h3>' +
-                    '</div> <!-- /.box-header -->' +
-                    '<div class="box-body">' +
-                        '<div ng-repeat="subject in data.Subjects">' +
-                            '<div class="callout callout-{{classes[$index % 4]}}">' +
-                                '<h4>{{ subject.text }}</h4>' +
+            '<div class="row">' +
+                '<div class="col-sm-12">' +
+                    '<div class="box box-solid box-success">' +
+                        '<div class="box-header">' +
+                            '<h3 class="box-title">Materias</h3>' +
+                            '<div class="box-tools pull-right">' +
+                                '<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>' +
+                            '</div><!-- /.box-tools -->' +
+                        '</div><!-- /.box-header --> ' +
+                        '<div class="box-body bg-gray-light"> ' +
+                            '<span ng-show="data.Subjects.length == 0">No hay información disponible</span>' +
+                            '<div class="col-md-4 col-sm-6" ng-repeat="subject in data.Subjects">' +
+                                '<div class="info-box">' +
+                                    '<!-- Apply any bg-* class to to the icon to color it -->' +
+                                    '<span class="info-box-icon bg-aqua"><i class="fa fa-book"></i></span>'+
+                                    '<div class="info-box-content">' +
+                                        '<span class="info-box-text">{{ subject.text }}</span> ' +
+                                    '</div><!-- /.info-box-content -->' +
+                                '</div><!-- /.info-box -->' +
                             '</div>' +
-                        '</div>' +
-                    '</div> <!-- /.box-body -->' +
-                    '<div class="box-footer">' +
-                        '<button class="btn-default"><a href="/modify-student/edit">Edit my subjects</a></button>' +
-                    '</div>' +
+                        '</div><!-- /.box-body -->' +
+                    '</div><!-- /.box -->' +
+                '</div>' +
+            '</div>'
+        }
+    })
+
+    .directive('lessons', function() {
+        return {
+            restrict: 'E',
+            template:
+            '<div class="row">' +
+                '<div class="col-sm-12">' +
+                    '<div class="box box-solid box-primary">' +
+                        '<div class="box-header">' +
+                            '<h3 class="box-title">Clases para ratear</h3>' +
+                            '<div class="box-tools pull-right">' +
+                                '<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>' +
+                            '</div><!-- /.box-tools -->' +
+                        '</div><!-- /.box-header -->' +
+                        '<div class="box-body bg-gray-light">' +
+                          '<span ng-show="Teacher.length == 0">No hay información disponible</span>' +
+                            '<div class="col-md-4 col-sm-6" ng-repeat="lesson in data.LessonsNoRating">' +
+                                '<div class="info-box">' +
+                                    '<!-- Apply any bg-* class to to the icon to color it -->' +
+                                    '<span class="info-box-icon bg-olive"><i class="fa fa-user"></i></span>' +
+                                    '<div class="info-box-content">' +
+                                        '<span class="info-box-text">Clase con {{ lesson.teacher.user.name}}</span>' +
+                                        '<span class="info-box-text"></span>' +
+                                        '<a href="/review-lesson">'+
+                                            '<button type="button" class="btn btn-primary">Calificar</button>' +
+                                        '</a>' +
+                                    '</div><!-- /.info-box-content --> ' +
+                                '</div><!--  /.info-box -->' +
+                            '</div>' +
+                        '</div><!-- /.box-body -->' +
+                    '</div><!-- /.box -->' +
                 '</div>' +
             '</div>'
         }
@@ -36,19 +81,29 @@ angular.module('studentProfile', [])
         return {
             restrict: 'E',
             template:
-            '<div class="col-md-6">' +
-                '<div class="box box-default">' +
-                    '<div class="box-header with-border">' +
-                        '<i class="fa fa-user"> </i>' +
-                        '<h3 class="box-title"> Teachers</h3>' +
-                    '</div> <!-- /.box-header -->' +
-                    '<div class="box-body">' +
-                        '<div ng-repeat="teacher in data.Teachers">' +
-                            '<div class="callout callout-{{classes[$index % 4]}}">' +
-                                '<h4>{{ teacher }}</h4>' +
+            '<div class="row">' +
+                '<div class="col-sm-12">' +
+                    '<div class="box box-solid box-primary">' +
+                        '<div class="box-header">' +
+                            '<h3 class="box-title">Profesores</h3>' +
+                            '<div class="box-tools pull-right">' +
+                                '<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>' +
+                            '</div><!-- /.box-tools -->' +
+                        '</div><!-- /.box-header -->' +
+                        '<div class="box-body bg-gray-light">' +
+                            '<span ng-show="Teacher.length == 0">No hay información disponible</span>' +
+                            '<div class="col-md-4 col-sm-6" ng-repeat="teacher in data.Teachers">' +
+                                '<div class="info-box">' +
+                                    '<!-- Apply any bg-* class to to the icon to color it -->' +
+                                    '<span class="info-box-icon bg-olive"><i class="fa fa-user"></i></span>' +
+                                    '<div class="info-box-content">' +
+                                        '<span class="info-box-text">{{ teacher.user.name}}</span>' +
+                                        '<span class="info-box-text"></span>' +
+                                    '</div><!-- /.info-box-content --> ' +
+                                '</div><!-- /.info-box -->' +
                             '</div>' +
-                        '</div>' +
-                    '</div> <!-- /.box-body -->' +
+                        '</div><!-- /.box-body -->' +
+                    '</div><!-- /.box -->' +
                 '</div>' +
             '</div>'
         }

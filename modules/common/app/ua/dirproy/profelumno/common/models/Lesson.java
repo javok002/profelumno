@@ -27,7 +27,7 @@ public class Lesson extends Model {
 
     @OneToOne
     private Subject subject;
-    private Integer lessonState;//0 pendiente, 1 aceptado, 2 rechazada
+    private int lessonState = 0;//0 pendiente, 1 aceptado, 2 rechazada
 
     @ManyToOne
     private Teacher teacher;
