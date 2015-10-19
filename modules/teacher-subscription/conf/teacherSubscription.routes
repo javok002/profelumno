@@ -8,4 +8,6 @@ GET         /                  ua.dirproy.profelumno.subscription.controllers.Te
 POST        /validate          ua.dirproy.profelumno.subscription.controllers.TeacherSubscription.validateForm()
 GET         /cardNumber        ua.dirproy.profelumno.subscription.controllers.TeacherSubscription.getCreditCardNumber()
 GET         /wTopBar           ua.dirproy.profelumno.subscription.controllers.TeacherSubscription.subscriptionWTopBar()
+GET         /endTrial          ua.dirproy.profelumno.subscription.controllers.TeacherSubscription.endTrialForm()
+POST        /charge            ua.dirproy.profelumno.subscription.controllers.TeacherSubscription.charge()
 # Map static resources from the /public folder to the /assets URL path

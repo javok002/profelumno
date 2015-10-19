@@ -8,6 +8,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.subscription.models.Card;
+import ua.dirproy.profelumno.subscription.views.html.endTrial;
 import ua.dirproy.profelumno.subscription.views.html.subscription;
 import ua.dirproy.profelumno.subscription.views.html.subscriptionTopBar;
 import ua.dirproy.profelumno.user.models.User;
@@ -67,6 +68,14 @@ public class TeacherSubscription extends Controller{
     }
 
     public static Result subscriptionForm(){ return ok(subscription.render());}
+
+    public static Result endTrialForm(){return ok(endTrial.render());}
+
+    public static Result charge(){
+        ChargeTask charger= new ChargeTask();
+        charger.charge();
+        return ok("/");
+    }
 
     public static void setSubscriptionEndDate(Teacher teacher){
 
