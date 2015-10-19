@@ -68,7 +68,7 @@ public class TeacherProfiles extends Controller {
             Subject subject = subjects.get(k);
             for (int p = 0; p <lessons.size() ; p++) {
                 Lesson lesson = lessons.get(p);
-                if (subject.equals(lesson.getSubject())){
+                if (subject != null && lesson != null && subject.equals(lesson.getSubject())){
                     if(lesson.getStudentReview()!=null) {
                         listLong.add(lesson.getStudentReview().getStars());
                     }
@@ -78,8 +78,15 @@ public class TeacherProfiles extends Controller {
         }
 
         Map<String, Long> result;
+        boolean isEmpty = true;
 
-        if ((subjectList.size() == 1) && (subjectList.get(subjects.get(0)).isEmpty())){
+        for (int i = 0; i <subjectList.size() ; i++) {
+            if (!subjectList.get(i).isEmpty()){
+                isEmpty = false;
+            }
+        }
+
+        if (isEmpty){
             result = new HashMap<>();
         }else {
             result = mapProm(subjectList, subjects);

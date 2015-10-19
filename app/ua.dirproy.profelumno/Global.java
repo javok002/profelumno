@@ -86,6 +86,26 @@ public class Global extends GlobalSettings {
             lesson4.setStudent(student);
             lesson5.setStudent(student);
 
+            lesson1.setLessonState(1);
+            lesson2.setLessonState(1);
+            lesson3.setLessonState(1);
+            lesson4.setLessonState(1);
+            lesson5.setLessonState(1);
+
+            lesson1.setComment("sadas");
+            lesson2.setComment("dsadas");
+            lesson3.setComment("dsadas");
+            lesson4.setComment("dsadas");
+            lesson5.setComment("dsadas");
+
+            lesson1.setDateString("27/8/2015");
+            lesson2.setDateString("28/8/2015");
+            lesson3.setDateString("29/8/2015");
+            lesson4.setDateString("26/10/2015");
+            lesson5.setDateString("1/9/2015");
+
+
+
             lesson1.setTeacher(teacher);
             lesson2.setTeacher(teacher);
             lesson3.setTeacher(teacher);

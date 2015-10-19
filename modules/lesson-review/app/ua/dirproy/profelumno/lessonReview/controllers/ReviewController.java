@@ -206,7 +206,7 @@ public class ReviewController extends Controller {
     }
 
     public static Result createMockCase(){
-        final Teacher teacher = new Teacher();
+       /* final Teacher teacher = new Teacher();
         final User userTeacher = new User();
         userTeacher.setEmail("user.teacher@gmail.com");
         userTeacher.setName("User");
@@ -283,22 +283,27 @@ public class ReviewController extends Controller {
 
         lesson1.setStudentReview(review1);
         lesson1.setTeacherReview(review2);
+        lesson1.setLessonState(1);
         lesson1.save();
 
         Duration oneHour = Duration.ofHours(1);
 
         lesson2.setTeacherReview(review3);
         lesson2.setDuration(oneHour);
+        lesson2.setLessonState(1);
         lesson2.save();
 
         lesson3.setStudentReview(review4);
+        lesson3.setLessonState(1);
         lesson3.save();
 
         lesson4.setDuration(oneHour);
+        lesson4.setLessonState(0);
         lesson4.save();
 
         lesson5.setDuration(oneHour);
-        lesson5.save();
+        lesson5.setLessonState(0);
+        lesson5.save();*/
 
         return redirect(routes.ReviewController.show());
     }

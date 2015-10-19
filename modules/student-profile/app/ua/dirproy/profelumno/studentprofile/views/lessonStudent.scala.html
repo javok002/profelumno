@@ -1,0 +1,47 @@
+@()
+@ua.dirproy.profelumno.common.views.html.main("Student Lessons") {
+    @ua.dirproy.profelumno.common.views.html.topbar()
+    @ua.dirproy.profelumno.common.views.html.sidebar()
+    <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
+    <script src="@routes.Assets.versioned("external/angularjs/angular.min.js")"></script>
+    <script src="@routes.Assets.versioned("/javascripts/studentProfile/lessonStudent.js")"></script>
+
+    <div class="container" ng-app="acceptLesson">
+        <div ng-controller="AcceptController as ctrl">
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-6">
+                    <div class="page-header">Clases pendientes: </div>
+                    <div ng-repeat="lesson in studentLessons" >
+                        <div ng-if="lesson.lessonState == 1">
+                            <div class="panel panel-primary" id="{{lesson.id}}">
+                                <div class="panel-body">
+                                    Clase:
+                                    <br>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">Fecha: {{lesson.dateString}}</li>
+                                        <li class="list-group-item">Dirección: {{lesson.address}}</li>
+                                        <li class="list-group-item">Materia: {{lesson.subject.text}}</li>
+                                        <li class="list-group-item">Comentario:
+                                            <div class="well">
+                                                {{lesson.comment}}
+                                            </div></li>
+                                    </ul>
+                                    <br>
+
+                                </div>
+                                <br>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <h3 class="special-text">No hay más clases pendientes</h3>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+}
