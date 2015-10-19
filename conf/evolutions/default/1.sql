@@ -17,7 +17,6 @@ create table lesson (
   teacher_review_id         bigint,
   student_id                bigint,
   student_review_id         bigint,
-  constraint uq_lesson_subject_id unique (subject_id),
   constraint uq_lesson_teacher_review_id unique (teacher_review_id),
   constraint uq_lesson_student_review_id unique (student_review_id),
   constraint pk_lesson primary key (id))

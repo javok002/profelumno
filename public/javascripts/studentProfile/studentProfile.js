@@ -42,7 +42,7 @@ angular.module('studentProfile', [])
         }
     })
 
-    .directive('lessons', function() {
+    .directive('lessonsToRate', function() {
         return {
             restrict: 'E',
             template:
@@ -50,7 +50,7 @@ angular.module('studentProfile', [])
                 '<div class="col-sm-12">' +
                     '<div class="box box-solid box-primary">' +
                         '<div class="box-header">' +
-                            '<h3 class="box-title">Clases para ratear</h3>' +
+                            '<h3 class="box-title">Clases a calificar</h3>' +
                             '<div class="box-tools pull-right">' +
                                 '<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>' +
                             '</div><!-- /.box-tools -->' +
@@ -67,6 +67,40 @@ angular.module('studentProfile', [])
                                         '<a href="/review-lesson">'+
                                             '<button type="button" class="btn btn-primary">Calificar</button>' +
                                         '</a>' +
+                                    '</div><!-- /.info-box-content --> ' +
+                                '</div><!--  /.info-box -->' +
+                            '</div>' +
+                        '</div><!-- /.box-body -->' +
+                    '</div><!-- /.box -->' +
+                '</div>' +
+            '</div>'
+        }
+    })
+
+    .directive('lessons', function() {
+        return {
+            restrict: 'E',
+            template:
+            '<div class="row">' +
+                '<div class="col-sm-12">' +
+                    '<div class="box box-solid box-primary">' +
+                        '<div class="box-header">' +
+                            '<h3 class="box-title">Clases pasadas</h3>' +
+                            '<div class="box-tools pull-right">' +
+                                '<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>' +
+                            '</div><!-- /.box-tools -->' +
+                        '</div><!-- /.box-header -->' +
+                        '<div class="box-body bg-gray-light">' +
+                            '<span ng-show="Teacher.length == 0">No hay información disponible</span>' +
+                            '<div class="col-md-4 col-sm-6" ng-repeat="lesson in data.Lessons">' +
+                                '<div class="info-box">' +
+                                    '<!-- Apply any bg-* class to to the icon to color it -->' +
+                                    '<span class="info-box-icon bg-olive"><i class="fa fa-user"></i></span>' +
+                                    '<div class="info-box-content">' +
+                                        '<span class="info-box-text">Clase con {{ lesson.teacher.user.name}}</span>' +
+                                        '<span class="info-box-text">el {{ lesson.dateTime | date}}</span>' +
+                                        '<span class="info-box-text">Comentario del profesor:</span>' +
+                                        '<span class="info-box-text">{{ lesson.studentReview.comment }}</span>' +
                                     '</div><!-- /.info-box-content --> ' +
                                 '</div><!--  /.info-box -->' +
                             '</div>' +

@@ -25,7 +25,7 @@ public class Lesson extends Model {
     private String comment;
     private Float price;
 
-    @OneToOne
+    @ManyToOne
     private Subject subject;
     private int lessonState = 0;//0 pendiente, 1 aceptado, 2 rechazada
 
