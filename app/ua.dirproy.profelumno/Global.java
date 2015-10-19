@@ -104,8 +104,6 @@ public class Global extends GlobalSettings {
             lesson4.setDateString("26/10/2015");
             lesson5.setDateString("1/9/2015");
 
-
-
             lesson1.setTeacher(teacher);
             lesson2.setTeacher(teacher);
             lesson3.setTeacher(teacher);
@@ -118,11 +116,19 @@ public class Global extends GlobalSettings {
             review1.setStars((long) 5);
             review1.save();
 
+            student.getUser().addStars(5);
+            student.getUser().incrementReviews();
+            student.save();
+
             final Review review2 = new Review();
             review2.setComment("El profesor me ayudo a sacarme un 8 en la prueba");
             review2.setDate(new Date(115, 8, 28));
             review2.setStars((long) 4);
             review2.save();
+
+            teacher.getUser().addStars(4);
+            teacher.getUser().incrementReviews();
+            teacher.save();
 
             final Review review3 = new Review();
             review3.setComment("El profesor es mal educado");
@@ -130,11 +136,19 @@ public class Global extends GlobalSettings {
             review3.setStars((long) 2);
             review3.save();
 
+            teacher.getUser().addStars(2);
+            teacher.getUser().incrementReviews();
+            teacher.save();
+
             final Review review4 = new Review();
             review4.setComment("El alumno no presta atención");
             review4.setDate(new Date(115, 8, 30));
             review4.setStars((long) 3);
             review4.save();
+
+            student.getUser().addStars(3);
+            student.getUser().incrementReviews();
+            student.save();
 
             Duration oneHour = Duration.ofHours(1);
 

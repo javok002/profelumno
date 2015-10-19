@@ -142,7 +142,7 @@ public class TeacherProfiles extends Controller {
         for (int i = 0; i <lessons.size() ; i++) {
             if (nextLessons.size() <= 6) {
                 Lesson aux = lessons.get(i);
-                if (aux.getDateTime().after(date)) {
+                if (aux.getDateTime().after(date) && aux.getLessonState() == 1) {
                     nextLessons.add(aux);
                 }
             }
@@ -183,7 +183,7 @@ public class TeacherProfiles extends Controller {
 
     private static Iterator<Lesson> getPreviousLessons(Long userId){
         final Teacher teacher = Teacher.finder.where().eq("user.id", userId).findUnique();
-        return Lesson.finder.where().eq("teacher", teacher).lt("dateTime", new Date()).findList().iterator();
+        return Lesson.finder.where().eq("teacher", teacher).lt("dateTime", new Date()).eq("lessonState", 1).findList().iterator();
     }
 
 }

@@ -50,14 +50,6 @@ angular.module('app', [])
                 .error(function (data) {
                     $scope.teacher = {};
                 });
-            $http.get('/teacher-profile/top-subjects')
-                .success(function (data) {
-                    $scope.topSubjects = data;
-                    $scope.noTopSubjects = Object.keys($scope.topSubjects).length == 0;
-                })
-                .error(function (data) {
-                    $scope.noTopSubjects = true;
-                });
             $http.get('/teacher-profile/previous-lessons')
                 .success(function (data) {
                     $scope.prevLessons = data;
@@ -75,6 +67,14 @@ angular.module('app', [])
                 })
                 .error(function (data) {
                     $scope.nextLessons = [];
+                });
+            $http.get('/teacher-profile/top-subjects')
+                .success(function (data) {
+                    $scope.topSubjects = data;
+                    $scope.noTopSubjects = Object.keys($scope.topSubjects).length == 0;
+                })
+                .error(function (data) {
+                    $scope.noTopSubjects = true;
                 });
         };
 

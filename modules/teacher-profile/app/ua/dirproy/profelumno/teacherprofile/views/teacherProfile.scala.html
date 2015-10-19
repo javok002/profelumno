@@ -87,7 +87,6 @@
 
                             <span ng-show="nextLessons.length == 0">No hay información disponible</span>
                             <div class="col-md-4 col-sm-6" ng-repeat="lesson in nextLessons">
-                                <div ng-if="lesson.lessonState==1">
                                 <div class="info-box">
                                         <!-- Apply any bg-* class to to the icon to color it -->
                                     <span class="info-box-icon bg-olive"><i class="fa fa-calendar-o"></i></span>
@@ -96,7 +95,6 @@
                                         <span class="info-box-number">{{ lesson.dateString }}</span>
                                     </div><!-- /.info-box-content -->
                                 </div><!-- /.info-box -->
-                            </div>
                         </div>
                         </div>
                         </div><!-- /.box-body -->
@@ -117,7 +115,6 @@
                         <div class="box-body bg-gray-light">
                             <span ng-show="prevLessons.length == 0">No hay información disponible</span>
                             <div class="col-md-4 col-sm-6" ng-repeat="lesson in prevLessons">
-                                <div ng-if="lesson.lessonState==1">
                                 <div class="info-box">
                                         <!-- Apply any bg-* class to to the icon to color it -->
                                     <span class="info-box-icon bg-yellow"><i class="fa fa-calendar-check-o"></i></span>
@@ -127,7 +124,6 @@
                                         <button type="button" data-toggle="modal" data-target="#makeReviewModal" ng-show="lesson.review" ng-click="setModal($index)" class="btn btn-primary">Calificar alumno</button>
                                     </div><!-- /.info-box-content -->
                                 </div><!-- /.info-box -->
-                            </div>
                             </div>
                         </div><!-- /.box-body -->
                     </div><!-- /.box -->
