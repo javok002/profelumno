@@ -78,8 +78,15 @@ public class TeacherProfiles extends Controller {
         }
 
         Map<String, Long> result;
+        int j = 0;
 
-        if ((subjectList.size() == 1) && (subjectList.get(subjects.get(0)).isEmpty())){
+        for (int i = 0; i <subjectList.size() ; i++) {
+            if (subjectList.get(i).isEmpty()){
+                j++;
+            }
+        }
+
+        if (j==subjectList.size()){
             result = new HashMap<>();
         }else {
             result = mapProm(subjectList, subjects);
