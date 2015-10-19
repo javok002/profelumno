@@ -45,6 +45,7 @@
                                 <a class="btn btn-info buttonAlign" href="@ua.dirproy.profelumno.subscription.controllers.routes.TeacherSubscription.subscriptionWTopBar()">
                                     Modificar subscripcion</a>
                             </div>
+
                             <form role="form" method="post" name="modifyForm" class="from-horizontal" ng-submit="submit()">
                                 <div class="box-body">
                                     <div class="input-group">
@@ -77,7 +78,7 @@
                                         <label class="radio"><input type="radio" name="gender" id="female" ng-model="edit.u.user.gender" value="female" required>
                                             Femenino</label>
                                     </div>
-                                    <div class="input-group" ng-init="homeClass={{edit.radio}}">
+                                    <div class="input-group" >
                                         <div class="isa_error" ng-show="modifyTeacher.homeClass.$invalid">
                                             <i class="fa fa-times-circle"></i>
                                             Debe indicar si da clases a domicilio.
@@ -104,21 +105,18 @@
                                     </div>
                                     <h4>Direccion</h4>
                                     <div class="input-group">
-                                        <input class="form-control" name="address" ng-model="search" ng-enter="geoCode()" googleplace/>
+                                        <input class="form-control" name="address" ng-model="search"  ng-enter="geoCode()" googleplace/>
                                         <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
                                     </div>
                                     <app-map class="map" id="map" center="loc" markers="[marker]" zoom="17"></app-map>
 
                                 </div>
-                                <div class="box-footer " role="group">
-                                    <div class="btn-group buttonAlign">
-                                        @*<div class="input-group">*@<button type="submit" class="btn btn-primary">
-                                        Guardar</button>@*</div>*@
-                                        @*<div class="input-group"><a href="">*@<a href="" class="btn btn-danger" ng-click="back()" type="button">
-                                        Cancelar</a>@*</a></div>*@
-                                    </div>
+                                <div class="box-footer">
+                                <div class="btn-group buttonAlign">
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                    <a href="/"><button class="btn btn-danger" type="button">Cancelar</button></a>
                                 </div>
-                                <br>
+                            </div>
                             </form>
                         </div>
                         <div class="box">
@@ -181,7 +179,8 @@
     <script src="@routes.Assets.versioned("javascripts/teacherModify/teacherModify.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/modifyStudent/ng-tags-input.min.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/teacherModify/angular-flash.js")"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-animate.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+    <script src="@routes.Assets.versioned("external/angularjs/angular-route.js")"></script>
+    <script src="@routes.Assets.versioned("external/angularjs/angular-animate.js")"></script>
+
 
 }

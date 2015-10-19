@@ -233,6 +233,19 @@ app.directive('googleplace', function () {
     };
 });
 
+app.directive('ngEnter', function () {
+    return function (scope, elements, attrs) {
+        elements.bind('keypress', function (event) {
+            if (event.which === 13) {
+                scope.$apply(function () {
+                    scope.$eval(attrs.ngEnter);
+                });
+                event.preventDefault();
+            }
+        });
+    };
+});
+
 app.directive('fileModel', ['$parse', function ($parse) {
     return {
         restrict: 'A',
