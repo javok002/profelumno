@@ -2,14 +2,14 @@ package ua.dirproy.profelumno;
 
 import play.Application;
 import play.GlobalSettings;
+import ua.dirproy.profelumno.common.models.Lesson;
+import ua.dirproy.profelumno.common.models.Review;
 import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -54,7 +54,6 @@ public class Global extends GlobalSettings {
             }
         }
 
-
         public static void insert(Application app) {
 
             setSubjects();
@@ -95,6 +94,7 @@ public class Global extends GlobalSettings {
                     student.setUser(userS);
                     student.save();
                 }
+
             }
 
 
