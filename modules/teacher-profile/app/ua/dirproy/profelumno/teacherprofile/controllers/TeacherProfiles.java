@@ -68,7 +68,7 @@ public class TeacherProfiles extends Controller {
             Subject subject = subjects.get(k);
             for (int p = 0; p <lessons.size() ; p++) {
                 Lesson lesson = lessons.get(p);
-                if (subject.equals(lesson.getSubject())){
+                if (subject != null && lesson != null && subject.equals(lesson.getSubject())){
                     if(lesson.getStudentReview()!=null) {
                         listLong.add(lesson.getStudentReview().getStars());
                     }
@@ -78,8 +78,15 @@ public class TeacherProfiles extends Controller {
         }
 
         Map<String, Long> result;
+        boolean isEmpty = true;
 
-        if ((subjectList.size() == 1) && (subjectList.get(subjects.get(0)).isEmpty())){
+        for (int i = 0; i <subjects.size() ; i++) {
+            if (!subjectList.get(subjects.get(i)).isEmpty()){
+                isEmpty = false;
+            }
+        }
+
+        if (isEmpty){
             result = new HashMap<>();
         }else {
             result = mapProm(subjectList, subjects);
@@ -120,6 +127,7 @@ public class TeacherProfiles extends Controller {
     }
 
     private static Long getProm(List<Long> list){
+        if (list.isEmpty()) return 0L;
         long prom = 0;
         for (Long aux : list) {
             prom += aux;
@@ -135,7 +143,7 @@ public class TeacherProfiles extends Controller {
         for (int i = 0; i <lessons.size() ; i++) {
             if (nextLessons.size() <= 6) {
                 Lesson aux = lessons.get(i);
-                if (aux.getDateTime().after(date)) {
+                if (aux.getDateTime().after(date) && aux.getLessonState() == 1) {
                     nextLessons.add(aux);
                 }
             }
@@ -176,7 +184,7 @@ public class TeacherProfiles extends Controller {
 
     private static Iterator<Lesson> getPreviousLessons(Long userId){
         final Teacher teacher = Teacher.finder.where().eq("user.id", userId).findUnique();
-        return Lesson.finder.where().eq("teacher", teacher).lt("dateTime", new Date()).findList().iterator();
+        return Lesson.finder.where().eq("teacher", teacher).lt("dateTime", new Date()).eq("lessonState", 1).findList().iterator();
     }
 
 }

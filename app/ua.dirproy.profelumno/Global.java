@@ -68,6 +68,26 @@ public class Global extends GlobalSettings {
             final Lesson lesson4 = new Lesson();
             final Lesson lesson5 = new Lesson();
 
+            Subject subject1 = new Subject();
+            subject1.setName("ALGEBRA");
+            subject1.save();
+
+            Subject subject2 = new Subject();
+            subject2.setName("QUIMICA");
+            subject2.save();
+
+            Subject subject3 = new Subject();
+            subject3.setName("GEOGRAFIA");
+            subject3.save();
+
+            Subject subject4 = new Subject();
+            subject4.setName("LENGUA");
+            subject4.save();
+
+            Subject subject5 = new Subject();
+            subject5.setName("MATEMATICA");
+            subject5.save();
+
             lesson1.setDateTime(new Date(115, 8, 27));
             lesson2.setDateTime(new Date(115, 8, 28));
             lesson3.setDateTime(new Date(115, 8, 29));
@@ -86,6 +106,30 @@ public class Global extends GlobalSettings {
             lesson4.setStudent(student);
             lesson5.setStudent(student);
 
+            lesson1.setLessonState(1);
+            lesson2.setLessonState(1);
+            lesson3.setLessonState(1);
+            lesson4.setLessonState(1);
+            lesson5.setLessonState(1);
+
+            lesson1.setSubject(subject1);
+            lesson2.setSubject(subject2);
+            lesson3.setSubject(subject3);
+            lesson4.setSubject(subject4);
+            lesson5.setSubject(subject5);
+
+            lesson1.setComment("sadas");
+            lesson2.setComment("dsadas");
+            lesson3.setComment("dsadas");
+            lesson4.setComment("dsadas");
+            lesson5.setComment("dsadas");
+
+            lesson1.setDateString("27/8/2015");
+            lesson2.setDateString("28/8/2015");
+            lesson3.setDateString("29/8/2015");
+            lesson4.setDateString("26/10/2015");
+            lesson5.setDateString("1/9/2015");
+
             lesson1.setTeacher(teacher);
             lesson2.setTeacher(teacher);
             lesson3.setTeacher(teacher);
@@ -98,11 +142,19 @@ public class Global extends GlobalSettings {
             review1.setStars((long) 5);
             review1.save();
 
+            student.getUser().addStars(5);
+            student.getUser().incrementReviews();
+            student.save();
+
             final Review review2 = new Review();
             review2.setComment("El profesor me ayudo a sacarme un 8 en la prueba");
             review2.setDate(new Date(115, 8, 28));
             review2.setStars((long) 4);
             review2.save();
+
+            teacher.getUser().addStars(4);
+            teacher.getUser().incrementReviews();
+            teacher.save();
 
             final Review review3 = new Review();
             review3.setComment("El profesor es mal educado");
@@ -110,11 +162,19 @@ public class Global extends GlobalSettings {
             review3.setStars((long) 2);
             review3.save();
 
+            teacher.getUser().addStars(2);
+            teacher.getUser().incrementReviews();
+            teacher.save();
+
             final Review review4 = new Review();
             review4.setComment("El alumno no presta atención");
             review4.setDate(new Date(115, 8, 30));
             review4.setStars((long) 3);
             review4.save();
+
+            student.getUser().addStars(3);
+            student.getUser().incrementReviews();
+            student.save();
 
             Duration oneHour = Duration.ofHours(1);
 

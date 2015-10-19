@@ -4,6 +4,9 @@
 
 # Home page
 GET        /student-dashboard        ua.dirproy.profelumno.studentprofile.controllers.StudentProfile.dashboard
-GET        /get-info             ua.dirproy.profelumno.studentprofile.controllers.StudentProfile.getAllInfo
+GET        /get-info                 ua.dirproy.profelumno.studentprofile.controllers.StudentProfile.getAllInfo
+GET        /student-lesson           ua.dirproy.profelumno.studentprofile.controllers.LessonStudent.lessonView()
+GET        /get-lessons              ua.dirproy.profelumno.studentprofile.controllers.LessonStudent.getLessons()
+
 
 # Map static resources from the /public folder to the /assets URL path

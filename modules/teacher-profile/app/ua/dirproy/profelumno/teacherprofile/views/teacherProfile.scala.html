@@ -78,11 +78,13 @@
                     <div class="box box-solid box-primary">
                         <div class="box-header">
                             <h3 class="box-title">Próximas Clases</h3>
+
                             <div class="box-tools pull-right">
                                 <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                             </div><!-- /.box-tools -->
                         </div><!-- /.box-header -->
                         <div class="box-body bg-gray-light">
+
                             <span ng-show="nextLessons.length == 0">No hay información disponible</span>
                             <div class="col-md-4 col-sm-6" ng-repeat="lesson in nextLessons">
                                 <div class="info-box">
@@ -90,13 +92,14 @@
                                     <span class="info-box-icon bg-olive"><i class="fa fa-calendar-o"></i></span>
                                     <div class="info-box-content">
                                         <span class="info-box-text">{{ lesson.subject.text }}</span>
-                                        <span class="info-box-number">{{ lesson.date }}</span>
+                                        <span class="info-box-number">{{ lesson.dateString }}</span>
                                     </div><!-- /.info-box-content -->
                                 </div><!-- /.info-box -->
-                            </div>
+                        </div>
+                        </div>
                         </div><!-- /.box-body -->
                     </div><!-- /.box -->
-                </div>
+
             </div>
 
 
