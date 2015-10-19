@@ -112,6 +112,9 @@ app.controller("EditController", ['$http','$scope', 'fileUpload',function($http,
         return null;
     };
 
+    $scope.selectFile=function(){
+        angular.element($('#inputFile')).trigger('click');
+    };
 
     //IMAGE
     $scope.uploadFile = function(){

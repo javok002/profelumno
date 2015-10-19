@@ -9,6 +9,7 @@ import play.mvc.Result;
 import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.subscription.models.Card;
 import ua.dirproy.profelumno.subscription.views.html.subscription;
+import ua.dirproy.profelumno.subscription.views.html.subscriptionTopBar;
 import ua.dirproy.profelumno.user.models.User;
 
 import java.util.Calendar;
@@ -91,5 +92,9 @@ public class TeacherSubscription extends Controller{
             hiddenNumber = hiddenNumber + number.substring(len - 4, len);
             return ok("Tu numero de tarjeta actual es: "+hiddenNumber);
         }else return badRequest();
+    }
+
+    public static Result subscriptionWTopBar(){
+        return ok(subscriptionTopBar.render());
     }
 }

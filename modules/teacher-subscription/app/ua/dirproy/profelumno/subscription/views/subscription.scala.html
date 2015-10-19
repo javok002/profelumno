@@ -1,6 +1,9 @@
 @()
 
 @ua.dirproy.profelumno.common.views.html.main("Suscripción"){
+    <div id="bars">
+
+    </div>
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/teachersubscription/teacherSubscription.css")">
     <link rel="stylesheet" href="@routes.Assets.versioned("external/bootstrap-select/bootstrap-select.css")">
     <div class="row" ng-app="postApp">
@@ -19,10 +22,10 @@
                         <input type="text" class="form-control" id="cardName" name="cardName" required="required" ng-model="control.card.name">
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-4" for="cardNumber">Numero de Tarjeta:</label>
-                    <div class="col-sm-8">
-                        <input type="number" class="form-control" name="cardNumber" required="required" id="cardNumber" ng-model="control.card.number" maxlength="20">
+                <div class="form-group" >
+                    <label class="col-sm-4" for="cardNumber" >Numero de Tarjeta:</label>
+                    <div class="col-sm-8" id="cardNumberDiv">
+                        <input type="text" class="form-control" name="cardNumber" required="required" id="cardNumber" ng-model="control.card.number" maxlength="20">
                     </div>
                 </div>
                 <div class="form-group">
@@ -56,14 +59,14 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-4" for="secCode" ng-model="control.card.securityNumber" >Codigo de Seguridad:</label>
-                    <div class="col-sm-8">
+                    <div class="col-sm-8" id="secCodeDiv">
                         <input type="password" class="form-control" name="secCode" id="secCode" required="required" maxlength="4">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-4" for="cardType" ng-model="control.card.type">Tipo de tarjeta:</label>
                     <div class="col-sm-8">
-                        <select name="type" id="type" class="selectpicker" data-width="100%" ng-model="control.card.type">
+                        <select name="type" id="type" class="selectpicker" data-width="100%" ng-model="control.card.type" onchange="checkType()">
                             <option value="" selected="">Type
                             <option id="visa">VISA</option>
                             <option id="amex">AMEX</option>
@@ -78,7 +81,7 @@
                     <div class="col-sm-4"></div>
                     <div class="col-sm-8">
                         <button type="submit" class="btn btn-primary">Submit</button>
-                        <a href="/" class="btn btn-danger" id="cancel" style="align-self: right" hidden >Cancel</a>
+                        <a href="/modify-teacher" class="btn btn-danger" id="cancel" style="align-self: right;" >Cancel</a>
                     </div>
                 </div>
             </form>

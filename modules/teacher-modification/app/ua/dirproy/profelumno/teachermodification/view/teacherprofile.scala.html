@@ -28,10 +28,10 @@
                                 </div>
                                 <div class="box-footer">
                                     <form role="form" ng-submit="uploadFile()" enctype="multipart/form-data" name="modifyForm">
-                                        <input id="inputFile" class="btn btn-info buttonAlign" type="file" name="file" ng-model="edit.fileToUpload" file-model="fileToUpload" accept="image/*" required/> @*onchange="angular.element(this).scope().submitImage(this.files)"/>*@
+                                        <input id="inputFile" class="btn btn-info buttonAlign" type="file" name="file" ng-model="edit.fileToUpload" file-model="fileToUpload" accept="image/*" ng-show="false" required/>
                                         <div class="btn-group buttonAlign" role="group">
+                                            <a href="" class="btn btn-info" type="button" ng-click="selectFile()">Cambiar</a>
                                             <button class="btn btn-primary" type="submit">Guardar</button>
-                                            <a href="" class="btn btn-danger" type="button" ng-click="back()">Cancelar</a>
                                         </div>
                                     </form>
                                 </div>
@@ -42,7 +42,7 @@
                         <div class="box box-primary">
                             <div class="box-header">
                                 <h4>Información personal</h4>
-                                <a class="btn btn-info buttonAlign" href="@ua.dirproy.profelumno.subscription.controllers.routes.TeacherSubscription.subscriptionForm()">
+                                <a class="btn btn-info buttonAlign" href="@ua.dirproy.profelumno.subscription.controllers.routes.TeacherSubscription.subscriptionWTopBar()">
                                     Modificar subscripcion</a>
                             </div>
                             <form role="form" method="post" name="modifyForm" class="from-horizontal" ng-submit="submit()">
@@ -80,7 +80,7 @@
                                     <div class="input-group" ng-init="homeClass={{edit.radio}}">
                                         <div class="isa_error" ng-show="modifyTeacher.homeClass.$invalid">
                                             <i class="fa fa-times-circle"></i>
-                                            Debe tener al menos 6 años para ser alumno.
+                                            Debe indicar si da clases a domicilio.
                                         </div>
                                         <label>Clases a domicilio: </label>
                                         <label class="radio"><input type="radio" name="homeClass" id="yesHome" ng-model="radio" value="yes" required>
@@ -93,11 +93,14 @@
                                         <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
                                     </div>
                                     <div class="input-group col-md-11">
-                                        <div class="isa_error" ng-show="errors.length">
+                                        <div class="isa_error" ng-show="errlength">
                                             <i class="fa fa-times-circle"></i>
                                             Minimo 50 carateres.
                                         </div>
                                         <textarea type="text" class="form-control" ng-change="verifyDesc()" id="teacherDescription" ng-model="edit.u.description" placeholder="Descripcion" value="{{edit.u.description}}" rows="3" ng-minlength="50" required></textarea>
+                                    </div>
+                                    <div class="input-group">
+                                        <a type="button" class="btn btn-info buttonAlign" href="@ua.dirproy.profelumno.teachermodification.controller.routes.ModifyTeacher.changePasswordView()">Cambiar Contraseña</a>
                                     </div>
                                     <h4>Direccion</h4>
                                     <div class="input-group">

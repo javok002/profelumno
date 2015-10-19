@@ -69,13 +69,23 @@ public class TeacherProfiles extends Controller {
             for (int p = 0; p <lessons.size() ; p++) {
                 Lesson lesson = lessons.get(p);
                 if (subject.equals(lesson.getSubject())){
-                    listLong.add(lesson.getStudentReview().getStars());
+                    if(lesson.getStudentReview()!=null) {
+                        listLong.add(lesson.getStudentReview().getStars());
+                    }
                 }
             }
             subjectList.put(subject,listLong);
         }
 
-        return ok(Json.toJson(mapProm(subjectList, subjects)));
+        Map<String, Long> result;
+
+        if ((subjectList.size() == 1) && (subjectList.get(subjects.get(0)).isEmpty())){
+            result = new HashMap<>();
+        }else {
+            result = mapProm(subjectList, subjects);
+        }
+
+        return ok(Json.toJson(result));
     }
 
     private static Map<String, Long> mapProm(Map<Subject,List<Long>> subjectListLong,List<Subject> subjects) {
