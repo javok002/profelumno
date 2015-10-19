@@ -68,6 +68,26 @@ public class Global extends GlobalSettings {
             final Lesson lesson4 = new Lesson();
             final Lesson lesson5 = new Lesson();
 
+            Subject subject1 = new Subject();
+            subject1.setName("ALGEBRA");
+            subject1.save();
+
+            Subject subject2 = new Subject();
+            subject2.setName("QUIMICA");
+            subject2.save();
+
+            Subject subject3 = new Subject();
+            subject3.setName("GEOGRAFIA");
+            subject3.save();
+
+            Subject subject4 = new Subject();
+            subject4.setName("LENGUA");
+            subject4.save();
+
+            Subject subject5 = new Subject();
+            subject5.setName("MATEMATICA");
+            subject5.save();
+
             lesson1.setDateTime(new Date(115, 8, 27));
             lesson2.setDateTime(new Date(115, 8, 28));
             lesson3.setDateTime(new Date(115, 8, 29));
@@ -91,6 +111,12 @@ public class Global extends GlobalSettings {
             lesson3.setLessonState(1);
             lesson4.setLessonState(1);
             lesson5.setLessonState(1);
+
+            lesson1.setSubject(subject1);
+            lesson2.setSubject(subject2);
+            lesson3.setSubject(subject3);
+            lesson4.setSubject(subject4);
+            lesson5.setSubject(subject5);
 
             lesson1.setComment("sadas");
             lesson2.setComment("dsadas");

@@ -80,8 +80,8 @@ public class TeacherProfiles extends Controller {
         Map<String, Long> result;
         boolean isEmpty = true;
 
-        for (int i = 0; i <subjectList.size() ; i++) {
-            if (!subjectList.get(i).isEmpty()){
+        for (int i = 0; i <subjects.size() ; i++) {
+            if (!subjectList.get(subjects.get(i)).isEmpty()){
                 isEmpty = false;
             }
         }
@@ -127,6 +127,7 @@ public class TeacherProfiles extends Controller {
     }
 
     private static Long getProm(List<Long> list){
+        if (list.isEmpty()) return 0L;
         long prom = 0;
         for (Long aux : list) {
             prom += aux;
