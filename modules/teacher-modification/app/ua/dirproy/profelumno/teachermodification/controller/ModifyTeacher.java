@@ -65,6 +65,7 @@ public class ModifyTeacher extends Controller {
             teacherU.setPassword(tchU.getPassword());
             teacherU.setSurname(tchU.getSurname());
             teacher.setPrice(tch.getPrice());
+            teacher.setHomeClasses(tch.getHomeClasses());
             teacherU.setLatitude(tchU.getLatitude());
             teacherU.setLongitude(tchU.getLongitude());
             teacherU.setCity(tchU.getCity());
