@@ -48,7 +48,7 @@ angular.module('app', [])
                     $scope.teacher = data;
                 })
                 .error(function (data) {
-                    //    TODO warning message
+                    $scope.teacher = {};
                 });
             $http.get('/teacher-profile/top-subjects')
                 .success(function (data) {
@@ -56,18 +56,14 @@ angular.module('app', [])
                     $scope.noTopSubjects = Object.keys($scope.topSubjects).length == 0;
                 })
                 .error(function (data) {
-                    //    TODO warning message
+                    $scope.noTopSubjects = true;
                 });
             $http.get('/teacher-profile/previous-lessons')
                 .success(function (data) {
-                    data.forEach(function(lesson) {
-                        var date = new Date(lesson.dateTime);
-                        lesson.date = dateToString(date);
-                    });
                     $scope.prevLessons = data;
                 })
                 .error(function (data) {
-                    //    TODO warning message
+                    $scope.prevLessons = [];
                 });
             $http.get('/teacher-profile/next-lessons')
                 .success(function (data) {
@@ -78,13 +74,36 @@ angular.module('app', [])
                     $scope.nextLessons = data;
                 })
                 .error(function (data) {
-                    //    TODO warning message
+                    $scope.nextLessons = [];
+                });
+        };
+
+        $scope.setModal = function(index){
+            var prevLesson = $scope.prevLessons[index];
+            currentIndex = index;
+            $('#emailModal').val(prevLesson.studentEmail);
+            $('#commentModal').val("");
+            $('#starsModal').rating('reset');
+        };
+
+        $scope.review = function(){
+            var prevLesson = $scope.prevLessons[currentIndex];
+            var comment = $('#commentModal').val();
+            var stars = parseInt($('#starsModal').val());
+            var toEmail =  $('#emailModal').val();
+            var idLesson = prevLesson.idLesson;
+
+            $http.post("/review-lesson/review?comment=" + comment + "&stars=" + stars + "&toEmail=" + toEmail + "&idLesson=" + idLesson)
+                .success(function (response) {
+                    window.location.replace("/teacher-profile");
                 });
         };
 
         $scope.init();
 
     }]);
+
+var currentIndex;
 
 var dateToString = function (date) {
     return date.getDate() + "/" + (date.getMonth() + 1) + '/' + date.getFullYear();

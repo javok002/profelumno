@@ -5,8 +5,10 @@
 # Home page
 GET         /                               ua.dirproy.profelumno.teachermodification.controller.ModifyTeacher.profileView()
 GET         /user                           ua.dirproy.profelumno.teachermodification.controller.ModifyTeacher.getTeacher()
+GET         /changepass                     ua.dirproy.profelumno.teachermodification.controller.ModifyTeacher.changePasswordView()
 GET         /img                            ua.dirproy.profelumno.teachermodification.controller.ModifyTeacher.getPicture()
 GET         /subjects                       ua.dirproy.profelumno.teachermodification.controller.ModifyTeacher.getSubject()
+POST        /save-pass                      ua.dirproy.profelumno.teachermodification.controller.ModifyTeacher.savePassword()
 POST        /img                            ua.dirproy.profelumno.teachermodification.controller.ModifyTeacher.savePicture()
 POST        /subjects                       ua.dirproy.profelumno.teachermodification.controller.ModifyTeacher.saveSubject()
 POST        /teacher-modification-post      ua.dirproy.profelumno.teachermodification.controller.ModifyTeacher.saveTeacherInfo()

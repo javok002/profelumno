@@ -4,5 +4,5 @@
 
 # Home page
 
-GET         /contact          ua.dirproy.profelumno.contactform.controllers.ContactForm.contactFormView()
+GET         /                 ua.dirproy.profelumno.contactform.controllers.ContactForm.contactFormView()
 POST        /send-form        ua.dirproy.profelumno.contactform.controllers.ContactForm.sendForm()

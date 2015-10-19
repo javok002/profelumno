@@ -68,14 +68,18 @@ lazy val contactForm = (project in file("modules/contact-form"))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(mailSender, common)
 
+lazy val institutional = (project in file("modules/institutional"))
+  .enablePlugins(PlayJava, PlayEbean)
+  .dependsOn(mailSender, common, contactForm, register, loginout)
+
 lazy val root = (project in file("."))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(common, studentProfile, studentModification, users, teacherProfile, teacherSubscription, register, delete,
     passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture, loginout, lessonReview,
-    contactForm)
+    contactForm, institutional)
   .aggregate(common, studentProfile, studentModification, users, teacherProfile, teacherSubscription, register, delete,
     passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture, loginout, lessonReview,
-    contactForm)
+    contactForm, institutional)
 
 
 scalaVersion := "2.11.6"
