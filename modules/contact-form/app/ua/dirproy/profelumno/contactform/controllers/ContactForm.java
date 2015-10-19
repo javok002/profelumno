@@ -26,11 +26,6 @@ public class ContactForm extends Controller {
         email = requestData.get("email");
         subject = requestData.get("subject");
         message = requestData.get("message");
-        final JsonNode result = Json.toJson("Mail enviado");
-        /*result.put("name", name);
-        result.put("email", email);
-        result.put("subject", subject);
-        result.put("message", message);*/
 
         String messageToSend = "New message from: " + name + "\nAt: " + email + "\n\n" + message;
         try {
@@ -38,6 +33,6 @@ public class ContactForm extends Controller {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ok(contactform.render());
+        return redirect("/institutional");
     }
 }
