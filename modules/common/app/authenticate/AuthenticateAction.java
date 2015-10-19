@@ -49,7 +49,7 @@ public class AuthenticateAction extends Action<Authenticate> {
             }
             return F.Promise.pure(redirect("student-profile/student-dashboard"));
         }
-        return F.Promise.pure(redirect("/log/in"));
+        return F.Promise.pure(redirect("/institutional"));
 
 
     }

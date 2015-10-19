@@ -93,8 +93,14 @@ app.controller('TeacherInfoController', ['$rootScope', '$scope', '$http', 'fileU
     $scope.selectFile=function(){
         angular.element($('#inputFile')).trigger('click');
     };
+    $scope.errLength=false;
     $scope.verifyDesc= function(){
-        $scope.errors.length=edit.u.description.length<50;
+        var text = angular.element($('#teacherDescription')).val();
+        if (text.length<50) {
+            $scope.errlength = true;
+        }else{
+            $scope.errlength=false;
+        }
     };
 
     //MAPS
