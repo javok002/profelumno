@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by javier
@@ -146,5 +147,16 @@ public class Teacher extends Model {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public static void updateLessonsDictated(Teacher teacher){
+        Date today = new Date();
+        int lessonsDictated = 0;
+        for (Lesson lesson : Lesson.list()) {
+            if(Objects.equals(lesson.getTeacher().getId(), teacher.getId()) && lesson.getLessonState() == 1 && lesson.getDateTime().before(today)){
+                lessonsDictated++;
+            }
+        }
+        teacher.setLessonsDictated(lessonsDictated);
     }
 }

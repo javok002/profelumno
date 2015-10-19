@@ -45,7 +45,7 @@ public class User extends Model {
     public static List<User> list() { return finder.all(); }
 
     public User() {
-        this.subjects = new ArrayList();
+        this.subjects = new ArrayList<>();
         reviews = 0;
         totalStars = 0;
     }

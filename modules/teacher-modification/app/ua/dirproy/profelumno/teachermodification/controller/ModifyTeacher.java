@@ -90,8 +90,9 @@ public class ModifyTeacher extends Controller {
         if (form.hasErrors())
             return badRequest("Error in form");
 //        Teacher aux=form.get();
-        final long userId=Long.parseLong(session("id"));
-        Teacher teacher = Ebean.find(Teacher.class, userId);
+        final long userId = Long.parseLong(session("id"));
+        User user = Ebean.find(User.class, userId);
+        Teacher teacher = Teacher.finder.where().eq("user", user).findUnique();
         List<Subject> currentSubjects = new ArrayList<>(form.data().size());
         //Creo las materias que no existen
         for (String currentSubject : form.data().values()) {

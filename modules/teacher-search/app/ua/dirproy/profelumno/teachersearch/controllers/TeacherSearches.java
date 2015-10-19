@@ -25,18 +25,18 @@ import static play.libs.Json.toJson;
 @Authenticate({Student.class})
 public class TeacherSearches extends Controller {
 
-    public static Result teacherSearchView(){
+    public static Result teacherSearchView() {
         return ok(ua.dirproy.profelumno.teachersearch.views.html.teachersearch.render());
     }
 
-    public static Result getTeachers(){
+    public static Result getTeachers() {
         final List<Teacher> allTeachers = Teacher.list();
         final List<Teacher> teachersToShow = Teacher.list();
         Form<Teacher> form = Form.form(Teacher.class).bindFromRequest();
         List<String> subjects = new ArrayList<>(form.data().size() - 3);
-        int index =  form.data().size() - 4;
-        while (index >= 0 ){
-            subjects.add(form.data().get("subjects["+index+"]"));
+        int index = form.data().size() - 4;
+        while (index >= 0) {
+            subjects.add(form.data().get("subjects[" + index + "]"));
             index--;
         }
         allTeachers.stream().filter(teacher -> checkLessons(Integer.parseInt(form.data().get("lessons")), teacher) ||
@@ -46,7 +46,7 @@ public class TeacherSearches extends Controller {
         return ok(toJson(teachersToShow));
     }
 
-    private static boolean checkSubjects(List<String> subjects,Teacher teacher) {
+    private static boolean checkSubjects(List<String> subjects, Teacher teacher) {
         List<String> currentSubjects = new ArrayList<>();
         for (Subject subject : teacher.getUser().getSubjects()) {
             currentSubjects.add(subject.getName());
@@ -62,9 +62,9 @@ public class TeacherSearches extends Controller {
         return teacher.getLessonsDictated() < lessons;
     }
 
-    public static Result getSubject(){
-        List<Subject> subjects= Ebean.find(Subject.class).findList();
-        JsonNode json= Json.toJson(subjects);
+    public static Result getSubject() {
+        List<Subject> subjects = Ebean.find(Subject.class).findList();
+        JsonNode json = Json.toJson(subjects);
         return ok(json);
     }
 
