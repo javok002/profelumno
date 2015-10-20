@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static play.libs.Json.toJson;
+import static ua.dirproy.profelumno.common.models.Teacher.updateLessonsDictated;
 
 /**
  * Created by Nash
@@ -59,6 +60,7 @@ public class TeacherSearches extends Controller {
     }
 
     private static boolean checkLessons(Integer lessons, Teacher teacher) {
+        updateLessonsDictated(teacher); //comment this line if group0 added it on global.
         return teacher.getLessonsDictated() < lessons;
     }
 

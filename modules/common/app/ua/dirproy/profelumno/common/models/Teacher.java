@@ -158,5 +158,6 @@ public class Teacher extends Model {
             }
         }
         teacher.setLessonsDictated(lessonsDictated);
+        teacher.save();
     }
 }
