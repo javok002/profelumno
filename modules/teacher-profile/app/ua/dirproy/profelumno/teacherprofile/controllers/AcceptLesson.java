@@ -45,6 +45,7 @@ public class AcceptLesson extends Controller {
                 answerBool = false;
         }
         boolean action = updateLesson(answerBool, Long.parseLong(stringLessonId));
+
         notifyStudent(Long.parseLong(stringLessonId));
         return action? ok(): badRequest();
     }
@@ -53,6 +54,9 @@ public class AcceptLesson extends Controller {
         try {
             Lesson lesson = Lesson.finder.byId(lessonId);
             lesson.setLessonState(answerBool ? 1 : 2);
+            if (answerBool) {
+                lesson.getTeacher().setLessonsDictated(lesson.getTeacher().getLessonsDictated() + 1);
+            }
             lesson.update();
         }catch (Exception e){
             e.printStackTrace();

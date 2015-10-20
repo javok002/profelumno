@@ -10,6 +10,9 @@ function loadLessons($http, $scope) {
 }
 app.controller('AcceptController', ['$scope', '$http', function ($scope, $http) {
     loadLessons($http, $scope);
+    $scope.toFormatDate = function (time) {
+        return new Date(time).for;
+    };
     $scope.decision = function (lessonId, answer, button) {
         button.currentTarget.innerHTML = '<span><i class="fa fa-spinner fa-pulse"></i></span>';
         button.currentTarget.disabled = true;

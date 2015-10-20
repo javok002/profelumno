@@ -15,11 +15,9 @@ import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 import javax.mail.*;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 

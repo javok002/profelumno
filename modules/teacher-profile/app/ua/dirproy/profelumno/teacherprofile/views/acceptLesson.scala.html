@@ -1,10 +1,7 @@
 @()
-@ua.dirproy.profelumno.common.views.html.main("Accept Lesson") {
+@ua.dirproy.profelumno.common.views.html.tidyMain("Accept Lesson") {
     @ua.dirproy.profelumno.common.views.html.topbar()
     @ua.dirproy.profelumno.common.views.html.sidebar()
-    <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
-    <script src="@routes.Assets.versioned("external/angularjs/angular.min.js")"></script>
-    <script src="@routes.Assets.versioned("/javascripts/teacherProfile/accept-lesson.js")"></script>
 
     <div class="container" ng-app="acceptLesson">
         <div ng-controller="AcceptController as ctrl">
@@ -62,4 +59,8 @@
             </div>
         </div>
     </div>
+} {
+    <span></span>
+} {
+    <script src="@routes.Assets.versioned("/javascripts/teacherProfile/accept-lesson.js")"></script>
 }
