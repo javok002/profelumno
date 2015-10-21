@@ -100,8 +100,11 @@ public class TeacherProfiles extends Controller {
         Map<String, Long> aux = new HashMap<>();
         List<Long> listProm = new ArrayList<>();
         for (int i = 0; i <subjectListLong.size() ; i++) {
-            aux.put( subjects.get(i).getName(),getProm(subjectListLong.get(subjects.get(i))));
-            listProm.add(getProm(subjectListLong.get(subjects.get(i))));
+            List<Long> longAux  = subjectListLong.get(subjects.get(i));
+            if(!longAux.isEmpty()) {
+                aux.put(subjects.get(i).getName(), getProm(longAux));
+                listProm.add(getProm(longAux));
+            }
         }
 
         Collections.sort(listProm);
@@ -110,14 +113,15 @@ public class TeacherProfiles extends Controller {
             float prom = listProm.get(j);
             for (int k = 0; k <subjects.size() ; k++) {
                 String subject = subjects.get(k).getName();
-                long value = aux.get(subject);
-                if ( bestSubjects.size() < 3) {
-                    if (value >= prom) {
-                        bestSubjects.put(subject, value);
+                if(aux.containsKey(subject)) {
+                    long value = aux.get(subject);
+                    if (bestSubjects.size() < 3) {
+                        if (value >= prom) {
+                            bestSubjects.put(subject, value);
+                        }
+                    } else {
+                        break;
                     }
-                }
-                else {
-                    break;
                 }
             }
         }
