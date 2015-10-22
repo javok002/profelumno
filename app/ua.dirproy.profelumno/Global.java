@@ -34,50 +34,16 @@ public class Global extends GlobalSettings {
 
 
         public static void setSubjects() {
+            String[] subjectName = generateSubjects();
 
             if (Subject.finder.all().isEmpty()) {
-                final Subject subject1 = new Subject();
-                subject1.setName("MATEMATICA");
-                subject1.save();
-                final Subject subject2 = new Subject();
-                subject2.setName("ALGEBRA");
-                subject2.save();
-                final Subject subject3 = new Subject();
-                subject3.setName("LCD");
-                subject3.save();
-                final Subject subject4 = new Subject();
-                subject4.setName("ANAYDIS");
-                subject4.save();
-                final Subject subject5 = new Subject();
-                subject5.setName("LAB2");
-                subject5.save();
-                final Subject subject6 = new Subject();
-                subject6.setName("FISICA");
-                subject6.save();
-                final Subject subject7 = new Subject();
-                subject7.setName("QUIMICA");
-                subject7.save();
-                final Subject subject8 = new Subject();
-                subject8.setName("GEOGRAFIA");
-                subject8.save();
-                final Subject subject9 = new Subject();
-                subject9.setName("LENGUA");
-                subject9.save();
-                final Subject subject0 = new Subject();
-                subject0.setName("TEOLOGIA");
-                subject0.save();
 
-                subjects.add(0, subject1);
-                subjects.add(1, subject2);
-                subjects.add(2, subject3);
-                subjects.add(3, subject4);
-                subjects.add(4, subject5);
-                subjects.add(5, subject6);
-                subjects.add(6, subject7);
-                subjects.add(7, subject8);
-                subjects.add(8, subject9);
-                subjects.add(9, subject0);
-
+                for (int i = 0; i < subjectName.length; i++) {
+                    final Subject subject = new Subject();
+                    subjects.add(subject);
+                    subjects.get(i).setName(subjectName[i]);
+                    subject.save();
+                }
             }
         }
 
@@ -111,20 +77,6 @@ public class Global extends GlobalSettings {
             }
 
 
-        }
-
-        private static String[] generateAnAddress() {
-            String[] address = {
-                    "Av. Juan Domingo Perón 1500, Buenos Aires",
-                    "El Tordo 55, Pilar Centro, Buenos Aires",
-                    "San Martín 744, Pilar Centro, Buenos Aires",
-                    "Yrigoyen 2749, Vicente Lopez, Buenos Aires",
-                    "Ballivian 2329, Villa Ortuzar, Buenos Aires",
-                    "El Salvador 5528, Palermo, Buenos Aires",
-                    "Cuba 2039, Belgrano, Buenos Aires",
-                    "Defensa 1431, San Telmo, Buenos Aires"
-            };
-            return address;
         }
 
         private static Review generateReview(int i, Date date) {
@@ -198,6 +150,7 @@ public class Global extends GlobalSettings {
             String[] address = generateAnAddress();
 
 
+
             if (User.finder.all().isEmpty()) {
                 final Random randomizer = new Random(0);
 
@@ -205,10 +158,8 @@ public class Global extends GlobalSettings {
                     int index = (int) (Math.random() * names.length);
                     int indexL = (int) (Math.random() * lastNames.length);
                     int indexA = (int) (Math.random() * address.length);
-
                     String name = names[index];
                     String lastName = lastNames[indexL];
-
 
                     User userT = new User();
                     userT.setName(name);
@@ -229,6 +180,7 @@ public class Global extends GlobalSettings {
                         teacher.setRenewalDate(new Date());
                         teacher.setHomeClasses(true);
                     }
+                    Teacher.updateLessonsDictated(teacher);
                     teacher.save();
                     teachers.add(teacher);
                 }
@@ -237,7 +189,6 @@ public class Global extends GlobalSettings {
                     int index = (int) (Math.random() * names.length);
                     int indexL = (int) (Math.random() * lastNames.length);
                     int indexA = (int) (Math.random() * address.length);
-
                     String name = names[index];
                     String lastName = lastNames[indexL];
 
@@ -271,26 +222,49 @@ public class Global extends GlobalSettings {
         }
 
         private static String[] generateLastNameList() {
-            String[] last = {"GARCIA", "GONZALEZ", "RODRIGUEZ", "FERNANDEZ", "LOPEZ", "MARTINEZ", "SANCHEZ", "PEREZ", "GOMEZ",
-                    "MARTIN", "JIMENEZ", "RUIZ", "HERNANDEZ", "DIAZ", "MORENO", "ALVAREZ", "MUÑOZ", "ROMERO", "ALONSO",
-                    "GUTIERREZ", "NAVARRO", "TORRES", "DOMINGUEZ", "VAZQUEZ", "RAMOS", "GIL", "RAMIREZ", "SERRANO", "BLANCO",
-                    "SUAREZ", "MOLINA", "MORALES", "ORTEGA", "DELGADO", "CASTRO", "ORTIZ", "RUBIO", "MARIN", "SANZ",
-                    "IGLESIAS", "NUÑEZ", "MEDINA", "GARRIDO", "SANTOS", "CASTILLO", "CORTES", "LOZANO", "GUERRERO", "CANO",
-                    "PRIETO", "MENDEZ", "CALVO", "GALLEGO", "VIDAL", "CRUZ", "LEON", "HERRERA", "MARQUEZ", "PEÑA", "CABRERA"
+            String[] last = {"Garcia", "Gonzalez", "Rodriguez", "Fernandez", "Lopez", "Martinez", "Sanchez", "Perez", "Gomez",
+                    "Martin", "Jimenez", "Ruiz", "Hernandez", "Diaz", "Moreno", "Alvarez", "Muñoz", "Romero", "Alonso",
+                    "Gutierrez", "Navarro", "Torres", "Dominguez", "Vazquez", "Ramos", "Gil", "Ramirez", "Serrano", "Blanco",
+                    "Suarez", "Molina", "Morales", "Ortega", "Delgado", "Castro", "Ortiz", "Rubio", "Marin", "Sanz",
+                    "Iglesias", "Nuñez", "Medina", "Garrido", "Santos", "Castillo", "Cortes", "Lozano", "Guerrero", "Cano",
+                    "Prieto", "Mendez", "Calvo", "Gallego", "Vidal", "Cruz", "Leon", "Herrera", "Marquez", "Peña", "Cabrera"
             };
             return last;
         }
 
-
         private static String[] generateNameList() {
-            String[] names = {"JOSE", "MANUEL", "FRANCISCO", "JUAN", "DAVID", "JOSE ANTONIO", "JOSE LUIS", "JAVIER",
-                    "JESUS", "CARLOS", "DANIEL", "MIGUEL", "RAFAEL", "JOSE MANUEL", "PEDRO", "ALEJANDRO", "ANGEL",
-                    "MIGUEL ANGEL", "JOSE MARIA", "FERNANDO", "LUIS", "PABLO", "SERGIO", "JORGE", "ALBERTO", "JUAN CARLOS",
-                    "JUAN JOSE", "RAMON", "ENRIQUE", "DIEGO", "JUAN ANTONIO", "VICENTE", "ALVARO", "RAUL", "ADRIAN",
-                    "JOAQUIN", "IVAN", "ANDRES", "OSCAR", "RUBEN", "JUAN MANUEL", "SANTIAGO", "EDUARDO", "VICTOR", "ROBERTO",
-                    "JAIME", "FRANCISCO JOSE", "IGNACIO", "ALFONSO", "SALVADOR", "RICARDO", "MARIO", "PAU", "BENITO"
+            String[] names = {"Jose", "Manuel", "Francisco", "Juan", "David", "Jose Antonio", "Jose Luis", "Javier",
+                    "Jesus", "Carlos", "Daniel", "Miguel", "Rafael", "Jose Manuel", "Pedro", "Alejandro", "Angel",
+                    "Miguel Angel", "Jose Maria", "Fernando", "Luis", "Pablo", "Sergio", "Jorge", "Alberto", "Juan Carlos",
+                    "Juan Jose", "Ramon", "Enrique", "Diego", "Juan Antonio", "Vicente", "Alvaro", "Raul", "Adrian",
+                    "Joaquin", "Ivan", "Andres", "Oscar", "Ruben", "Juan Manuel", "Santiago", "Eduardo", "Victor", "Roberto",
+                    "Jaime", "Francisco Jose", "Ignacio", "Alfonso", "Salvador", "Ricardo", "Mario", "Benito"
             };
             return names;
+        }
+
+
+        private static String[] generateSubjects() {
+            String[] subjectList = {"Análisis Matemático I", "Análisis Matemático II", "Análisis Matemático III",
+                    "Programación I", "Programación II", "Álgebra I", "Álgebra II", "Física I", "Física II", "Física III",
+                    "Química", "Laboratorio I", "Laboratorio II", "Estadística", "Organización de Computadoras",
+                    "Sistemas Operativos", "Base de Datos", "LCD", "Teologia I", "Teologia II"
+            };
+            return subjectList;
+        }
+
+        private static String[] generateAnAddress() {
+            String[] address = {
+                    "Av. Juan Domingo Perón 1500, Buenos Aires",
+                    "El Tordo 55, Pilar Centro, Buenos Aires",
+                    "San Martín 744, Pilar Centro, Buenos Aires",
+                    "Yrigoyen 2749, Vicente Lopez, Buenos Aires",
+                    "Ballivian 2329, Villa Ortuzar, Buenos Aires",
+                    "El Salvador 5528, Palermo, Buenos Aires",
+                    "Cuba 2039, Belgrano, Buenos Aires",
+                    "Defensa 1431, San Telmo, Buenos Aires"
+            };
+            return address;
         }
     }
 }
