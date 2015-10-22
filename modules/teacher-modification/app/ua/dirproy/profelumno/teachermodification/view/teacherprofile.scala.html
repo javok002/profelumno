@@ -28,9 +28,9 @@
                                 </div>
                                 <div class="box-footer">
                                     <form role="form" ng-submit="uploadFile()" enctype="multipart/form-data" name="modifyForm">
-                                        <input id="inputFile" class="btn btn-info buttonAlign" type="file" name="file" ng-model="edit.fileToUpload" file-model="fileToUpload" accept="image/*" ng-show="false" required/>
+                                        <input id="inputFile" class="btn btn-info buttonAlign" type="file" name="file" ng-model="edit.fileToUpload" file-model="fileToUpload" accept="image/*" ng-show="false" ng-change="uploadFile()" required/>
                                         <div class="btn-group buttonAlign" role="group">
-                                            <a href="" class="btn btn-info" type="button" ng-click="selectFile()">Cambiar</a>
+                                            <a href="" class="btn btn-info" type="button" ng-click="selectFile()"><span class="glyphicon glyphicon-camera" aria-hidden="true"></span></a>
                                             <button class="btn btn-primary" type="submit">Guardar</button>
                                         </div>
                                     </form>
@@ -73,9 +73,9 @@
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                     </div>
                                     <div class="input-group">
-                                        <label class="radio"><input type="radio" name="gender" id="male" ng-model="edit.u.user.gender" value="male" required>
+                                        <label class="radio-inline"><input type="radio" name="gender" id="male" ng-model="edit.u.user.gender" value="male" required>
                                             Masculino</label>
-                                        <label class="radio"><input type="radio" name="gender" id="female" ng-model="edit.u.user.gender" value="female" required>
+                                        <label class="radio-inline"><input type="radio" name="gender" id="female" ng-model="edit.u.user.gender" value="female" required>
                                             Femenino</label>
                                     </div>
                                     <div class="input-group" >
@@ -84,9 +84,9 @@
                                             Debe indicar si da clases a domicilio.
                                         </div>
                                         <label>Clases a domicilio: </label>
-                                        <label class="radio"><input type="radio" name="homeClass" id="yesHome" ng-model="radio" value="yes" required>
+                                        <label class="radio-inline"><input type="radio" name="homeClass" id="yesHome" ng-model="radio" value="yes" required>
                                             Si</label>
-                                        <label class="radio"><input type="radio" name="homeClass" id="noHome" ng-model="radio" value="no" required>
+                                        <label class="radio-inline"><input type="radio" name="homeClass" id="noHome" ng-model="radio" value="no" required>
                                             No</label>
                                     </div>
                                     <div class="input-group">

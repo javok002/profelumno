@@ -92,6 +92,7 @@ app.controller('TeacherInfoController', ['$rootScope', '$scope', '$http', 'fileU
     };
     $scope.selectFile=function(){
         angular.element($('#inputFile')).trigger('click');
+        //$scope.uploadFile();
     };
     $scope.errLength=false;
     $scope.verifyDesc= function(){
