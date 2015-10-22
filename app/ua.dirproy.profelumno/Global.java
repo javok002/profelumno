@@ -189,7 +189,7 @@ public class Global extends GlobalSettings {
                     userT.setEmail("teacher" + i + "@sample.com");
                     userT.setPassword("secret");
                     userT.setAddress(address[randomizer.nextInt(address.length)]);
-                    userT.setBirthday(new Date((70 + i), (i + 1) / 2, i));
+                    userT.setBirthday(new Date((70 + i/10), (i + 1) / 10, i/4));
                     userT.setGender("male");
                     userT.setSecureAnswer("Hola");
                     userT.setSecureQuestion("Mundo");
