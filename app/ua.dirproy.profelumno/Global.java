@@ -13,6 +13,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,222 +28,264 @@ public class Global extends GlobalSettings {
 
     static class InitialData {
         private static List<Subject> subjects = new ArrayList<>();
+        private static List<Lesson> lessons = new ArrayList<>();
+        private static List<Teacher> teachers = new ArrayList<>();
+        private static List<Student> students = new ArrayList<>();
+
 
         public static void setSubjects() {
+            String[] subjectName = generateSubjects();
 
-            if(Subject.finder.all().isEmpty()) {
-                Subject subject1 = new Subject();
-                subject1.setName("Matematica");
-                subject1.save();
+            if (Subject.finder.all().isEmpty()) {
 
-                Subject subject2 = new Subject();
-                subject2.setName("Algebra");
-                subject2.save();
-                Subject subject3 = new Subject();
-                subject3.setName("LCD");
-                subject3.save();
-                Subject subject4 = new Subject();
-                subject4.setName("Anaydis");
-                subject4.save();
-                Subject subject5 = new Subject();
-                subject5.setName("Lab2");
-                subject5.save();
-
-                subjects.add(0, subject1);
-                subjects.add(1, subject2);
-                subjects.add(2, subject3);
-                subjects.add(3, subject4);
-                subjects.add(4, subject5);
-
+                for (int i = 0; i < subjectName.length; i++) {
+                    final Subject subject = new Subject();
+                    subjects.add(subject);
+                    subjects.get(i).setName(subjectName[i]);
+                    subject.save();
+                }
             }
         }
 
-        public static void setLessonsAndReviews(){
-            final Teacher teacher = Teacher.finder.where().eq("user.email", "teacher1@sample.com").findUnique();
+        public static void setLessonsAndReviews() {
+            Random randomizer = new Random();
+            String[] address = generateAnAddress();
 
-            final Student student = Student.finder.where().eq("user.email", "student1@sample.com").findUnique();
+            for (int i = 0; i < lessons.size(); i++) {
+                Date date = new Date((new Date()).getYear(), randomizer.nextInt(11), randomizer.nextInt(30) + 1);
+                float price = (new Random()).nextFloat() * 1000;
 
-            final Lesson lesson1 = new Lesson();
-            final Lesson lesson2 = new Lesson();
-            final Lesson lesson3 = new Lesson();
-            final Lesson lesson4 = new Lesson();
-            final Lesson lesson5 = new Lesson();
+                while (price < 100 && price > 500) {
+                    price = (new Random()).nextFloat() * 1000;
+                }
+                lessons.get(i).setLessonState((i > (lessons.size() / 2)) ? 0 : 1);
+                lessons.get(i).setPrice(price);
+                lessons.get(i).setStudent(students.get((new Random()).nextInt(students.size())));
+                lessons.get(i).setTeacher(teachers.get((new Random()).nextInt(teachers.size())));
+                lessons.get(i).setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet augue nisl. Sed ultrices rhoncus justo, in hendrerit turpis laoreet a.");
+                lessons.get(i).setAddress(address[(new Random()).nextInt(address.length)]);
+                lessons.get(i).setDuration(Duration.ofHours((i % 2 == 0) ? 1 : 2));
+                lessons.get(i).setDateString("" + (date.getDay() + 1) + "/" + date.getMonth() + "/" + (date.getYear() + 1900));
+                lessons.get(i).setDateTime(date);
+                lessons.get(i).setSubject(subjects.get(randomizer.nextInt(subjects.size())));
+                if (date.after(new Date())) {
+                    lessons.get(i).setStudentReview(generateReview(0, date));//0 student
+                    lessons.get(i).setTeacherReview(generateReview(1, date));//1 teacher
+                }
+                lessons.get(i).save();
+            }
 
-            Subject subject1 = new Subject();
-            subject1.setName("ALGEBRA");
-            subject1.save();
+            Date today = new Date();
+            for (int i = 0; i < students.size(); i++) {
+                Lesson lessonP = new Lesson();
+                lessonP.setAddress(generateAnAddress()[(new Random()).nextInt(generateAnAddress().length)]);
+                lessonP.setLessonState(0);
+                lessonP.setPrice((float) 100);
+                lessonP.setStudent((students.get(i)));
+                lessonP.setTeacher(teachers.get(i));
+                lessonP.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet augue nisl. Sed ultrices rhoncus justo, in hendrerit turpis laoreet a.");
+                lessonP.setDuration(Duration.ofHours(2));
+                lessonP.setDateString("" + today.getDay() + "/" + (today.getMonth()) + "/" + (today.getYear() + 1900 + 1));
+                lessonP.setDateTime(new Date(today.getYear(), today.getMonth(), today.getDay()));
+                lessonP.setSubject(subjects.get((new Random()).nextInt(subjects.size())));
+                lessonP.save();
 
-            Subject subject2 = new Subject();
-            subject2.setName("QUIMICA");
-            subject2.save();
+                Lesson lessonConfirm = new Lesson();
+                lessonConfirm.setAddress(generateAnAddress()[(new Random()).nextInt(generateAnAddress().length)]);
+                lessonConfirm.setLessonState(1);
+                lessonConfirm.setPrice((float) 100);
+                lessonConfirm.setStudent(students.get(i));
+                lessonConfirm.setTeacher(teachers.get(i));
+                lessonConfirm.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet augue nisl. Sed ultrices rhoncus justo, in hendrerit turpis laoreet a.");
+                lessonConfirm.setDuration(Duration.ofHours(2));
+                lessonConfirm.setDateString("" + today.getDay() + "/" + (today.getMonth()) + "/" + today.getYear() + 1900);
+                lessonConfirm.setDateTime(new Date(today.getYear(), today.getMonth(), today.getDay()));
+                lessonConfirm.setSubject(subjects.get((new Random()).nextInt(subjects.size())));
+                lessonConfirm.save();
 
-            Subject subject3 = new Subject();
-            subject3.setName("GEOGRAFIA");
-            subject3.save();
+                Lesson lessonComplete = new Lesson();
+                lessonComplete.setAddress(generateAnAddress()[(new Random()).nextInt(generateAnAddress().length)]);
+                lessonComplete.setLessonState(1);
+                lessonComplete.setPrice((float) 100);
+                lessonComplete.setStudent(students.get(i));
+                lessonComplete.setTeacher(teachers.get(i));
+                lessonComplete.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet augue nisl. Sed ultrices rhoncus justo, in hendrerit turpis laoreet a.");
+                lessonComplete.setDuration(Duration.ofHours(1));
+                lessonComplete.setDateString("" + today.getDay() + "/" + today.getMonth() + "/" + (today.getYear() + 1900 + 1));
+                lessonComplete.setDateTime(new Date(today.getYear() + 1900 + 1, today.getMonth(), today.getDay()));
+                lessonComplete.setSubject(subjects.get((new Random()).nextInt(subjects.size())));
+                lessonComplete.setTeacherReview(generateReview(1, (new Date(today.getYear() + 1, today.getMonth(), today.getDay()))));
+                lessonComplete.setStudentReview(generateReview(0, (new Date(today.getYear() + 1, today.getMonth(), today.getDay()))));
+                lessonComplete.save();
+            }
 
-            Subject subject4 = new Subject();
-            subject4.setName("LENGUA");
-            subject4.save();
+        }
 
-            Subject subject5 = new Subject();
-            subject5.setName("MATEMATICA");
-            subject5.save();
+        private static Review generateReview(int i, Date date) {
+            int stars = (new Random()).nextInt(10);
+            Review review = new Review();
+            review.setComment((i == 1) ? generateReviewsT()[stars] : generateReviewsS()[stars]);
+            review.setDate(date);
+            review.setStars((long) (stars / 2));
+            review.save();
+            return review;
+        }
 
-            lesson1.setDateTime(new Date(115, 8, 27));
-            lesson2.setDateTime(new Date(115, 8, 28));
-            lesson3.setDateTime(new Date(115, 8, 29));
-            lesson4.setDateTime(new Date(115, 10, 26));
-            lesson5.setDateTime(new Date(115, 9, 1));
+        private static String[] generateReviewsS() {
+            String[] comment = {
+                    "UN DESASTRE, LLEGO TARDE Y NO EXPLICO NADA"
+                    , "No aparecio"
+                    , "No me explico nada"
+                    , "No sabe lo que explica"
+                    , "Llega tarde siempre, pero explica bien"
+                    , "Muy buenas sus explicaciones"
+                    , "Explica bien"
+                    , "Un copado"
+                    , "Aprobe gracias a el"
+                    , "Muy buen profesor"
 
-            lesson1.setPrice(new Float(100.0));
-            lesson2.setPrice(new Float(110.0));
-            lesson3.setPrice(new Float(120.0));
-            lesson4.setPrice(new Float(130.5));
-            lesson5.setPrice(new Float(155.5));
+            };
 
-            lesson1.setStudent(student);
-            lesson2.setStudent(student);
-            lesson3.setStudent(student);
-            lesson4.setStudent(student);
-            lesson5.setStudent(student);
+            return comment;
+        }
 
-            lesson1.setLessonState(1);
-            lesson2.setLessonState(1);
-            lesson3.setLessonState(1);
-            lesson4.setLessonState(1);
-            lesson5.setLessonState(1);
+        private static String[] generateReviewsT() {
+            String[] comment = {
+                    "No presto atencion"
+                    , "No se esfuerza"
+                    , "Salio la noche anterior"
+                    , "No se puede quedar sentado mas de 3 minutos"
+                    , "Se duerme mientras le hablas"
+                    , "Muy callado"
+                    , "Poco atento"
+                    , "Le cuesta entender pero se esfuersa"
+                    , "Hace lo que le pedis"
+                    , "Espero que apruebe"
 
-            lesson1.setSubject(subject1);
-            lesson2.setSubject(subject2);
-            lesson3.setSubject(subject3);
-            lesson4.setSubject(subject4);
-            lesson5.setSubject(subject5);
+            };
 
-            lesson1.setComment("sadas");
-            lesson2.setComment("dsadas");
-            lesson3.setComment("dsadas");
-            lesson4.setComment("dsadas");
-            lesson5.setComment("dsadas");
-
-            lesson1.setDateString("27/8/2015");
-            lesson2.setDateString("28/8/2015");
-            lesson3.setDateString("29/8/2015");
-            lesson4.setDateString("26/10/2015");
-            lesson5.setDateString("1/9/2015");
-
-            lesson1.setTeacher(teacher);
-            lesson2.setTeacher(teacher);
-            lesson3.setTeacher(teacher);
-            lesson4.setTeacher(teacher);
-            lesson5.setTeacher(teacher);
-
-            final Review review1 = new Review();
-            review1.setComment("El alumno estuvo muy atento");
-            review1.setDate(new Date(115, 8, 28));
-            review1.setStars((long) 5);
-            review1.save();
-
-            student.getUser().addStars(5);
-            student.getUser().incrementReviews();
-            student.save();
-
-            final Review review2 = new Review();
-            review2.setComment("El profesor me ayudo a sacarme un 8 en la prueba");
-            review2.setDate(new Date(115, 8, 28));
-            review2.setStars((long) 4);
-            review2.save();
-
-            teacher.getUser().addStars(4);
-            teacher.getUser().incrementReviews();
-            teacher.save();
-
-            final Review review3 = new Review();
-            review3.setComment("El profesor es mal educado");
-            review3.setDate(new Date(115, 8, 29));
-            review3.setStars((long) 2);
-            review3.save();
-
-            teacher.getUser().addStars(2);
-            teacher.getUser().incrementReviews();
-            teacher.save();
-
-            final Review review4 = new Review();
-            review4.setComment("El alumno no presta atención");
-            review4.setDate(new Date(115, 8, 30));
-            review4.setStars((long) 3);
-            review4.save();
-
-            student.getUser().addStars(3);
-            student.getUser().incrementReviews();
-            student.save();
-
-            Duration oneHour = Duration.ofHours(1);
-
-            lesson1.setStudentReview(review1);
-            lesson1.setTeacherReview(review2);
-            lesson1.setDuration(oneHour);
-            lesson1.save();
-
-            lesson2.setTeacherReview(review3);
-            lesson2.setDuration(oneHour);
-            lesson2.save();
-
-            lesson3.setStudentReview(review4);
-            lesson3.setDuration(oneHour);
-            lesson3.save();
-
-            lesson4.setDuration(oneHour);
-            lesson4.save();
-
-            lesson5.setDuration(oneHour);
-            lesson5.save();
+            return comment;
         }
 
         public static void insert(Application app) {
-
             setSubjects();
+            generateLessonsList();
+
+            String[] names = generateNameList();
+            String[] lastNames = generateLastNameList();
+            String[] address = generateAnAddress();
+
 
             if (User.finder.all().isEmpty()) {
+                Random randomizer = new Random(0);
 
-                for (long i = 1; i <= 20; i++) {
+                for (int i = 1; i <= 100; i++) {
+                    String name = names[randomizer.nextInt(names.length)];
+                    String lastName = lastNames[randomizer.nextInt(lastNames.length)];
+
                     User userT = new User();
-                    userT.setName("Teacher");
-                    userT.setSurname("" + i);
+                    userT.setName(name);
+                    userT.setSurname(lastName);
                     userT.setEmail("teacher" + i + "@sample.com");
                     userT.setPassword("secret");
-                    userT.setAddress("Buenos Aires");
-                    userT.setBirthday(new Date());
-                    userT.setGender("Masculino");
+                    userT.setAddress(address[randomizer.nextInt(address.length)]);
+                    userT.setBirthday(new Date((70 + i/10), (i + 1) / 10, i/4));
+                    userT.setGender("male");
                     userT.setSecureAnswer("Hola");
                     userT.setSecureQuestion("Mundo");
-                    userT.setSubjects(subjects.subList(0, (int) (Math.random() * 5)));
+                    userT.setSubjects(subjects.subList(0, randomizer.nextInt(subjects.size())));
                     userT.save();
                     Teacher teacher = new Teacher();
                     teacher.setUser(userT);
+                    if (i <= 20) {
+                        teacher.setHasCard(true);
+                        teacher.setRenewalDate(new Date());
+                        teacher.setHomeClasses(true);
+                        teacher.setPrice((new Random()).nextInt(500));
+                    }
+
+                    Teacher.updateLessonsDictated(teacher);
                     teacher.save();
+                    teachers.add(teacher);
                 }
 
-                for (long k = 1; k <= 80; k++) {
+                for (int k = 1; k <= 100; k++) {
+                    String name = names[randomizer.nextInt(names.length)];
+                    String lastName = lastNames[randomizer.nextInt(lastNames.length)];
+
                     User userS = new User();
-                    userS.setName("Student");
-                    userS.setSurname("" + k);
+                    userS.setName(name);
+                    userS.setSurname(lastName);
                     userS.setEmail("student" + k + "@sample.com");
                     userS.setPassword("secret");
-                    userS.setAddress("Buenos Aires");
-                    userS.setBirthday(new Date());
-                    userS.setGender("Masculino");
+                    userS.setAddress(address[randomizer.nextInt(address.length)]);
+                    userS.setBirthday(new Date((93), 5, 10));
+                    userS.setGender("male");
                     userS.setSecureAnswer("Hola");
                     userS.setSecureQuestion("Mundo");
+                    userS.setSubjects(subjects.subList(0, randomizer.nextInt(subjects.size())));
                     userS.save();
                     Student student = new Student();
                     student.setUser(userS);
                     student.save();
+                    students.add(student);
                 }
             }
 
             setLessonsAndReviews();
         }
 
+        private static void generateLessonsList() {
+            for (int i = 0; i < 200; i++) {
+                lessons.add(new Lesson());
+            }
 
+        }
+
+        private static String[] generateLastNameList() {
+            String[] last = {"Garcia", "Gonzalez", "Rodriguez", "Fernandez", "Lopez", "Martinez", "Sanchez", "Perez", "Gomez",
+                    "Martin", "Jimenez", "Ruiz", "Hernandez", "Diaz", "Moreno", "Alvarez", "Muñoz", "Romero", "Alonso",
+                    "Gutierrez", "Navarro", "Torres", "Dominguez", "Vazquez", "Ramos", "Gil", "Ramirez", "Serrano", "Blanco",
+                    "Suarez", "Molina", "Morales", "Ortega", "Delgado", "Castro", "Ortiz", "Rubio", "Marin", "Sanz",
+                    "Iglesias", "Nuñez", "Medina", "Garrido", "Santos", "Castillo", "Cortes", "Lozano", "Guerrero", "Cano",
+                    "Prieto", "Mendez", "Calvo", "Gallego", "Vidal", "Cruz", "Leon", "Herrera", "Marquez", "Peña", "Cabrera"
+            };
+            return last;
+        }
+
+        private static String[] generateNameList() {
+            String[] names = {"Jose", "Manuel", "Francisco", "Juan", "David", "Jose Antonio", "Jose Luis", "Javier",
+                    "Jesus", "Carlos", "Daniel", "Miguel", "Rafael", "Jose Manuel", "Pedro", "Alejandro", "Angel",
+                    "Miguel Angel", "Jose Maria", "Fernando", "Luis", "Pablo", "Sergio", "Jorge", "Alberto", "Juan Carlos",
+                    "Juan Jose", "Ramon", "Enrique", "Diego", "Juan Antonio", "Vicente", "Alvaro", "Raul", "Adrian",
+                    "Joaquin", "Ivan", "Andres", "Oscar", "Ruben", "Juan Manuel", "Santiago", "Eduardo", "Victor", "Roberto",
+                    "Jaime", "Francisco Jose", "Ignacio", "Alfonso", "Salvador", "Ricardo", "Mario", "Benito"
+            };
+            return names;
+        }
+
+
+        private static String[] generateSubjects() {
+            String[] subjectList = {"Análisis Matemático I", "Análisis Matemático II", "Análisis Matemático III",
+                    "Programación I", "Programación II", "Álgebra I", "Álgebra II", "Física I", "Física II", "Física III",
+                    "Química", "Laboratorio I", "Laboratorio II", "Estadística", "Organización de Computadoras",
+                    "Sistemas Operativos", "Base de Datos", "LCD", "Teologia I", "Teologia II"
+            };
+            return subjectList;
+        }
+
+        private static String[] generateAnAddress() {
+            String[] address = {
+                    "Av. Juan Domingo Perón 1500, Buenos Aires",
+                    "El Tordo 55, Pilar Centro, Buenos Aires",
+                    "San Martín 744, Pilar Centro, Buenos Aires",
+                    "Yrigoyen 2749, Vicente Lopez, Buenos Aires",
+                    "Ballivian 2329, Villa Ortuzar, Buenos Aires",
+                    "El Salvador 5528, Palermo, Buenos Aires",
+                    "Cuba 2039, Belgrano, Buenos Aires",
+                    "Defensa 1431, San Telmo, Buenos Aires"
+            };
+            return address;
+        }
     }
 }
