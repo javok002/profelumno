@@ -66,7 +66,7 @@ public class Global extends GlobalSettings {
                 lessons.get(i).setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet augue nisl. Sed ultrices rhoncus justo, in hendrerit turpis laoreet a.");
                 lessons.get(i).setAddress(address[index]);
                 lessons.get(i).setDuration(Duration.ofHours((i % 2 == 0) ? 1 : 2));
-                lessons.get(i).setDateString("" + (date.getDay() + 1) + "/" + date.getMonth() + "/" + date.getYear());
+                lessons.get(i).setDateString("" + (date.getDay() + 1) + "/" + date.getMonth() + "/" + (date.getYear()+1900));
                 lessons.get(i).setDateTime(date);
                 lessons.get(i).setSubject(subjects.get(randomizer.nextInt(subjects.size())));
                 if (date.after(new Date())) {
