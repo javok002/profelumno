@@ -16,10 +16,10 @@
                 <div ng-controller="TeacherInfoController as edit">
                     <div class="col-md-3">
                         <div>
-                            <div class="box box-primary">
+                            <div class="box box-primary" ng-cloak>
                                 <div class="box-header"><h4>Imagen de perfil</h4></div>
                                 <div class="box-body">
-                                    <div class="thumbnail" ng-hide="edit.u.user.profilePicture">
+                                    <div class="thumbnail" ng-hide="hasImage">
                                         <img src="@routes.Assets.versioned("images/userDefault.jpeg")">
                                     </div>
                                     <div class="thumbnail" ng-show="edit.u.user.profilePicture">
@@ -28,10 +28,10 @@
                                 </div>
                                 <div class="box-footer">
                                     <form role="form" ng-submit="uploadFile()" enctype="multipart/form-data" name="modifyForm">
-                                        <input id="inputFile" class="btn btn-info buttonAlign" type="file" name="file" ng-model="edit.fileToUpload" file-model="fileToUpload" accept="image/*" ng-show="false" ng-change="uploadFile()" required/>
-                                        <div class="btn-group buttonAlign" role="group">
+                                        <input id="inputFile" class="btn btn-info buttonAlign" type="file" name="file" ng-model="edit.fileToUpload" file-model="fileToUpload" accept="image/*" ng-show="false" custom-on-change="uploadFile" required/>
+                                        <div id="submitFile" class="btn-group buttonAlign" role="group">
                                             <a href="" class="btn btn-info" type="button" ng-click="selectFile()"><span class="glyphicon glyphicon-camera" aria-hidden="true"></span></a>
-                                            <button class="btn btn-primary" type="submit">Guardar</button>
+                                            @*<button class="btn btn-primary" type="submit">Guardar</button>*@
                                         </div>
                                     </form>
                                 </div>
@@ -39,7 +39,7 @@
                         </div>
                     </div>
                     <div class="col-md-7">
-                        <div class="box box-primary">
+                        <div class="box box-primary" ng-cloak>
                             <div class="box-header">
                                 <h4>Información personal</h4>
                                 <a class="btn btn-info buttonAlign" href="@ua.dirproy.profelumno.subscription.controllers.routes.TeacherSubscription.subscriptionWTopBar()">
