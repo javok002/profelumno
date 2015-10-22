@@ -12,6 +12,7 @@ import ua.dirproy.profelumno.teacherprofile.views.html.acceptLesson;
 
 import javax.mail.*;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -25,13 +26,16 @@ public class AcceptLesson extends Controller {
         return ok(acceptLesson.render());
     }
 
-    public static Result getLessons() throws ParseException {
+    public static Result currentLessons() throws ParseException {
         Teacher teacher = Teacher.finder.where().eq("USER_ID", Long.parseLong(session("id"))).findUnique();
         List<Lesson> lessons = Lesson.finder.where().eq("TEACHER_ID", teacher.getId()).findList();
+        List<Lesson> currentLessons = new ArrayList<>();
         for (Lesson lesson : lessons) {
-            System.out.println(lesson.toString());
+            if (lesson.getLessonState() == 0){
+                currentLessons.add(lesson);
+            }
         }
-        return ok(Json.toJson(lessons));
+        return ok(Json.toJson(currentLessons));
     }
 
     public static Result decision(String answer, String stringLessonId) throws MessagingException {

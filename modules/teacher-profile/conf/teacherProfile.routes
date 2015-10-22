@@ -9,5 +9,5 @@ GET        /next-lessons         ua.dirproy.profelumno.teacherprofile.controller
 GET        /previous-lessons     ua.dirproy.profelumno.teacherprofile.controllers.TeacherProfiles.getPreviousLessons()
 
 GET        /accept-lesson        ua.dirproy.profelumno.teacherprofile.controllers.AcceptLesson.acceptView()
-GET        /get-lessons          ua.dirproy.profelumno.teacherprofile.controllers.AcceptLesson.getLessons()
+GET        /current-lessons      ua.dirproy.profelumno.teacherprofile.controllers.AcceptLesson.currentLessons()
 GET        /decision             ua.dirproy.profelumno.teacherprofile.controllers.AcceptLesson.decision(answer: String, stringLessonId : String)

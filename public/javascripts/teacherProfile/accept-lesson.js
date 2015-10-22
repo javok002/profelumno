@@ -3,26 +3,60 @@
  */
 var app = angular.module('acceptLesson', []);
 function loadLessons($http, $scope) {
-    $http.get("/teacher-profile/get-lessons")
+    $http.get("/teacher-profile/current-lessons")
         .success(function (data) {
-            $scope.teacherLessons = data;
+            $scope.currentLessons = data;
+        });
+    $http.get('/teacher-profile/next-lessons')
+        .success(function (data) {
+            data.forEach(function (lesson) {
+                var date = new Date(lesson.dateTime);
+                lesson.date = dateToString(date);
+            });
+            $scope.nextLessons = data;
+        })
+        .error(function (data) {
+            $scope.nextLessons = [];
+        });
+    $http.get('/teacher-profile/previous-lessons')
+        .success(function (data) {
+            $scope.prevLessons = data;
+        })
+        .error(function (data) {
+            $scope.prevLessons = [];
         });
 }
 app.controller('AcceptController', ['$scope', '$http', function ($scope, $http) {
     loadLessons($http, $scope);
     $scope.toFormatDate = function (time) {
-        return new Date(time).for;
+        return new Date(time);
     };
-    $scope.decision = function (lessonId, answer, button) {
-        button.currentTarget.innerHTML = '<span><i class="fa fa-spinner fa-pulse"></i></span>';
-        button.currentTarget.disabled = true;
-        $http.get("/teacher-profile/decision?answer=" + answer+"&stringLessonId="+lessonId)
-            .success(function (){
+    $scope.setDecision = function (lesson) {
+        $scope.decisionLesson = lesson;
+        document.getElementById('display-modal').click();
+
+    };
+    $scope.decision = function (lessonId, answer) {
+        if (answer == true) {
+            document.getElementById("acceptLesson").innerHTML = '<span><i class="fa fa-spinner fa-pulse"></i></span>';
+        } else {
+            document.getElementById("rejectLesson").innerHTML = '<span><i class="fa fa-spinner fa-pulse"></i></span>';
+
+        }
+        document.getElementById("acceptLesson").disabled = true;
+        document.getElementById("rejectLesson").disabled = true;
+        $http.get("/teacher-profile/decision?answer=" + answer + "&stringLessonId=" + lessonId)
+            .success(function () {
                 loadLessons($http, $scope);
+                document.getElementById('dismiss-modal').click();
                 document.getElementById('showModal').click();
             })
-            .error(function (){
+            .error(function () {
                 //todo
             });
     };
 }]);
+
+var dateToString = function (date) {
+    return date.getDate() + "/" + (date.getMonth() + 1) + '/' + date.getFullYear();
+};
