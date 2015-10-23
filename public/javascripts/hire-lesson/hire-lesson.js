@@ -24,12 +24,23 @@ angular.module('profLesson', [])
                 subjectId:$scope.selected,
                 dateTime:$scope.dateTime
             };
-            $http.post('/hire-lesson/new', data).then(successCallback);
+            $http.post('/hire-lesson/new', data).then(successCallback, errorCallback);
+            $("#loadingModal").modal("show");
         };
 
+
         successCallback = function () {
-            console.log('success!');
+            $("#succesModal").modal("show");
+            $("#loadingModal").modal("hide");
         };
+
+        errorCallback = function () {
+            $("#errorModal").modal("show");
+            $("#loadingModal").modal("hide");
+        };
+
+        $('.datepicker').datepicker('startDate', Date.now());
+
     }])
 
     .directive('hireLesson', function(){
@@ -104,6 +115,53 @@ angular.module('profLesson', [])
                         '</div>' +
                     '</div>' +
                 '</div>'+
+            '</div>' +
+
+            '<div class="modal" id="loadingModal">' +
+            '<div class="modal-dialog">' +
+            '<div class="modal-content">' +
+            '<div class="modal-body">' +
+            '<p>Espere unos segundos....</p>' +
+            '</div>' +
+            '<div class="modal-footer">' +
+            '<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>' +
+            '</div>' +
+            '</div><!-- /.modal-content -->' +
+            '</div><!-- /.modal-dialog -->' +
+            '</div>' +
+
+            '<div class="modal" id="succesModal">' +
+                '<div class="modal-dialog">' +
+                    '<div class="modal-content">' +
+                        '<div class="modal-header">' +
+                            '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>' +
+                            '<h4 class="modal-title">Clase en proceso!</h4>' +
+                        '</div>' +
+                        '<div class="modal-body">' +
+                            '<p>Lo notificamos al profesor, te haremos saber si aceptó o rechazó la clase!</p>' +
+                        '</div>' +
+                        '<div class="modal-footer">' +
+                            '<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>' +
+                        '</div>' +
+                    '</div><!-- /.modal-content -->' +
+                '</div><!-- /.modal-dialog -->' +
+            '</div>' +
+
+            '<div class="modal" id="errorModal">' +
+                '<div class="modal-dialog">' +
+            '<div class="modal-content">' +
+            '<div class="modal-header">' +
+            '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>' +
+            '<h4 class="modal-title">Ups!</h4>' +
+            '</div>' +
+            '<div class="modal-body">' +
+            '<p>No se pudo contratar la clase, volvé a intentarlo</p>' +
+            '</div>' +
+            '<div class="modal-footer">' +
+            '<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>' +
+            '</div>' +
+            '</div><!-- /.modal-content -->' +
+            '</div><!-- /.modal-dialog -->' +
             '</div>'
         }
     });

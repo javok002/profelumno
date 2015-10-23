@@ -1,6 +1,7 @@
 package ua.dirproy.profelumno.studentprofile.controllers;
 
 import authenticate.Authenticate;
+import org.joda.time.DateTime;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -32,6 +33,7 @@ public class StudentProfile extends Controller {
         final List<Lesson> lastLessonsStudent = new ArrayList<>();
         for (Lesson lesson : list) {
             if (Objects.equals(lesson.getStudent().getUser().getId(), student.getId())){
+
                 lastLessonsStudent.add(lesson);
             }
         }
@@ -48,7 +50,7 @@ public class StudentProfile extends Controller {
         //lessons que no estan con rating
         final ArrayList<Lesson> lessonsWithNoReview = new ArrayList<>();
         for (Lesson lesson : lastLessonsStudent) {
-            if (lesson.getStudentReview() == null){
+            if (lesson.getStudentReview() == null && lesson.getDateTime().before(DateTime.now().toDate())){
                 lessonsWithNoReview.add(lesson);
             }
         }

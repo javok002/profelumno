@@ -2,6 +2,7 @@ package ua.dirproy.profelumno.common.models;
 
 import com.avaje.ebean.Model;
 import ua.dirproy.profelumno.user.models.Subject;
+import ua.dirproy.profelumno.user.models.User;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
