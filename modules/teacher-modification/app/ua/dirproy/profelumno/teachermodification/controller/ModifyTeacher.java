@@ -97,6 +97,7 @@ public class ModifyTeacher extends Controller {
         List<Subject> currentSubjects = new ArrayList<>(form.data().size());
         //Creo las materias que no existen
         for (String currentSubject : form.data().values()) {
+            currentSubject = currentSubject.replace("-", " ");
             if(!existsSubject(currentSubject, currentSubjects)){
                 Subject newSubject = new Subject(currentSubject);
                 Ebean.save(newSubject);

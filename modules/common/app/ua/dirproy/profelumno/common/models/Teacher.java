@@ -160,4 +160,17 @@ public class Teacher extends Model {
         teacher.setLessonsDictated(lessonsDictated);
         teacher.save();
     }
+
+    public static void updateRating(Teacher teacher){
+        int lessonsRated = 0;
+        int totalScore = 0;
+        for (Lesson lesson : Lesson.list()) {
+            if(Objects.equals(lesson.getTeacher().getId(), teacher.getId()) && lesson.getStudentReview() != null){
+                lessonsRated++;
+                totalScore+= lesson.getStudentReview().getStars();
+            }
+        }
+        teacher.setRanking(totalScore/lessonsRated);
+        teacher.save();
+    }
 }

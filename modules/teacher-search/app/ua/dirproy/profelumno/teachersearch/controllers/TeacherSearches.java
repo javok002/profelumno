@@ -10,6 +10,7 @@ import play.mvc.Result;
 import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.user.models.Subject;
+import ua.dirproy.profelumno.user.models.User;
 
 
 import java.util.ArrayList;
@@ -31,20 +32,32 @@ public class TeacherSearches extends Controller {
     }
 
     public static Result getTeachers() {
-        final List<Teacher> allTeachers = Teacher.list();
+        List<Teacher> allTeachers = Teacher.list();
+        for (Teacher teacher : allTeachers) {
+            Teacher.updateLessonsDictated(teacher);
+            Teacher.updateRating(teacher);
+        }
+        allTeachers = Teacher.list();
         final List<Teacher> teachersToShow = Teacher.list();
         Form<Teacher> form = Form.form(Teacher.class).bindFromRequest();
         List<String> subjects = new ArrayList<>(form.data().size() - 3);
         int index = form.data().size() - 4;
         while (index >= 0) {
-            subjects.add(form.data().get("subjects[" + index + "]"));
+            subjects.add(form.data().get("subjects[" + index + "]").replace("-"," "));
             index--;
         }
         allTeachers.stream().filter(teacher -> checkLessons(Integer.parseInt(form.data().get("lessons")), teacher) ||
                 checkRanking(Integer.parseInt(form.data().get("ranking")), teacher) ||
                 checkHome(Boolean.parseBoolean(form.data().get("homeClasses")), teacher) ||
                 checkSubjects(subjects, teacher)).forEach(teachersToShow::remove);
-        return ok(toJson(teachersToShow));
+        final long userId = Long.parseLong(session("id"));
+        User user = Ebean.find(User.class, userId);
+        ArrayList<Object> toReturn = new ArrayList<>(2);
+        toReturn.add(teachersToShow);
+        toReturn.add(user.getAddress());
+//        toReturn.add(user.getLongitude());
+
+        return ok(toJson(toReturn));
     }
 
     private static boolean checkSubjects(List<String> subjects, Teacher teacher) {
@@ -60,7 +73,7 @@ public class TeacherSearches extends Controller {
     }
 
     private static boolean checkLessons(Integer lessons, Teacher teacher) {
-        updateLessonsDictated(teacher); //comment this line if group0 added it on global.
+//        updateLessonsDictated(teacher); //comment this line if group0 added it on global.
         return teacher.getLessonsDictated() < lessons;
     }
 

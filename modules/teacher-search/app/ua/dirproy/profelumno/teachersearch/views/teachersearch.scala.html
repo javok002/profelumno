@@ -28,19 +28,19 @@
                         </div>
                         <div class="checkbox input-group">
                             <label>
-                                <input type="checkbox" name="homeClasses" ng-model="homeClasses" id="domicilio" value="false">
+                                <input type="checkbox" ng-disabled="sortByDistance" name="homeClasses" ng-model="homeClasses" id="domicilio" value="false">
                                 Da clases a domicilio
                             </label>
                         </div>
                         <div class="checkbox input-group">
                             <label>
-                                <input type="checkbox" id="cercania" name="sort" ng-model="sort" value="false">
+                                <input type="checkbox" id="cercania" name="sort" ng-disabled="homeClasses" ng-model="sortByDistance" value="false">
                                 Ordenar según cercanía a mi domicilio
                             </label>
                         </div>
                     </div>
                     <div class="col-sm-6 form-group">
-                        <label for="ranking">Ranking</label>
+                        <label for="ranking">Puntaje</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-star"></i></span>
                             <input id="ranking" class="form-control" type="number" min="0" max="5" name="ranking" ng-model="ranking">
@@ -57,18 +57,18 @@
                 </div>
             </form>
         </div>
-        <div class="row-fluid " ng-show="showResults">
+        <div class="row-fluid" ng-show="showResults">
             <h4>Resultado de la búsqueda</h4>
             <table class="table">
                 <tbody>
                     <tr>
                         <th class="text-center">Profesor</th>
-                        <th class="text-center">Ranking</th>
+                        <th class="text-center">Puntaje</th>
                         <th class="text-center">Clases dictadas</th>
                         <th class="text-center">Contratar</th>
                     </tr>
 
-                    <tr dir-paginate="teacher in teachers|itemsPerPage:8">
+                    <tr dir-paginate="teacher in teachers|itemsPerPage:8" current-page="currentPage" >
                         <td class="text-center"> {{teacher.user.surname}}, {{teacher.user.name}}</td>
                         <td class="text-center">{{teacher.ranking}}</td>
                         <td class="text-center">{{teacher.lessonsDictated}}</td>
@@ -79,8 +79,10 @@
             <dir-pagination-controls
                 max-size="8"
                 direction-links="true"
-                boundary-links="true" >
+                boundary-links="true"
+                >
             </dir-pagination-controls>
+
         </div>
     </div>
 </div>
@@ -94,5 +96,7 @@
     <script src="@routes.Assets.versioned("javascripts/teacherSearch/teacherSearch.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/teacherSearch/ng-tags-input.min.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/teacherSearch/dirPagination.js")"></script>
+    @*<script src=https://rawgit.com/angular-ui/angular-google-maps/2.2.1/dist/angular-google-maps.min.js></script>*@
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
     <script src="@routes.Assets.versioned("javascripts/hire-lesson/hire-lesson.js")"></script>
 }
