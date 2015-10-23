@@ -29,7 +29,7 @@
                                     <div class="info-box-content">
                                         <span class="info-box-text">
                                             {{ lesson.subject.text }} a {{ lesson.student.user.name }} {{ lesson.student.user.surname }} </span>
-                                        <span class="info-box-number">{{ lesson.dateString }}</span>
+                                        <span class="info-box-number">{{ toFormatDate(lesson.dateTime) }}</span>
                                         <button type="button" ng-click="setDecision(lesson)" class="btn btn-primary">
                                             Responder</button>
                                     </div><!-- /.info-box-content -->
@@ -52,7 +52,7 @@
                                     El alumno {{decisionLesson.student.user.name}} {{decisionLesson.student.user.surname}} ha solicitado una nueva clase:
                                     <br>
                                     <ul class="list-group">
-                                        <li class="list-group-item">Fecha: {{decisionLesson.dateString}}</li>
+                                        <li class="list-group-item">Fecha: {{toFormatDate(decisionLesson.dateTime)}}</li>
                                         <li class="list-group-item">Dirección: {{decisionLesson.address}}</li>
                                         <li class="list-group-item">Materia: {{decisionLesson.subject.text}}</li>
                                         <li class="list-group-item">Comentario:
@@ -93,7 +93,7 @@
                                     <span class="info-box-icon bg-olive"><i class="fa fa-calendar-o"></i></span>
                                     <div class="info-box-content">
                                         <span class="info-box-text">{{ lesson.subject.text }}</span>
-                                        <span class="info-box-number">{{ lesson.dateString }}</span>
+                                        <span class="info-box-number">{{ toFormatDate(lesson.dateTime) }}</span>
                                         <button type="button" ng-click="setLesson(lesson)" class="btn btn-primary">
                                             Ver</button>
                                     </div><!-- /.info-box-content -->
@@ -115,8 +115,8 @@
                             <div class="panel panel-primary">
                                 <div class="panel-body">
                                     <ul class="list-group">
-                                        <li class="list-group-item">Profesor: {{decisionLesson.teacher.user.name}} {{decisionLesson.teacher.user.surname}} </li>
-                                        <li class="list-group-item">Fecha: {{decisionLesson.dateString}}</li>
+                                        <li class="list-group-item">Alumno: {{decisionLesson.student.user.name}} {{decisionLesson.student.user.surname}} </li>
+                                        <li class="list-group-item">Fecha: {{toFormatDate(decisionLesson.dateTime)}}</li>
                                         <li class="list-group-item">Dirección: {{decisionLesson.address}}</li>
                                         <li class="list-group-item">Materia: {{decisionLesson.subject.text}}</li>
                                         <li class="list-group-item">Comentario:
@@ -151,7 +151,7 @@
                                     <span class="info-box-icon bg-olive"><i class="fa fa-calendar-o"></i></span>
                                     <div class="info-box-content">
                                         <span class="info-box-text">{{ lesson.subject.text }}</span>
-                                        <span class="info-box-number">{{ lesson.dateString }}</span>
+                                        <span class="info-box-number">{{ toFormatDate(lesson.dateTime) }}</span>
                                         <button type="button" ng-click="setLesson(lesson)" class="btn btn-primary">
                                             Ver</button>
                                     </div><!-- /.info-box-content -->
@@ -189,7 +189,7 @@
         El alumno {{lesson.student.user.name}} {{lesson.student.user.surname}} ha solicitado una nueva clase:
         <br>
         <ul class="list-group">
-        <li class="list-group-item">Fecha: {{lesson.dateString}}</li>
+        <li class="list-group-item">Fecha: {{toFormatDate(lesson.dateTime)}}</li>
         <li class="list-group-item">Dirección: {{lesson.address}}</li>
         <li class="list-group-item">Materia: {{lesson.subject.text}}</li>
         <li class="list-group-item">Comentario:
