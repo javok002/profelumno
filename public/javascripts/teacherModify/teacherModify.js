@@ -11,6 +11,7 @@ app.controller('TeacherInfoController', ['$rootScope', '$scope', '$http', 'fileU
     edit.u.allSubjects = [];
     edit.u.subjectsFiltered = [];
     $scope.imageUrl='';
+    $scope.hasImage=true;
 
     $scope.successAlert = function () {
         var message = '<strong>¡Bien hecho! </strong> Actualizaste con éxito tus materias.';
@@ -38,9 +39,10 @@ app.controller('TeacherInfoController', ['$rootScope', '$scope', '$http', 'fileU
     $http.get('modify-teacher/img')
         .success(function (data, status, headers, config) {
             $scope.imageUrl=data;
+            $scope.hasImage=true;
         }).
         error(function (data, status, headers, config) {
-            // log error
+            $scope.hasImage=false;
         });
 
     $http.get("modify-teacher/subjects").
@@ -271,7 +273,7 @@ app.service('fileUpload', ['$http', function ($http) {
             headers: {'Content-Type': undefined}
         })
             .success(function (data, status, headers, config) {
-                window.location.href = "/teacher-profile"
+                window.location.href = "/modify-teacher"
                 /*edit.u.user.profilePicture = data;
                 scope.imageUrl=data;*/
                 //window.location.href=data;
@@ -403,6 +405,16 @@ app.directive("appMap", function () {
                 if (angular.isString(loc)) loc = scope.$eval(loc);
                 return new google.maps.LatLng(loc.lat, loc.lon);
             }
+        }
+    };
+});
+
+app.directive('customOnChange', function() {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var onChangeHandler = scope.$eval(attrs.customOnChange);
+            element.bind('change', onChangeHandler);
         }
     };
 });

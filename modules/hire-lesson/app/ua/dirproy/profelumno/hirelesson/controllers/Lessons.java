@@ -15,11 +15,9 @@ import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 import javax.mail.*;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -45,7 +43,7 @@ public class Lessons extends Controller {
         lesson.setSubject(subject);
 
         final String dateTime = lessonsForm.data().get("dateTime");
-        lesson.setDateTime(new Date(Integer.parseInt(dateTime.substring(0, 4)) - 1900, Integer.parseInt(dateTime.substring(5, 7)), Integer.parseInt(dateTime.substring(8, 10))));
+        lesson.setDateTime(new Date(Integer.parseInt(dateTime.substring(0, 4)) - 1900, Integer.parseInt(dateTime.substring(5, 7)) - 1, Integer.parseInt(dateTime.substring(8, 10))));
 
         String address;
         switch (lessonsForm.data().get("address")) {
@@ -56,11 +54,11 @@ public class Lessons extends Controller {
                 address = teacher.getUser().getAddress();
                 break;
             default:
-                address = "unknow";
+                address = "A confirmar";
                 break;
         }
         lesson.setAddress(address);
-        lesson.setDateString(dateTime.substring(8,10)+"/"+dateTime.substring(5,7)+"/"+dateTime.substring(0,4));
+        lesson.setDateString(dateTime.substring(8, 10) + "/" + dateTime.substring(5, 7) + "/" + dateTime.substring(0, 4));
         lesson.setComment(lessonsForm.data().get("comment"));
         lesson.setTeacherReview(null);
         lesson.setStudentReview(null);

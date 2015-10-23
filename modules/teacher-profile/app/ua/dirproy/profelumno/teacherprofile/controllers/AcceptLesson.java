@@ -12,6 +12,7 @@ import ua.dirproy.profelumno.teacherprofile.views.html.acceptLesson;
 
 import javax.mail.*;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -25,13 +26,16 @@ public class AcceptLesson extends Controller {
         return ok(acceptLesson.render());
     }
 
-    public static Result getLessons() throws ParseException {
+    public static Result currentLessons() throws ParseException {
         Teacher teacher = Teacher.finder.where().eq("USER_ID", Long.parseLong(session("id"))).findUnique();
         List<Lesson> lessons = Lesson.finder.where().eq("TEACHER_ID", teacher.getId()).findList();
+        List<Lesson> currentLessons = new ArrayList<>();
         for (Lesson lesson : lessons) {
-            System.out.println(lesson.toString());
+            if (lesson.getLessonState() == 0 && !lesson.getDateTime().before(new Date())) {
+                currentLessons.add(lesson);
+            }
         }
-        return ok(Json.toJson(lessons));
+        return ok(Json.toJson(currentLessons));
     }
 
     public static Result decision(String answer, String stringLessonId) throws MessagingException {
@@ -45,16 +49,32 @@ public class AcceptLesson extends Controller {
                 answerBool = false;
         }
         boolean action = updateLesson(answerBool, Long.parseLong(stringLessonId));
+
         notifyStudent(Long.parseLong(stringLessonId));
-        return action? ok(): badRequest();
+        return action ? ok() : badRequest();
+    }
+
+    public static Result getPreviousLessons() {
+        Teacher teacher = Teacher.finder.where().eq("USER_ID", Long.parseLong(session("id"))).findUnique();
+        List<Lesson> lessons = Lesson.finder.where().eq("TEACHER_ID", teacher.getId()).findList();
+        ArrayList<Lesson> previousLessons = new ArrayList<>();
+        for (Lesson lesson : lessons) {
+            if (lesson.getLessonState() == 1 && lesson.getDateTime().before(new Date())) {
+                previousLessons.add(lesson);
+            }
+        }
+        return ok(Json.toJson(previousLessons));
     }
 
     private static boolean updateLesson(boolean answerBool, long lessonId) {
         try {
             Lesson lesson = Lesson.finder.byId(lessonId);
             lesson.setLessonState(answerBool ? 1 : 2);
+            if (answerBool) {
+                lesson.getTeacher().setLessonsDictated(lesson.getTeacher().getLessonsDictated() + 1);
+            }
             lesson.update();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -76,7 +96,7 @@ public class AcceptLesson extends Controller {
                 "                    <h3 class=\"panel-title\" style=\"-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;orphans: 3;widows: 3;page-break-after: avoid;font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif;font-weight: 500;line-height: 1.1;color: inherit;margin-top: 0;margin-bottom: 0;font-size: 16px;\">Han respondido a tu solicitud</h3>\n" +
                 "                </div>\n" +
                 "                <div class=\"panel-body\" style=\"-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;padding: 15px;\">\n" +
-                "                    "+ teacher.getUser().getName()+" "+teacher.getUser().getSurname()+" ha "+(lesson.getLessonState() == 1?"aceptado":"rechazado")+" tu solicitud de clase. Entra para ver su respuesta!\n" +
+                "                    " + teacher.getUser().getName() + " " + teacher.getUser().getSurname() + " ha " + (lesson.getLessonState() == 1 ? "aceptado" : "rechazado") + " tu solicitud de clase. Entra para ver su respuesta!\n" +
                 "                </div>\n" +
                 "                <div class=\"panel-footer\" align=\"right\" style=\"-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;padding: 10px 15px;background-color: #f5f5f5;border-top: 1px solid #ddd;border-bottom-right-radius: 3px;border-bottom-left-radius: 3px;\"><b style=\"-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;font-weight: bold;\">Profe</b><span class=\"thin\" style=\"-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;\">Lumno </span></div>\n" +
                 "            </div>\n" +
@@ -85,5 +105,8 @@ public class AcceptLesson extends Controller {
                 "    </div>\n" +
                 "</div>\n" +
                 "</body>");
+        if (lesson.getLessonState() == 2) {
+            lesson.delete();
+        }
     }
 }

@@ -1,47 +1,169 @@
 @()
-@ua.dirproy.profelumno.common.views.html.main("Student Lessons") {
+@ua.dirproy.profelumno.common.views.html.tidyMain("Student Lessons") {
     @ua.dirproy.profelumno.common.views.html.topbar()
     @ua.dirproy.profelumno.common.views.html.sidebar()
-    <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
-    <script src="@routes.Assets.versioned("external/angularjs/angular.min.js")"></script>
-    <script src="@routes.Assets.versioned("/javascripts/studentProfile/lessonStudent.js")"></script>
 
-    <div class="container" ng-app="acceptLesson">
-        <div ng-controller="AcceptController as ctrl">
+
+    <div class="content-wrapper" ng-app="acceptLesson" ng-controller="AcceptController as ctrl">
+        <section class="content-header">
+            <h1>
+                Clases
+            </h1>
+        </section>
+        <section class="content" ng-cloak>
             <div class="row">
-                <div class="col-sm-2"></div>
-                <div class="col-sm-6">
-                    <div class="page-header">Clases pendientes: </div>
-                    <div ng-repeat="lesson in studentLessons" >
-                        <div ng-if="lesson.lessonState == 1">
-                            <div class="panel panel-primary" id="{{lesson.id}}">
+                <div class="col-sm-12">
+                    <div class="box box-solid box-primary">
+                        <div class="box-header">
+                            <h3 class="box-title"><a href="#">Clases Pendientes</a></h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            </div><!-- /.box-tools -->
+                        </div><!-- /.box-header -->
+                        <div class="box-body bg-gray-light">
+                            <span ng-show="currentLessons.length == 0">No hay información disponible</span>
+                            <div class="col-md-4 col-sm-6" ng-repeat="lesson in currentLessons">
+                                <div class="info-box">
+                                        <!-- Apply any bg-* class to to the icon to color it -->
+                                    <span class="info-box-icon bg-yellow"><i class="fa fa-calendar-check-o"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">
+                                            {{ lesson.subject.text }} a {{ lesson.student.user.name }} {{ lesson.student.user.surname }} </span>
+                                        <span class="info-box-number">{{ lesson.dateString }}</span>
+                                        <button type="button" ng-click="setLesson(lesson)" class="btn btn-primary">
+                                            Ver</button>
+                                    </div><!-- /.info-box-content -->
+                                </div><!-- /.info-box -->
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                </div>
+            </div>
+            <button style="display: none" data-toggle="modal" data-target="#decisionModal" id="display-modal"></button>
+            <div class="modal fade" role="dialog" id="decisionModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" data-dismiss="modal" class="close"><span class="glyphicon glyphicon-remove"></span></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="panel panel-primary">
                                 <div class="panel-body">
-                                    Clase:
-                                    <br>
                                     <ul class="list-group">
-                                        <li class="list-group-item">Fecha: {{lesson.dateString}}</li>
-                                        <li class="list-group-item">Dirección: {{lesson.address}}</li>
-                                        <li class="list-group-item">Materia: {{lesson.subject.text}}</li>
+                                        <li class="list-group-item">Profesor: {{decisionLesson.teacher.user.name}} {{decisionLesson.teacher.user.surname}} </li>
+                                        <li class="list-group-item">Fecha: {{decisionLesson.dateString}}</li>
+                                        <li class="list-group-item">Dirección: {{decisionLesson.address}}</li>
+                                        <li class="list-group-item">Materia: {{decisionLesson.subject.text}}</li>
                                         <li class="list-group-item">Comentario:
                                             <div class="well">
-                                                {{lesson.comment}}
+                                                {{decisionLesson.comment}}
                                             </div></li>
                                     </ul>
-                                    <br>
-
                                 </div>
-                                <br>
                             </div>
-
                         </div>
-
+                        <div class="modal-footer">
+                            <button type="button" id="dismiss-modal" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
                     </div>
-                    <h3 class="special-text">No hay más clases pendientes</h3>
-
                 </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="box box-solid box-primary">
+                        <div class="box-header">
+                            <h3 class="box-title">Próximas Clases</h3>
+
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            </div><!-- /.box-tools -->
+                        </div><!-- /.box-header -->
+                        <div class="box-body bg-gray-light">
+
+                            <span ng-show="nextLessons.length == 0">No hay información disponible</span>
+                            <div class="col-md-4 col-sm-6" ng-repeat="lesson in nextLessons">
+                                <div class="info-box">
+                                        <!-- Apply any bg-* class to to the icon to color it -->
+                                    <span class="info-box-icon bg-olive"><i class="fa fa-calendar-o"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">{{ lesson.subject.text }}</span>
+                                        <span class="info-box-number">{{ lesson.dateString }}</span>
+                                        <button type="button" ng-click="setLesson(lesson)" class="btn btn-primary">
+                                            Ver</button>
+                                    </div><!-- /.info-box-content -->
+                                </div><!-- /.info-box -->
+                            </div>
+                        </div>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
 
             </div>
-        </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="box box-solid box-primary">
+                        <div class="box-header">
+                            <h3 class="box-title">Clases Pasadas</h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            </div><!-- /.box-tools -->
+                        </div><!-- /.box-header -->
+                        <div class="box-body bg-gray-light">
+                            <span ng-show="prevLessons.length == 0">No hay información disponible</span>
+                            <div class="col-md-4 col-sm-6" ng-repeat="lesson in prevLessons">
+                                <div class="info-box">
+                                        <!-- Apply any bg-* class to to the icon to color it -->
+                                    <span class="info-box-icon bg-yellow"><i class="fa fa-calendar-check-o"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">{{ lesson.subject.text }} a {{ lesson.user.teacher.name }}</span>
+                                        <span class="info-box-number">{{ lesson.dateString }}</span>
+                                        <button type="button" ng-click="setLesson(lesson)" class="btn btn-primary">
+                                            Ver</button>
+                                    </div><!-- /.info-box-content -->
+                                </div><!-- /.info-box -->
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                </div>
+            </div>
+        </section>
+            @*<div class="row">*@
+                @*<div class="col-sm-2"></div>*@
+                @*<div class="col-sm-6">*@
+                    @*<div class="page-header">Clases pendientes: </div>*@
+                    @*<div ng-repeat="lesson in studentLessons" >*@
+                        @*<div ng-if="lesson.lessonState == 1">*@
+                            @*<div class="panel panel-primary" id="{{lesson.id}}">*@
+                                @*<div class="panel-body">*@
+                                    @*Clase:*@
+                                    @*<br>*@
+                                    @*<ul class="list-group">*@
+                                        @*<li class="list-group-item">Fecha: {{lesson.dateString}}</li>*@
+                                        @*<li class="list-group-item">Dirección: {{lesson.address}}</li>*@
+                                        @*<li class="list-group-item">Materia: {{lesson.subject.text}}</li>*@
+                                        @*<li class="list-group-item">Comentario:*@
+                                            @*<div class="well">*@
+                                                @*{{lesson.comment}}*@
+                                            @*</div></li>*@
+                                    @*</ul>*@
+                                    @*<br>*@
+
+                                @*</div>*@
+                                @*<br>*@
+                            @*</div>*@
+
+                        @*</div>*@
+
+                    @*</div>*@
+                    @*<h3 class="special-text">No hay más clases pendientes</h3>*@
+
+                @*</div>*@
+
+            @*</div>*@
     </div>
 
+}{
+    <span></span>
+}{
+    <script src="@routes.Assets.versioned("/javascripts/studentProfile/lessonStudent.js")"></script>
 }
