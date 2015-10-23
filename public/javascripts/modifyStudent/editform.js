@@ -15,6 +15,8 @@ app.controller("EditController", ['$http','$scope', 'fileUpload',function($http,
         success(function(data, status, headers, config) {
             edit.u= data;
             $scope.search = edit.u.user.address+"";
+            if(edit.u.user.address == "") $scope.gotoCurrentLocation();
+
             $scope.date=new Date(edit.u.user.birthday);
             $scope.geoCode();
         }).
@@ -60,17 +62,34 @@ app.controller("EditController", ['$http','$scope', 'fileUpload',function($http,
             navigator.geolocation.getCurrentPosition(function (position) {
                 var c = position.coords;
                 $scope.gotoLocation(c.latitude, c.longitude);
+                if (!this.geocoder) this.geocoder = new google.maps.Geocoder();
+                $scope.geocodeLatLng(this.geocoder, c.latitude, c.longitude);
             });
             return true;
         }
         return false;
     };
 
+    $scope.geocodeLatLng = function(geocoder, lat, lon) {
+
+        var latlng = {lat: lat, lng: lon};
+        geocoder.geocode({'location': latlng}, function(results, status) {
+            if (status === google.maps.GeocoderStatus.OK) {
+                if (results[1]) {
+                    $scope.search = results[1].formatted_address;
+                    arrAddress = results[0].address_components;
+                }
+            }
+        });
+    };
+
+
     $scope.gotoLocation = function (lat, lon) {
         if ($scope.lat != lat || $scope.lon != lon) {
             $scope.loc = { lat: lat, lon: lon };
             $scope.marker={lat:$scope.loc.lat,lon:$scope.loc.lon};
             $scope.$apply("marker");
+
             if (!$scope.$$phase) $scope.$apply("loc");
         }
     };
@@ -83,6 +102,7 @@ app.controller("EditController", ['$http','$scope', 'fileUpload',function($http,
                     arrAddress = results[0].address_components;
                     $scope.search = results[0].formatted_address;
                     $scope.gotoLocation(loc.lat(), loc.lng());
+
                     return loc;
                 } else {
                     alert("Sorry, this search produced no results.");
@@ -120,7 +140,7 @@ app.controller("EditController", ['$http','$scope', 'fileUpload',function($http,
     $scope.uploadFile = function(){
         var file = $scope.fileToUpload;
         var uploadUrl = "img";
-        fileUpload.uploadFileToUrl(file, uploadUrl, $scope);;
+        fileUpload.uploadFileToUrl(file, uploadUrl, $scope);
     };
     //SUBMIT
     $scope.errors = {

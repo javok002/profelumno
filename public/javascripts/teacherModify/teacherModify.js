@@ -22,6 +22,7 @@ app.controller('TeacherInfoController', ['$rootScope', '$scope', '$http', 'fileU
         .success(function (data, status, headers, config) {
             edit.u = data;
             $scope.search = edit.u.user.address+"";
+            if(edit.u.user.address == "") $scope.gotoCurrentLocation();
 
             $scope.date=new Date(edit.u.user.birthday);
             $scope.renewalDate=new Date(edit.u.renewalDate);
@@ -111,10 +112,25 @@ app.controller('TeacherInfoController', ['$rootScope', '$scope', '$http', 'fileU
             navigator.geolocation.getCurrentPosition(function (position) {
                 var c = position.coords;
                 $scope.gotoLocation(c.latitude, c.longitude);
+                if (!this.geocoder) this.geocoder = new google.maps.Geocoder();
+                $scope.geocodeLatLng(this.geocoder, c.latitude, c.longitude);
             });
             return true;
         }
         return false;
+    };
+
+    $scope.geocodeLatLng = function(geocoder, lat, lon) {
+
+        var latlng = {lat: lat, lng: lon};
+        geocoder.geocode({'location': latlng}, function(results, status) {
+            if (status === google.maps.GeocoderStatus.OK) {
+                if (results[1]) {
+                    $scope.search = results[1].formatted_address;
+                    arrAddress = results[0].address_components;
+                }
+            }
+        });
     };
 
     $scope.gotoLocation = function (lat, lon) {
