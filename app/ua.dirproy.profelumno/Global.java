@@ -50,18 +50,18 @@ public class Global extends GlobalSettings {
         public static void setLessonsAndReviews() {
             Random randomizer = new Random();
             String[] address = generateAnAddress();
+            int[] forRatingT = arrayRating(teachers);
+            int[] forRatingS = arrayRating(students);
 
             for (int i = 0; i < lessons.size(); i++) {
                 Date date = new Date((new Date()).getYear(), randomizer.nextInt(11), randomizer.nextInt(30) + 1);
-                float price = (new Random()).nextFloat() * 1000;
+                int teacherNumber = (new Random()).nextInt(teachers.size());
+                int studentNumber = (new Random()).nextInt(students.size());
 
-                while (price < 100 && price > 500) {
-                    price = (new Random()).nextFloat() * 1000;
-                }
-                lessons.get(i).setLessonState((i > (lessons.size() / 2)) ? 0 : 1);
-                lessons.get(i).setPrice(price);
-                lessons.get(i).setStudent(students.get((new Random()).nextInt(students.size())));
-                lessons.get(i).setTeacher(teachers.get((new Random()).nextInt(teachers.size())));
+                lessons.get(i).setLessonState((date.before(new Date())) ? ((i % 2 == 0) ? 0 : 1) : 1);
+                lessons.get(i).setPrice((float) (new Random()).nextInt(500));
+                lessons.get(i).setStudent(students.get(studentNumber));
+                lessons.get(i).setTeacher(teachers.get(teacherNumber));
                 lessons.get(i).setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet augue nisl. Sed ultrices rhoncus justo, in hendrerit turpis laoreet a.");
                 lessons.get(i).setAddress(address[(new Random()).nextInt(address.length)]);
                 lessons.get(i).setDuration(Duration.ofHours((i % 2 == 0) ? 1 : 2));
@@ -69,8 +69,11 @@ public class Global extends GlobalSettings {
                 lessons.get(i).setDateTime(date);
                 lessons.get(i).setSubject(subjects.get(randomizer.nextInt(subjects.size())));
                 if (date.after(new Date())) {
-                    lessons.get(i).setStudentReview(generateReview(0, date));//0 student
-                    lessons.get(i).setTeacherReview(generateReview(1, date));//1 teacher
+                    lessons.get(i).setStudentReview(generateReview(1, date));//0 student
+                    lessons.get(i).setTeacherReview(generateReview(0, date));//1 teacher
+                    teachers.get(teacherNumber).setRanking((int) (teachers.get(teacherNumber).getRanking() + lessons.get(i).getStudentReview().getStars()));
+                    forRatingT[teacherNumber]++;
+                    forRatingS[studentNumber]++;
                 }
                 lessons.get(i).save();
             }
@@ -116,9 +119,23 @@ public class Global extends GlobalSettings {
                 lessonComplete.setSubject(subjects.get((new Random()).nextInt(subjects.size())));
                 lessonComplete.setTeacherReview(generateReview(1, (new Date(today.getYear() + 1, today.getMonth(), today.getDay()))));
                 lessonComplete.setStudentReview(generateReview(0, (new Date(today.getYear() + 1, today.getMonth(), today.getDay()))));
+                teachers.get(i).setRanking((int) (teachers.get(i).getRanking() + lessonComplete.getStudentReview().getStars()));
                 lessonComplete.save();
             }
+            for (int i = 0; i < teachers.size(); i++) {
+                teachers.get(i).setRanking((int) (teachers.get(i).getRanking() / (forRatingT[i] + 1)));
+                teachers.get(i).setLessonsDictated(forRatingT[i]);
+                teachers.get(i).save();
+            }
 
+        }
+
+        private static int[] arrayRating(List list) {
+            int[] array = new int[list.size()];
+            for (int i = 0; i < list.size(); i++) {
+                array[i] = 0;
+            }
+            return array;
         }
 
         private static Review generateReview(int i, Date date) {
@@ -189,7 +206,7 @@ public class Global extends GlobalSettings {
                     userT.setEmail("teacher" + i + "@sample.com");
                     userT.setPassword("secret");
                     userT.setAddress(address[randomizer.nextInt(address.length)]);
-                    userT.setBirthday(new Date((70 + i/10), (i + 1) / 10, i/4));
+                    userT.setBirthday(new Date((70 + i / 10), (i + 1) / 10, i / 4));
                     userT.setGender("male");
                     userT.setSecureAnswer("Hola");
                     userT.setSecureQuestion("Mundo");
@@ -199,9 +216,10 @@ public class Global extends GlobalSettings {
                     teacher.setUser(userT);
                     if (i <= 20) {
                         teacher.setHasCard(true);
-                        teacher.setRenewalDate(new Date());
+                        teacher.setSubscription("" + (new Random()).nextInt(9999) + new Random().nextInt(9999) + new Random().nextInt(9999) + new Random().nextInt(9999));
                         teacher.setHomeClasses(true);
                         teacher.setPrice((new Random()).nextInt(500));
+                        teacher.setRenewalDate(new Date(new Date().getYear() + 1, new Date().getMonth(), new Date().getDate()));
                     }
 
                     Teacher.updateLessonsDictated(teacher);
@@ -236,7 +254,7 @@ public class Global extends GlobalSettings {
         }
 
         private static void generateLessonsList() {
-            for (int i = 0; i < 200; i++) {
+            for (int i = 0; i < 500; i++) {
                 lessons.add(new Lesson());
             }
 
