@@ -170,7 +170,7 @@ public class Teacher extends Model {
                 totalScore+= lesson.getStudentReview().getStars();
             }
         }
-        teacher.setRanking(totalScore/lessonsRated);
+        teacher.setRanking(lessonsRated == 0 ? 0: totalScore/lessonsRated);
         teacher.save();
     }
 }
