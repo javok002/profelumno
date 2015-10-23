@@ -7,7 +7,7 @@ GET        /teacher              ua.dirproy.profelumno.teacherprofile.controller
 GET        /top-subjects         ua.dirproy.profelumno.teacherprofile.controllers.TeacherProfiles.getBestSubjects()
 GET        /next-lessons         ua.dirproy.profelumno.teacherprofile.controllers.TeacherProfiles.getNextLessons()
 GET        /previous-lessons     ua.dirproy.profelumno.teacherprofile.controllers.TeacherProfiles.getPreviousLessons()
-
+GET        /prev-lessons         ua.dirproy.profelumno.teacherprofile.controllers.AcceptLesson.getPreviousLessons()
 GET        /accept-lesson        ua.dirproy.profelumno.teacherprofile.controllers.AcceptLesson.acceptView()
 GET        /current-lessons      ua.dirproy.profelumno.teacherprofile.controllers.AcceptLesson.currentLessons()
 GET        /decision             ua.dirproy.profelumno.teacherprofile.controllers.AcceptLesson.decision(answer: String, stringLessonId : String)

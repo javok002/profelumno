@@ -18,7 +18,7 @@ function loadLessons($http, $scope) {
         .error(function (data) {
             $scope.nextLessons = [];
         });
-    $http.get('/teacher-profile/previous-lessons')
+    $http.get('/teacher-profile/prev-lessons')
         .success(function (data) {
             $scope.prevLessons = data;
         })
@@ -31,9 +31,14 @@ app.controller('AcceptController', ['$scope', '$http', function ($scope, $http) 
     $scope.toFormatDate = function (time) {
         return new Date(time);
     };
-    $scope.setDecision = function (lesson) {
+    $scope.setLesson = function (lesson) {
         $scope.decisionLesson = lesson;
         document.getElementById('display-modal').click();
+
+    };
+    $scope.setDecision = function (lesson) {
+        $scope.decisionLesson = lesson;
+        document.getElementById('display-decision').click();
 
     };
     $scope.decision = function (lessonId, answer) {
@@ -50,6 +55,10 @@ app.controller('AcceptController', ['$scope', '$http', function ($scope, $http) 
                 loadLessons($http, $scope);
                 document.getElementById('dismiss-modal').click();
                 document.getElementById('showModal').click();
+                document.getElementById("acceptLesson").innerHTML = 'Aceptar';
+                document.getElementById("rejectLesson").innerHTML = 'Rechazar';
+                document.getElementById("acceptLesson").disabled = false;
+                document.getElementById("rejectLesson").disabled = false;
             })
             .error(function () {
                 //todo
