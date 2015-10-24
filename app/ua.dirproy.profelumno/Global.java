@@ -93,8 +93,8 @@ public class Global extends GlobalSettings {
                 lessonP.setTeacher(teachers.get(i));
                 lessonP.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet augue nisl. Sed ultrices rhoncus justo, in hendrerit turpis laoreet a.");
                 lessonP.setDuration(Duration.ofHours(2));
-                lessonP.setDateString("" + today.getDate() + "/" + (today.getMonth() + 1) + "/" + (today.getYear() + 1900 + 2));
-                lessonP.setDateTime(new Date((today.getYear() + 1900 + 2), (today.getMonth() + 1), today.getDate()));
+                lessonP.setDateString("" + today.getDate() + "/" + (today.getMonth() + 1) + "/" + (today.getYear() +1900  + 2));
+                lessonP.setDateTime(new Date((today.getYear() + 2), (today.getMonth() + 1), today.getDate()));
                 lessonP.setSubject(subjects.get((new Random()).nextInt(subjects.size())));
                 lessonP.save();
 
@@ -106,8 +106,8 @@ public class Global extends GlobalSettings {
                 lessonConfirm.setTeacher(teachers.get(i));
                 lessonConfirm.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet augue nisl. Sed ultrices rhoncus justo, in hendrerit turpis laoreet a.");
                 lessonConfirm.setDuration(Duration.ofHours(2));
-                lessonConfirm.setDateString("" + today.getDate() + "/" + today.getMonth() + "/" + (today.getYear() + 1900));
-                lessonConfirm.setDateTime(new Date(today.getYear(), today.getMonth(), today.getDate()));
+                lessonConfirm.setDateString("" + ((today.getDate() + 1 < 30) ? (today.getDate() + 1) : (today.getDate())) + "/" + (((today.getDate() + 1 < 30) ? (today.getMonth()) : (((today.getMonth() + 1) < 11) ? (today.getMonth() + 1) : (today.getMonth()))) + 1) + "/" + ((today.getMonth() + 1 < 11) ? (today.getYear() + 1900) : (today.getYear() + 1 + 1900)));
+                lessonConfirm.setDateTime(new Date((today.getMonth() + 1 < 11) ? (today.getYear()) : (today.getYear() + 1), (today.getDate() + 1 < 30) ? (today.getMonth()) : ((today.getMonth() + 1 < 11) ? (today.getMonth() + 1) : (today.getMonth())), (today.getDate() + 1 < 30) ? (today.getDate() + 1) : (today.getDate())));
                 lessonConfirm.setSubject(subjects.get((new Random()).nextInt(subjects.size())));
                 lessonConfirm.save();
 
@@ -160,7 +160,7 @@ public class Global extends GlobalSettings {
             Review review = new Review();
             review.setComment((i == 1) ? generateReviewsT()[stars] : generateReviewsS()[stars]);
             review.setDate(date);
-            review.setStars((long) (stars / 2));
+            review.setStars((long) (stars));
             review.save();
             return review;
         }
@@ -223,12 +223,15 @@ public class Global extends GlobalSettings {
                     userT.setSurname(lastName);
                     userT.setEmail("teacher" + i + "@sample.com");
                     userT.setPassword("secret");
-                    userT.setAddress(address[randomizer.nextInt(address.length)]);
-                    userT.setBirthday(new Date((70 + i), (i + 1) / 2, i));
+                    userT.setAddress(address[addressNumber * 4]);
+                    userT.setCity(address[(addressNumber * 4) + 1]);
+                    userT.setLatitude(address[(addressNumber * 4) + 2]);
+                    userT.setLongitude(address[(addressNumber * 4) + 3]);
+                    userT.setBirthday(new Date((70 + i / 10), (i + 1) / 10, i / 4));
                     userT.setGender("male");
                     userT.setSecureAnswer("Hola");
                     userT.setSecureQuestion("Mundo");
-                    userT.setSubjects(subjects.subList(0,randomizer.nextInt(subjects.size())));
+                    userT.setSubjects(subjects.subList(0, subjects.size()));
                     userT.save();
                     Teacher teacher = new Teacher();
                     teacher.setUser(userT);
@@ -277,7 +280,7 @@ public class Global extends GlobalSettings {
         }
 
         private static void generateLessonsList() {
-            for (int i = 0; i < 500; i++) {
+            for (int i = 0; i < 800; i++) {
                 lessons.add(new Lesson());
             }
 
@@ -317,14 +320,14 @@ public class Global extends GlobalSettings {
 
         private static String[] generateAnAddress() {
             String[] address = {
-                    "Av. Juan Domingo Perón 1500, Buenos Aires",
-                    "El Tordo 55, Pilar Centro, Buenos Aires",
-                    "San Martín 744, Pilar Centro, Buenos Aires",
-                    "Yrigoyen 2749, Vicente Lopez, Buenos Aires",
-                    "Ballivian 2329, Villa Ortuzar, Buenos Aires",
-                    "El Salvador 5528, Palermo, Buenos Aires",
-                    "Cuba 2039, Belgrano, Buenos Aires",
-                    "Defensa 1431, San Telmo, Buenos Aires"
+                    "Av. Juan Domingo Perón 1500", "Buenos Aires", "-34.455826", "-58.863963",
+                    "El Tordo 55, Pilar Centro", "Buenos Aires", "-34.449663", " -58.911708",
+                    "San Martín 744, Pilar Centro", "Buenos Aires", "-34.459812", "-58.914504",
+                    "Yrigoyen 2749, Vicente Lopez", "Buenos Aires", "-34.527729", "-58.499194",
+                    "Ballivian 2329, Villa Ortuzar", "Buenos Aires", "-34.578714", "-58.476206",
+                    "El Salvador 5528, Palermo", "Buenos Aires", "-34.583803", "-58.434912",
+                    "Cuba 2039, Belgrano", "Buenos Aires", "-34.561568", "-58.454189",
+                    "Defensa 1431, San Telmo", "Buenos Aires", "-34.624604", "-58.371209"
             };
             return address;
         }
