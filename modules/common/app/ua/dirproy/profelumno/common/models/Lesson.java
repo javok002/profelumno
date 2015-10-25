@@ -28,17 +28,17 @@ public class Lesson extends Model {
 
     @ManyToOne
     private Subject subject;
-    private int lessonState = 0;//0 pendiente, 1 aceptado, 2 rechazada
+    private int lessonState = 0;//0 pendiente de aceptar, 1 aceptado, 2 rechazada
 
     @ManyToOne
     private Teacher teacher;
     @OneToOne
-    private Review teacherReview;
+    private Review teacherReview; //Calificacion al teacher
 
     @ManyToOne
     private Student student;
     @OneToOne
-    private Review studentReview;
+    private Review studentReview; //Calificacion al student
 
     public static Finder<Long, Lesson> finder = new Finder<>(Lesson.class);
 

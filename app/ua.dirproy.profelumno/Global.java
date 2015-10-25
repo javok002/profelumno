@@ -10,10 +10,7 @@ import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -50,18 +47,134 @@ public class Global extends GlobalSettings {
         public static void setLessonsAndReviews() {
             Random randomizer = new Random();
             String[] address = generateAnAddress();
-            int[] forRatingT = arrayRating(teachers);
-            int[] forRatingS = arrayRating(students);
 
 
-            for (int i = 0; i < lessons.size(); i++) {
-                Date date = new Date((new Date()).getYear(), randomizer.nextInt(11), randomizer.nextInt(30) + 1);
+            for (Teacher teacher1 : teachers) {
+                for (int j = 0; j < 3; j++) {
+                    Date oldDateState1 = getOldDate(randomizer);
+                    Date futureDateState0 = getFutureDate(randomizer);
+                    Date futureDateState1 = getFutureDate(randomizer);
+
+                    Lesson lessonInbox = new Lesson();
+                    lessonInbox.setAddress(address[randomizer.nextInt(address.length)]);
+                    lessonInbox.setLessonState(0);
+                    lessonInbox.setPrice((float) 70);
+                    lessonInbox.setStudent(students.get(randomizer.nextInt(students.size())));
+                    lessonInbox.setTeacher(teacher1);
+                    lessonInbox.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet augue nisl. Sed ultrices rhoncus justo, in hendrerit turpis laoreet a.");
+                    lessonInbox.setDuration(Duration.ofHours(2));
+                    lessonInbox.setDateString("" + futureDateState0.getDate() + "/" + (futureDateState0.getMonth() + 1) + "/" + (futureDateState0.getYear() + 1900));
+                    lessonInbox.setDateTime(futureDateState0);
+                    lessonInbox.setSubject(subjects.get((new Random()).nextInt(subjects.size())));
+                    lessonInbox.save();
+
+                    Lesson nextLesson = new Lesson();
+                    nextLesson.setAddress(address[randomizer.nextInt(address.length)]);
+                    nextLesson.setLessonState(1);
+                    nextLesson.setPrice((float) 100);
+                    nextLesson.setStudent(students.get(randomizer.nextInt(students.size())));
+                    nextLesson.setTeacher(teacher1);
+                    nextLesson.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet augue nisl. Sed ultrices rhoncus justo, in hendrerit turpis laoreet a.");
+                    nextLesson.setDuration(Duration.ofHours(2));
+                    nextLesson.setDateString("" + futureDateState1.getDate() + "/" + (futureDateState1.getMonth() + 1) + "/" + (futureDateState1.getYear() + 1900));
+                    nextLesson.setDateTime(futureDateState1);
+                    nextLesson.setSubject(subjects.get((new Random()).nextInt(subjects.size())));
+                    nextLesson.save();
+
+                    Lesson lessonFinished = new Lesson();
+                    lessonFinished.setAddress(address[randomizer.nextInt(address.length)]);
+                    lessonFinished.setLessonState(1);
+                    lessonFinished.setPrice((float) 60);
+                    Student tempS = students.get(randomizer.nextInt(students.size()));
+                    lessonFinished.setStudent(tempS);
+                    lessonFinished.setTeacher(teacher1);
+                    lessonFinished.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet augue nisl. Sed ultrices rhoncus justo, in hendrerit turpis laoreet a.");
+                    lessonFinished.setDuration(Duration.ofHours(1));
+                    lessonFinished.setDateString("" + oldDateState1.getDate() + "/" + (oldDateState1.getMonth() + 1) + "/" + (oldDateState1.getYear() + 1900));
+                    lessonFinished.setDateTime(oldDateState1);
+                    lessonFinished.setSubject(subjects.get((new Random()).nextInt(subjects.size())));
+
+                    int rand = randomizer.nextInt(4);
+                    if (rand == 0) {
+                        generateTeacherReview(teacher1, lessonFinished, oldDateState1);
+                    } else if (rand == 1) {
+                        generateStudentReview(tempS, lessonFinished, oldDateState1);
+                    } else if (rand == 2) {
+                        generateTeacherReview(teacher1, lessonFinished, oldDateState1);
+                        generateStudentReview(tempS, lessonFinished, oldDateState1);
+                    }
+
+                    lessonFinished.save();
+                }
+            }
+
+            for (Student student1 : students){
+                for (int j = 0; j < 3; j++) {
+                    Date oldDateState1 = getOldDate(randomizer);
+                    Date futureDateState0 = getFutureDate(randomizer);
+                    Date futureDateState1 = getFutureDate(randomizer);
+
+                    Lesson lessonInbox = new Lesson();
+                    lessonInbox.setAddress(address[randomizer.nextInt(address.length)]);
+                    lessonInbox.setLessonState(0);
+                    lessonInbox.setPrice((float) 70);
+                    lessonInbox.setStudent(student1);
+                    lessonInbox.setTeacher(teachers.get(randomizer.nextInt(teachers.size())));
+                    lessonInbox.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet augue nisl. Sed ultrices rhoncus justo, in hendrerit turpis laoreet a.");
+                    lessonInbox.setDuration(Duration.ofHours(2));
+                    lessonInbox.setDateString("" + futureDateState0.getDate() + "/" + (futureDateState0.getMonth() + 1) + "/" + (futureDateState0.getYear() + 1900));
+                    lessonInbox.setDateTime(futureDateState0);
+                    lessonInbox.setSubject(subjects.get((new Random()).nextInt(subjects.size())));
+                    lessonInbox.save();
+
+                    Lesson nextLesson = new Lesson();
+                    nextLesson.setAddress(address[randomizer.nextInt(address.length)]);
+                    nextLesson.setLessonState(1);
+                    nextLesson.setPrice((float) 100);
+                    nextLesson.setStudent(student1);
+                    nextLesson.setTeacher(teachers.get(randomizer.nextInt(teachers.size())));
+                    nextLesson.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet augue nisl. Sed ultrices rhoncus justo, in hendrerit turpis laoreet a.");
+                    nextLesson.setDuration(Duration.ofHours(2));
+                    nextLesson.setDateString("" + futureDateState1.getDate() + "/" + (futureDateState1.getMonth() + 1) + "/" + (futureDateState1.getYear() + 1900));
+                    nextLesson.setDateTime(futureDateState1);
+                    nextLesson.setSubject(subjects.get((new Random()).nextInt(subjects.size())));
+                    nextLesson.save();
+
+                    Lesson lessonFinished = new Lesson();
+                    lessonFinished.setAddress(address[randomizer.nextInt(address.length)]);
+                    lessonFinished.setLessonState(1);
+                    lessonFinished.setPrice((float) 60);
+                    Teacher tempT = teachers.get(randomizer.nextInt(teachers.size()));
+                    lessonFinished.setStudent(student1);
+                    lessonFinished.setTeacher(tempT);
+                    lessonFinished.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet augue nisl. Sed ultrices rhoncus justo, in hendrerit turpis laoreet a.");
+                    lessonFinished.setDuration(Duration.ofHours(1));
+                    lessonFinished.setDateString("" + oldDateState1.getDate() + "/" + (oldDateState1.getMonth() + 1) + "/" + (oldDateState1.getYear() + 1900));
+                    lessonFinished.setDateTime(oldDateState1);
+                    lessonFinished.setSubject(subjects.get((new Random()).nextInt(subjects.size())));
+
+                    int rand = randomizer.nextInt(4);
+                    if (rand == 0) {
+                        generateTeacherReview(tempT, lessonFinished, oldDateState1);
+                    } else if (rand == 1) {
+                        generateStudentReview(student1, lessonFinished, oldDateState1);
+                    } else if (rand == 2) {
+                        generateTeacherReview(tempT, lessonFinished, oldDateState1);
+                        generateStudentReview(student1, lessonFinished, oldDateState1);
+                    }
+
+                    lessonFinished.save();
+                }
+            }
+
+            /*for (int i = 0; i < lessons.size(); i++) {
+                Date date = new Date((new Date()).getYear(), randomizer.nextInt(11), randomizer.nextInt(31) + 1);
                 int teacherNumber = (new Random()).nextInt(teachers.size());
                 int studentNumber = (new Random()).nextInt(students.size());
                 int addressNumber = randomizer.nextInt(address.length / 4);
 
 
-                lessons.get(i).setLessonState((date.before(new Date())) ? ((i % 2 == 0) ? 0 : 1) : 1);
+                lessons.get(i).setLessonState((date.before(new Date())) ? 1 : 0);
                 lessons.get(i).setPrice((float) (new Random()).nextInt(500));
                 lessons.get(i).setStudent(students.get(studentNumber));
                 lessons.get(i).setTeacher(teachers.get(teacherNumber));
@@ -71,17 +184,17 @@ public class Global extends GlobalSettings {
                 lessons.get(i).setDateString("" + (date.getDate()) + "/" + (date.getMonth()+1 )+ "/" + (date.getYear() + 1900));
                 lessons.get(i).setDateTime(date);
                 lessons.get(i).setSubject(subjects.get(randomizer.nextInt(subjects.size())));
-                if (date.after(new Date())) {
-                    lessons.get(i).setStudentReview(generateReview(1, date));//0 student
-                    lessons.get(i).setTeacherReview(generateReview(0, date));//1 teacher
-                    teachers.get(teacherNumber).setRanking((int) (teachers.get(teacherNumber).getRanking() + lessons.get(i).getTeacherReview().getStars()));
+                if (!date.after(new Date())) {
+                    generateTeacherReview(teachers.get(teacherNumber), lessons.get(i), date);
+                    generateStudentReview(students.get(studentNumber), lessons.get(i), date);
+
                     forRatingT[teacherNumber]++;
                     forRatingS[studentNumber]++;
                 }
                 lessons.get(i).save();
-            }
+            }*/
 
-            Date today = new Date();
+            /*Date today = new Date();
             for (int i = 0; i < students.size(); i++) {
                 int addressNumber = randomizer.nextInt(address.length / 4);
 
@@ -138,11 +251,10 @@ public class Global extends GlobalSettings {
                 forRatingT[i]++;
                 teachers.get(i).setRanking((int) (teachers.get(i).getRanking() + lessonComplete.getTeacherReview().getStars()));
                 lessonComplete.save();
-            }
-            for (int i = 0; i < teachers.size(); i++) {
-                teachers.get(i).setRanking((int) (teachers.get(i).getRanking() / (forRatingT[i])));
-                teachers.get(i).setLessonsDictated(forRatingT[i]);
-                teachers.get(i).save();
+            }*/
+
+            for (Teacher teacher : teachers) {
+                Teacher.updateLessonsDictated(teacher);
             }
 
         }
@@ -155,17 +267,45 @@ public class Global extends GlobalSettings {
             return array;
         }
 
-        private static Review generateReview(int i, Date date) {
+        private static void generateTeacherReview(Teacher teacher, Lesson lesson, Date date){
             int stars = (new Random()).nextInt(10);
             Review review = new Review();
-            review.setComment((i == 1) ? generateReviewsT()[stars] : generateReviewsS()[stars]);
+            review.setComment(generateCommentsForTeacher()[stars]);
             review.setDate(date);
-            review.setStars((long) (stars / 2));
+            review.setStars((long) ((stars + 1) / 2));
             review.save();
-            return review;
+
+            User temp = teacher.getUser();
+            temp.addStars((long) ((stars + 1) / 2));
+            temp.incrementReviews();
+            temp.save();
+
+            teacher.setUser(temp);
+            teacher.save();
+
+            lesson.setTeacherReview(review);
         }
 
-        private static String[] generateReviewsS() {
+        private static void generateStudentReview(Student student, Lesson lesson, Date date){
+            int stars = (new Random()).nextInt(10);
+            Review review = new Review();
+            review.setComment(generateCommentsForStudent()[stars]);
+            review.setDate(date);
+            review.setStars((long) ((stars + 1) / 2));
+            review.save();
+
+            User temp = student.getUser();
+            temp.addStars((long) ((stars + 1) / 2));
+            temp.incrementReviews();
+            temp.save();
+
+            student.setUser(temp);
+            student.save();
+
+            lesson.setStudentReview(review);
+        }
+
+        private static String[] generateCommentsForTeacher() {
             String[] comment = {
                     "UN DESASTRE, LLEGO TARDE Y NO EXPLICO NADA"
                     , "No aparecio"
@@ -183,7 +323,7 @@ public class Global extends GlobalSettings {
             return comment;
         }
 
-        private static String[] generateReviewsT() {
+        private static String[] generateCommentsForStudent() {
             String[] comment = {
                     "No presto atencion"
                     , "No se esfuerza"
@@ -228,7 +368,7 @@ public class Global extends GlobalSettings {
                     userT.setGender("male");
                     userT.setSecureAnswer("Hola");
                     userT.setSecureQuestion("Mundo");
-                    userT.setSubjects(subjects.subList(0,randomizer.nextInt(subjects.size())));
+                    userT.setSubjects(subjects.subList(0, randomizer.nextInt(subjects.size())));
                     userT.save();
                     Teacher teacher = new Teacher();
                     teacher.setUser(userT);
@@ -305,7 +445,6 @@ public class Global extends GlobalSettings {
             return names;
         }
 
-
         private static String[] generateSubjects() {
             String[] subjectList = {"Análisis Matemático I", "Análisis Matemático II", "Análisis Matemático III",
                     "Programación I", "Programación II", "Álgebra I", "Álgebra II", "Física I", "Física II", "Física III",
@@ -314,6 +453,7 @@ public class Global extends GlobalSettings {
             };
             return subjectList;
         }
+
 
         private static String[] generateAnAddress() {
             String[] address = {
@@ -327,6 +467,22 @@ public class Global extends GlobalSettings {
                     "Defensa 1431, San Telmo, Buenos Aires"
             };
             return address;
+        }
+
+        private static Date getOldDate(Random random) {
+            Calendar c = Calendar.getInstance();
+            c.setTime(new Date()); // Now use today date.
+            c.add(Calendar.DATE, (random.nextInt(15) * -1) - 1); // Subtract 1 to 15 days
+
+            return new Date(c.get(Calendar.YEAR) - 1900, c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+        }
+
+        private static Date getFutureDate(Random random) {
+            Calendar c = Calendar.getInstance();
+            c.setTime(new Date()); // Now use today date.
+            c.add(Calendar.DATE, random.nextInt(15) + 1); // Adds from 1 to 15 days
+
+            return new Date(c.get(Calendar.YEAR) - 1900, c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
         }
     }
 }

@@ -47,7 +47,10 @@ public class TeacherProfiles extends Controller {
     }
 
     public static Result getTeacher() {
-        return ok(Json.toJson(Teacher.getTeacher(idTeacher())));
+        Teacher temp = Teacher.getTeacher(idTeacher());
+        Teacher.updateRating(temp);
+
+        return ok(Json.toJson(temp));
     }
 
     public static Result getBestSubjects(){

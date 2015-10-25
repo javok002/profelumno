@@ -113,7 +113,7 @@ public class Teacher extends Model {
         this.description = description;
     }
 
-    public void setRanking(int ranking) {
+    public void setRanking(float ranking) {
         this.ranking = ranking;
     }
 
@@ -162,12 +162,12 @@ public class Teacher extends Model {
     }
 
     public static void updateRating(Teacher teacher){
-        int lessonsRated = 0;
-        int totalScore = 0;
+        float lessonsRated = 0;
+        float totalScore = 0;
         for (Lesson lesson : Lesson.list()) {
-            if(Objects.equals(lesson.getTeacher().getId(), teacher.getId()) && lesson.getStudentReview() != null){
+            if(Objects.equals(lesson.getTeacher().getId(), teacher.getId()) && lesson.getTeacherReview() != null){
                 lessonsRated++;
-                totalScore+= lesson.getStudentReview().getStars();
+                totalScore+= lesson.getTeacherReview().getStars();
             }
         }
         teacher.setRanking(lessonsRated == 0 ? 0: totalScore/lessonsRated);
