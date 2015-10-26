@@ -63,8 +63,8 @@ public class Lessons extends Controller {
         lesson.setTeacherReview(null);
         lesson.setStudentReview(null);
         lesson.setLessonState(0);
-        lesson.save();
         notifyTeacher(teacher.getUser().getEmail());
+        lesson.save();
         return ok(); //todo redireccionar al index
     }
 

@@ -157,15 +157,15 @@ public class TeacherProfiles extends Controller {
         List<Lesson> nextLessons = new ArrayList<>();
         Date date = new Date();
         for (int i = 0; i <lessons.size() ; i++) {
-            if (nextLessons.size() <= 6) {
+            //if (nextLessons.size() <= 6) {
                 Lesson aux = lessons.get(i);
                 if (aux.getDateTime().after(date) && aux.getLessonState() == 1) {
                     nextLessons.add(aux);
                 }
-            }
-            else {
-                break;
-            }
+            //}
+            //else {
+             //   break;
+            //}
         }
         return ok(Json.toJson(nextLessons));
     }
