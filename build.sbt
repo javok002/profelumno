@@ -38,7 +38,7 @@ lazy val delete = (project in file("modules/delete"))
 
 lazy val teacherSubscription = (project in file("modules/teacher-subscription"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(teacherProfile, common)
+  .dependsOn(teacherProfile, common, mailSender)
 
 lazy val hireLesson = (project in file("modules/hire-lesson"))
   .enablePlugins(PlayJava, PlayEbean)
