@@ -8,6 +8,7 @@ app.controller("ContactController", ['$http', '$scope', function ($http, $scope)
     $scope.sending = false;
     $scope.sent = false;
     $scope.disable = false;
+    $scope.failed = false;
 
     $scope.submit = function () {
         $scope.disable = true;
@@ -18,7 +19,7 @@ app.controller("ContactController", ['$http', '$scope', function ($http, $scope)
                 $scope.sent = true;
             })
             .error(function (data) {
-                alert(data);
+                $scope.failed = true;
             });
     };
 
