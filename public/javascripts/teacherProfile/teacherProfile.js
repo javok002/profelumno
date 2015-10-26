@@ -19,6 +19,10 @@ angular.module('app', [])
                 });
             $http.get('/teacher-profile/previous-lessons')
                 .success(function (data) {
+                    data.forEach(function(lesson) {
+                        var split = lesson.date.split('/');
+                        lesson.dateTime = new Date(split[1], split[0], split[2]);
+                    });
                     $scope.prevLessons = data;
                 })
                 .error(function (data) {
