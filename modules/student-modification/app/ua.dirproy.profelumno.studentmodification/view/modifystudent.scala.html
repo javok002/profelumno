@@ -26,6 +26,10 @@
                                     </div>
                                 </div>
                                 <div class="box-footer">
+                                    <div class="isa_error" ng-show="invalidFile">
+                                        <i class="fa fa-times-circle"></i>
+                                        El archivo no es una foto.
+                                    </div>
                                     <form role="form" ng-submit="uploadFile()" enctype="multipart/form-data" name="modifyForm">
                                         <input id="inputFile" class="btn btn-info buttonAlign" type="file" name="file" ng-model="edit.fileToUpload" file-model="fileToUpload" accept="image/*" ng-show="false" custom-on-change="uploadFile" required/> @*onchange="angular.element(this).scope().submitImage(this.files)"/>*@
                                         <div class="btn-group buttonAlign" role="group">

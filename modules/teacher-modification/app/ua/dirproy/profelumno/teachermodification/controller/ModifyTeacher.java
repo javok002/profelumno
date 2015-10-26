@@ -173,7 +173,7 @@ public class ModifyTeacher extends Controller {
                 }
             }
         }
-        return ok("yfvygfvyg");
+        return badRequest();
     }
 
     public static Result savePassword() {

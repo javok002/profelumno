@@ -151,6 +151,7 @@ app.controller("EditController", ['$rootScope', '$http','$scope', 'fileUpload',f
         studentAge: false,
         taken:false
     };
+    $scope.invalidFile=false;
 
     var verify = function() {
         var today = new Date();
@@ -393,6 +394,7 @@ app.service('fileUpload', ['$http', function ($http) {
                 window.location.href = "/modify-student/edit";
             })
             .error(function () {
+                scope.invalidFile=true;
             });
     }
 }]);

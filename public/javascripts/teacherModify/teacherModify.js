@@ -83,6 +83,7 @@ app.controller('TeacherInfoController', ['$rootScope', '$scope', '$http', 'fileU
         teacherAge: false,
         taken:false
     };
+    $scope.invalidFile=false;
     var verify = function () {
         var today = new Date();
         var birthday = $scope.date;
@@ -296,6 +297,7 @@ app.service('fileUpload', ['$http', function ($http) {
                 //window.location.href=data;
             })
             .error(function () {
+                scope.invalidFile=true;
             });
     }
 }]);
