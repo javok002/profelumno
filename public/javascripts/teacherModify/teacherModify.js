@@ -22,7 +22,10 @@ app.controller('TeacherInfoController', ['$rootScope', '$scope', '$http', 'fileU
         .success(function (data, status, headers, config) {
             edit.u = data;
             $scope.search = edit.u.user.address+"";
-            if(edit.u.user.address == "") $scope.gotoCurrentLocation();
+            if($scope.search == "" || $scope.search == "null"){
+                $scope.search = "";
+                $scope.gotoCurrentLocation();
+            }
 
             $scope.date=new Date(edit.u.user.birthday);
             $scope.renewalDate=new Date(edit.u.renewalDate);

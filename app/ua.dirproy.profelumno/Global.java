@@ -2,10 +2,12 @@ package ua.dirproy.profelumno;
 
 import play.Application;
 import play.GlobalSettings;
+import play.libs.Akka;
 import ua.dirproy.profelumno.common.models.Lesson;
 import ua.dirproy.profelumno.common.models.Review;
 import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
+import ua.dirproy.profelumno.recommend.controllers.Recommend;
 import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
 
@@ -21,6 +23,7 @@ public class Global extends GlobalSettings {
     @Override
     public void beforeStart(Application app) {
         InitialData.insert(app);
+        //Recommend.weMissyou();
     }
 
     static class InitialData {

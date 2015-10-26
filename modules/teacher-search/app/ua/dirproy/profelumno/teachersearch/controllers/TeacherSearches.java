@@ -87,4 +87,5 @@ public class TeacherSearches extends Controller {
         return home && !teacher.getHomeClasses();
     }
 
+
 }

@@ -8,6 +8,9 @@ import play.mvc.Result;
 import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.user.models.User;
+
+import java.util.Date;
+
 import static play.mvc.Controller.session;
 
 /**
@@ -34,6 +37,15 @@ public class AuthenticateAction extends Action<Authenticate> {
         }
         if (teacher != null) {
             if (check(Teacher.class)) {
+                Date date=new Date();
+                if(teacher.getRenewalDate() != null && (!(path.equals("/subscription/endTrial"))) && !(path.equals("/subscription/charge"))){
+                    if (date.after(teacher.getRenewalDate()) && teacher.isInTrial()){
+                        if(path.equals("/subscription/cardNumber")){
+                            return delegate.call(context);
+                        }
+                        return F.Promise.pure(redirect("/subscription/endTrial"));
+                    }
+                }
                 if (!teacher.hasCard() &&(!(path.equals("/subscription")))){
                     if(path.equals("/subscription/cardNumber")||path.equals("/subscription/validate")){
                         return delegate.call(context);

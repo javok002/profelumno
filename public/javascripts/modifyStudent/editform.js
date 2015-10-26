@@ -16,7 +16,11 @@ app.controller("EditController", ['$rootScope', '$http','$scope', 'fileUpload',f
         success(function(data, status, headers, config) {
             edit.u= data;
             $scope.search = edit.u.user.address+"";
-            if(edit.u.user.address == "") $scope.gotoCurrentLocation();
+            if($scope.search == "" || $scope.search == "null"){
+                $scope.search = "";
+                $scope.gotoCurrentLocation();
+
+            }
 
             $scope.date=new Date(edit.u.user.birthday);
             $scope.geoCode();
