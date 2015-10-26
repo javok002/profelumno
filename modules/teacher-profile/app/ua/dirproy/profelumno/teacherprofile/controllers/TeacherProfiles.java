@@ -73,8 +73,8 @@ public class TeacherProfiles extends Controller {
             for (int p = 0; p <lessons.size() ; p++) {
                 Lesson lesson = lessons.get(p);
                 if (subject != null && lesson != null && subject.equals(lesson.getSubject())){
-                    if(lesson.getStudentReview()!=null) {
-                        listLong.add(lesson.getStudentReview().getStars());
+                    if(lesson.getTeacherReview()!=null) {
+                        listLong.add(lesson.getTeacherReview().getStars());
                     }
                 }
             }
@@ -157,15 +157,15 @@ public class TeacherProfiles extends Controller {
         List<Lesson> nextLessons = new ArrayList<>();
         Date date = new Date();
         for (int i = 0; i <lessons.size() ; i++) {
-            if (nextLessons.size() <= 6) {
+            //if (nextLessons.size() <= 6) {
                 Lesson aux = lessons.get(i);
                 if (aux.getDateTime().after(date) && aux.getLessonState() == 1) {
                     nextLessons.add(aux);
                 }
-            }
-            else {
-                break;
-            }
+            //}
+            //else {
+             //   break;
+            //}
         }
         return ok(Json.toJson(nextLessons));
     }

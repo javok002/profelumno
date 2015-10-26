@@ -14,7 +14,6 @@ import javax.mail.*;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -40,7 +39,6 @@ public class AcceptLesson extends Controller {
 
     public static Result decision(String answer, String stringLessonId) throws MessagingException {
         boolean answerBool;
-        System.out.println(answer);
         switch (answer) {
             case "true":
                 answerBool = true;
