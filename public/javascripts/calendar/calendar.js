@@ -20,6 +20,6 @@ angular.module('app', [])
 
 $(function() {
     $('#calendar').fullCalendar({
-
+        lang: 'es'
     });
 });

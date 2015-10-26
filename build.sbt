@@ -81,14 +81,18 @@ lazy val recommend = (project in file("modules/recommend"))
   .dependsOn(mailSender, common)
 
 
+lazy val chat = (project in file("modules/chat"))
+  .enablePlugins(PlayJava, PlayEbean)
+  .dependsOn(common)
+
 lazy val root = (project in file("."))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(common, studentProfile, studentModification, users, teacherProfile, teacherSubscription, register, delete,
     passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture, loginout, lessonReview,
-    contactForm, institutional, calendar, recommend)
+    contactForm, institutional, calendar, chat, recommend)
   .aggregate(common, studentProfile, studentModification, users, teacherProfile, teacherSubscription, register, delete,
     passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture, loginout, lessonReview,
-    contactForm, institutional, calendar, recommend)
+    contactForm, institutional, calendar, chat, recommend)
 
 
 scalaVersion := "2.11.6"
