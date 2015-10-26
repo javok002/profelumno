@@ -23,6 +23,7 @@ GET        /                         ua.dirproy.profelumno.controllers.Applicati
 ->         /review-lesson            lessonReview.Routes
 ->         /student-profile          studentProfile.Routes
 ->         /institutional            institutional.Routes
+->         /calendar                 calendar.Routes
 ->         /chat                     chat.Routes
 
 # Map static resources from the /public folder to the /assets URL path

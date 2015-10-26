@@ -40,6 +40,10 @@ public class Common extends Controller {
         return userIsStudent() ? "/student-profile/student-dashboard" : "/teacher-profile";
     }
 
+    public static String calendarUrl() {
+        return "/calendar";
+    }
+
     public static Html sidebarContent() {
         return userIsTeacher() ? teacherSidebarContent.render() : studentSidebarContent.render();
     }

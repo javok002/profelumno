@@ -16,6 +16,10 @@ lazy val teacherProfile = (project in file("modules/teacher-profile"))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(users, common, mailSender)
 
+lazy val calendar = (project in file("modules/calendar"))
+  .enablePlugins(PlayJava, PlayEbean)
+  .dependsOn(users, common)
+
 lazy val studentProfile = (project in file("modules/student-profile"))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(users, common)
@@ -80,10 +84,10 @@ lazy val root = (project in file("."))
   .enablePlugins(PlayJava, PlayEbean)
   .dependsOn(common, studentProfile, studentModification, users, teacherProfile, teacherSubscription, register, delete,
     passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture, loginout, lessonReview,
-    contactForm, institutional, chat)
+    contactForm, institutional, calendar, chat)
   .aggregate(common, studentProfile, studentModification, users, teacherProfile, teacherSubscription, register, delete,
     passwordRecovery, mailSender, teacherModification, teacherSearch, hireLesson, architecture, loginout, lessonReview,
-    contactForm, institutional, chat)
+    contactForm, institutional, calendar, chat)
 
 
 scalaVersion := "2.11.6"
