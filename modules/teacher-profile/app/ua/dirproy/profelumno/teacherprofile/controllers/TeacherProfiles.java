@@ -73,8 +73,8 @@ public class TeacherProfiles extends Controller {
             for (int p = 0; p <lessons.size() ; p++) {
                 Lesson lesson = lessons.get(p);
                 if (subject != null && lesson != null && subject.equals(lesson.getSubject())){
-                    if(lesson.getStudentReview()!=null) {
-                        listLong.add(lesson.getStudentReview().getStars());
+                    if(lesson.getTeacherReview()!=null) {
+                        listLong.add(lesson.getTeacherReview().getStars());
                     }
                 }
             }
