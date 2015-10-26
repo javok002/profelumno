@@ -12,7 +12,6 @@ angular.module('app', [])
                     var date = new Date(data.renewalDate);
                     data.renewalDate = dateToString(date);
                     data.subscription = data.subscription.substring(data.subscription.length - 4);
-                    data.ranking = data.ranking.toFixed(2);
                     $scope.teacher = data;
                 })
                 .error(function (data) {
