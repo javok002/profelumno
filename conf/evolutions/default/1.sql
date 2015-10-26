@@ -66,6 +66,7 @@ create table user (
   email                     varchar(255),
   password                  varchar(255),
   birthday                  timestamp,
+  last_login                timestamp,
   gender                    varchar(255),
   address                   varchar(255),
   latitude                  varchar(255),

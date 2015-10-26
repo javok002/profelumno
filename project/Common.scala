@@ -13,6 +13,7 @@ object Common {
   val dependencies = Seq(
     javaJdbc,
     cache,
-    "org.webjars.bower" % "angular" % "1.4.3"
+    "org.webjars.bower" % "angular" % "1.4.3",
+    "joda-time" % "joda-time" % "2.9"
   )
 }
