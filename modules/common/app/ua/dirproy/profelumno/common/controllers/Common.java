@@ -56,4 +56,9 @@ public class Common extends Controller {
         return Ebean.find(User.class, Long.parseLong(session("id"))).getName();
     }
 
+
+    // get the ws.js script
+    public static Result wsJs() {
+        return ok(ua.dirproy.profelumno.common.views.js.ws.render());
+    }
 }
