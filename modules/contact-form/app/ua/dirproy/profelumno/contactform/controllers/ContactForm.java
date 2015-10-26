@@ -29,7 +29,7 @@ public class ContactForm extends Controller {
 
         String messageToSend = "New message from: " + name + "\nAt: " + email + "\n\n" + message;
         try {
-            MailSenderUtil.send(new String[]{"emailToSendTo@email.com"}, subject, messageToSend);
+            MailSenderUtil.send(new String[]{"francisco.di@ing.austral.edu.ar"}, subject, messageToSend);
         } catch (Exception e) {
             e.printStackTrace();
         }
