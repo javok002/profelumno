@@ -12,6 +12,7 @@ import ua.dirproy.profelumno.teacherprofile.views.html.teacherProfile;
 import ua.dirproy.profelumno.user.models.Subject;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 
 @Authenticate({Teacher.class})
 public class TeacherProfiles extends Controller {
@@ -80,7 +81,7 @@ public class TeacherProfiles extends Controller {
             subjectList.put(subject,listLong);
         }
 
-        Map<String, Long> result;
+        Map<String, Long> avgMap;
         boolean isEmpty = true;
 
         for (int i = 0; i <subjects.size() ; i++) {
@@ -90,10 +91,18 @@ public class TeacherProfiles extends Controller {
         }
 
         if (isEmpty){
-            result = new HashMap<>();
+            avgMap = new HashMap<>();
         }else {
-            result = mapProm(subjectList, subjects);
+            avgMap = mapProm(subjectList, subjects);
         }
+
+        ArrayNode result = Json.newArray();
+        avgMap.forEach((subject, rating) -> {
+            ObjectNode obj = Json.newObject();
+            obj.put("name", subject);
+            obj.put("score", rating);
+            result.add(obj);
+        });
 
         return ok(Json.toJson(result));
     }
