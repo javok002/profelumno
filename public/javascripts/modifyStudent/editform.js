@@ -4,12 +4,13 @@
 var app=angular.module( 'EditForm', ['ngTagsInput'] );
 var arrAddress;
 
-app.controller("EditController", ['$http','$scope', 'fileUpload',function($http,$scope, fileUpload){
+app.controller("EditController", ['$rootScope', '$http','$scope', 'fileUpload',function($rootScope, $http,$scope, fileUpload){
     edit=this;
     edit.u={};
     edit.u.user={};
     edit.u.user.subjects=[];
     $scope.imageUrl='';
+    $scope.hasImage=true;
 
     $http.get("user").
         success(function(data, status, headers, config) {
@@ -35,9 +36,10 @@ app.controller("EditController", ['$http','$scope', 'fileUpload',function($http,
     $http.get('img')
         .success(function (data, status, headers, config) {
             $scope.imageUrl=data;
+            $scope.hasImage=true;
         }).
         error(function (data, status, headers, config) {
-            // log error
+            $scope.hasImage=false;
         });
 
     //TAGS
@@ -388,10 +390,19 @@ app.service('fileUpload', ['$http', function ($http) {
             headers: {'Content-Type': undefined}
         })
             .success(function (data, status, headers, config) {
-                edit.u.user.profilePicture = data;
-                scope.imageUrl=data;
+                window.location.href = "/modify-student/edit";
             })
             .error(function () {
             });
     }
 }]);
+
+app.directive('customOnChange', function() {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var onChangeHandler = scope.$eval(attrs.customOnChange);
+            element.bind('change', onChangeHandler);
+        }
+    };
+});

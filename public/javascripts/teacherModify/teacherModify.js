@@ -93,6 +93,7 @@ app.controller('TeacherInfoController', ['$rootScope', '$scope', '$http', 'fileU
     $scope.back=function(){
         window.location.href = "/teacher-profile"
     };
+
     $scope.selectFile=function(){
         angular.element($('#inputFile')).trigger('click');
     };
@@ -289,7 +290,7 @@ app.service('fileUpload', ['$http', function ($http) {
             headers: {'Content-Type': undefined}
         })
             .success(function (data, status, headers, config) {
-                window.location.href = "/modify-teacher"
+                window.location.href = "/modify-teacher";
                 /*edit.u.user.profilePicture = data;
                 scope.imageUrl=data;*/
                 //window.location.href=data;
