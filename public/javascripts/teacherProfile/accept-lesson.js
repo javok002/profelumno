@@ -40,30 +40,21 @@ app.controller('AcceptController', ['$scope', '$http', function ($scope, $http) 
     };
     $scope.setDecision = function (lesson) {
         $scope.decisionLesson = lesson;
+        $scope.succeeded = false;
+        $scope.error = false;
         document.getElementById('display-decision').click();
 
     };
     $scope.decision = function (lessonId, answer) {
-        if (answer == true) {
-            document.getElementById("acceptLesson").innerHTML = '<span><i class="fa fa-spinner fa-pulse"></i></span>';
-        } else {
-            document.getElementById("rejectLesson").innerHTML = '<span><i class="fa fa-spinner fa-pulse"></i></span>';
-
-        }
-        document.getElementById("acceptLesson").disabled = true;
-        document.getElementById("rejectLesson").disabled = true;
+        document.getElementById('dismiss-modal').click();
+        document.getElementById('showModal').click();
         $http.get("/teacher-profile/decision?answer=" + answer + "&stringLessonId=" + lessonId)
             .success(function () {
                 loadLessons($http, $scope);
-                document.getElementById('dismiss-modal').click();
-                document.getElementById('showModal').click();
-                document.getElementById("acceptLesson").innerHTML = 'Aceptar';
-                document.getElementById("rejectLesson").innerHTML = 'Rechazar';
-                document.getElementById("acceptLesson").disabled = false;
-                document.getElementById("rejectLesson").disabled = false;
+                $scope.succeeded = true;
             })
             .error(function () {
-                //todo
+                $scope.error = true;
             });
     };
 }]);
