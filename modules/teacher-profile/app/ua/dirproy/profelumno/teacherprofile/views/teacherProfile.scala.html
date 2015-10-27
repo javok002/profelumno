@@ -126,6 +126,14 @@
                                         <span class="info-box-text">{{ lesson.subject }} a {{ lesson.studentName }}</span>
                                         <span class="info-box-number">{{ lesson.date }}</span>
                                         <button type="button" data-toggle="modal" data-target="#makeReviewModal" ng-show="lesson.review" ng-click="setModal($index)" class="btn btn-primary">Calificar alumno</button>
+                                        <span ng-hide="lesson.review || lesson.score == -1">
+                                            <i style="color: gold" class="fa fa-star" ng-repeat="i in times(lesson.score) track by $index"></i>
+                                            <i style="color: #FFF3B4" class="fa fa-star" ng-repeat="i in times(5 - lesson.score) track by $index"></i>
+                                            {{ lesson.score }}
+                                        </span>
+                                        <span ng-hide="lesson.review || lesson.score != -1">
+                                            Todavía no te calificaron!
+                                        </span>
                                     </div><!-- /.info-box-content -->
                                 </div><!-- /.info-box -->
                             </div>

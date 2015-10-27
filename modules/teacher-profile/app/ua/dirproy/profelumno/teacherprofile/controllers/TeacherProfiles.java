@@ -7,12 +7,12 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import ua.dirproy.profelumno.common.models.Lesson;
+import ua.dirproy.profelumno.common.models.Review;
 import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.teacherprofile.views.html.teacherProfile;
 import ua.dirproy.profelumno.user.models.Subject;
 
 import java.util.*;
-import java.util.function.BiConsumer;
 
 @Authenticate({Teacher.class})
 public class TeacherProfiles extends Controller {
@@ -189,6 +189,8 @@ public class TeacherProfiles extends Controller {
             node.put("studentEmail", temp.getStudent().getUser().getEmail());
             node.put("idLesson", temp.getId());
             node.put("review", temp.getStudentReview() == null);
+            Review teacherReview = temp.getTeacherReview();
+            node.put("score", teacherReview != null ? teacherReview.getStars() : -1);
             results.add(node);
         }
         return ok(results);

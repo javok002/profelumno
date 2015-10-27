@@ -4,7 +4,7 @@
 angular.module('app', [])
     .controller('DashboardController', ['$scope', '$http', function ($scope, $http) {
 
-        $scope.times = function(number) { return new Array(number) };
+        $scope.times = function(number) { return number <= 0 ? new Array(0) : new Array(number) };
 
         $scope.init = function () {
             $http.get('/teacher-profile/teacher')
@@ -12,6 +12,7 @@ angular.module('app', [])
                     var date = new Date(data.renewalDate);
                     data.renewalDate = dateToString(date);
                     data.subscription = data.subscription.substring(data.subscription.length - 4);
+                    data.ranking = data.ranking.toFixed(2);
                     $scope.teacher = data;
                 })
                 .error(function (data) {
