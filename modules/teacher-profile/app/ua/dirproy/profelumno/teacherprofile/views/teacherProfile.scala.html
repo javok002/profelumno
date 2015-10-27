@@ -118,7 +118,7 @@
                         </div><!-- /.box-header -->
                         <div class="box-body bg-gray-light">
                             <span ng-show="prevLessons.length == 0">No hay información disponible</span>
-                            <div class="col-md-4 col-sm-6" ng-repeat="lesson in prevLessons | orderBy:'dateTime'">
+                            <div class="col-md-4 col-sm-6" ng-repeat="lesson in prevLessons">
                                 <div class="info-box">
                                         <!-- Apply any bg-* class to to the icon to color it -->
                                     <span class="info-box-icon bg-yellow"><i class="fa fa-calendar-check-o"></i></span>

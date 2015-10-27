@@ -7,6 +7,7 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import ua.dirproy.profelumno.common.models.Lesson;
+import ua.dirproy.profelumno.common.models.LessonComparator;
 import ua.dirproy.profelumno.common.models.Review;
 import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.teacherprofile.views.html.teacherProfile;
@@ -168,11 +169,20 @@ public class TeacherProfiles extends Controller {
 
     public static Result getPreviousLessons(){
         final Long userId = Long.parseLong(session().get("id"));
-        Iterator<Lesson> previousLessons = getPreviousLessons(userId);
+        Iterator<Lesson> previousLessonsAux = getPreviousLessons(userId);
+
+        List<Lesson> previousLessons = new ArrayList<>();
+        while (previousLessonsAux.hasNext()){
+            final Lesson lesson = previousLessonsAux.next();
+            previousLessons.add(lesson);
+        }
+
+        Collections.sort(previousLessons,new LessonComparator());
 
         final ArrayNode results = Json.newArray();
-        while (previousLessons.hasNext()){
-            final Lesson temp = previousLessons.next();
+
+        for (int i = 0; i <previousLessons.size() ; i++) {
+            final Lesson temp = previousLessons.get(i);
             final ObjectNode node = Json.newObject();
 
             node.put("date", temp.getDateTime().getDate() + "/"
@@ -193,6 +203,8 @@ public class TeacherProfiles extends Controller {
             node.put("score", teacherReview != null ? teacherReview.getStars() : -1);
             results.add(node);
         }
+
+
         return ok(results);
     }
 
