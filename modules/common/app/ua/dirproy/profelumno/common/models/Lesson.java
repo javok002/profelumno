@@ -4,14 +4,12 @@ import com.avaje.ebean.Model;
 import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.sql.Time;
 import java.time.Duration;
 import java.util.Date;
 import java.util.List;
+
 
 /**
  * Created by Paca on 9/12/15.
@@ -32,12 +30,12 @@ public class Lesson extends Model {
 
     @ManyToOne
     private Teacher teacher;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Review teacherReview; //Calificacion al teacher
 
     @ManyToOne
     private Student student;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Review studentReview; //Calificacion al student
 
     public static Finder<Long, Lesson> finder = new Finder<>(Lesson.class);

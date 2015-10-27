@@ -81,7 +81,7 @@ public class TeacherProfiles extends Controller {
             subjectList.put(subject,listLong);
         }
 
-        Map<String, Long> avgMap;
+        ArrayNode result;
         boolean isEmpty = true;
 
         for (int i = 0; i <subjects.size() ; i++) {
@@ -91,24 +91,16 @@ public class TeacherProfiles extends Controller {
         }
 
         if (isEmpty){
-            avgMap = new HashMap<>();
+            result = Json.newArray();
         }else {
-            avgMap = mapProm(subjectList, subjects);
+            result = mapProm(subjectList, subjects);
         }
-
-        ArrayNode result = Json.newArray();
-        avgMap.forEach((subject, rating) -> {
-            ObjectNode obj = Json.newObject();
-            obj.put("name", subject);
-            obj.put("score", rating);
-            result.add(obj);
-        });
 
         return ok(Json.toJson(result));
     }
 
-    private static Map<String, Long> mapProm(Map<Subject,List<Long>> subjectListLong,List<Subject> subjects) {
-        Map<String, Long> bestSubjects = new HashMap<>();
+    private static ArrayNode mapProm(Map<Subject,List<Long>> subjectListLong,List<Subject> subjects) {
+        ArrayNode bestSubjects = Json.newArray();
         Map<String, Long> aux = new HashMap<>();
         List<Long> listProm = new ArrayList<>();
         for (int i = 0; i <subjectListLong.size() ; i++) {
@@ -129,7 +121,11 @@ public class TeacherProfiles extends Controller {
                     long value = aux.get(subject);
                     if (bestSubjects.size() < 3) {
                         if (value >= prom) {
-                            bestSubjects.put(subject, value);
+                            ObjectNode obj = Json.newObject();
+                            obj.put("name", subject);
+                            obj.put("score", value);
+                            bestSubjects.add(obj);
+                            aux.remove(subject);
                         }
                     } else {
                         break;
