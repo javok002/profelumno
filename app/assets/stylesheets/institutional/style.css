@@ -682,13 +682,15 @@ button[type="submit"].light:hover {
 
 .navbar {
 	line-height: 100px;
-	height: 100px;
-	background-color: rgba(5,42,2,0.4);
+	width: 170px;
+	height: 100%;
+	background-color: #000;
 	display: block;
 	vertical-align: middle;
 	text-align: center;
 	margin-bottom: 0;
 	padding-bottom:0;
+	position: fixed;
 }
 
 .navbar .navbar-collapse {
@@ -758,7 +760,7 @@ h1 a.navbar-brand {
 	color: #fff;
 	font-weight: 300;
 	text-shadow: none;
-	margin-left: 40px;
+	margin-left: 10px;
 }
 
 .navbar-brand {
@@ -1737,10 +1739,10 @@ Media queries
 @media (max-width: 767px) {
 
 	.navbar.navbar-fixed-top {
-		background-color:rgba(0,0,0,1);
+		/*background-color:rgba(0,0,0,1);*/
 	}
 	.navbar .navbar-collapse ul.nav {
-		background-color: #444;
+		/*background-color: #444;*/
 		width: 100%;
 		float: none;
 		margin:0;
