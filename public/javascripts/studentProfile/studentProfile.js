@@ -4,6 +4,10 @@ angular.module('studentProfile', [])
     .controller('StudentCtrl',['$scope', '$http', function($scope, $http) {
         $scope.classes = ['danger', 'info', 'warning', 'success'];
         $http.get('/student-profile/get-info').then(function(data) {
+            data.data.rating[0] = data.data.rating[0].toFixed(2);
+            data.data.Teachers.forEach(function (teacher){
+                teacher.ranking = teacher.ranking.toFixed(2);
+            });
             $scope.data = data.data;
         });
         $http.get('/student-profile/get-student').success(function(user) {
@@ -15,7 +19,12 @@ angular.module('studentProfile', [])
         };
 
         $scope.times = function(num) {
-            return new Array(num);
+            var n = parseInt(parseFloat(num) + 0.5);
+            var a = [];
+            for (var i = 0; i < n; i++){
+                a.push(0);
+            }
+            return a;
         };
         $scope.setModal = function(index){
             var prevLesson = $scope.data.LessonsNoRating[index];

@@ -62,8 +62,9 @@ public class StudentProfile extends Controller {
         }
 
         //rating del alumno
-        final ArrayList<Long> rating = new ArrayList<>();
-        long temp = student.getReviews() == 0 ? 0 : (long)((((float) student.getTotalStars()) / student.getReviews()) + 0.5);
+        final ArrayList<Float> rating = new ArrayList<>();
+        float temp = student.getReviews() == 0 ? 0 :
+                ((float)((long)(((((float) student.getTotalStars()) / student.getReviews()) * 100) + 0.5)) / 100);
         rating.add(temp);
 
         //map que voy a devolver

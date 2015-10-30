@@ -52,7 +52,7 @@ create table teacher (
   has_card                  boolean,
   description               varchar(255),
   home_classes              boolean,
-  ranking                   bigint,
+  ranking                   float,
   lessons_dictated          integer,
   price                     double,
   constraint uq_teacher_user_id unique (user_id),

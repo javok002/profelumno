@@ -30,6 +30,9 @@ teacherSearchApp.controller("searchController", function($scope, $http) {
                 //$scope.origin = new google.maps.LatLng(response.data[1], response.data[2]);
                 $scope.studentAdress = response.data[1];
                 $scope.teachers = response.data[0];
+                $scope.teachers.forEach(function(teacher){
+                    teacher.ranking = teacher.ranking.toFixed(2);
+                });
                 $scope.showResults = true;
                 $scope.currentPage = 1;
                 //$scope.teachers.sort(sortTeachersByDirection);
