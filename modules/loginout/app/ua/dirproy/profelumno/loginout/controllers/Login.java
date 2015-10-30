@@ -40,6 +40,7 @@ public class Login extends Controller {
         }
         else{
             session("id", Long.toString(user1.getId()));
+            user1.setLastLogin(new Date());
             Teacher teacher = Teacher.finder.where().eq("USER_ID", user1.getId()).findUnique();
             if (teacher != null && !teacher.hasCard()){
                 return redirect("/subscription");

@@ -7,12 +7,13 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import ua.dirproy.profelumno.common.models.Lesson;
+import ua.dirproy.profelumno.common.models.LessonComparator;
+import ua.dirproy.profelumno.common.models.Review;
 import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.teacherprofile.views.html.teacherProfile;
 import ua.dirproy.profelumno.user.models.Subject;
 
 import java.util.*;
-import java.util.function.BiConsumer;
 
 @Authenticate({Teacher.class})
 public class TeacherProfiles extends Controller {
@@ -81,7 +82,7 @@ public class TeacherProfiles extends Controller {
             subjectList.put(subject,listLong);
         }
 
-        Map<String, Long> avgMap;
+        ArrayNode result;
         boolean isEmpty = true;
 
         for (int i = 0; i <subjects.size() ; i++) {
@@ -91,24 +92,16 @@ public class TeacherProfiles extends Controller {
         }
 
         if (isEmpty){
-            avgMap = new HashMap<>();
+            result = Json.newArray();
         }else {
-            avgMap = mapProm(subjectList, subjects);
+            result = mapProm(subjectList, subjects);
         }
-
-        ArrayNode result = Json.newArray();
-        avgMap.forEach((subject, rating) -> {
-            ObjectNode obj = Json.newObject();
-            obj.put("name", subject);
-            obj.put("score", rating);
-            result.add(obj);
-        });
 
         return ok(Json.toJson(result));
     }
 
-    private static Map<String, Long> mapProm(Map<Subject,List<Long>> subjectListLong,List<Subject> subjects) {
-        Map<String, Long> bestSubjects = new HashMap<>();
+    private static ArrayNode mapProm(Map<Subject,List<Long>> subjectListLong,List<Subject> subjects) {
+        ArrayNode bestSubjects = Json.newArray();
         Map<String, Long> aux = new HashMap<>();
         List<Long> listProm = new ArrayList<>();
         for (int i = 0; i <subjectListLong.size() ; i++) {
@@ -129,7 +122,11 @@ public class TeacherProfiles extends Controller {
                     long value = aux.get(subject);
                     if (bestSubjects.size() < 3) {
                         if (value >= prom) {
-                            bestSubjects.put(subject, value);
+                            ObjectNode obj = Json.newObject();
+                            obj.put("name", subject);
+                            obj.put("score", value);
+                            bestSubjects.add(obj);
+                            aux.remove(subject);
                         }
                     } else {
                         break;
@@ -172,11 +169,20 @@ public class TeacherProfiles extends Controller {
 
     public static Result getPreviousLessons(){
         final Long userId = Long.parseLong(session().get("id"));
-        Iterator<Lesson> previousLessons = getPreviousLessons(userId);
+        Iterator<Lesson> previousLessonsAux = getPreviousLessons(userId);
+
+        List<Lesson> previousLessons = new ArrayList<>();
+        while (previousLessonsAux.hasNext()){
+            final Lesson lesson = previousLessonsAux.next();
+            previousLessons.add(lesson);
+        }
+
+        Collections.sort(previousLessons,new LessonComparator());
 
         final ArrayNode results = Json.newArray();
-        while (previousLessons.hasNext()){
-            final Lesson temp = previousLessons.next();
+
+        for (int i = 0; i <previousLessons.size() ; i++) {
+            final Lesson temp = previousLessons.get(i);
             final ObjectNode node = Json.newObject();
 
             node.put("date", temp.getDateTime().getDate() + "/"
@@ -193,8 +199,12 @@ public class TeacherProfiles extends Controller {
             node.put("studentEmail", temp.getStudent().getUser().getEmail());
             node.put("idLesson", temp.getId());
             node.put("review", temp.getStudentReview() == null);
+            Review teacherReview = temp.getTeacherReview();
+            node.put("score", teacherReview != null ? teacherReview.getStars() : -1);
             results.add(node);
         }
+
+
         return ok(results);
     }
 

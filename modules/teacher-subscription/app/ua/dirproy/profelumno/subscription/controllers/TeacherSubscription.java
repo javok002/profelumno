@@ -31,7 +31,7 @@ public class TeacherSubscription extends Controller{
         final long userId= Long.parseLong(session("id"));
         User user = Ebean.find(User.class, userId);
         Teacher teacher = Teacher.finder.where().eq("user", user).findUnique();
-
+        teacher.save();
         Card card = Form.form(Card.class).bindFromRequest().get();
         CreditCardValidator validator;
 
@@ -72,8 +72,15 @@ public class TeacherSubscription extends Controller{
     public static Result endTrialForm(){return ok(endTrial.render());}
 
     public static Result charge(){
+        final long userId= Long.parseLong(session("id"));
+        User user = Ebean.find(User.class, userId);
+        Teacher teacher = Teacher.finder.where().eq("user", user).findUnique();
+
+        teacher.setIsInTrial(false);
+        teacher.save();
         ChargeTask charger= new ChargeTask();
         charger.charge();
+        System.out.println("Teacher trial: " + teacher.isInTrial());
         return ok("/");
     }
 
@@ -86,8 +93,8 @@ public class TeacherSubscription extends Controller{
         cal.add(Calendar.MONTH, 1);
         Date date = cal.getTime();
         teacher.setRenewalDate(date);
-        ChargeTask charger = new ChargeTask();
-        charger.charge();
+        NotifyTask notifier = new NotifyTask();
+        notifier.notify(teacher.getUser().getId());
     }
 
     public static Result getCreditCardNumber(){

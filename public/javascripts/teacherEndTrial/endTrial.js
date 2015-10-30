@@ -18,7 +18,12 @@
             });
         // calling our submit function.
         control.submitForm = function () {
-            $http.post('/subscription/charge')
+            $http.post('/subscription/charge').
+                then(function (response) {
+                    window.location = response.data;
+                }, function (response) {
+
+                });
         };
     }]);
 })();

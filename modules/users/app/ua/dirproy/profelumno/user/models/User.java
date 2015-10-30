@@ -24,6 +24,7 @@ public class User extends Model {
     private String email;
     private String password;
     private Date birthday;
+    private Date lastLogin;
     private String gender;
     private String address;
     private String latitude;
@@ -190,5 +191,13 @@ public class User extends Model {
 
     public void setLatitude(String latitude) {
         this.latitude = latitude;
+    }
+
+    public Date getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(Date lastLogin) {
+        this.lastLogin = lastLogin;
     }
 }

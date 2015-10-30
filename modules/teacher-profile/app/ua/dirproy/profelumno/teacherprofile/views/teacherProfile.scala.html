@@ -58,7 +58,7 @@
                         </div><!-- /.box-header -->
                         <div class="box-body bg-gray-light">
                             <span ng-show="noTopSubjects">No hay información disponible</span>
-                            <div class="col-md-4 col-sm-6" ng-repeat="subject in topSubjects | orderBy:'score':true">
+                            <div class="col-md-4 col-sm-6" ng-repeat="subject in topSubjects">
                                 <div class="info-box">
                                         <!-- Apply any bg-* class to to the icon to color it -->
                                     <span class="info-box-icon bg-aqua"><i class="fa fa-book"></i></span>
@@ -118,7 +118,7 @@
                         </div><!-- /.box-header -->
                         <div class="box-body bg-gray-light">
                             <span ng-show="prevLessons.length == 0">No hay información disponible</span>
-                            <div class="col-md-4 col-sm-6" ng-repeat="lesson in prevLessons | orderBy:'dateTime'">
+                            <div class="col-md-4 col-sm-6" ng-repeat="lesson in prevLessons">
                                 <div class="info-box">
                                         <!-- Apply any bg-* class to to the icon to color it -->
                                     <span class="info-box-icon bg-yellow"><i class="fa fa-calendar-check-o"></i></span>
@@ -126,6 +126,14 @@
                                         <span class="info-box-text">{{ lesson.subject }} a {{ lesson.studentName }}</span>
                                         <span class="info-box-number">{{ lesson.date }}</span>
                                         <button type="button" data-toggle="modal" data-target="#makeReviewModal" ng-show="lesson.review" ng-click="setModal($index)" class="btn btn-primary">Calificar alumno</button>
+                                        <span ng-hide="lesson.review || lesson.score == -1">
+                                            <i style="color: gold" class="fa fa-star" ng-repeat="i in times(lesson.score) track by $index"></i>
+                                            <i style="color: #FFF3B4" class="fa fa-star" ng-repeat="i in times(5 - lesson.score) track by $index"></i>
+                                            {{ lesson.score }}
+                                        </span>
+                                        <span ng-hide="lesson.review || lesson.score != -1">
+                                            Todavía no te calificaron!
+                                        </span>
                                     </div><!-- /.info-box-content -->
                                 </div><!-- /.info-box -->
                             </div>

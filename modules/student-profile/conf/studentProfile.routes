@@ -9,7 +9,7 @@ GET        /student-lesson           ua.dirproy.profelumno.studentprofile.contro
 GET        /current-lessons          ua.dirproy.profelumno.studentprofile.controllers.LessonStudent.currentLessons()
 GET        /next-lessons             ua.dirproy.profelumno.studentprofile.controllers.LessonStudent.getNextLessons()
 GET        /previous-lessons         ua.dirproy.profelumno.studentprofile.controllers.LessonStudent.getPreviousLessons()
-
+GET        /get-student              ua.dirproy.profelumno.studentprofile.controllers.StudentProfile.getStudent()
 
 
 # Map static resources from the /public folder to the /assets URL path

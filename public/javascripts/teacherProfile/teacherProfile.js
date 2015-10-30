@@ -4,7 +4,7 @@
 angular.module('app', [])
     .controller('DashboardController', ['$scope', '$http', function ($scope, $http) {
 
-        $scope.times = function(number) { return new Array(number) };
+        $scope.times = function(number) { return number <= 0 ? new Array(0) : new Array(number) };
 
         $scope.init = function () {
             $http.get('/teacher-profile/teacher')

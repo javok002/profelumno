@@ -47,7 +47,7 @@ public class PasswordRecovery extends Controller {
         if (validation) {
             final String pw = randomPw(8);
             try {
-                MailSenderUtil.send(new String[]{user.getEmail()}, "Password changed!", "New password: " + pw);
+                MailSenderUtil.send(new String[]{user.getEmail()}, "Contraseña recuperada!", "Tu nueva contraseña es: " + pw);
                 user.setPassword(pw);
                 user.save();
             } catch (Exception e) {

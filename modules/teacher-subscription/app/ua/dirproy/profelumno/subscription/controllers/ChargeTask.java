@@ -1,5 +1,10 @@
 package ua.dirproy.profelumno.subscription.controllers;
 
+import ua.dirproy.profelumno.common.models.Teacher;
+import ua.dirproy.profelumno.mailsender.models.MailSenderUtil;
+import javax.mail.*;
+
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -21,9 +26,11 @@ public class ChargeTask{
 
     public void charge() {
         final Runnable charger = new Runnable() {
-            public void run() { System.out.println("charge"); }
+            public void run() {
+                //charge teacher
+            }
         };
         final ScheduledFuture<?> beeperHandle =
-                scheduler.scheduleAtFixedRate(charger, 0, 30, DAYS);
+                scheduler.schedule(charger,30, DAYS);
     }
 }
