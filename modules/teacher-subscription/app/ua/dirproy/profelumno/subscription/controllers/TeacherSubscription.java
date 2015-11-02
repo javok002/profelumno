@@ -27,6 +27,7 @@ import java.util.Date;
 @Authenticate({Teacher.class})
 public class TeacherSubscription extends Controller{
 
+    static boolean test = true;
     public static Result validateForm(){
         final long userId= Long.parseLong(session("id"));
         User user = Ebean.find(User.class, userId);
@@ -85,16 +86,28 @@ public class TeacherSubscription extends Controller{
     }
 
     public static void setSubscriptionEndDate(Teacher teacher){
+        if(test){
+            Date dateNow = new Date();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(dateNow);
+            cal.add(Calendar.MINUTE, 4);
+            Date date = cal.getTime();
+            teacher.setRenewalDate(date);
+            NotifyTask notifier = new NotifyTask(test);
+            notifier.notify(teacher.getUser().getId());
+        }
+        else{
+            //set the teacher's trial to 1 month if the teacher is registering
+            Date dateNow = new Date();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(dateNow);
+            cal.add(Calendar.MONTH, 1);
+            Date date = cal.getTime();
+            teacher.setRenewalDate(date);
+            NotifyTask notifier = new NotifyTask(test);
+            notifier.notify(teacher.getUser().getId());
+        }
 
-        //set the teacher's trial to 1 month if the teacher is registering
-        Date dateNow = new Date();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(dateNow);
-        cal.add(Calendar.MONTH, 1);
-        Date date = cal.getTime();
-        teacher.setRenewalDate(date);
-        NotifyTask notifier = new NotifyTask();
-        notifier.notify(teacher.getUser().getId());
     }
 
     public static Result getCreditCardNumber(){
