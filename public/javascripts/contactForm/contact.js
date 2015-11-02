@@ -11,6 +11,7 @@ app.controller("ContactController", ['$http', '$scope', function ($http, $scope)
     $scope.failed = false;
 
     $scope.submit = function () {
+        $scope.failed = false;
         $scope.disable = true;
         $scope.sending = true;
         $http.post('contact-form/send-form', $scope.c)
@@ -19,7 +20,9 @@ app.controller("ContactController", ['$http', '$scope', function ($http, $scope)
                 $scope.sent = true;
             })
             .error(function (data) {
+                $scope.sending = false;
                 $scope.failed = true;
+                $scope.disable = false;
             });
     };
 

@@ -32,6 +32,7 @@ public class ContactForm extends Controller {
             MailSenderUtil.send(new String[]{"francisco.di@ing.austral.edu.ar"}, subject, messageToSend);
         } catch (Exception e) {
             e.printStackTrace();
+            return badRequest();
         }
         return redirect("/institutional");
     }
