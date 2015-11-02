@@ -65,6 +65,10 @@ public class Chat extends Model{
         return messages;
     }
 
+    public void setMessages(List<Message> messages){
+        this.messages = messages;
+    }
+
     public void addMessage(String msg, User user){
         Message temp = new Message();
         temp.setAuthor(user);
@@ -72,7 +76,7 @@ public class Chat extends Model{
         temp.setMsg(msg);
         temp.save();
 
-        messages.add(0, temp);
+        messages.add(temp);
         this.save();
     }
 
