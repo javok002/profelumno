@@ -3,7 +3,11 @@
  */
 
 
-var app = angular.module('lessonReview', []);
+var app = angular.module('lessonReview', ['djds4rce.angular-socialshare']);
+
+app.run(function($FB){
+    $FB.init('1509250906034945');
+});
 
 
 app.controller('LessonReviewsController', function ($scope, $http) {
@@ -101,6 +105,11 @@ app.controller('LessonReviewsController', function ($scope, $http) {
                 reviews.nonReviewed.push(auxObj);
             }
         }
+    };
+
+    $scope.shareDescription=function(number){
+        if(number==1)return ("Me calificaron con 1 estrella!");
+        else return ("Me calificaron con "+number+" estrellas!");
     };
     //List the reviewed lesson get it from the controller
     $scope.listReviewedLessonsByMe = function (rls) {
