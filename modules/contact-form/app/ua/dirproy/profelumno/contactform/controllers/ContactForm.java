@@ -1,17 +1,14 @@
 package ua.dirproy.profelumno.contactform.controllers;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import play.data.DynamicForm;
-import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
-
-import ua.dirproy.profelumno.contactform.view.html.*;
+import ua.dirproy.profelumno.contactform.view.html.contactform;
 import ua.dirproy.profelumno.mailsender.models.MailSenderUtil;
 
 /**
- * Created by yankee on 28/09/15.
+ * Created by: yankee
+ * Created on: 28/09/15
  */
 public class ContactForm extends Controller {
 
@@ -26,10 +23,15 @@ public class ContactForm extends Controller {
         email = requestData.get("email");
         subject = requestData.get("subject");
         message = requestData.get("message");
+        String[] lines = message.split("\\n");
+        StringBuilder messageToSend = new StringBuilder();
+        messageToSend.append("New message from: ").append(name).append("<br><br>At: ").append(email).append("<br>");
+        for (String line : lines) {
+            messageToSend.append("<br>").append(line);
+        }
 
-        String messageToSend = "New message from: " + name + "\nAt: " + email + "\n\n" + message;
         try {
-            MailSenderUtil.send(new String[]{"francisco.di@ing.austral.edu.ar"}, subject, messageToSend);
+            MailSenderUtil.send(new String[]{"francisco.di@ing.austral.edu.ar"}, subject, messageToSend.toString());
         } catch (Exception e) {
             e.printStackTrace();
             return badRequest();
