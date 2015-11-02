@@ -17,6 +17,7 @@
             <!-- Theme style -->
         <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/AdminLTE.min.css")">
 
+        <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/chat/chat.css")">
             <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
         <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/skins/_all-skins.min.css")">
@@ -25,7 +26,7 @@
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
         @content
-        @*aca hay que poner la vista de chat el .scala.html*@
+        @ua.dirproy.profelumno.common.views.html.chat()
 
             <!-- jQuery 2.1.4 -->
         <script src="@routes.Assets.versioned("external/jQuery/jQuery-2.1.4.min.js")"></script>
