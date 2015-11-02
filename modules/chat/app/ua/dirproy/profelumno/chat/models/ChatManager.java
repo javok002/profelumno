@@ -36,9 +36,7 @@ public class ChatManager {
             notifyMsg(idUserFrom, message, idChat);
         });
 
-        in.onClose(() -> {
-            notifyDisconnection(userId);
-        });
+        in.onClose(() -> notifyDisconnection(userId));
 
         notifyUsersConnections(userId);
     }

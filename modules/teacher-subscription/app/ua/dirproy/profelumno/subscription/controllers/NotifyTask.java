@@ -12,12 +12,19 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 
 import static java.util.concurrent.TimeUnit.DAYS;
-import static java.util.concurrent.TimeUnit.SECONDS;
+import static java.util.concurrent.TimeUnit.MINUTES;
+
 
 /**
  * Created by federuiz on 10/26/15.
  */
 public class NotifyTask {
+
+    boolean test;
+
+    public NotifyTask(boolean test){
+        this.test = test;
+    }
     private final ScheduledExecutorService scheduler =
             Executors.newScheduledThreadPool(1);
 
@@ -66,8 +73,16 @@ public class NotifyTask {
                 }
             }
         };
-        final ScheduledFuture<?> beeperHandle =
-                scheduler.schedule(charger,23, DAYS);
+        if (test){
+            final ScheduledFuture<?> beeperHandle =
+                    scheduler.schedule(charger,2, MINUTES);
+
+        }else{
+            final ScheduledFuture<?> beeperHandle =
+                    scheduler.schedule(charger,23, DAYS);
+
+        }
+
     }
     public void ultimatum(long userId){
         final Runnable charger = new Runnable() {
@@ -109,7 +124,13 @@ public class NotifyTask {
                 }
             }
         };
-        final ScheduledFuture<?> beeperHandle =
-                scheduler.schedule(charger,7, DAYS);
+        if (test){
+            final ScheduledFuture<?> beeperHandle =
+                    scheduler.schedule(charger,2, MINUTES);
+        }else {
+            final ScheduledFuture<?> beeperHandle =
+                    scheduler.schedule(charger,7, DAYS);
+
+        }
     }
 }

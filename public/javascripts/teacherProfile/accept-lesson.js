@@ -1,7 +1,11 @@
 /**
  * Created by facundo on 1/10/15.
  */
-var app = angular.module('acceptLesson', []);
+var app = angular.module('acceptLesson', ['djds4rce.angular-socialshare']);
+app.run(function($FB){
+    $FB.init('1509250906034945');
+});
+
 function loadLessons($http, $scope) {
     $http.get("/teacher-profile/current-lessons")
         .success(function (data) {
