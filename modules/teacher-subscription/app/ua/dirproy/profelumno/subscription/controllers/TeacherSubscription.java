@@ -27,7 +27,7 @@ import java.util.Date;
 @Authenticate({Teacher.class})
 public class TeacherSubscription extends Controller{
 
-    static boolean test = true;
+    static boolean test = false;
 
     public static Result validateForm(){
         final long userId= Long.parseLong(session("id"));
