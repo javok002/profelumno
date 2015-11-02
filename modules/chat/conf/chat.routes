@@ -3,6 +3,9 @@
 # ~~~~
 
 # Home page
-
+GET        /getSocket           ua.dirproy.profelumno.chat.controllers.ChatController.wsInterface()
+GET        /getChat             ua.dirproy.profelumno.chat.controllers.ChatController.getChat(userId: Long)
+GET        /userInSession       ua.dirproy.profelumno.chat.controllers.ChatController.getUserInSession()
 
 # Map static resources from the /public folder to the /assets URL path
+GET        /assets/*file        controllers.Assets.versioned(path="/public", file: Asset)
