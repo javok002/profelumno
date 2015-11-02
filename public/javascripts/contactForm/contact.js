@@ -25,5 +25,4 @@ app.controller("ContactController", ['$http', '$scope', function ($http, $scope)
                 $scope.disable = false;
             });
     };
-
 }]);
