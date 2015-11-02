@@ -1,11 +1,16 @@
 package ua.dirproy.profelumno;
 
+import com.avaje.ebean.Expr;
 import play.Application;
 import play.GlobalSettings;
+import play.libs.Akka;
+import ua.dirproy.profelumno.chat.models.Chat;
+import ua.dirproy.profelumno.chat.models.Message;
 import ua.dirproy.profelumno.common.models.Lesson;
 import ua.dirproy.profelumno.common.models.Review;
 import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
+import ua.dirproy.profelumno.recommend.controllers.Recommend;
 import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
 
@@ -21,6 +26,7 @@ public class Global extends GlobalSettings {
     @Override
     public void beforeStart(Application app) {
         InitialData.insert(app);
+        //Recommend.weMissyou();
     }
 
     static class InitialData {
@@ -93,6 +99,25 @@ public class Global extends GlobalSettings {
                     lessonFinished.setDateString("" + oldDateState1.getDate() + "/" + (oldDateState1.getMonth() + 1) + "/" + (oldDateState1.getYear() + 1900));
                     lessonFinished.setDateTime(oldDateState1);
                     lessonFinished.setSubject(subjects.get((new Random()).nextInt(subjects.size())));
+
+                    if (randomizer.nextBoolean()) {
+                        Chat chat = Chat.finder.where().and(Expr.eq("teacher", lessonFinished.getTeacher()),
+                                Expr.eq("student", lessonFinished.getStudent())).findUnique();
+                        if (chat == null) {
+                            chat = new Chat();
+                            chat.setTeacher(lessonFinished.getTeacher());
+                            chat.setStudent(lessonFinished.getStudent());
+                            if (randomizer.nextBoolean()) {
+                                chat.addMessage("Hola", lessonFinished.getTeacher().getUser());
+                                chat.addMessage("Hola, como estas?", lessonFinished.getStudent().getUser());
+                                chat.addMessage("Bien, y vos?", lessonFinished.getTeacher().getUser());
+                            } else {
+                                chat.addMessage("Hola", lessonFinished.getStudent().getUser());
+                                chat.addMessage("Hola, como estas?", lessonFinished.getTeacher().getUser());
+                                chat.addMessage("Bien, y vos?", lessonFinished.getStudent().getUser());
+                            }
+                        }
+                    }
 
                     int rand = randomizer.nextInt(4);
                     if (rand == 0) {
@@ -456,7 +481,6 @@ public class Global extends GlobalSettings {
             };
             return subjectList;
         }
-
 
         private static String[] generateAnAddress() {
             String[] address = {

@@ -27,11 +27,12 @@ import java.util.Date;
 @Authenticate({Teacher.class})
 public class TeacherSubscription extends Controller{
 
+    static boolean test = true;
     public static Result validateForm(){
         final long userId= Long.parseLong(session("id"));
         User user = Ebean.find(User.class, userId);
         Teacher teacher = Teacher.finder.where().eq("user", user).findUnique();
-
+        teacher.save();
         Card card = Form.form(Card.class).bindFromRequest().get();
         CreditCardValidator validator;
 
@@ -72,22 +73,41 @@ public class TeacherSubscription extends Controller{
     public static Result endTrialForm(){return ok(endTrial.render());}
 
     public static Result charge(){
+        final long userId= Long.parseLong(session("id"));
+        User user = Ebean.find(User.class, userId);
+        Teacher teacher = Teacher.finder.where().eq("user", user).findUnique();
+
+        teacher.setIsInTrial(false);
+        teacher.save();
         ChargeTask charger= new ChargeTask();
         charger.charge();
+        System.out.println("Teacher trial: " + teacher.isInTrial());
         return ok("/");
     }
 
     public static void setSubscriptionEndDate(Teacher teacher){
+        if(test){
+            Date dateNow = new Date();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(dateNow);
+            cal.add(Calendar.MINUTE, 4);
+            Date date = cal.getTime();
+            teacher.setRenewalDate(date);
+            NotifyTask notifier = new NotifyTask(test);
+            notifier.notify(teacher.getUser().getId());
+        }
+        else{
+            //set the teacher's trial to 1 month if the teacher is registering
+            Date dateNow = new Date();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(dateNow);
+            cal.add(Calendar.MONTH, 1);
+            Date date = cal.getTime();
+            teacher.setRenewalDate(date);
+            NotifyTask notifier = new NotifyTask(test);
+            notifier.notify(teacher.getUser().getId());
+        }
 
-        //set the teacher's trial to 1 month if the teacher is registering
-        Date dateNow = new Date();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(dateNow);
-        cal.add(Calendar.MONTH, 1);
-        Date date = cal.getTime();
-        teacher.setRenewalDate(date);
-        ChargeTask charger = new ChargeTask();
-        charger.charge();
     }
 
     public static Result getCreditCardNumber(){
