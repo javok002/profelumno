@@ -36,7 +36,7 @@ public class Teacher extends Model {
 
     private boolean homeClasses;
 
-    private long ranking;
+    private float ranking;
 
     private int lessonsDictated;
 
@@ -113,7 +113,7 @@ public class Teacher extends Model {
         this.description = description;
     }
 
-    public void setRanking(long ranking) {
+    public void setRanking(float ranking) {
         this.ranking = ranking;
     }
 
@@ -125,7 +125,7 @@ public class Teacher extends Model {
         return lessonsDictated;
     }
 
-    public long getRanking() {
+    public float getRanking() {
         return ranking;
     }
 
@@ -170,7 +170,7 @@ public class Teacher extends Model {
                 totalScore+= lesson.getTeacherReview().getStars();
             }
         }
-        long temp = lessonsRated == 0 ? 0: (long)((totalScore/lessonsRated) + 0.5);
+        float temp = lessonsRated == 0 ? 0: (((float)((long) (((totalScore / lessonsRated) * 100) + 0.5))) / 100);
         teacher.setRanking(temp);
         teacher.save();
     }

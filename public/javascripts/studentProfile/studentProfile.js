@@ -1,13 +1,50 @@
-angular.module('studentProfile', [])
+var currentIndex;
 
+angular.module('studentProfile', [])
     .controller('StudentCtrl',['$scope', '$http', function($scope, $http) {
         $scope.classes = ['danger', 'info', 'warning', 'success'];
         $http.get('/student-profile/get-info').then(function(data) {
+            data.data.rating[0] = data.data.rating[0].toFixed(2);
+            data.data.Teachers.forEach(function (teacher){
+                teacher.ranking = teacher.ranking.toFixed(2);
+            });
             $scope.data = data.data;
         });
+        $http.get('/student-profile/get-student').success(function(user) {
+            $scope.user = user;
+        }).error(function(){});
 
         $scope.redirect = function(){
 
+        };
+
+        $scope.times = function(num) {
+            var n = parseInt(parseFloat(num) + 0.5);
+            var a = [];
+            for (var i = 0; i < n; i++){
+                a.push(0);
+            }
+            return a;
+        };
+        $scope.setModal = function(index){
+            var prevLesson = $scope.data.LessonsNoRating[index];
+            currentIndex = index;
+            $('#emailModal').val(prevLesson.teacher.user.email);
+            $('#commentModal').val("");
+            $('#starsModal').rating('reset');
+        };
+
+        $scope.review = function(){
+            var prevLesson = $scope.data.LessonsNoRating[currentIndex];
+            var comment = $('#commentModal').val();
+            var stars = parseInt($('#starsModal').val());
+            var toEmail =  $('#emailModal').val();
+            var idLesson = prevLesson.id;
+
+            $http.post("/review-lesson/review?comment=" + comment + "&stars=" + stars + "&toEmail=" + toEmail + "&idLesson=" + idLesson)
+                .success(function (response) {
+                    window.location.replace("/student-profile/student-dashboard");
+                });
         };
     }])
 
@@ -60,14 +97,12 @@ angular.module('studentProfile', [])
                             '<div class="col-md-4 col-sm-6" ng-repeat="lesson in data.LessonsNoRating">' +
                                 '<div class="info-box">' +
                                     '<!-- Apply any bg-* class to to the icon to color it -->' +
-                                    '<span class="info-box-icon bg-olive"><i class="fa fa-user"></i></span>' +
+                                    '<span class="info-box-icon bg-olive"><i class="fa fa-calendar-check-o"></i></span>' +
                                     '<div class="info-box-content">' +
                                         '<span style="font-size: 12px" class="info-box-text">Clase con {{ lesson.teacher.user.name}} {{ lesson.teacher.user.surname }}</span>' +
-                                        '<span style="font-size: 12px" class="info-box-text">el {{ lesson.dateTime | date}}</span>' +
+                                        '<span style="font-size: 12px" class="info-box-number">{{ lesson.dateString }}</span>' +
                                         '<span style="font-size: 12px" class="info-box-text"></span>' +
-                                        '<a href="/review-lesson">'+
-                                            '<button style="margin-top: 10px;" type="button" class="btn btn-primary">Calificar</button>' +
-                                        '</a>' +
+                                        '<button type="button" data-toggle="modal" data-target="#makeReviewModal" ng-click="setModal($index)" class="btn btn-primary">Calificar alumno</button>' +
                                     '</div><!-- /.info-box-content --> ' +
                                 '</div><!--  /.info-box -->' +
                             '</div>' +
@@ -86,7 +121,7 @@ angular.module('studentProfile', [])
                 '<div class="col-sm-12">' +
                     '<div class="box box-solid box-primary">' +
                         '<div class="box-header">' +
-                            '<h3 class="box-title">Historial de clases</h3>' +
+                            '<h3 class="box-title">Clases Pasadas</h3>' +
                             '<div class="box-tools pull-right">' +
                                 '<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>' +
                             '</div><!-- /.box-tools -->' +
@@ -96,10 +131,10 @@ angular.module('studentProfile', [])
                             '<div class="col-md-4 col-sm-6" ng-repeat="lesson in data.Lessons">' +
                                 '<div class="info-box">' +
                                     '<!-- Apply any bg-* class to to the icon to color it -->' +
-                                    '<span class="info-box-icon bg-olive"><i class="fa fa-user"></i></span>' +
+                                    '<span class="info-box-icon bg-yellow"><i class="fa fa-calendar-check-o"></i></span>' +
                                     '<div class="info-box-content">' +
                                         '<span style="font-size: 12px" class="info-box-text">Clase con {{ lesson.teacher.user.name}} {{ lesson.teacher.user.surname }}</span>' +
-                                        '<span style="font-size: 12px" class="info-box-text">el {{ lesson.dateTime | date}}</span>' +
+                                        '<span style="font-size: 12px" class="info-box-number">{{ lesson.dateString }}</span>' +
                                     '</div><!-- /.info-box-content --> ' +
                                 '</div><!--  /.info-box -->' +
                             '</div>' +
@@ -118,7 +153,7 @@ angular.module('studentProfile', [])
                 '<div class="col-sm-12">' +
                     '<div class="box box-solid box-primary">' +
                         '<div class="box-header">' +
-                            '<h3 class="box-title">Profesores</h3>' +
+                            '<h3 class="box-title">Ultimos profesores contactados</h3>' +
                             '<div class="box-tools pull-right">' +
                                 '<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>' +
                             '</div><!-- /.box-tools -->' +
@@ -131,7 +166,11 @@ angular.module('studentProfile', [])
                                     '<span class="info-box-icon bg-olive"><i class="fa fa-user"></i></span>' +
                                     '<div class="info-box-content">' +
                                         '<span class="info-box-text">{{ teacher.user.name }} {{ teacher.user.surname }}</span>' +
-                                        '<span class="info-box-text"></span>' +
+                                        '<span class="info-box-number">' +
+                                            '<i style="color: gold" class="fa fa-star" ng-repeat="i in times(teacher.ranking) track by $index"></i>' +
+                                            '<i style="color: #FFF3B4" class="fa fa-star" ng-repeat="i in times(5 - teacher.ranking) track by $index"></i>' +
+                                            ' {{ teacher.ranking }}' +
+                                        '</span>' +
                                     '</div><!-- /.info-box-content --> ' +
                                 '</div><!-- /.info-box -->' +
                             '</div>' +

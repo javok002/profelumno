@@ -21,6 +21,12 @@ public class StudentProfile extends Controller {
         return ok(ua.dirproy.profelumno.studentprofile.views.html.dashboard.render());
     }
 
+
+    public static Result getStudent(){
+        final long userId = Long.parseLong(session("id"));
+        return ok(Json.toJson(User.getUser(userId)));
+    }
+
     public static Result getAllInfo(){
         final long userId = Long.parseLong(session("id"));
         final User student = User.getUser(userId);
@@ -33,8 +39,7 @@ public class StudentProfile extends Controller {
         final List<Lesson> lastLessonsStudent = new ArrayList<>();
         for (Lesson lesson : list) {
             if (Objects.equals(lesson.getStudent().getUser().getId(), student.getId())){
-
-                lastLessonsStudent.add(lesson);
+                if (lesson.getDateTime().before(DateTime.now().toDate())) lastLessonsStudent.add(lesson);
             }
         }
         lastLessonsStudent.sort(new LessonComparator());
@@ -43,6 +48,7 @@ public class StudentProfile extends Controller {
         final HashSet<Teacher> lastTeachers = new HashSet<>();
         final ArrayList<Subject> teacherSubject = new ArrayList<>();
         for (Lesson lesson : lastLessonsStudent) {
+            Teacher.updateRating(lesson.getTeacher());
             lastTeachers.add(lesson.getTeacher());
             teacherSubject.add(lesson.getSubject());
         }
@@ -50,14 +56,15 @@ public class StudentProfile extends Controller {
         //lessons que no estan con rating
         final ArrayList<Lesson> lessonsWithNoReview = new ArrayList<>();
         for (Lesson lesson : lastLessonsStudent) {
-            if (lesson.getStudentReview() == null && lesson.getDateTime().before(DateTime.now().toDate())){
+            if (lesson.getTeacherReview() == null && lesson.getDateTime().before(DateTime.now().toDate())){
                 lessonsWithNoReview.add(lesson);
             }
         }
 
         //rating del alumno
-        final ArrayList<Long> rating = new ArrayList<>();
-        long temp = student.getReviews() == 0 ? 0 : (long)((((float) student.getTotalStars()) / student.getReviews()) + 0.5);
+        final ArrayList<Float> rating = new ArrayList<>();
+        float temp = student.getReviews() == 0 ? 0 :
+                ((float)((long)(((((float) student.getTotalStars()) / student.getReviews()) * 100) + 0.5)) / 100);
         rating.add(temp);
 
         //map que voy a devolver

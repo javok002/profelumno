@@ -4,13 +4,14 @@
 angular.module('app', [])
     .controller('DashboardController', ['$scope', '$http', function ($scope, $http) {
 
-        $scope.times = function(number) { return new Array(number) };
+        $scope.times = function(number) { return number <= 0 ? new Array(0) : new Array(number) };
 
         $scope.init = function () {
             $http.get('/teacher-profile/teacher')
                 .success(function (data) {
                     var date = new Date(data.renewalDate);
                     data.renewalDate = dateToString(date);
+                    data.ranking = data.ranking.toFixed(2);
                     data.subscription = data.subscription.substring(data.subscription.length - 4);
                     $scope.teacher = data;
                 })
@@ -19,6 +20,10 @@ angular.module('app', [])
                 });
             $http.get('/teacher-profile/previous-lessons')
                 .success(function (data) {
+                    data.forEach(function(lesson) {
+                        var split = lesson.date.split('/');
+                        lesson.dateTime = new Date(split[1], split[0], split[2]);
+                    });
                     $scope.prevLessons = data;
                 })
                 .error(function (data) {

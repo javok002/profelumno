@@ -5,6 +5,7 @@
 GET        /topbar              ua.dirproy.profelumno.common.controllers.Common.topbar()
 GET        /sidebar             ua.dirproy.profelumno.common.controllers.Common.sidebar()
 GET        /userImage           ua.dirproy.profelumno.common.controllers.Common.userImage()
+GET        /chat                ua.dirproy.profelumno.common.controllers.Common.wsJs()
 
 # Map static resources from the /public folder to the /assets URL path
 GET        /assets/*file        controllers.Assets.versioned(path="/public", file: Asset)

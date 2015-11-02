@@ -40,6 +40,10 @@ public class Common extends Controller {
         return userIsStudent() ? "/student-profile/student-dashboard" : "/teacher-profile";
     }
 
+    public static String calendarUrl() {
+        return "/calendar";
+    }
+
     public static Html sidebarContent() {
         return userIsTeacher() ? teacherSidebarContent.render() : studentSidebarContent.render();
     }
@@ -56,4 +60,9 @@ public class Common extends Controller {
         return Ebean.find(User.class, Long.parseLong(session("id"))).getName();
     }
 
+
+    // get the ws.js script
+    public static Result wsJs() {
+        return ok(ua.dirproy.profelumno.common.views.js.ws.render());
+    }
 }
