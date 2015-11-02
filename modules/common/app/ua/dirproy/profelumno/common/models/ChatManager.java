@@ -1,12 +1,9 @@
-package ua.dirproy.profelumno.chat.models;
+package ua.dirproy.profelumno.common.models;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import play.libs.Json;
 import play.mvc.WebSocket;
-import ua.dirproy.profelumno.common.models.Lesson;
-import ua.dirproy.profelumno.common.models.Student;
-import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.user.models.User;
 
 import java.util.*;

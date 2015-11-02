@@ -13,7 +13,6 @@ angular.module('app', [])
         $scope.WS = window['MozWebSocket'] ? window['MozWebSocket'] : WebSocket;
 
         // open pewpew with websocket
-        $scope.socket = new WS('@routes.main.ua.dirproy.profelumno.chat.controllers.ChatController.wsInterface()');
 
 
         $scope.writeMessages = function(event){
@@ -57,14 +56,14 @@ angular.module('app', [])
         });
 
         $scope.getChat = function (chatToId) {
-            $http.get('chat/getChat?userId='+chatToId)
+            /*$http.get('chat/getChat?userId='+chatToId)
                 .success(function (data, status, headers, config) {
                     //data.chat  Chat
                     //data.chat.messeges [Messeges] En indice 0 esta el mas viejo
                 }).
                 error(function (data, status, headers, config) {
                     // log error
-                });
+                });*/
         };
     }]);
 
