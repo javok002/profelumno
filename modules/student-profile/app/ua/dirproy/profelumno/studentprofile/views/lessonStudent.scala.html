@@ -95,6 +95,9 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
+                                <a ng-show="decisionLesson.lessonState==1" facebook-feed-share href="#" class="facebookShare pull-left"
+                                data-url='http://profelumno.com.ar' data.name="Clase ProfeLumno"
+                                data-description="Voy a asistir a una clase de {{decisionLesson.subject.text}} con {{decisionLesson.teacher.user.name}} {{decisionLesson.teacher.user.surname}} el dia {{toFormatDate(decisionLesson.dateTime)}}"></a>
                                 <button type="button" id="dismiss-modal" class="btn btn-default" data-dismiss="modal">
                                     Cerrar</button>
                             </div>
@@ -198,6 +201,9 @@
 
     } {
         <span></span>
-    } {
-        <script src="@routes.Assets.versioned("/javascripts/studentProfile/lessonStudent.js")"></script>
+        <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/lessonReview/angular-socialshare.min.css")" media="all" type="text/css" />
+
+} {
+    <script src="@routes.Assets.versioned("javascripts/reviewLesson/angular-socialshare.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("/javascripts/studentProfile/lessonStudent.js")"></script>
     }

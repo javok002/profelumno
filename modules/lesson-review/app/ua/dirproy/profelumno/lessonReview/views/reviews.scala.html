@@ -64,6 +64,7 @@
                                                 <th>Fecha</th>
                                                 <th>Calificacion</th>
                                                 <th>Comentario</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody ng-repeat="reviewed in revCtrl.reviewedLessons">
@@ -72,6 +73,12 @@
                                                 <td>{{reviewed.reviewDate}}</td>
                                                 <td>{{reviewed.reviewStars}}</td>
                                                 <td>{{reviewed.reviewComment}}</td>
+                                                <td>
+                                                    <a facebook-feed-share href="#" class="facebookShare"
+                                                    data-picture="http://4.bp.blogspot.com/_ypalM7eSBEQ/SwE9RirmrTI/AAAAAAAABRw/p7PAWYta6EQ/s320/blue_star_clipart.gif"
+                                                    data-url='http://profelumno.com.ar' data.name="Calificacion ProfeLumno"
+                                                    data-description="{{shareDescription(reviewed.reviewStars)}}"></a>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -159,6 +166,8 @@
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/AdminLTE.min.css")">
     <link rel="stylesheet" href="@routes.Assets.versioned("external/iCheck/square/blue.css")">
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/lessonReview/star-rating.min.css")" media="all" type="text/css" />
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/lessonReview/angular-socialshare.min.css")" media="all" type="text/css" />
+
 } {
 
     <!-- Scripts -->
@@ -177,5 +186,6 @@
                 })
         </script>
     <script src="@routes.Assets.versioned("javascripts/reviewLesson/star-rating.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("javascripts/reviewLesson/angular-socialshare.min.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("javascripts/reviewLesson/review.js")"></script>
 }
