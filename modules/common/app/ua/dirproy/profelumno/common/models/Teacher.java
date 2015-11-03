@@ -183,14 +183,38 @@ public class Teacher extends Model {
 
     public void updateCalendar(Date date,Date fromHour,Date toHour) {
         Range range = new Range(fromHour,toHour);
-        DayEnum dayEnum = DayEnum.MONDAY;
-        if (calendar.get(date) == null){
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(date);
+        int day = cal.get(Calendar.DAY_OF_WEEK);
+        DayEnum dayEnum = null;
+        if (Calendar.MONDAY == day){
+            dayEnum = DayEnum.MONDAY;
+        }
+        if (Calendar.TUESDAY == day){
+            dayEnum = DayEnum.TUESDAY;
+        }
+        if (Calendar.WEDNESDAY == day){
+            dayEnum = DayEnum.WEDNESDAY;
+        }
+        if (Calendar.THURSDAY == day){
+            dayEnum = DayEnum.THURSDAY;
+        }
+        if (Calendar.FRIDAY == day){
+            dayEnum = DayEnum.FRIDAY;
+        }
+        if (Calendar.SUNDAY == day){
+            dayEnum = DayEnum.SUNDAY;
+        }
+        if (Calendar.SATURDAY == day){
+            dayEnum = DayEnum.SATURDAY;
+        }
+        if (calendar.get(dayEnum) == null){
             List<Range> ranges = new ArrayList<>();
             ranges.add(range);
             calendar.put(dayEnum,ranges);
         }
         else {
-            List<Range> ranges = calendar.get(date);
+            List<Range> ranges = calendar.get(dayEnum);
             ranges.add(range);
             calendar.put(dayEnum, ranges);
         }
