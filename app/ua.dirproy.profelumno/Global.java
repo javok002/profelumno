@@ -26,7 +26,8 @@ public class Global extends GlobalSettings {
     @Override
     public void beforeStart(Application app) {
         InitialData.insert(app);
-        //Recommend.weMissyou();
+        /*Recommend recommend = new Recommend();
+        recommend.weMissYou();*/
     }
 
     static class InitialData {
@@ -390,8 +391,8 @@ public class Global extends GlobalSettings {
                     userT.setPassword("secret");
                     userT.setAddress(address[addressNumber * 4]);
                     userT.setCity(address[(addressNumber * 4) + 1]);
-                    userT.setLatitude(address[(addressNumber * 4) + 2]);
-                    userT.setLongitude(address[(addressNumber * 4) + 3]);
+                    userT.setLatitude(generateLatitudes()[(addressNumber * 4) + 2]);
+                    userT.setLongitude(generatLongituds()[(addressNumber * 4) + 3]);
                     userT.setBirthday(new Date((70 + i / 10), (i + 1) / 10, i / 4));
                     userT.setGender("male");
                     userT.setSecureAnswer("Hola");
@@ -425,8 +426,8 @@ public class Global extends GlobalSettings {
                     userS.setPassword("secret");
                     userS.setAddress(address[addressNumber * 4]);
                     userS.setCity(address[(addressNumber * 4) + 1]);
-                    userS.setLatitude(address[(addressNumber * 4) + 2]);
-                    userS.setLongitude(address[(addressNumber * 4) + 3]);
+                    userS.setLatitude(generateLatitudes()[(addressNumber * 4) + 2]);
+                    userS.setLongitude(generatLongituds()[(addressNumber * 4) + 3]);
                     userS.setBirthday(new Date((93), 5, 10));
                     userS.setGender("male");
                     userS.setSecureAnswer("Hola");
@@ -487,13 +488,38 @@ public class Global extends GlobalSettings {
                     "Av. Juan Domingo Perón 1500, Buenos Aires",
                     "El Tordo 55, Pilar Centro, Buenos Aires",
                     "San Martín 744, Pilar Centro, Buenos Aires",
-                    "Yrigoyen 2749, Vicente Lopez, Buenos Aires",
                     "Ballivian 2329, Villa Ortuzar, Buenos Aires",
                     "El Salvador 5528, Palermo, Buenos Aires",
                     "Cuba 2039, Belgrano, Buenos Aires",
                     "Defensa 1431, San Telmo, Buenos Aires"
             };
             return address;
+        }
+
+        private static String[] generateLatitudes() {
+            String[] latitudes = {
+                    "-34.5",
+                    "-34.4496",
+                    "-34.4597",
+                    "-34.5787",
+                    "-34.5838",
+                    "-34.5614",
+                    "-34.6245"
+            };
+            return latitudes;
+        }
+
+        private static String[] generatLongituds() {
+            String[] longitudes = {
+                    "-58.8",
+                    "-58.9137",
+                    "-58.9166",
+                    "-58.4781",
+                    "-58.4369",
+                    "-58.4564",
+                    "-58.3734"
+            };
+            return longitudes;
         }
 
         private static Date getOldDate(Random random) {

@@ -78,7 +78,7 @@ lazy val institutional = (project in file("modules/institutional"))
 
 lazy val recommend = (project in file("modules/recommend"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(mailSender, common)
+  .dependsOn(mailSender, common, teacherSearch)
 
 
 lazy val chat = (project in file("modules/chat"))

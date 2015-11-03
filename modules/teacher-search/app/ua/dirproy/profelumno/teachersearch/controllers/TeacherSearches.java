@@ -13,7 +13,9 @@ import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
 
 
+import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static play.libs.Json.toJson;
@@ -87,5 +89,27 @@ public class TeacherSearches extends Controller {
         return home && !teacher.getHomeClasses();
     }
 
+    public static void orderByDistance(List<User> users, User user){
+        users.sort(new Comparator<User>() {
+            @Override
+            public int compare(User o1, User o2) {
+                if(o1.getLatitude() == null || o1.getLongitude() == null) return -1;
+                else if(o2.getLatitude() == null || o2.getLongitude() == null) return 1;
+                return (int) (getDistance(user, o1) - getDistance(user, o2));
+            }
+        });
+    }
+
+    private static double getDistance(User user1, User user2){
+        double distance = 0;
+        try{
+            double x = Double.parseDouble(user1.getLatitude()) - Double.parseDouble(user2.getLatitude());
+            double y = Double.parseDouble(user2.getLongitude()) - Double.parseDouble(user2.getLongitude());
+            distance = Math.hypot(x,y);
+        }catch (NumberFormatException e){
+            e.printStackTrace();
+        }
+        return distance;
+    }
 
 }
