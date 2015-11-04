@@ -11,6 +11,7 @@ import ua.dirproy.profelumno.common.models.Review;
 import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.recommend.controllers.Recommend;
+import ua.dirproy.profelumno.teachersearch.controllers.TeacherSearches;
 import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
 
@@ -26,8 +27,9 @@ public class Global extends GlobalSettings {
     @Override
     public void beforeStart(Application app) {
         InitialData.insert(app);
-        /*Recommend recommend = new Recommend();
-        recommend.weMissYou();*/
+
+        Recommend recommend = new Recommend();
+        recommend.weMissYou();
     }
 
     static class InitialData {
@@ -382,7 +384,7 @@ public class Global extends GlobalSettings {
                 for (int i = 1; i <= 100; i++) {
                     String name = names[randomizer.nextInt(names.length)];
                     String lastName = lastNames[randomizer.nextInt(lastNames.length)];
-                    int addressNumber = randomizer.nextInt(address.length / 4);
+                    int addressNumber = randomizer.nextInt((address.length / 4))  ; // OJO, addressNumber es siempre 0!!!
 
                     User userT = new User();
                     userT.setName(name);
@@ -391,8 +393,8 @@ public class Global extends GlobalSettings {
                     userT.setPassword("secret");
                     userT.setAddress(address[addressNumber * 4]);
                     userT.setCity(address[(addressNumber * 4) + 1]);
-                    userT.setLatitude(generateLatitudes()[(addressNumber * 4) + 2]);
-                    userT.setLongitude(generatLongituds()[(addressNumber * 4) + 3]);
+                    userT.setLatitude(generateLatitudes()[(addressNumber * 4) + 2]); // OJO, addressNumber es siempre 0!!!
+                    userT.setLongitude(generatLongituds()[(addressNumber * 4) + 3]); // OJO, addressNumber es siempre 0!!!
                     userT.setBirthday(new Date((70 + i / 10), (i + 1) / 10, i / 4));
                     userT.setGender("male");
                     userT.setSecureAnswer("Hola");
@@ -493,31 +495,32 @@ public class Global extends GlobalSettings {
                     "Cuba 2039, Belgrano, Buenos Aires",
                     "Defensa 1431, San Telmo, Buenos Aires"
             };
+            https://www.google.com.ar/maps/search/Ballivian+2329,+Villa+Ortuzar,+Buenos+Aires/
             return address;
         }
 
-        private static String[] generateLatitudes() {
-            String[] latitudes = {
-                    "-34.5",
-                    "-34.4496",
-                    "-34.4597",
-                    "-34.5787",
-                    "-34.5838",
-                    "-34.5614",
-                    "-34.6245"
+        private static double[] generateLatitudes() {
+            double[] latitudes = {
+                    -34.5,
+                    -34.4496,
+                    -34.4597,
+                    -34.5787,
+                    -34.5838,
+                    -34.5614,
+                    -34.6245
             };
             return latitudes;
         }
 
-        private static String[] generatLongituds() {
-            String[] longitudes = {
-                    "-58.8",
-                    "-58.9137",
-                    "-58.9166",
-                    "-58.4781",
-                    "-58.4369",
-                    "-58.4564",
-                    "-58.3734"
+        private static double[] generatLongituds() {
+            double[] longitudes = {
+                    -58.8,
+                    -58.9137,
+                    -58.9166,
+                    -58.4781,
+                    -58.4369,
+                    -58.4564,
+                    -58.3734
             };
             return longitudes;
         }

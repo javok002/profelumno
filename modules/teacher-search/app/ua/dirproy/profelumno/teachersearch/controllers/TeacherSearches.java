@@ -3,8 +3,11 @@ package ua.dirproy.profelumno.teachersearch.controllers;
 import authenticate.Authenticate;
 import com.avaje.ebean.Ebean;
 import com.fasterxml.jackson.databind.JsonNode;
+import jdk.nashorn.internal.parser.JSONParser;
+import org.xml.sax.SAXException;
 import play.data.Form;
 import play.libs.Json;
+import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
 import ua.dirproy.profelumno.common.models.Student;
@@ -13,7 +16,9 @@ import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
 
 
-import java.io.PrintStream;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.*;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -93,23 +98,60 @@ public class TeacherSearches extends Controller {
         users.sort(new Comparator<User>() {
             @Override
             public int compare(User o1, User o2) {
-                if(o1.getLatitude() == null || o1.getLongitude() == null) return -1;
-                else if(o2.getLatitude() == null || o2.getLongitude() == null) return 1;
+                /*if(o1.getLatitude() == 0 || o1.getLongitude() == 0) return -1;
+                else if(o2.getLatitude() == 0 || o2.getLongitude() == 0) return 1;*/
+                try {
+                    getCordinates(o1.getAddress());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ParserConfigurationException e) {
+                    e.printStackTrace();
+                } catch (SAXException e) {
+                    e.printStackTrace();
+                }
                 return (int) (getDistance(user, o1) - getDistance(user, o2));
             }
         });
     }
 
     private static double getDistance(User user1, User user2){
-        double distance = 0;
-        try{
-            double x = Double.parseDouble(user1.getLatitude()) - Double.parseDouble(user2.getLatitude());
-            double y = Double.parseDouble(user2.getLongitude()) - Double.parseDouble(user2.getLongitude());
-            distance = Math.hypot(x,y);
-        }catch (NumberFormatException e){
-            e.printStackTrace();
-        }
-        return distance;
+        return Math.hypot((user1.getLatitude() - user2.getLatitude()),(user1.getLongitude() - user2.getLongitude()));
+        // TODO las coordenadas de TODOS los usuarios son iguales, la distancia va a ser siempre 0.0 mts.
+
+
     }
+
+    // https://www.google.com.ar/maps/search/Ballivian+2329,+Villa+Ortuzar,+Buenos+Aires/
+    private static String getCordinates(String address) throws IOException, ParserConfigurationException, SAXException {
+
+        String address2 = address.replace(" ", "+");
+        URL url = new URL("https://www.google.com.ar/maps/search/" + address2);
+
+        BufferedReader theHTML = new BufferedReader(new InputStreamReader(url.openStream()));
+        String line = theHTML.readLine();
+        while (!line.contains("cacheResponse([[")){
+            line = theHTML.readLine();
+        }
+        String[] separatedLine = line.split(",",5);
+        double longitud = Double.parseDouble(separatedLine[1]);
+        double altitud = Double.parseDouble(separatedLine[2].replace("]",""));
+
+        //URL url1 = new URL("http://maps.google.com/maps/api/geocode/xml?address="+address2+"&sensor=false");
+        //BufferedReader theHTML1 = new BufferedReader(new InputStreamReader(url1.openStream()));
+        //Json.toJson(url1.openStream());
+        /*String line2 = theHTML1.readLine();
+        while (!line2.contains("<location>")){
+            line2 = theHTML1.readLine();
+        }
+        double lat = Double.parseDouble(theHTML1.readLine().replace("<lat>", "").replace("</lat>", "").replace(" ",""));
+        double longit = Double.parseDouble(theHTML1.readLine().replace("<lng>", "").replace("</lng>","").replace(" ", ""));
+*/
+        return line;
+
+
+
+    }
+
+
 
 }
