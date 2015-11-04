@@ -3,14 +3,11 @@ package ua.dirproy.profelumno;
 import com.avaje.ebean.Expr;
 import play.Application;
 import play.GlobalSettings;
-import play.libs.Akka;
-import ua.dirproy.profelumno.chat.models.Chat;
-import ua.dirproy.profelumno.chat.models.Message;
+import ua.dirproy.profelumno.common.models.Chat;
 import ua.dirproy.profelumno.common.models.Lesson;
 import ua.dirproy.profelumno.common.models.Review;
 import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
-import ua.dirproy.profelumno.recommend.controllers.Recommend;
 import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
 

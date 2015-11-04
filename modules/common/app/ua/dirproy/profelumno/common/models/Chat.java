@@ -1,8 +1,6 @@
-package ua.dirproy.profelumno.chat.models;
+package ua.dirproy.profelumno.common.models;
 
 import com.avaje.ebean.Model;
-import ua.dirproy.profelumno.common.models.Student;
-import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.user.models.User;
 
 import javax.persistence.Entity;

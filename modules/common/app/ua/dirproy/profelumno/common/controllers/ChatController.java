@@ -1,4 +1,4 @@
-package ua.dirproy.profelumno.chat.controllers;
+package ua.dirproy.profelumno.common.controllers;
 
 import authenticate.Authenticate;
 import com.avaje.ebean.Expr;
@@ -8,8 +8,8 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.WebSocket;
-import ua.dirproy.profelumno.chat.models.Chat;
-import ua.dirproy.profelumno.chat.models.ChatManager;
+import ua.dirproy.profelumno.common.models.Chat;
+import ua.dirproy.profelumno.common.models.ChatManager;
 import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
 
