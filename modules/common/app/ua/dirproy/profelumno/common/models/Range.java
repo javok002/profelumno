@@ -2,22 +2,35 @@ package ua.dirproy.profelumno.common.models;
 
 import play.db.ebean.Model;
 
-import javax.validation.constraints.NotNull;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Date;
 
 /**
  * Created by Fede on 02/11/2015.
  */
+@Entity
 public class Range extends Model {
+
+    @Id
+    private Long id;
 
     public Date fromHour;
     public Date toHour;
 
     public Range(){}
 
-    public Range(@NotNull Date fromHour,@NotNull Date toHour){
+    public Range(Date fromHour,Date toHour){
         this.fromHour = fromHour;
         this.toHour = toHour;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Date getFromHour() {
