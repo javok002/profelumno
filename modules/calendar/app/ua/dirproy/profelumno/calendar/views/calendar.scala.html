@@ -4,24 +4,90 @@
     @ua.dirproy.profelumno.common.views.html.topbar()
     @ua.dirproy.profelumno.common.views.html.sidebar()
 
-    <div class="content-wrapper" ng-app="app" ng-controller="CalendarController">
-        <section class="content-header">
-            <h1>
-                Calendario
-                <small>{{ userName }}</small>
-            </h1>
-        </section>
+    <div ng-app="app" ng-controller="CalendarController">
+        <div class="content-wrapper">
+            <section class="content-header">
+                <h1>
+                    Calendario
+                    <small>{{ userName }}</small>
+                </h1>
+            </section>
 
-        <section class="content" ng-cloak>
+            <section class="content" ng-cloak>
 
-            <div class="box box-primary">
-                @*<div class="box-header with-border"></div><!-- /.box-header -->*@
-                <div class="box-body" id="calendar"></div><!-- /.box-body -->
-                <div class="box-footer"></div><!-- box-footer -->
-            </div><!-- /.box -->
+                <div class="box box-primary">
+                    @*<div class="box-header with-border"></div><!-- /.box-header -->*@
+                    <div class="box-body" id="calendar"></div><!-- /.box-body -->
+                </div><!-- /.box -->
 
-        </section>
+            </section>
 
+        </div>
+
+
+        <div class="modal fade" role="dialog" id="lessonModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" data-dismiss="modal" class="close"><span class="glyphicon glyphicon-remove"></span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="box box-solid box-primary">
+                            <div class="box-header">Clase</div>
+                            <div class="box-body">
+                                <div class="info-box">
+                                        <!-- Apply any bg-* class to to the icon to color it -->
+                                    <span class="info-box-icon bg-blue"><i class="fa fa-user"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text" style="font-weight : bold">Alumno</span>
+                                        <span class="info-box-text">
+                                            {{ currentLesson.student.user.name }} {{ currentLesson.student.user.surname }}</span>
+                                    </div><!-- /.info-box-content -->
+                                </div><!-- /.info-box -->
+                                <div class="info-box">
+                                        <!-- Apply any bg-* class to to the icon to color it -->
+                                    <span class="info-box-icon bg-blue"><i class="fa fa-calendar"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text" style="font-weight : bold">Fecha</span>
+                                        <span class="info-box-text">{{toFormatDate(currentLesson.dateTime)}}</span>
+                                    </div><!-- /.info-box-content -->
+                                </div><!-- /.info-box -->
+                                <div class="info-box">
+                                        <!-- Apply any bg-* class to to the icon to color it -->
+                                    <span class="info-box-icon bg-blue"><i class="fa fa-pencil"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text" style="font-weight : bold">Materia</span>
+                                        <span class="info-box-text">{{currentLesson.subject.text}}</span>
+                                    </div><!-- /.info-box-content -->
+                                </div><!-- /.info-box -->
+                                <div class="info-box">
+                                        <!-- Apply any bg-* class to to the icon to color it -->
+                                    <span class="info-box-icon bg-blue"><i class="fa fa-map-o"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text" style="font-weight : bold">Dirección</span>
+                                        <div class="well">{{currentLesson.address}}</div>
+                                    </div><!-- /.info-box-content -->
+                                </div><!-- /.info-box -->
+                                <div class="info-box">
+                                        <!-- Apply any bg-* class to to the icon to color it -->
+                                    <span class="info-box-icon bg-blue"><i class="fa fa-file-text-o"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text" style="font-weight : bold">Comentario</span>
+                                        <div class="well">{{currentLesson.comment}}</div>
+                                    </div><!-- /.info-box-content -->
+                                </div><!-- /.info-box -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a ng-show="currentLesson.lessonState==1" facebook-feed-share href="#" class="facebookShare pull-left"
+                        data-url='http://profelumno.com.ar' data.name="Clase ProfeLumno"
+                        data-description="Voy a dar a una clase de {{currentLesson.subject.text}} a {{currentLesson.student.user.name}} {{currentLesson.student.user.surname}} el dia {{toFormatDate(currentLesson.dateTime)}}"></a>
+                        <button type="button" id="dismiss-modal" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 } {
