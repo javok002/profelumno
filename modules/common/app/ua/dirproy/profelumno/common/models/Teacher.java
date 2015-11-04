@@ -3,12 +3,11 @@ package ua.dirproy.profelumno.common.models;
 import com.avaje.ebean.Model;
 import ua.dirproy.profelumno.user.models.User;
 
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Created by javier
@@ -42,6 +41,8 @@ public class Teacher extends Model {
 
     private double price;
 
+    private Map<DayEnum,List<Range>> calendar;
+
     public Teacher(){}
 
     public Teacher(long id, String description, boolean homeClasses, User user){
@@ -49,6 +50,7 @@ public class Teacher extends Model {
         this.description=description;
         this.homeClasses=homeClasses;
         this.user=user;
+        calendar = new HashMap<>();
     }
 
     public static Finder<Long, Teacher> finder = new Finder<>(Teacher.class);
@@ -173,5 +175,48 @@ public class Teacher extends Model {
         float temp = lessonsRated == 0 ? 0: (((float)((long) (((totalScore / lessonsRated) * 100) + 0.5))) / 100);
         teacher.setRanking(temp);
         teacher.save();
+    }
+
+    public Map<DayEnum, List<Range>> getCalendar() {
+        return calendar;
+    }
+
+    public void updateCalendar(Date date,Date fromHour,Date toHour) {
+        Range range = new Range(fromHour,toHour);
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(date);
+        int day = cal.get(Calendar.DAY_OF_WEEK);
+        DayEnum dayEnum = null;
+        if (Calendar.MONDAY == day){
+            dayEnum = DayEnum.MONDAY;
+        }
+        if (Calendar.TUESDAY == day){
+            dayEnum = DayEnum.TUESDAY;
+        }
+        if (Calendar.WEDNESDAY == day){
+            dayEnum = DayEnum.WEDNESDAY;
+        }
+        if (Calendar.THURSDAY == day){
+            dayEnum = DayEnum.THURSDAY;
+        }
+        if (Calendar.FRIDAY == day){
+            dayEnum = DayEnum.FRIDAY;
+        }
+        if (Calendar.SUNDAY == day){
+            dayEnum = DayEnum.SUNDAY;
+        }
+        if (Calendar.SATURDAY == day){
+            dayEnum = DayEnum.SATURDAY;
+        }
+        if (calendar.get(dayEnum) == null){
+            List<Range> ranges = new ArrayList<>();
+            ranges.add(range);
+            calendar.put(dayEnum,ranges);
+        }
+        else {
+            List<Range> ranges = calendar.get(dayEnum);
+            ranges.add(range);
+            calendar.put(dayEnum, ranges);
+        }
     }
 }
