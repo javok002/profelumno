@@ -7,12 +7,14 @@ import play.mvc.WebSocket;
 import ua.dirproy.profelumno.user.models.User;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.*;
 
 public class ChatManager {
 
-    private static Map<Long, WebSocket.Out<JsonNode>> map = new ConcurrentHashMap<>();
-    private static Map<Long, WebSocket<JsonNode>> connections = new ConcurrentHashMap<>();
+    private final static Map<Long, WebSocket.Out<JsonNode>> map = new ConcurrentHashMap<>();
+    private final static ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private final static Map<Long, ScheduledFuture<?>> timers = new ConcurrentHashMap<>();
+
     private static ChatManager ourInstance = new ChatManager();
 
     public static ChatManager getInstance() {
@@ -21,9 +23,8 @@ public class ChatManager {
 
     private ChatManager() {}
 
-    public static void start(Long userId, WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out,
-                             WebSocket<JsonNode> connection){
-        addConnection(userId, out, connection);
+    public static void start(Long userId, WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out){
+        addConnection(userId, out);
 
         in.onMessage(jsonNode -> {
             Long idUserFrom = jsonNode.findPath("idUserFrom").asLong();
@@ -33,18 +34,25 @@ public class ChatManager {
             notifyMsg(idUserFrom, message, idChat);
         });
 
-        in.onClose(() -> notifyDisconnection(userId));
+        in.onClose(() -> {
+            final Runnable close = () -> {
+                notifyDisconnection(userId);
+                timers.remove(userId);
+            };
+            timers.put(userId, scheduler.schedule(close, 15, TimeUnit.SECONDS));
+        });
 
         notifyUsersConnections(userId);
     }
 
-    public static void addConnection(Long userId, WebSocket.Out<JsonNode> socketOut, WebSocket<JsonNode> socket){
-        connections.put(userId, socket);
-        map.put(userId, socketOut);
-    }
+    public static void addConnection(Long userId, WebSocket.Out<JsonNode> socketOut){
+        ScheduledFuture<?> timer = timers.get(userId);
+        if (timer != null){
+            timer.cancel(true);
+            timers.remove(userId);
+        }
 
-    public static WebSocket<JsonNode> userSocket(Long userId){
-        return connections.containsKey(userId) ? connections.get(userId) : null;
+        map.put(userId, socketOut);
     }
 
     public static void notifyUsersConnections(Long userId){
@@ -97,7 +105,6 @@ public class ChatManager {
 
     public static void notifyDisconnection(Long userId){
         map.remove(userId);
-        connections.remove(userId);
 
         Iterator<Long> relatedTo = getUsersRelated(userId).iterator();
 
