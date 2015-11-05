@@ -17,14 +17,9 @@ import ua.dirproy.profelumno.common.models.Teacher;
 public class ChatController extends Controller {
 
     public static WebSocket<JsonNode> wsInterface() {
-        Long userId = Long.parseLong(session().get("id"));
-        WebSocket<JsonNode> socket = ChatManager.userSocket(userId);
-
-        if (socket != null) return socket;
-
-        else return new WebSocket<JsonNode>() {
+        return new WebSocket<JsonNode>() {
             public void onReady(WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out) {
-                ChatManager.start(Long.parseLong(session().get("id")), in, out, this);
+                ChatManager.start(Long.parseLong(session().get("id")), in, out);
             }
         };
     }
