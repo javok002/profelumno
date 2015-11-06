@@ -1,9 +1,13 @@
+$(function() {
+    angular.bootstrap(document.getElementById("chat-bar"),['app']);
+});
 angular.module('app', [])
     .controller('ChatController', ['$scope', '$http', function ($scope, $http) {
-        $http.get('chat/getChat')
+        var userInSession;
+
+        $http.get('common/userInSession')
             .success(function (data, status, headers, config) {
-                //data.chat  Chat
-                //data.chat.messeges [Messeges] En indice 0 esta el mas viejo
+               userInSession=data.id;
             }).
             error(function (data, status, headers, config) {
                 // log error
@@ -13,6 +17,7 @@ angular.module('app', [])
         $scope.WS = window['MozWebSocket'] ? window['MozWebSocket'] : WebSocket;
 
         // open pewpew with websocket
+        var socket = new WS('@routes.Application.wsInterface().webSocketURL(request)');
 
 
         $scope.writeMessages = function(event){
@@ -56,14 +61,23 @@ angular.module('app', [])
         });
 
         $scope.getChat = function (chatToId) {
-            /*$http.get('chat/getChat?userId='+chatToId)
+            $http.get('chat/getChat?userId='+chatToId)
                 .success(function (data, status, headers, config) {
                     //data.chat  Chat
+                    var chat = data.chat;
+                    for (var i =0; i < chat.messeges.length; i++){
+                        var message=chat.messeges[i];
+                        if (messege.author.user.id==userInSession){
+
+                        }else{
+
+                        }
+                    }
                     //data.chat.messeges [Messeges] En indice 0 esta el mas viejo
                 }).
                 error(function (data, status, headers, config) {
                     // log error
-                });*/
+                });
         };
     }]);
 
@@ -143,9 +157,9 @@ function register_popup(id, name)
             return;
         }
     }
-    var element2= '<div class="box box-danger direct-chat direct-chat-danger">\
+    var element2= '<div class="box box-danger direct-chat direct-chat-danger" ng-controller="ChatController as controller">\
         <div class="box-header with-border">\
-    <h3 class="box-title">Direct Chat</h3>\
+    <h3 class="box-title">name</h3>\
     <div class="box-tools pull-right">\
     <span data-toggle="tooltip" title="3 New Messages" class="badge bg-red">3</span>\
 <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>\
