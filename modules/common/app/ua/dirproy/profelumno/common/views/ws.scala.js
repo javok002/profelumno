@@ -4,6 +4,8 @@ $(function() {
 angular.module('app', [])
     .controller('ChatController', ['$scope', '$http', function ($scope, $http) {
         var userInSession;
+        $scope.connectedUsers=[];
+        $scope.disconnectedUsers=[];
 
         $http.get('common/userInSession')
             .success(function (data, status, headers, config) {
@@ -17,7 +19,7 @@ angular.module('app', [])
         $scope.WS = window['MozWebSocket'] ? window['MozWebSocket'] : WebSocket;
 
         // open pewpew with websocket
-        var socket = new WS('@routes.Application.wsInterface().webSocketURL(request)');
+        var socket = new WS('@ua.dirproy.profelumno.common.controllers.ChatController.wsInterface()');
 
 
         $scope.writeMessages = function(event){
@@ -25,17 +27,35 @@ angular.module('app', [])
                 //agregar mensaje al chat
                 //event.idChat
                 //event.mesage
-                angular.element('#socket-messages'+event.idChat).prepend('<p>'+event.message+'</p>');
+                var idChat=event.idChat;
+                var message=event.message;
+                if (message.author.id==userInSession){
+                    angular.element('#socket-messages'+event.idChat).apend('<p>'+event.message+'</p>');
+                }else{
+                    angular.element('#socket-messages'+idChat).apend('<p>'+event.message+'</p>');
+                }
             }else if (event.type=="user"){
                 //conecta o desconecta un usuario de mis contactos
                 //event.user User
-                user=event.user;
                 //event.connected  boolean true connected false disconnected
-                connected=event.connected;
-                if (connected){
-                    $scope.connectedUsers
+                user=event.user;
+                var aux=[];
+                if (event.connected){
+                    for(var j=0; j<disconnectedUsers.length;j++){
+                        if (disconnectedUsers[j]!=user){
+                            aux.push(disconnectedUsers[j]);
+                        }
+                    }
+                    disconnectedUsers=aux;
+                    connectedUsers.push(user);
                 }else{
-
+                    for(var j=0; j<connectedUsers.length;j++){
+                        if (connectedUsers[j]!=user){
+                            aux.push(connectedUsers[j]);
+                        }
+                    }
+                    connectedUsers=aux;
+                    disconnectedUsers.push(user);
                 }
             } else if (event.type=="users"){
                 //lista de personas conectadas y desconectadas
