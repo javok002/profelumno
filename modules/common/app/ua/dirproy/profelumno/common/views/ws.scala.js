@@ -7,6 +7,18 @@ angular.module('app', [])
         $scope.connectedUsers=[];
         $scope.disconnectedUsers=[];
 
+        var init = function(){
+            var user = getCookie("chat");
+            if (user != "") {
+                loadChats();
+            } else {
+                var d = new Date();
+                d.setTime(d.getTime() + (365*24*60*60*1000));
+                var expires = "expires="+d.toUTCString();
+                document.cookie = "chat=yes; " + expires;
+            }
+        };
+
         $http.get('common/userInSession')
             .success(function (data, status, headers, config) {
                userInSession=data.id;
