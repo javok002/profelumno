@@ -4,8 +4,17 @@
 <aside class="control-sidebar control-sidebar-dark"  id="chat-bar">
         <!-- sidebar -->
     <section class="sidebar" ng-controller="ChatContoller as controller">
-        <div  class="sidebar-name" ng-show="controller.connectedUsers">
-            <span>Conectados</span>
+
+        <span style="margin-left: 10px">Conectados</span>
+        <div ng-repeat="user in connectedUsers">
+            <div class="pad">
+                <div class="sidebar-name">
+                    <a href="javascript:register_popup(''+{{user.id}}, ''+{{user.name}} );">
+                        <img width="40" height="40" src="@routes.Assets.versioned("images/institutional/stud1.jpg")" class="img-circle" />
+                        <span>User 1 Name</span>
+                    </a>
+                </div>
+            </div>
         </div>
         <div class="sidebar-name" ng-repeat="user in connectedUsers">
                 <!-- Pass username and display name to register popup -->
@@ -33,5 +42,8 @@
         </div>
     </section>
         <!-- /Sidebar -->
+</aside>
+<!-- Optional to made the bar as large as the page-->
+ <div class="control-sidebar-bg"></div>
 </aside>
 <script type="text/javascript" charset="utf-8" src="@ua.dirproy.profelumno.common.controllers.routes.Common.wsJs()"></script>

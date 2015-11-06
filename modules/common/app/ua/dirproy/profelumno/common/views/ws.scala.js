@@ -1,121 +1,6 @@
 $(function() {
     angular.bootstrap(document.getElementById("chat-bar"),['app']);
 });
-angular.module('app', [])
-    .controller('ChatController', ['$scope', '$http', function ($scope, $http) {
-        var userInSession;
-        $scope.connectedUsers=[];
-        $scope.disconnectedUsers=[];
-
-        var init = function(){
-            var user = getCookie("chat");
-            if (user != "") {
-                loadChats();
-            } else {
-                var d = new Date();
-                d.setTime(d.getTime() + (365*24*60*60*1000));
-                var expires = "expires="+d.toUTCString();
-                document.cookie = "chat=yes; " + expires;
-            }
-        };
-
-        $http.get('common/userInSession')
-            .success(function (data, status, headers, config) {
-               userInSession=data.id;
-            }).
-            error(function (data, status, headers, config) {
-                // log error
-            });
-
-        // get websocket class, firefox has a different way to get it
-        $scope.WS = window['MozWebSocket'] ? window['MozWebSocket'] : WebSocket;
-
-        // open pewpew with websocket
-        var socket = new WS('@ua.dirproy.profelumno.common.controllers.ChatController.wsInterface()');
-
-
-        $scope.writeMessages = function(event){
-            if (event.type=="msg"){
-                //agregar mensaje al chat
-                //event.idChat
-                //event.mesage
-                var idChat=event.idChat;
-                var message=event.message;
-                if (message.author.id==userInSession){
-                    angular.element('#socket-messages'+event.idChat).apend('<p>'+event.message+'</p>');
-                }else{
-                    angular.element('#socket-messages'+idChat).apend('<p>'+event.message+'</p>');
-                }
-            }else if (event.type=="user"){
-                //conecta o desconecta un usuario de mis contactos
-                //event.user User
-                //event.connected  boolean true connected false disconnected
-                user=event.user;
-                var aux=[];
-                if (event.connected){
-                    for(var j=0; j<disconnectedUsers.length;j++){
-                        if (disconnectedUsers[j]!=user){
-                            aux.push(disconnectedUsers[j]);
-                        }
-                    }
-                    disconnectedUsers=aux;
-                    connectedUsers.push(user);
-                }else{
-                    for(var j=0; j<connectedUsers.length;j++){
-                        if (connectedUsers[j]!=user){
-                            aux.push(connectedUsers[j]);
-                        }
-                    }
-                    connectedUsers=aux;
-                    disconnectedUsers.push(user);
-                }
-            } else if (event.type=="users"){
-                //lista de personas conectadas y desconectadas
-                //event.connectedUsers
-                $scope.connectedUsers=event.connectedUsers;
-                //event.disconnectedUsers
-                $scope.disconnectedUsers=event.disconnectedUsers;
-            }
-
-        };
-
-        $scope.socket.onmessage = writeMessages;
-
-        // if enter (charcode 13) is pushed, send message, then clear input field
-        angular.element('#socket-input').keyup(function(event){
-            var charCode = (event.which) ? event.which : event.keyCode ;
-
-            if(charCode === 13){
-                socket.send($(this).val());
-                //{idUserFrom: long, message: String, idChat: long}
-                $(this).val('');
-            }
-        });
-
-        $scope.getChat = function (chatToId) {
-            $http.get('chat/getChat?userId='+chatToId)
-                .success(function (data, status, headers, config) {
-                    //data.chat  Chat
-                    var chat = data.chat;
-                    for (var i =0; i < chat.messeges.length; i++){
-                        var message=chat.messeges[i];
-                        if (messege.author.user.id==userInSession){
-
-                        }else{
-
-                        }
-                    }
-                    //data.chat.messeges [Messeges] En indice 0 esta el mas viejo
-                }).
-                error(function (data, status, headers, config) {
-                    // log error
-                });
-        };
-        $scope.popups=[];
-    }]);
-
-
-
 //this function can remove a array element.
 Array.remove = function(array, from, to) {
     var rest = array.slice((to || from) + 1 || array.length);
@@ -127,7 +12,7 @@ Array.remove = function(array, from, to) {
 var total_popups = 0;
 
 //arrays of popups ids
-//var popups = [];
+var popups = [];
 
 //this is used to close a popup
 function close_popup(id)
@@ -284,3 +169,120 @@ function calculate_popups()
 //recalculate when window is loaded and also when window is resized.
 window.addEventListener("resize", calculate_popups);
 window.addEventListener("load", calculate_popups);
+
+
+angular.module('app', [])
+    .controller('ChatController', ['$scope', '$http', function ($scope, $http) {
+        var userInSession;
+        $scope.connectedUsers=[];
+        $scope.disconnectedUsers=[];
+
+        var init = function(){
+            var user = getCookie("chat");
+            if (user != "") {
+                loadChats();
+            } else {
+                var d = new Date();
+                d.setTime(d.getTime() + (365*24*60*60*1000));
+                var expires = "expires="+d.toUTCString();
+                document.cookie = "chat=yes; " + expires;
+            }
+        };
+
+        $http.get('common/userInSession')
+            .success(function (data, status, headers, config) {
+               userInSession=data.id;
+            }).
+            error(function (data, status, headers, config) {
+                // log error
+            });
+
+        // get websocket class, firefox has a different way to get it
+        $scope.WS = window['MozWebSocket'] ? window['MozWebSocket'] : WebSocket;
+
+        // open pewpew with websocket
+        var socket = new WS('@ua.dirproy.profelumno.common.controllers.ChatController.wsInterface()');
+
+
+        $scope.writeMessages = function(event){
+            if (event.type=="msg"){
+                //agregar mensaje al chat
+                //event.idChat
+                //event.mesage
+                var idChat=event.idChat;
+                var message=event.message;
+                if (message.author.id==userInSession){
+                    angular.element('#socket-messages'+event.idChat).apend('<p>'+event.message+'</p>');
+                }else{
+                    angular.element('#socket-messages'+idChat).apend('<p>'+event.message+'</p>');
+                }
+            }else if (event.type=="user"){
+                //conecta o desconecta un usuario de mis contactos
+                //event.user User
+                //event.connected  boolean true connected false disconnected
+                user=event.user;
+                var aux=[];
+                if (event.connected){
+                    for(var j=0; j<disconnectedUsers.length;j++){
+                        if (disconnectedUsers[j]!=user){
+                            aux.push(disconnectedUsers[j]);
+                        }
+                    }
+                    disconnectedUsers=aux;
+                    connectedUsers.push(user);
+                }else{
+                    for(var j=0; j<connectedUsers.length;j++){
+                        if (connectedUsers[j]!=user){
+                            aux.push(connectedUsers[j]);
+                        }
+                    }
+                    connectedUsers=aux;
+                    disconnectedUsers.push(user);
+                }
+            } else if (event.type=="users"){
+                //lista de personas conectadas y desconectadas
+                //event.connectedUsers
+                $scope.connectedUsers=event.connectedUsers;
+                //event.disconnectedUsers
+                $scope.disconnectedUsers=event.disconnectedUsers;
+            }
+
+        };
+
+        $scope.socket.onmessage = writeMessages;
+
+        // if enter (charcode 13) is pushed, send message, then clear input field
+        angular.element('#socket-input').keyup(function(event){
+            var charCode = (event.which) ? event.which : event.keyCode ;
+
+            if(charCode === 13){
+                socket.send($(this).val());
+                //{idUserFrom: long, message: String, idChat: long}
+                $(this).val('');
+            }
+        });
+
+        $scope.getChat = function (chatToId) {
+            $http.get('chat/getChat?userId='+chatToId)
+                .success(function (data, status, headers, config) {
+                    //data.chat  Chat
+                    var chat = data.chat;
+                    for (var i =0; i < chat.messeges.length; i++){
+                        var message=chat.messeges[i];
+                        if (messege.author.user.id==userInSession){
+
+                        }else{
+
+                        }
+                    }
+                    //data.chat.messeges [Messeges] En indice 0 esta el mas viejo
+                }).
+                error(function (data, status, headers, config) {
+                    // log error
+                });
+        };
+        $scope.popups=[];
+    }]);
+
+
+
