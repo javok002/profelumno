@@ -111,6 +111,7 @@ angular.module('app', [])
                     // log error
                 });
         };
+        $scope.popups=[];
     }]);
 
 
@@ -126,7 +127,7 @@ Array.remove = function(array, from, to) {
 var total_popups = 0;
 
 //arrays of popups ids
-var popups = [];
+//var popups = [];
 
 //this is used to close a popup
 function close_popup(id)
@@ -173,7 +174,6 @@ function display_popups()
 //creates markup for a new popup. Adds the id to popups array.
 function register_popup(id, name)
 {
-
     for(var iii = 0; iii < popups.length; iii++)
     {
         //already registered. Bring it to front.
@@ -273,7 +273,8 @@ function calculate_popups()
     {
         width = width - 200;
         //320 is width of a single popup box
-        total_popups = parseInt(width/320);
+        //total_popups = parseInt(width/320);
+        total_popups=2;
     }
 
     display_popups();

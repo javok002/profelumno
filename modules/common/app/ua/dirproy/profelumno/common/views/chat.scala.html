@@ -1,29 +1,37 @@
 
 @()
 
-<aside class="main-sidebar" style="position: absolute; z-index: 1; right: auto" id="chat-bar">
+<aside class="control-sidebar control-sidebar-dark"  id="chat-bar">
         <!-- sidebar -->
     <section class="sidebar" ng-controller="ChatContoller as controller">
-        <div  class="sidebar-name" ng-show="controller.connectedUsers.length>0">
+        <div  class="sidebar-name" ng-show="controller.connectedUsers">
             <span>Conectados</span>
         </div>
         <div class="sidebar-name" ng-repeat="user in connectedUsers">
                 <!-- Pass username and display name to register popup -->
-            <a href="javascript:register_popup('nicolasRudolph', 'NicolasRudolph' );">
-                <img width="30" height="30" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/p50x50/1510656_10203002897620130_521137935_n.jpg?oh=572eaca929315b26c58852d24bb73310&oe=54BEE7DA&__gda__=1418131725_c7fb34dd0f499751e94e77b1dd067f4c" />
-                <span>{{user.name}}</span>
-            </a>
+            <div class="pad">
+                <div class="sidebar-name">
+                    <a href="javascript:register_popup('nicolas', 'Nicolas Rudolph' );">
+                        <img width="40" height="40" src="@routes.Assets.versioned("images/userDefault.jpeg")" class="img-circle" />
+                        <span>User 1 Name</span>
+                    </a>
+                </div>
+            </div>
         </div>
-        <div  class="sidebar-name" ng-show="controller.disconnectedUsers.length>0">
+        <div  class="sidebar-name" ng-show="controller.disconnectedUsers">
             <span>Desconectados</span>
         </div>
         <div class="sidebar-name" ng-repeat="user in disconnectedUsers">
-                <!-- Pass username and display name to register popup -->
-            <a href="javascript:register_popup('nicolasRudolph', 'Nicolas Rudolph' );">>
-                <img width="30" height="30" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/p50x50/1510656_10203002897620130_521137935_n.jpg?oh=572eaca929315b26c58852d24bb73310&oe=54BEE7DA&__gda__=1418131725_c7fb34dd0f499751e94e77b1dd067f4c" />
-                <span>{{user.name}}</span>
-            </a>
+                <div class="pad">
+                    <div class="sidebar-name">
+                        <a href="javascript:register_popup('sebastian', 'Sebastian Rudolph' );">
+                            <img width="40" height="40" src="@routes.Assets.versioned("images/institutional/stud1.jpg")" class="img-circle" />
+                            <span>User 2 Name</span>
+                        </a>
+                    </div>
+                </div>
         </div>
     </section>
         <!-- /Sidebar -->
 </aside>
+<script type="text/javascript" charset="utf-8" src="@ua.dirproy.profelumno.common.controllers.routes.Common.wsJs()"></script>
