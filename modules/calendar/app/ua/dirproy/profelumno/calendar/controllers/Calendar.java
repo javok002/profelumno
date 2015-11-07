@@ -73,19 +73,18 @@ public class Calendar extends Controller {
 
     public static Result getCalendar(){
 
-        Map<DayEnum,List<Range>> calendar;
-        List<DayEnum> dayEnumList = DayEnum.listDays();
+        List<DayRange> calendar;
         ArrayNode result = Json.newArray();
         if (getTeacher() != null){
             calendar = getTeacher().getCalendar();
-            for (int i = 0; i <dayEnumList.size() ; i++) {
-                DayEnum day = dayEnumList.get(i);
-                List<Range> rangeList = calendar.get(day);
+            for (int i = 0; i <calendar.size() ; i++) {
+                DayRange day = calendar.get(i);
+                List<Range> rangeList = day.getRangeList();
                 if (!rangeList.isEmpty()) {
                     for (int j = 0; j < rangeList.size(); j++) {
                         Range range = rangeList.get(j);
                         ObjectNode obj = Json.newObject();
-                        obj.put("day", day.getDayName());
+                        obj.put("day", day.getDayEnum().getDayName());
                         obj.put("fromHour", range.getFromHour().toString());
                         obj.put("toHour", range.getToHour().toString());
                         result.add(obj);

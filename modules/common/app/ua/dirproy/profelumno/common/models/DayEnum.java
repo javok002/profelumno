@@ -23,15 +23,4 @@ public enum DayEnum {
         return dayName;
     }
 
-    public static List<DayEnum> listDays(){
-        ArrayList<DayEnum> list = new ArrayList();
-        list.add(SUNDAY);
-        list.add(MONDAY);
-        list.add(TUESDAY);
-        list.add(WEDNESDAY);
-        list.add(THURSDAY);
-        list.add(FRIDAY);
-        list.add(SATURDAY);
-        return list;
-    }
 }

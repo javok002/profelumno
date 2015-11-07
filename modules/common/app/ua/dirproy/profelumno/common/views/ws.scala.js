@@ -1,6 +1,4 @@
-$(function() {
-    angular.bootstrap(document.getElementById("chat-bar"),['app']);
-});
+
 //this function can remove a array element.
 Array.remove = function(array, from, to) {
     var rest = array.slice((to || from) + 1 || array.length);
@@ -74,33 +72,30 @@ function register_popup(id, name)
             return;
         }
     }
-    var element2= '<div class="box box-danger direct-chat direct-chat-danger" ng-controller="ChatController as controller">\
+    var element2= '<div class="box box-danger direct-chat direct-chat-danger">\
         <div class="box-header with-border">\
-    <h3 class="box-title">name</h3>\
-    <div class="box-tools pull-right">\
-    <span data-toggle="tooltip" title="3 New Messages" class="badge bg-red">3</span>\
-<button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>\
-    <button class="btn btn-box-tool"><a href="javascript:close_popup(\''+ id +'\');">&#10005;</a></button>\
-    </div>\
-    </div>\
-<div class="box-body">\
-    <div class="direct-chat-messages">\
-        <div class="direct-chat-msg">\
-            <div class="direct-chat-info clearfix">\
-                <span class="direct-chat-name pull-left">Alexander Pierce</span>\
-                <span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>\
+            <h3 class="box-title">Direct Chat</h3>\
+            <div class="box-tools pull-right">\
+                <span data-toggle="tooltip" title="3 New Messages" class="badge bg-red">3</span>\
+                <button class="btn btn-box-tool"><a href="javascript:close_popup(\''+ id +'\');">&#10005;</a></button>\
             </div>\
-            <img class="direct-chat-img" src="../dist/img/user1-128x128.jpg" alt="message user image">\
-                <div class="direct-chat-text">\
-                    Is this template really for free? Thats unbelievable!\
+        </div>\
+        <div class="box-body">\
+            <div class="direct-chat-messages">\
+                <div class="direct-chat-msg">\
+                    <div class="direct-chat-info clearfix">\
+                        <span class="direct-chat-name pull-left">Alexander Pierce</span>\
+                        <span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>\
+                    </div>\
+                    <div class="direct-chat-text">\
+                        Is this template really for free? Thats unbelievable!\
+                    </div>\
                 </div>\
-            </div>\
-            <div class="direct-chat-msg right">\
-                <div class="direct-chat-info clearfix">\
-                    <span class="direct-chat-name pull-right">Sarah Bullock</span>\
-                    <span class="direct-chat-timestamp pull-left">23 Jan 2:05 pm</span>\
-                </div>\
-                <img class="direct-chat-img" src="../dist/img/user3-128x128.jpg" alt="message user image">\
+                <div class="direct-chat-msg right">\
+                    <div class="direct-chat-info clearfix">\
+                        <span class="direct-chat-name pull-right">Sarah Bullock</span>\
+                        <span class="direct-chat-timestamp pull-left">23 Jan 2:05 pm</span>\
+                    </div>\
                     <div class="direct-chat-text">\
                         You better believe it!\
                     </div>\
@@ -110,35 +105,30 @@ function register_popup(id, name)
                 <ul class="contacts-list">\
                     <li>\
                         <a href="#">\
-                            <img class="contacts-list-img" src="../dist/img/user1-128x128.jpg" alt="Contact Avatar">\
-                                <div class="contacts-list-info">\
-              <span class="contacts-list-name">\
-                Count Dracula\
-                <small class="contacts-list-date pull-right">2/28/2015</small>\
-              </span>\
-                                    <span class="contacts-list-msg">How have you been? I was...</span>\
-                                </div>\
-                            </a>\
-                        </li>\
-                    </ul>\
-                </div>\
+                        <div class="contacts-list-info">\
+                            <span class="contacts-list-name">\
+                                Count Dracula\
+                                <small class="contacts-list-date pull-right">2/28/2015</small>\
+                            </span>\
+                            <span class="contacts-list-msg">How have you been? I was...</span>\
+                        </div>\
+                        </a>\
+                    </li>\
+                </ul>\
             </div>\
-            <div class="box-footer">\
-                <div class="input-group">\
-                    <input type="text" name="message" placeholder="Type Message ..." class="form-control">\
-      <span class="input-group-btn">\
-        <button type="button" class="btn btn-danger btn-flat">Send</button>\
-      </span>\
-                    </div>\
-                </div>\
-            </div>';
-
-
-
+        </div>\
+        <div class="box-footer">\
+            <div class="input-group">\
+                <input type="text" name="message" placeholder="Type Message ..." class="form-control">\
+                <span class="input-group-btn">\
+                    <button type="button" class="btn btn-danger btn-flat">Send</button>\
+                </span>\
+            </div>\
+        </div>\
+    </div>';
     var element = '<div class="popup-box chat-popup" id="'+ id +'">';
     element+=element2;
-
-    document.getElementsByTagName("body")[0].innerHTML = document.getElementsByTagName("body")[0].innerHTML + element;
+    document.getElementById("idunico").innerHTML = document.getElementById("idunico").innerHTML + element;
 
     popups.unshift(id);
 
@@ -149,19 +139,18 @@ function register_popup(id, name)
 //calculate the total number of popups suitable and then populate the toatal_popups variable.
 function calculate_popups()
 {
-    var width = window.innerWidth;
-    if(width < 540)
-    {
-        total_popups = 0;
-    }
-    else
-    {
-        width = width - 200;
-        //320 is width of a single popup box
-        //total_popups = parseInt(width/320);
-        total_popups=2;
-    }
-
+    //var width = window.innerWidth;
+    //if(width < 540)
+    //{
+    //    total_popups = 0;
+    //}
+    //else
+    //{
+    //    width = width - 200;
+    //    //320 is width of a single popup box
+    //    total_popups = parseInt(width/320);
+    //}
+    total_popups=2;
     display_popups();
 
 }
@@ -170,28 +159,19 @@ function calculate_popups()
 window.addEventListener("resize", calculate_popups);
 window.addEventListener("load", calculate_popups);
 
-
+$(function() {
+    angular.bootstrap(document.getElementById("chat-bar"),['app']);
+});
 angular.module('app', [])
     .controller('ChatController', ['$scope', '$http', function ($scope, $http) {
         var userInSession;
         $scope.connectedUsers=[];
         $scope.disconnectedUsers=[];
 
-        var init = function(){
-            var user = getCookie("chat");
-            if (user != "") {
-                loadChats();
-            } else {
-                var d = new Date();
-                d.setTime(d.getTime() + (365*24*60*60*1000));
-                var expires = "expires="+d.toUTCString();
-                document.cookie = "chat=yes; " + expires;
-            }
-        };
-
         $http.get('common/userInSession')
             .success(function (data, status, headers, config) {
-               userInSession=data.id;
+                userInSession=data.id;
+                alert(userInSession);
             }).
             error(function (data, status, headers, config) {
                 // log error
@@ -211,10 +191,10 @@ angular.module('app', [])
                 //event.mesage
                 var idChat=event.idChat;
                 var message=event.message;
-                if (message.author.id==userInSession){
-                    angular.element('#socket-messages'+event.idChat).apend('<p>'+event.message+'</p>');
+                if (message.author.id==userInSession.id){
+                    angular.element('#socket-messages'+idChat).apend('<p>'+message+'</p>');
                 }else{
-                    angular.element('#socket-messages'+idChat).apend('<p>'+event.message+'</p>');
+                    angular.element('#socket-messages'+idChat).apend('<p>'+message+'</p>');
                 }
             }else if (event.type=="user"){
                 //conecta o desconecta un usuario de mis contactos
@@ -268,7 +248,7 @@ angular.module('app', [])
                     //data.chat  Chat
                     var chat = data.chat;
                     for (var i =0; i < chat.messeges.length; i++){
-                        var message=chat.messeges[i];
+                        var messege=chat.messeges[i];
                         if (messege.author.user.id==userInSession){
 
                         }else{
@@ -281,8 +261,8 @@ angular.module('app', [])
                     // log error
                 });
         };
-        $scope.popups=[];
     }]);
+
 
 
 

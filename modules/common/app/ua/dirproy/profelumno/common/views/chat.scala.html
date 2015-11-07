@@ -1,28 +1,18 @@
 
 @()
-
-<aside class="control-sidebar control-sidebar-dark"  id="chat-bar">
-        <!-- sidebar -->
-    <section class="sidebar" ng-controller="ChatContoller as controller">
+<script type="text/javascript" charset="utf-8" src="@ua.dirproy.profelumno.common.controllers.routes.Common.wsJs()"></script>
+<aside class="control-sidebar control-sidebar-dark"  >
+    <section id="idunico"></section>
+        <!-- chatbar -->
+    <section class="sidebar" id="chat-bar" ng-controller="ChatContoller as controller" >
 
         <span style="margin-left: 10px">Conectados</span>
         <div ng-repeat="user in connectedUsers">
             <div class="pad">
                 <div class="sidebar-name">
-                    <a href="javascript:register_popup(''+{{user.id}}, ''+{{user.name}} );">
+                    <a href="javascript:register_popup('nicolas', 'nicolasrudolph');">
                         <img width="40" height="40" src="@routes.Assets.versioned("images/institutional/stud1.jpg")" class="img-circle" />
-                        <span>User 1 Name</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="sidebar-name" ng-repeat="user in connectedUsers">
-                <!-- Pass username and display name to register popup -->
-            <div class="pad">
-                <div class="sidebar-name">
-                    <a href="javascript:register_popup('nicolas', 'Nicolas Rudolph' );">
-                        <img width="40" height="40" src="@routes.Assets.versioned("images/userDefault.jpeg")" class="img-circle" />
-                        <span>User 1 Name</span>
+                        <span>{{user.name+" "+user.surname}}</span>
                     </a>
                 </div>
             </div>
@@ -33,9 +23,9 @@
         <div class="sidebar-name" ng-repeat="user in disconnectedUsers">
                 <div class="pad">
                     <div class="sidebar-name">
-                        <a href="javascript:register_popup('sebastian', 'Sebastian Rudolph' );">
+                        <a href="javascript:register_popup('sebastian', 'sebastianRudolph' );">
                             <img width="40" height="40" src="@routes.Assets.versioned("images/institutional/stud1.jpg")" class="img-circle" />
-                            <span>User 2 Name</span>
+                            <span>{{user.name+" "+user.surname}}</span>
                         </a>
                     </div>
                 </div>
@@ -43,7 +33,9 @@
     </section>
         <!-- /Sidebar -->
 </aside>
+
+
 <!-- Optional to made the bar as large as the page-->
  <div class="control-sidebar-bg"></div>
-</aside>
-<script type="text/javascript" charset="utf-8" src="@ua.dirproy.profelumno.common.controllers.routes.Common.wsJs()"></script>
+
+

@@ -10,6 +10,14 @@ create table chat (
   constraint pk_chat primary key (id))
 ;
 
+create table day_range (
+  id                        bigint not null,
+  teacher_id                bigint not null,
+  day_enum                  integer,
+  constraint ck_day_range_day_enum check (day_enum in (0,1,2,3,4,5,6)),
+  constraint pk_day_range primary key (id))
+;
+
 create table lesson (
   id                        bigint not null,
   date_string               varchar(255),
@@ -35,6 +43,14 @@ create table message (
   msg                       varchar(255),
   date                      timestamp,
   constraint pk_message primary key (id))
+;
+
+create table range (
+  id                        bigint not null,
+  day_range_id              bigint not null,
+  from_hour                 timestamp,
+  to_hour                   timestamp,
+  constraint pk_range primary key (id))
 ;
 
 create table review (
@@ -104,9 +120,13 @@ create table subject_user (
 ;
 create sequence chat_seq;
 
+create sequence day_range_seq;
+
 create sequence lesson_seq;
 
 create sequence message_seq;
+
+create sequence range_seq;
 
 create sequence review_seq;
 
@@ -122,22 +142,26 @@ alter table chat add constraint fk_chat_teacher_1 foreign key (teacher_id) refer
 create index ix_chat_teacher_1 on chat (teacher_id);
 alter table chat add constraint fk_chat_student_2 foreign key (student_id) references student (id) on delete restrict on update restrict;
 create index ix_chat_student_2 on chat (student_id);
-alter table lesson add constraint fk_lesson_subject_3 foreign key (subject_id) references subject (id) on delete restrict on update restrict;
-create index ix_lesson_subject_3 on lesson (subject_id);
-alter table lesson add constraint fk_lesson_teacher_4 foreign key (teacher_id) references teacher (id) on delete restrict on update restrict;
-create index ix_lesson_teacher_4 on lesson (teacher_id);
-alter table lesson add constraint fk_lesson_teacherReview_5 foreign key (teacher_review_id) references review (id) on delete restrict on update restrict;
-create index ix_lesson_teacherReview_5 on lesson (teacher_review_id);
-alter table lesson add constraint fk_lesson_student_6 foreign key (student_id) references student (id) on delete restrict on update restrict;
-create index ix_lesson_student_6 on lesson (student_id);
-alter table lesson add constraint fk_lesson_studentReview_7 foreign key (student_review_id) references review (id) on delete restrict on update restrict;
-create index ix_lesson_studentReview_7 on lesson (student_review_id);
-alter table message add constraint fk_message_author_8 foreign key (author_id) references user (id) on delete restrict on update restrict;
-create index ix_message_author_8 on message (author_id);
-alter table student add constraint fk_student_user_9 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_student_user_9 on student (user_id);
-alter table teacher add constraint fk_teacher_user_10 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_teacher_user_10 on teacher (user_id);
+alter table day_range add constraint fk_day_range_teacher_3 foreign key (teacher_id) references teacher (id) on delete restrict on update restrict;
+create index ix_day_range_teacher_3 on day_range (teacher_id);
+alter table lesson add constraint fk_lesson_subject_4 foreign key (subject_id) references subject (id) on delete restrict on update restrict;
+create index ix_lesson_subject_4 on lesson (subject_id);
+alter table lesson add constraint fk_lesson_teacher_5 foreign key (teacher_id) references teacher (id) on delete restrict on update restrict;
+create index ix_lesson_teacher_5 on lesson (teacher_id);
+alter table lesson add constraint fk_lesson_teacherReview_6 foreign key (teacher_review_id) references review (id) on delete restrict on update restrict;
+create index ix_lesson_teacherReview_6 on lesson (teacher_review_id);
+alter table lesson add constraint fk_lesson_student_7 foreign key (student_id) references student (id) on delete restrict on update restrict;
+create index ix_lesson_student_7 on lesson (student_id);
+alter table lesson add constraint fk_lesson_studentReview_8 foreign key (student_review_id) references review (id) on delete restrict on update restrict;
+create index ix_lesson_studentReview_8 on lesson (student_review_id);
+alter table message add constraint fk_message_author_9 foreign key (author_id) references user (id) on delete restrict on update restrict;
+create index ix_message_author_9 on message (author_id);
+alter table range add constraint fk_range_day_range_10 foreign key (day_range_id) references day_range (id) on delete restrict on update restrict;
+create index ix_range_day_range_10 on range (day_range_id);
+alter table student add constraint fk_student_user_11 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_student_user_11 on student (user_id);
+alter table teacher add constraint fk_teacher_user_12 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_teacher_user_12 on teacher (user_id);
 
 
 
@@ -151,9 +175,13 @@ SET REFERENTIAL_INTEGRITY FALSE;
 
 drop table if exists chat;
 
+drop table if exists day_range;
+
 drop table if exists lesson;
 
 drop table if exists message;
+
+drop table if exists range;
 
 drop table if exists review;
 
@@ -171,9 +199,13 @@ SET REFERENTIAL_INTEGRITY TRUE;
 
 drop sequence if exists chat_seq;
 
+drop sequence if exists day_range_seq;
+
 drop sequence if exists lesson_seq;
 
 drop sequence if exists message_seq;
+
+drop sequence if exists range_seq;
 
 drop sequence if exists review_seq;
 

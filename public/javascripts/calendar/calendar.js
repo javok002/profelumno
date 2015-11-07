@@ -5,44 +5,91 @@
 angular.module('app', [])
     .controller('CalendarController', ['$scope', '$http', function ($scope, $http) {
 
-        $scope.init = function() {
+        $scope.init = function () {
             $http.get("/calendar/get-user-name")
-                .success(function(data) {
+                .success(function (data) {
                     $scope.userName = data;
                 });
 
-            $('#calendar').fullCalendar({
-                lang: 'es',
-                header: {
-                    left:   'title',
-                    center: 'today prev,next',
-                    right:  'month,agendaWeek,agendaDay'
-                },
-                dayClick: function(date, jsEvent, view) {
+            $http.get("/calendar/get-lessons")
+                .success(function (data) {
+                    data.forEach(function(lesson) {
+                        var student = lesson.student.user;
+                        lesson.title = lesson.subject.text /*+ ' a ' + student.name + ' ' + student.surname*/;
+                        lesson.date = new Date(lesson.dateTime);
+                    });
 
-                    date.format();
+                    $scope.data = data;
 
-
-                    //alert('Current view: ' + view.name);
-                    //$(this).css('background-color', 'red');
-
-                },
-                eventClick: function(event, jsEvent, view) {
-
-
-                },
-                events: [
-                    {
-                        title: 'Title',
-                        start: new Date()
-
-                    }
-                ]
-            });
+                    $('#calendar').fullCalendar({
+                        lang: 'es',
+                        header: {
+                            left: 'title',
+                            center: 'today prev,next',
+                            right: 'month,agendaWeek,agendaDay'
+                        },
+                        eventClick: function (event, jsEvent, view) {
+                            $scope.openLessonModal(event);
+                        },
+                        events: $scope.data
+                    });
+                });
+            /*cableCalendar();*/
         };
 
-
+        $scope.openLessonModal = function (lessonEvent) {
+            $scope.currentLesson = lessonEvent;
+            $('#lessonModal').modal('show');
+        };
 
         $scope.init();
 
     }]);
+
+var cableCalendar = function() {
+    $('#calendar').fullCalendar({
+        lang: 'es',
+        header: {
+            left: 'title',
+            center: 'today prev,next',
+            right: 'month,agendaWeek,agendaDay'
+        },
+        eventClick: function (event, jsEvent, view) {
+            $scope.openLessonModal(event);
+        },
+        events: [
+            {
+                title: 'Title',
+                date: new Date(),
+                address: 'Fake Street 123',
+                comment: 'Lorem ipsum dolor sit amet',
+                lessonState: 2,
+                student: {
+                    user: {
+                        name: 'Pepe',
+                        surname: 'Pepierrez'
+                    }
+                },
+                subject: {
+                    text: 'Math'
+                }
+            },
+            {
+                title: 'Title',
+                date: new Date(),
+                address: 'Fake Street 123',
+                comment: 'Lorem ipsum dolor sit amet',
+                lessonState: 2,
+                student: {
+                    user: {
+                        name: 'Pepe',
+                        surname: 'Pepierrez'
+                    }
+                },
+                subject: {
+                    text: 'Math'
+                }
+            }
+        ]
+    });
+};

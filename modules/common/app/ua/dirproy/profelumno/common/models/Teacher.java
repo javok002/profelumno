@@ -4,9 +4,7 @@ import com.avaje.ebean.Model;
 import ua.dirproy.profelumno.user.models.User;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.*;
 
 /**
@@ -41,16 +39,17 @@ public class Teacher extends Model {
 
     private double price;
 
-    private Map<DayEnum,List<Range>> calendar;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<DayRange> calendar;
 
-    public Teacher(){}
+    public Teacher(){calendar = new ArrayList();}
 
     public Teacher(long id, String description, boolean homeClasses, User user){
         this.id=id;
         this.description=description;
         this.homeClasses=homeClasses;
         this.user=user;
-        calendar = new HashMap<>();
+        calendar = new ArrayList();
     }
 
     public static Finder<Long, Teacher> finder = new Finder<>(Teacher.class);
@@ -177,8 +176,12 @@ public class Teacher extends Model {
         teacher.save();
     }
 
-    public Map<DayEnum, List<Range>> getCalendar() {
+    public List<DayRange> getCalendar() {
         return calendar;
+    }
+
+    public void setCalendar(List<DayRange> calendar) {
+        this.calendar = calendar;
     }
 
     public void updateCalendar(Date date,Date fromHour,Date toHour) {
@@ -208,15 +211,38 @@ public class Teacher extends Model {
         if (Calendar.SATURDAY == day){
             dayEnum = DayEnum.SATURDAY;
         }
-        if (calendar.get(dayEnum) == null){
+
+        if (calendar.isEmpty()){
+            DayRange aux = new DayRange();
             List<Range> ranges = new ArrayList<>();
             ranges.add(range);
-            calendar.put(dayEnum,ranges);
+            aux.setDayEnum(dayEnum);
+            aux.setRangeList(ranges);
+            range.save();
+            aux.save();
+
         }
         else {
-            List<Range> ranges = calendar.get(dayEnum);
-            ranges.add(range);
-            calendar.put(dayEnum, ranges);
+            for (int i = 0; i < calendar.size(); i++) {
+                DayRange dayRange = calendar.get(i);
+                if (dayRange.getDayEnum().equals(dayEnum)){
+                    List<Range> ranges = dayRange.getRangeList();
+                    ranges.add(range);
+                    range.save();
+                    dayRange.save();
+                }
+                else {
+                    DayRange aux = new DayRange();
+                    List<Range> ranges = new ArrayList<>();
+                    ranges.add(range);
+                    aux.setDayEnum(dayEnum);
+                    aux.setRangeList(ranges);
+                    range.save();
+                    aux.save();
+                }
+            }
+
         }
+
     }
 }
