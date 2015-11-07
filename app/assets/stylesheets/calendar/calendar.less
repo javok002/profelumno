@@ -1,6 +1,19 @@
 .fc-day {
 
   &:hover {
-    background-color: #E2E2E2;
+    //background-color: #E2E2E2;
+  }
+}
+
+@default-blue: #3a87ad;
+
+.fc-event {
+
+  cursor: pointer;
+  font-size: 14px;
+  white-space: normal;
+
+  &:hover {
+    background-color: lighten(@default-blue, 10%);
   }
 }

@@ -2,6 +2,8 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-GET     /                   ua.dirproy.profelumno.calendar.controllers.Calendar.calendarView()
-GET     /get-user-name      ua.dirproy.profelumno.calendar.controllers.Calendar.getUserName()
+GET     /                           ua.dirproy.profelumno.calendar.controllers.Calendar.calendarView()
+GET     /get-user-name              ua.dirproy.profelumno.calendar.controllers.Calendar.getUserName()
+GET     /get-lessons                ua.dirproy.profelumno.calendar.controllers.Calendar.getLessonAccepted()
+GET     /get-calendar               ua.dirproy.profelumno.calendar.controllers.Calendar.getCalendar()
 

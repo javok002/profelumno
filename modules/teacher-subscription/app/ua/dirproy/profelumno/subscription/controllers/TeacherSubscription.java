@@ -27,7 +27,8 @@ import java.util.Date;
 @Authenticate({Teacher.class})
 public class TeacherSubscription extends Controller{
 
-    static boolean test = true;
+    static boolean test = false;
+
     public static Result validateForm(){
         final long userId= Long.parseLong(session("id"));
         User user = Ebean.find(User.class, userId);
@@ -79,8 +80,8 @@ public class TeacherSubscription extends Controller{
 
         teacher.setIsInTrial(false);
         teacher.save();
-        ChargeTask charger= new ChargeTask();
-        charger.charge();
+        ChargeTask charger= new ChargeTask(test);
+        charger.charge(userId);
         System.out.println("Teacher trial: " + teacher.isInTrial());
         return ok("/");
     }
