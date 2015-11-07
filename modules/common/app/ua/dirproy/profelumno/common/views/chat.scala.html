@@ -7,7 +7,7 @@
     <section class="sidebar" id="chat-bar" ng-controller="ChatContoller as controller" >
 
         <span style="margin-left: 10px">Conectados</span>
-        <div ng-repeat="user in connectedUsers">
+        <div ng-repeat="user in connectedUser">
             <div class="pad">
                 <div class="sidebar-name">
                     <a href="javascript:register_popup('nicolas', 'nicolasrudolph');">
@@ -17,10 +17,8 @@
                 </div>
             </div>
         </div>
-        <div  class="sidebar-name" ng-show="controller.disconnectedUsers">
-            <span>Desconectados</span>
-        </div>
-        <div class="sidebar-name" ng-repeat="user in disconnectedUsers">
+        <span style="margin-left: 10px">Desconectados</span>
+        <div class="sidebar-name" ng-repeat="user in disconnectedUser">
                 <div class="pad">
                     <div class="sidebar-name">
                         <a href="javascript:register_popup('sebastian', 'sebastianRudolph' );">

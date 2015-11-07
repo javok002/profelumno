@@ -1,4 +1,4 @@
-
+//scala
 //this function can remove a array element.
 Array.remove = function(array, from, to) {
     var rest = array.slice((to || from) + 1 || array.length);
@@ -72,54 +72,20 @@ function register_popup(id, name)
             return;
         }
     }
-    var element2= '<div class="box box-danger direct-chat direct-chat-danger">\
+    var element2= '<div class="box box-danger direct-chat direct-chat-danger" ng-app="chatController" ng-controller="ChatController as controller">\
         <div class="box-header with-border">\
-            <h3 class="box-title">Direct Chat</h3>\
+            <h3 class="box-title">'+name+'</h3>\
             <div class="box-tools pull-right">\
-                <span data-toggle="tooltip" title="3 New Messages" class="badge bg-red">3</span>\
                 <button class="btn btn-box-tool"><a href="javascript:close_popup(\''+ id +'\');">&#10005;</a></button>\
             </div>\
         </div>\
         <div class="box-body">\
-            <div class="direct-chat-messages">\
-                <div class="direct-chat-msg">\
-                    <div class="direct-chat-info clearfix">\
-                        <span class="direct-chat-name pull-left">Alexander Pierce</span>\
-                        <span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>\
-                    </div>\
-                    <div class="direct-chat-text">\
-                        Is this template really for free? Thats unbelievable!\
-                    </div>\
-                </div>\
-                <div class="direct-chat-msg right">\
-                    <div class="direct-chat-info clearfix">\
-                        <span class="direct-chat-name pull-right">Sarah Bullock</span>\
-                        <span class="direct-chat-timestamp pull-left">23 Jan 2:05 pm</span>\
-                    </div>\
-                    <div class="direct-chat-text">\
-                        You better believe it!\
-                    </div>\
-                </div>\
-            </div>\
-            <div class="direct-chat-contacts">\
-                <ul class="contacts-list">\
-                    <li>\
-                        <a href="#">\
-                        <div class="contacts-list-info">\
-                            <span class="contacts-list-name">\
-                                Count Dracula\
-                                <small class="contacts-list-date pull-right">2/28/2015</small>\
-                            </span>\
-                            <span class="contacts-list-msg">How have you been? I was...</span>\
-                        </div>\
-                        </a>\
-                    </li>\
-                </ul>\
+            <div class="direct-chat-messages" id="socket-messages'+id+'">\
             </div>\
         </div>\
         <div class="box-footer">\
             <div class="input-group">\
-                <input type="text" name="message" placeholder="Type Message ..." class="form-control">\
+                <input type="text" name="message" placeholder="Type Message ..." class="form-control" id="socket-input">\
                 <span class="input-group-btn">\
                     <button type="button" class="btn btn-danger btn-flat">Send</button>\
                 </span>\
@@ -160,13 +126,13 @@ window.addEventListener("resize", calculate_popups);
 window.addEventListener("load", calculate_popups);
 
 $(function() {
-    angular.bootstrap(document.getElementById("chat-bar"),['app']);
+    angular.bootstrap(document.getElementById("chat-bar"),['chatController']);
 });
-angular.module('app', [])
+angular.module('chatController', [])
     .controller('ChatController', ['$scope', '$http', function ($scope, $http) {
         var userInSession;
-        $scope.connectedUsers=[];
-        $scope.disconnectedUsers=[];
+        $scope.connectedUser=[];
+        $scope.disconnectedUser=[];
 
         $http.get('common/userInSession')
             .success(function (data, status, headers, config) {
@@ -192,9 +158,23 @@ angular.module('app', [])
                 var idChat=event.idChat;
                 var message=event.message;
                 if (message.author.id==userInSession.id){
-                    angular.element('#socket-messages'+idChat).apend('<p>'+message+'</p>');
+                    angular.element('#socket-messages'+idChat).apend('<div class="direct-chat-msg right">\
+                            <div class="direct-chat-info clearfix">\
+                                <span class="direct-chat-name pull-right">'+ message.author.name+" "+ message.author.surname+'</span>\
+                                <span class="direct-chat-timestamp pull-left">'+message.date+'</span>\
+                            </div>\
+                            <div class="direct-chat-text">\
+                                '+message.msg+'\
+                            </div></div>');
                 }else{
-                    angular.element('#socket-messages'+idChat).apend('<p>'+message+'</p>');
+                    angular.element('#socket-messages'+idChat).apend('<div class="direct-chat-msg">\
+                            <div class="direct-chat-info clearfix">\
+                                <span class="direct-chat-name pull-left">'+ message.author.name+" "+ message.author.surname+'</span>\
+                                <span class="direct-chat-timestamp pull-right">'+message.date+'</span>\
+                            </div>\
+                            <div class="direct-chat-text">\
+                                '+message.msg+'\
+                            </div></div>');
                 }
             }else if (event.type=="user"){
                 //conecta o desconecta un usuario de mis contactos
@@ -203,28 +183,28 @@ angular.module('app', [])
                 user=event.user;
                 var aux=[];
                 if (event.connected){
-                    for(var j=0; j<disconnectedUsers.length;j++){
-                        if (disconnectedUsers[j]!=user){
-                            aux.push(disconnectedUsers[j]);
+                    for(var j=0; j<disconnectedUser.length;j++){
+                        if (disconnectedUser[j]!=user){
+                            aux.push(disconnectedUser[j]);
                         }
                     }
-                    disconnectedUsers=aux;
-                    connectedUsers.push(user);
+                    disconnectedUser=aux;
+                    connectedUser.push(user);
                 }else{
-                    for(var j=0; j<connectedUsers.length;j++){
-                        if (connectedUsers[j]!=user){
-                            aux.push(connectedUsers[j]);
+                    for(j=0; j<connectedUser.length;j++){
+                        if (connectedUser[j]!=user){
+                            aux.push(connectedUser[j]);
                         }
                     }
-                    connectedUsers=aux;
-                    disconnectedUsers.push(user);
+                    connectedUser=aux;
+                    disconnectedUser.push(user);
                 }
             } else if (event.type=="users"){
                 //lista de personas conectadas y desconectadas
                 //event.connectedUsers
-                $scope.connectedUsers=event.connectedUsers;
+                connectedUser=event.connectedUsers;
                 //event.disconnectedUsers
-                $scope.disconnectedUsers=event.disconnectedUsers;
+                disconnectedUser=event.disconnectedUsers;
             }
 
         };
@@ -236,8 +216,7 @@ angular.module('app', [])
             var charCode = (event.which) ? event.which : event.keyCode ;
 
             if(charCode === 13){
-                socket.send($(this).val());
-                //{idUserFrom: long, message: String, idChat: long}
+                socket.send({idUserFrom: userInSession.id, message: $(this).val(), idChat: long});
                 $(this).val('');
             }
         });
@@ -247,12 +226,26 @@ angular.module('app', [])
                 .success(function (data, status, headers, config) {
                     //data.chat  Chat
                     var chat = data.chat;
-                    for (var i =0; i < chat.messeges.length; i++){
-                        var messege=chat.messeges[i];
-                        if (messege.author.user.id==userInSession){
-
+                    for (var i =0; i < chat.messages.length; i++){
+                        var message=chat.messages[i];
+                        if (message.author.id==userInSession.id){
+                            angular.element('#socket-messages'+idChat).apend('<div class="direct-chat-msg right">\
+                            <div class="direct-chat-info clearfix">\
+                                <span class="direct-chat-name pull-right">'+ message.author.name+" "+ message.author.surname+'</span>\
+                                <span class="direct-chat-timestamp pull-left">message.date</span>\
+                            </div>\
+                            <div class="direct-chat-text">\
+                                '+message.msg+'\
+                            </div></div>');
                         }else{
-
+                            angular.element('#socket-messages'+idChat).apend('<div class="direct-chat-msg">\
+                            <div class="direct-chat-info clearfix">\
+                                <span class="direct-chat-name pull-left">'+ message.author.name+" "+ message.author.surname+'</span>\
+                                <span class="direct-chat-timestamp pull-right">'+message.date+'</span>\
+                            </div>\
+                            <div class="direct-chat-text">\
+                                '+message.msg+'\
+                            </div></div>');
                         }
                     }
                     //data.chat.messeges [Messeges] En indice 0 esta el mas viejo
