@@ -28,8 +28,9 @@ public class Global extends GlobalSettings {
     public void beforeStart(Application app) {
         InitialData.insert(app);
 
+        /*
         Recommend recommend = new Recommend();
-        recommend.weMissYou();
+        recommend.weMissYou();*/
     }
 
     static class InitialData {
@@ -495,7 +496,6 @@ public class Global extends GlobalSettings {
                     "Cuba 2039, Belgrano, Buenos Aires",
                     "Defensa 1431, San Telmo, Buenos Aires"
             };
-            https://www.google.com.ar/maps/search/Ballivian+2329,+Villa+Ortuzar,+Buenos+Aires/
             return address;
         }
 

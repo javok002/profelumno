@@ -18,6 +18,7 @@ import ua.dirproy.profelumno.user.models.User;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -98,33 +99,45 @@ public class TeacherSearches extends Controller {
         users.sort(new Comparator<User>() {
             @Override
             public int compare(User o1, User o2) {
-                /*if(o1.getLatitude() == 0 || o1.getLongitude() == 0) return -1;
-                else if(o2.getLatitude() == 0 || o2.getLongitude() == 0) return 1;*/
+                if(o1.getLatitude() == 0 || o1.getLongitude() == 0) return -1;
+                else if(o2.getLatitude() == 0 || o2.getLongitude() == 0) return 1;
+                int distance = 0;
                 try {
-                    getCordinates(o1.getAddress());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ParserConfigurationException e) {
-                    e.printStackTrace();
-                } catch (SAXException e) {
-                    e.printStackTrace();
+                        distance = (int) (getDistance(user, o1) - getDistance(user, o2));
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                return distance;
                 }
-                return (int) (getDistance(user, o1) - getDistance(user, o2));
-            }
-        });
-    }
 
-    private static double getDistance(User user1, User user2){
+        });
+        }
+
+
+    private static double getDistance(User user1, User user2) throws IOException {
+        if((user1.getLatitude() == 0 || user1.getLongitude() == 0) && user1.getAddress() != null){
+            getCordinates(user1);
+        }
+        if ((user2.getLatitude() == 0 || user2.getLongitude() == 0) && user2.getAddress()!= null){
+            getCordinates(user2);
+        }
         return Math.hypot((user1.getLatitude() - user2.getLatitude()),(user1.getLongitude() - user2.getLongitude()));
+    }
         // TODO las coordenadas de TODOS los usuarios son iguales, la distancia va a ser siempre 0.0 mts.
 
 
-    }
+
 
     // https://www.google.com.ar/maps/search/Ballivian+2329,+Villa+Ortuzar,+Buenos+Aires/
-    private static String getCordinates(String address) throws IOException, ParserConfigurationException, SAXException {
 
-        String address2 = address.replace(" ", "+");
+    /**
+     * Metodo villero para agarrar las coordenadas segun la direccion del usuario
+     * @param user usuario a obtener las coordenadas
+     * @throws IOException
+     */
+    private static void  getCordinates(User user) throws IOException {
+
+        String address2 = user.getAddress().replace(" ", "+");
         URL url = new URL("https://www.google.com.ar/maps/search/" + address2);
 
         BufferedReader theHTML = new BufferedReader(new InputStreamReader(url.openStream()));
@@ -133,23 +146,19 @@ public class TeacherSearches extends Controller {
             line = theHTML.readLine();
         }
         String[] separatedLine = line.split(",",5);
-        double longitud = Double.parseDouble(separatedLine[1]);
-        double altitud = Double.parseDouble(separatedLine[2].replace("]",""));
+        user.setLatitude(Double.parseDouble(separatedLine[1]));
+        user.setLongitude(Double.parseDouble(separatedLine[2].replace("]", "")));
 
         //URL url1 = new URL("http://maps.google.com/maps/api/geocode/xml?address="+address2+"&sensor=false");
         //BufferedReader theHTML1 = new BufferedReader(new InputStreamReader(url1.openStream()));
         //Json.toJson(url1.openStream());
         /*String line2 = theHTML1.readLine();
-        while (!line2.contains("<location>")){
+        while (!line2.contains("<location>")){              // Este es un metodo que utiliza un JSON y no supe como agarrarlo. "url1" en teoria devuelve un JSON.
             line2 = theHTML1.readLine();
         }
         double lat = Double.parseDouble(theHTML1.readLine().replace("<lat>", "").replace("</lat>", "").replace(" ",""));
         double longit = Double.parseDouble(theHTML1.readLine().replace("<lng>", "").replace("</lng>","").replace(" ", ""));
 */
-        return line;
-
-
-
     }
 
 
