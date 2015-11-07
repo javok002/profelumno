@@ -80,14 +80,68 @@ function register_popup(id, name)
             </div>\
         </div>\
         <div class="box-body">\
-            <div class="direct-chat-messages" id="socket-messages'+id+'">\
+            <div class="direct-chat-messages" id="socket-messages'+id+'" name="chat-messages">\
+                <div class="direct-chat-msg right">\
+                    <div class="direct-chat-info clearfix">\
+                       <span class="direct-chat-name pull-right">nico rudolpg</span>\
+                       <span class="direct-chat-timestamp pull-left"> ahashjbda </span>\
+                    </div>\
+                    <div class="direct-chat-text">\
+                        hola\
+                    </div>\
+                </div>\
+                <div class="direct-chat-msg right">\
+                    <div class="direct-chat-info clearfix">\
+                       <span class="direct-chat-name pull-right">nico rudolpg</span>\
+                       <span class="direct-chat-timestamp pull-left"> ahashjbda </span>\
+                    </div>\
+                    <div class="direct-chat-text">\
+                        hola\
+                    </div>\
+                </div>\
+                <div class="direct-chat-msg right">\
+                    <div class="direct-chat-info clearfix">\
+                       <span class="direct-chat-name pull-right">nico rudolpg</span>\
+                       <span class="direct-chat-timestamp pull-left"> ahashjbda </span>\
+                    </div>\
+                    <div class="direct-chat-text">\
+                        hola\
+                    </div>\
+                </div>\
+                <div class="direct-chat-msg right">\
+                    <div class="direct-chat-info clearfix">\
+                       <span class="direct-chat-name pull-right">nico rudolpg</span>\
+                       <span class="direct-chat-timestamp pull-left"> ahashjbda </span>\
+                    </div>\
+                    <div class="direct-chat-text">\
+                        hola\
+                    </div>\
+                </div>\
+                <div class="direct-chat-msg right">\
+                    <div class="direct-chat-info clearfix">\
+                       <span class="direct-chat-name pull-right">nico rudolpg</span>\
+                       <span class="direct-chat-timestamp pull-left"> ahashjbda </span>\
+                    </div>\
+                    <div class="direct-chat-text">\
+                        hola\
+                    </div>\
+                </div>\
+                <div class="direct-chat-msg right">\
+                    <div class="direct-chat-info clearfix">\
+                       <span class="direct-chat-name pull-right">nico rudolpg</span>\
+                       <span class="direct-chat-timestamp pull-left"> ahashjbda </span>\
+                    </div>\
+                    <div class="direct-chat-text">\
+                        hola\
+                    </div>\
+                </div>\
             </div>\
         </div>\
         <div class="box-footer">\
             <div class="input-group">\
                 <input type="text" name="message" placeholder="Type Message ..." class="form-control" id="socket-input">\
                 <span class="input-group-btn">\
-                    <button type="button" class="btn btn-danger btn-flat">Send</button>\
+                    <button type="button" class="btn btn-danger btn-flat" onclick="updateScroll()">Send</button>\
                 </span>\
             </div>\
         </div>\
@@ -121,6 +175,12 @@ function calculate_popups()
 
 }
 
+function updateScroll(){
+    var element = document.getElementsByName("chat-messages");
+    if (element!=null)
+        element[0].scrollTop = element[0].scrollHeight;
+}
+
 //recalculate when window is loaded and also when window is resized.
 window.addEventListener("resize", calculate_popups);
 window.addEventListener("load", calculate_popups);
@@ -137,10 +197,11 @@ angular.module('chatController', [])
         $http.get('common/userInSession')
             .success(function (data, status, headers, config) {
                 userInSession=data.id;
-                alert(userInSession);
+                alert("hola");
             }).
             error(function (data, status, headers, config) {
                 // log error
+                alert("hola")
             });
 
         // get websocket class, firefox has a different way to get it
@@ -176,6 +237,7 @@ angular.module('chatController', [])
                                 '+message.msg+'\
                             </div></div>');
                 }
+                updateScroll();
             }else if (event.type=="user"){
                 //conecta o desconecta un usuario de mis contactos
                 //event.user User
@@ -221,6 +283,10 @@ angular.module('chatController', [])
             }
         });
 
+        $scope.submitMessage= function(){
+
+        };
+
         $scope.getChat = function (chatToId) {
             $http.get('chat/getChat?userId='+chatToId)
                 .success(function (data, status, headers, config) {
@@ -247,6 +313,7 @@ angular.module('chatController', [])
                                 '+message.msg+'\
                             </div></div>');
                         }
+                        updateScroll();
                     }
                     //data.chat.messeges [Messeges] En indice 0 esta el mas viejo
                 }).
