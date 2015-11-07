@@ -75,8 +75,7 @@ public class Calendar extends Controller {
         ArrayNode result = Json.newArray();
         if (getTeacher() != null){
             calendar = getTeacher().getCalendar();
-            for (int i = 0; i <calendar.size() ; i++) {
-                DayRange day = calendar.get(i);
+            for (DayRange day : calendar){
                 List<Range> rangeList = day.getRangeList();
                 if (!rangeList.isEmpty()) {
                     for (Range range : rangeList) {
@@ -93,17 +92,25 @@ public class Calendar extends Controller {
     }
 
 
-    public static void updateCalendar() throws IOException {
+    public static Result updateCalendar() throws IOException {
         JsonNode updateJson = request().body().asJson();
-        Date date = deserialize(updateJson.get("date"));
-        Date fromHour = deserialize(updateJson.get("fromHour"));
-        Date toHour = deserialize(updateJson.get("toHour"));
-        Teacher teacher;
-        if (getTeacher() != null){
-            teacher = getTeacher();
-            teacher.updateCalendar(date,fromHour,toHour);
+        if(updateJson == null) {
+            return badRequest("Expecting Json data");
         }
-
+        else {
+            Date date = deserialize(updateJson.get("date"));
+            Date fromHour = deserialize(updateJson.get("fromHour"));
+            Date toHour = deserialize(updateJson.get("toHour"));
+            Teacher teacher;
+            if (getTeacher() != null) {
+                teacher = getTeacher();
+                teacher.updateCalendar(date, fromHour, toHour);
+                return ok();
+            }
+            else {
+                return badRequest("Teacher == null");
+            }
+        }
 
     }
 
