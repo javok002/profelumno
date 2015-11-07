@@ -1,17 +1,14 @@
 package ua.dirproy.profelumno.calendar.controllers;
 
 import authenticate.Authenticate;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
-import ua.dirproy.profelumno.common.models.*;
-
 import ua.dirproy.profelumno.calendar.views.html.calendar;
+import ua.dirproy.profelumno.common.models.*;
 import ua.dirproy.profelumno.user.models.User;
 
 import java.io.IOException;
@@ -20,7 +17,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Authenticate({Teacher.class, Student.class})
 public class Calendar extends Controller {
@@ -47,12 +43,15 @@ public class Calendar extends Controller {
         return null;
     }
 
-    private static List<Lesson> myLessons(User user){
+    private static List<Lesson> myLessons(){
+        User user = getUser();
         List<Lesson> lessons = Lesson.list();
         List<Lesson> myLessons = new ArrayList<>();
-        for (int i = 0; i <lessons.size() ; i++) {
-            Lesson aux = lessons.get(i);
-            if (aux.getTeacher().getId().equals(user.getId()) || aux.getStudent().getId().equals(user.getId())){
+        for (Lesson aux : lessons) {
+            if (aux.getTeacher().getUser().getId().equals(user.getId())){
+                myLessons.add(aux);
+            }
+            else if (aux.getStudent().getUser().getId().equals(user.getId())){
                 myLessons.add(aux);
             }
         }
@@ -60,10 +59,9 @@ public class Calendar extends Controller {
     }
 
     public static Result getLessonAccepted(){
-        List<Lesson> lessons = myLessons(getUser());
+        List<Lesson> lessons = myLessons();
         List<Lesson> acceptLessons = new ArrayList<>();
-        for (int i = 0; i <lessons.size() ; i++) {
-            Lesson aux = lessons.get(i);
+        for (Lesson aux : lessons) {
             if (aux.getLessonState() == 1) {
                 acceptLessons.add(aux);
             }
@@ -81,8 +79,7 @@ public class Calendar extends Controller {
                 DayRange day = calendar.get(i);
                 List<Range> rangeList = day.getRangeList();
                 if (!rangeList.isEmpty()) {
-                    for (int j = 0; j < rangeList.size(); j++) {
-                        Range range = rangeList.get(j);
+                    for (Range range : rangeList) {
                         ObjectNode obj = Json.newObject();
                         obj.put("day", day.getDayEnum().getDayName());
                         obj.put("fromHour", range.getFromHour().toString());
