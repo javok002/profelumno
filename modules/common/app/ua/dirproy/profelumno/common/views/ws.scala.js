@@ -1,4 +1,3 @@
-//scala
 //this function can remove a array element.
 Array.remove = function(array, from, to) {
     var rest = array.slice((to || from) + 1 || array.length);
@@ -186,9 +185,9 @@ window.addEventListener("resize", calculate_popups);
 window.addEventListener("load", calculate_popups);
 
 $(function() {
-    angular.bootstrap(document.getElementById("chat-bar"),['chatController']);
+    angular.bootstrap(document.getElementById("chat-bar"),['chat']);
 });
-angular.module('chatController', [])
+angular.module('chat', [])
     .controller('ChatController', ['$scope', '$http', function ($scope, $http) {
         var userInSession;
         $scope.connectedUser=[];
@@ -197,11 +196,9 @@ angular.module('chatController', [])
         $http.get('common/userInSession')
             .success(function (data, status, headers, config) {
                 userInSession=data.id;
-                alert("hola");
             }).
             error(function (data, status, headers, config) {
                 // log error
-                alert("hola")
             });
 
         // get websocket class, firefox has a different way to get it
