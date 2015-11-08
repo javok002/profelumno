@@ -54,7 +54,7 @@ function display_popups()
 }
 
 //creates markup for a new popup. Adds the id to popups array.
-function register_popup(id, name)
+function register_popup(id, name,chatID)
 {
     for(var iii = 0; iii < popups.length; iii++)
     {
@@ -79,73 +79,19 @@ function register_popup(id, name)
             </div>\
         </div>\
         <div class="box-body">\
-            <div class="direct-chat-messages" id="socket-messages'+id+'" name="chat-messages">\
-                <div class="direct-chat-msg right">\
-                    <div class="direct-chat-info clearfix">\
-                       <span class="direct-chat-name pull-right">nico rudolpg</span>\
-                       <span class="direct-chat-timestamp pull-left"> ahashjbda </span>\
-                    </div>\
-                    <div class="direct-chat-text">\
-                        hola\
-                    </div>\
-                </div>\
-                <div class="direct-chat-msg right">\
-                    <div class="direct-chat-info clearfix">\
-                       <span class="direct-chat-name pull-right">nico rudolpg</span>\
-                       <span class="direct-chat-timestamp pull-left"> ahashjbda </span>\
-                    </div>\
-                    <div class="direct-chat-text">\
-                        hola\
-                    </div>\
-                </div>\
-                <div class="direct-chat-msg right">\
-                    <div class="direct-chat-info clearfix">\
-                       <span class="direct-chat-name pull-right">nico rudolpg</span>\
-                       <span class="direct-chat-timestamp pull-left"> ahashjbda </span>\
-                    </div>\
-                    <div class="direct-chat-text">\
-                        hola\
-                    </div>\
-                </div>\
-                <div class="direct-chat-msg right">\
-                    <div class="direct-chat-info clearfix">\
-                       <span class="direct-chat-name pull-right">nico rudolpg</span>\
-                       <span class="direct-chat-timestamp pull-left"> ahashjbda </span>\
-                    </div>\
-                    <div class="direct-chat-text">\
-                        hola\
-                    </div>\
-                </div>\
-                <div class="direct-chat-msg right">\
-                    <div class="direct-chat-info clearfix">\
-                       <span class="direct-chat-name pull-right">nico rudolpg</span>\
-                       <span class="direct-chat-timestamp pull-left"> ahashjbda </span>\
-                    </div>\
-                    <div class="direct-chat-text">\
-                        hola\
-                    </div>\
-                </div>\
-                <div class="direct-chat-msg right">\
-                    <div class="direct-chat-info clearfix">\
-                       <span class="direct-chat-name pull-right">nico rudolpg</span>\
-                       <span class="direct-chat-timestamp pull-left"> ahashjbda </span>\
-                    </div>\
-                    <div class="direct-chat-text">\
-                        hola\
-                    </div>\
-                </div>\
+            <div class="direct-chat-messages" id="socket-messages'+chatID+'" name="chat-messages">\
             </div>\
         </div>\
         <div class="box-footer">\
             <div class="input-group">\
-                <input type="text" name="message" placeholder="Type Message ..." class="form-control" id="socket-input">\
+                <input type="text" name="message" placeholder="Type Message ..." class="form-control" id="socket-input'+chatID+'">\
                 <span class="input-group-btn">\
-                    <button type="button" class="btn btn-danger btn-flat" onclick="$scope.submitMessage('+id+')">Send</button>\
+                    <button type="button" class="btn btn-danger btn-flat" onclick="$scope.submitMessage('+chatID+')">Send</button>\
                 </span>\
             </div>\
         </div>\
     </div>';
-    var element = '<div class="popup-box chat-popup" id="'+ id +'">';
+    var element = '<div class="popup-box chat-popup" id="'+ chatID +'">';
     element+=element2;
     document.getElementById("idunico").innerHTML = document.getElementById("idunico").innerHTML + element;
 
@@ -195,9 +141,9 @@ $(function() {
 angular.module('chat', [])
     .controller('ChatController', ['$scope', '$http', function ($scope, $http) {
         var userInSession;
-        var person = {id:123, name:"John", surname:"Doe"};
-        var person2 = {id:111, name:"Nico", surname:"Doe"};
-        var person3 = {id:112, name:"Sebastian", surname:"Doe"};
+        var person = {id:92, name:"John", surname:"Doe"};
+        var person2 = {id:39, name:"Nico", surname:"Doe"};
+        var person3 = {id:12, name:"Sebastian", surname:"Doe"};
         $scope.connectedUser=[person, person2];
         $scope.disconnectedUser=[person3];
 
