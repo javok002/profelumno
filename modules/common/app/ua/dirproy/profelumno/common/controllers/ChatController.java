@@ -49,6 +49,7 @@ public class ChatController extends Controller {
                 final long userId2=Long.parseLong(session("id"));
                 User user2 = Ebean.find(User.class, userId2);
                 chat.setStudent(Student.finder.where().eq("user", user2).findUnique());
+                chat.setTeacher(teacher);
                 chat.save();
             }
         } else {
@@ -61,6 +62,7 @@ public class ChatController extends Controller {
                 final long userId2=Long.parseLong(session("id"));
                 User user2 = Ebean.find(User.class, userId2);
                 chat.setTeacher(Teacher.finder.where().eq("user", user2).findUnique());
+                chat.setStudent(student);
                 chat.save();
             }
         }
