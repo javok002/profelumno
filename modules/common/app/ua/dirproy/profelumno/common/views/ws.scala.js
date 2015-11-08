@@ -271,6 +271,9 @@ angular.module('chat', [])
 
         socket.onmessage = writeMessages;
 
+        //Ask for connected and disconnected contacts
+        socket.send({type: "connections"});
+
         // if enter (charcode 13) is pushed, send message, then clear input field
         angular.element('#socket-input').keyup(function(event){
             var charCode = (event.which) ? event.which : event.keyCode ;
