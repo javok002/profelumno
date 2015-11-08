@@ -32,6 +32,7 @@ angular.module('profLesson', [])
         successCallback = function () {
             $("#succesModal").modal("show");
             $("#loadingModal").modal("hide");
+
         };
 
         errorCallback = function () {
@@ -43,19 +44,56 @@ angular.module('profLesson', [])
 
     }])
 
-    .directive('hireLesson', function(){
+    .directive('hireLesson',['$http', function($http){
         return {
             restrict: 'E',
             scope : {
-                teacherId : '=', //todo quien se encargue de buscar profesores tiene que setear este atributo y la subject
+                teacherId : '=',
                 index : '=',
                 teacherSubs: '='
             },
             link : function(scope){
                 scope.date = 'date';
+                scope.init = function (calendarIndex) {
+
+                    $http.get("/calendar/get-user-name")
+                        .success(function (data) {
+                            scope.userName = data;
+                        });
+
+                    $http.get("/calendar/get-lessons")
+                        .success(function (data) {
+                            data.forEach(function(lesson) {
+                                var student = lesson.student.user;
+                                lesson.title = lesson.subject.text /*+ ' a ' + student.name + ' ' + student.surname*/;
+                                lesson.date = new Date(lesson.dateTime);
+                            });
+
+                            scope.data = data;
+
+                            $('#calendar' + calendarIndex ).fullCalendar({
+                                lang: 'es',
+                                header: {
+                                    left: 'today',
+                                    center: 'prev,next',
+                                    right: 'month,agendaWeek'
+                                },
+                                eventClick: function (event, jsEvent, view) {
+
+                                },
+                                events: scope.data
+                            });
+
+                        });
+                    $('#hire-modal' + calendarIndex).on('shown.bs.modal', function(){
+                        $('#calendar' + calendarIndex ).fullCalendar('render');
+                    });
+
+                    $('#hire-modal' + calendarIndex).modal('show');
+                };
             },
             template:
-            '<button type="button" class="btn btn-success" data-toggle="modal" data-target="#hire-modal{{index}}">' +
+            '<button type="button" class="btn btn-success" ng-click="init(index)">' +
                 'Contratar' +
             '</button>' +
 
@@ -94,7 +132,10 @@ angular.module('profLesson', [])
                                                     'El domicilio se pactará despues' +
                                             ' </label> ' +
                                         ' </div> ' +
-                                    ' </div> ' +
+                                    '</div> ' +
+                                    '<div style="border-color: #ddd; border-style: solid; border-width: 1px; margin-bottom: 10px;">'+
+                                        '<div class="box-body" id="calendar{{index}}" style="padding: 0px"></div><!-- /.box-body -->' +
+                                    '</div>' +
 
                                     '<div class="input-group">' +
                                         '<!--<input type="text" class="form-control datepicker" datepicker="user.birthday" placeholder="Fecha de Nacimiento" name="birthday" required ng-model="user.birthday">' +
@@ -164,4 +205,4 @@ angular.module('profLesson', [])
             '</div><!-- /.modal-dialog -->' +
             '</div>'
         }
-    });
+    }]);
