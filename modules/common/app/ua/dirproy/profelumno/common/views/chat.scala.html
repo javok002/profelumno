@@ -10,7 +10,7 @@
         <div ng-repeat="user in connectedUser">
             <div class="pad">
                 <div class="sidebar-name">
-                    <a href="javascript:register_popup({{user.id}}, {{user.name+' '+user.surname}});">
+                    <a  href="#" ng-click='getChat(user.id, user.name+" "+user.surname)'>
                         <img width="40" height="40" src="@routes.Assets.versioned("images/institutional/stud1.jpg")" class="img-circle" />
                         <span>{{user.name+" "+user.surname}}</span>
                     </a>
@@ -21,7 +21,7 @@
         <div class="sidebar-name" ng-repeat="user in disconnectedUser">
                 <div class="pad">
                     <div class="sidebar-name">
-                        <a href="javascript:register_popup('sebastian', 'sebastianRudolph' );">
+                        <a href="#" ng-click='getChat(user.id, user.name+" "+user.surname)'>
                             <img width="40" height="40" src="@routes.Assets.versioned("images/institutional/stud1.jpg")" class="img-circle" />
                             <span>{{user.name+" "+user.surname}}</span>
                         </a>

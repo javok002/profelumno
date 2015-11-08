@@ -140,7 +140,7 @@ function register_popup(id, name)
             <div class="input-group">\
                 <input type="text" name="message" placeholder="Type Message ..." class="form-control" id="socket-input">\
                 <span class="input-group-btn">\
-                    <button type="button" class="btn btn-danger btn-flat" onclick="updateScroll()">Send</button>\
+                    <button type="button" class="btn btn-danger btn-flat" onclick="$scope.submitMessage('+id+')">Send</button>\
                 </span>\
             </div>\
         </div>\
@@ -209,7 +209,7 @@ angular.module('chat', [])
                 // log error
             });
 
-        $scope.writeMessages = function(event){
+        function writeMessages (event){
             if (event.type=="msg"){
                 //agregar mensaje al chat
                 //event.idChat
@@ -269,7 +269,7 @@ angular.module('chat', [])
 
         };
 
-        $scope.socket.onmessage = writeMessages;
+        socket.onmessage = writeMessages;
 
         // if enter (charcode 13) is pushed, send message, then clear input field
         angular.element('#socket-input').keyup(function(event){
@@ -280,16 +280,20 @@ angular.module('chat', [])
                 $(this).val('');
             }
         });
-
-        $scope.submitMessage= function(){
-
+        $scope.registerPop = function(id, name){
+            register_popup(id, name);
+        };
+        $scope.submitMessage= function(chatId){
+            socket.send({idUserFrom: userInSession.id, message: $(this).val(), idChat: chatId});
         };
 
-        $scope.getChat = function (chatToId) {
-            $http.get('chat/getChat?userId='+chatToId)
+        $scope.getChat = function (chatToId, name) {
+            $http.get('common/getChat?userId='+chatToId)
                 .success(function (data, status, headers, config) {
                     //data.chat  Chat
+                    register_popup(chatToId, name);
                     var chat = data.chat;
+                    alert(chat);
                     for (var i =0; i < chat.messages.length; i++){
                         var message=chat.messages[i];
                         if (message.author.id==userInSession.id){
@@ -317,6 +321,7 @@ angular.module('chat', [])
                 }).
                 error(function (data, status, headers, config) {
                     // log error
+                    alert("error");
                 });
         };
     }]);
