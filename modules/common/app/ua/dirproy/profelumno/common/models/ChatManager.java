@@ -27,11 +27,15 @@ public class ChatManager {
         addConnection(userId, out);
 
         in.onMessage(jsonNode -> {
-            Long idUserFrom = jsonNode.findPath("idUserFrom").asLong();
-            String message = jsonNode.findPath("message").asText();
-            Long idChat = jsonNode.findPath("idChat").asLong();
+            if(jsonNode.findValue("type") == null) {
+                Long idUserFrom = jsonNode.findPath("idUserFrom").asLong();
+                String message = jsonNode.findPath("message").asText();
+                Long idChat = jsonNode.findPath("idChat").asLong();
 
-            notifyMsg(idUserFrom, message, idChat);
+                notifyMsg(idUserFrom, message, idChat);
+            } else {
+                notifyUsersConnections(userId);
+            }
         });
 
         in.onClose(() -> {
@@ -41,8 +45,6 @@ public class ChatManager {
             };
             timers.put(userId, scheduler.schedule(close, 15, TimeUnit.SECONDS));
         });
-
-        notifyUsersConnections(userId);
     }
 
     public static void addConnection(Long userId, WebSocket.Out<JsonNode> socketOut){
