@@ -79,19 +79,19 @@ function register_popup(id, name,chatID)
             </div>\
         </div>\
         <div class="box-body">\
-            <div class="direct-chat-messages" id="socket-messages'+chatID+'" name="chat-messages">\
+            <div class="direct-chat-messages" id="socket-messages'+id+'" name="chat-messages">\
             </div>\
         </div>\
         <div class="box-footer">\
             <div class="input-group">\
                 <input type="text" name="message" placeholder="Type Message ..." class="form-control" id="socket-input'+chatID+'">\
                 <span class="input-group-btn">\
-                    <button type="button" class="btn btn-danger btn-flat" onclick="$scope.submitMessage('+chatID+')">Send</button>\
+                    <button type="button" class="btn btn-danger btn-flat" ng-click="submitMessage('+chatID+')">Send</button>\
                 </span>\
             </div>\
         </div>\
     </div>';
-    var element = '<div class="popup-box chat-popup" id="'+ chatID +'">';
+    var element = '<div class="popup-box chat-popup" id="'+ id +'">';
     element+=element2;
     document.getElementById("idunico").innerHTML = document.getElementById("idunico").innerHTML + element;
 
@@ -141,9 +141,9 @@ $(function() {
 angular.module('chat', [])
     .controller('ChatController', ['$scope', '$http', function ($scope, $http) {
         var userInSession;
-        var person = {id:92, name:"John", surname:"Doe"};
-        var person2 = {id:39, name:"Nico", surname:"Doe"};
-        var person3 = {id:12, name:"Sebastian", surname:"Doe"};
+        var person = {id:101, name:"John", surname:"Doe"};
+        var person2 = {id:102, name:"Nico", surname:"Doe"};
+        var person3 = {id:103, name:"Sebastian", surname:"Doe"};
         $scope.connectedUser=[person, person2];
         $scope.disconnectedUser=[person3];
 
@@ -220,20 +220,13 @@ angular.module('chat', [])
         //Ask for connected and disconnected contacts
         socket.onopen = function () { socket.send({type: "connections"});};
 
-        // if enter (charcode 13) is pushed, send message, then clear input field
-        angular.element('#socket-input').keyup(function(event){
-            var charCode = (event.which) ? event.which : event.keyCode ;
 
-            if(charCode === 13){
-                socket.send({idUserFrom: userInSession.id, message: $(this).val(), idChat: long});
-                $(this).val('');
-            }
-        });
         $scope.registerPop = function(id, name){
             register_popup(id, name);
         };
         $scope.submitMessage= function(chatId){
-            socket.send({idUserFrom: userInSession.id, message: $(this).val(), idChat: chatId});
+            var message = angular.element($('#socket-input'+chatID)).val();
+            socket.send({idUserFrom: userInSession.id, message: message, idChat: chatId});
         };
 
         $scope.getChat = function (chatToId, name) {
@@ -242,7 +235,6 @@ angular.module('chat', [])
                     //data.chat  Chat
                     register_popup(chatToId, name);
                     var chat = data.chat;
-                    alert(chat);
                     for (var i =0; i < chat.messages.length; i++){
                         var message=chat.messages[i];
                         if (message.author.id==userInSession.id){

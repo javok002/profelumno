@@ -46,8 +46,9 @@ public class ChatController extends Controller {
 
             if (chat == null) {
                 chat = new Chat();
-                chat.setTeacher(teacher);
-                chat.setStudent(Student.finder.where().eq("user.id", Long.parseLong(session().get("id"))).findUnique());
+                final long userId2=Long.parseLong(session("id"));
+                User user2 = Ebean.find(User.class, userId2);
+                chat.setStudent(Student.finder.where().eq("user", user2).findUnique());
                 chat.save();
             }
         } else {
@@ -57,8 +58,9 @@ public class ChatController extends Controller {
 
             if (chat == null) {
                 chat = new Chat();
-                chat.setTeacher(Teacher.finder.where().eq("user.id", Long.parseLong(session().get("id"))).findUnique());
-                chat.setStudent(student);
+                final long userId2=Long.parseLong(session("id"));
+                User user2 = Ebean.find(User.class, userId2);
+                chat.setTeacher(Teacher.finder.where().eq("user", user2).findUnique());
                 chat.save();
             }
         }
