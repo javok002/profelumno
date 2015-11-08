@@ -183,6 +183,11 @@ function updateScroll(){
 //recalculate when window is loaded and also when window is resized.
 window.addEventListener("resize", calculate_popups);
 window.addEventListener("load", calculate_popups);
+// get websocket class, firefox has a different way to get it
+var WS = window['MozWebSocket'] ? window['MozWebSocket'] : WebSocket;
+// open pewpew with websocket
+var socket = new WS('@ua.dirproy.profelumno.common.controllers.routes.ChatController.wsInterface().webSocketURL()');
+
 
 $(function() {
     angular.bootstrap(document.getElementById("chat-bar"),['chat']);
@@ -190,23 +195,19 @@ $(function() {
 angular.module('chat', [])
     .controller('ChatController', ['$scope', '$http', function ($scope, $http) {
         var userInSession;
-        $scope.connectedUser=[];
-        $scope.disconnectedUser=[];
+        var person = {id:123, name:"John", surname:"Doe"};
+        var person2 = {id:111, name:"Nico", surname:"Doe"};
+        var person3 = {id:112, name:"Sebastian", surname:"Doe"};
+        $scope.connectedUser=[person, person2];
+        $scope.disconnectedUser=[person3];
 
         $http.get('common/userInSession')
             .success(function (data, status, headers, config) {
-                userInSession=data.id;
+                userInSession=data;
             }).
             error(function (data, status, headers, config) {
                 // log error
             });
-
-        // get websocket class, firefox has a different way to get it
-        $scope.WS = window['MozWebSocket'] ? window['MozWebSocket'] : WebSocket;
-
-        // open pewpew with websocket
-        var socket = new WS('@ua.dirproy.profelumno.common.controllers.ChatController.wsInterface()');
-
 
         $scope.writeMessages = function(event){
             if (event.type=="msg"){

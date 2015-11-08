@@ -1,6 +1,7 @@
 package ua.dirproy.profelumno.common.controllers;
 
 import authenticate.Authenticate;
+import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Expr;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -12,6 +13,7 @@ import ua.dirproy.profelumno.common.models.Chat;
 import ua.dirproy.profelumno.common.models.ChatManager;
 import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
+import ua.dirproy.profelumno.user.models.User;
 
 @Authenticate({Teacher.class, Student.class})
 public class ChatController extends Controller {
@@ -26,8 +28,11 @@ public class ChatController extends Controller {
 
     public static Result getUserInSession(){
         ObjectNode node = Json.newObject();
-        node.put("id", Long.parseLong(session().get("id")));
-        return ok(node);
+        final long userId=Long.parseLong(session("id"));
+        User user = Ebean.find(User.class, userId);
+        JsonNode json= Json.toJson(user);
+        //node.put("user", Long.parseLong(session().get("id")));
+        return ok(json);
     }
 
     public static Result getChat(Long userId) {
