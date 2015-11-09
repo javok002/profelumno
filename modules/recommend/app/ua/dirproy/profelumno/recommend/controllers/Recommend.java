@@ -32,43 +32,9 @@ import static java.util.concurrent.TimeUnit.MINUTES;
  */
 
 public class Recommend extends Controller {
+    private final static boolean TEST = true;
 
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
-
-//    public static void weMissyou(){
-//        String[] to = {"nicolas.moreno@ing.austral.edu.ar"};
-//        /*try {
-//            MailSenderUtil.send(to, "prueba", "Prueba");
-//        } catch (javax.mail.MessagingException e) {
-//            e.printStackTrace();
-//        }*/
-//
-//
-//        /*Akka.system().scheduler().scheduleOnce(
-//                Duration.create(5000, TimeUnit.MILLISECONDS),
-//                new Runnable() {
-//                    public void run() {
-//                        MailSender.mockSend(to[0],"Prueba");
-//                },
-//
-//        );*/
-//
-//    /*    Akka.system().scheduler().schedule(
-//                Duration.create(0, TimeUnit.MILLISECONDS), //Initial delay 0 milliseconds
-//                Duration.create(60, TimeUnit.SECONDS),     //Frequency 30 minutes
-//                new Runnable() {
-//                    public void run() {
-//                        try {
-//                            MailSenderUtil.send(to, "prueba", "Prueba");
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                },
-//                Akka.system().dispatcher());*/
-//
-//    }
 
     public void weMissYou() {
         int initialDelay = minutesForNextMondayAtTen();
@@ -89,7 +55,13 @@ public class Recommend extends Controller {
 
             }
         };
-        final ScheduledFuture<?> beeperHandle = scheduler.scheduleAtFixedRate(charger, 4 , 10080, MINUTES);
+        final ScheduledFuture<?> beeperHandle;
+
+        if(TEST){
+            beeperHandle = scheduler.scheduleAtFixedRate(charger, 0 , 4, MINUTES);
+        }else {
+            beeperHandle = scheduler.scheduleAtFixedRate(charger, 0 , 10080, MINUTES);
+        }
     }
 
     private void sendWeMissYou(User user, boolean isTeacher) {
@@ -172,6 +144,7 @@ public class Recommend extends Controller {
                 List<Student> students = Student.finder.findList();
 //                Student student = students.get(0);
                 for (Student student : students) {
+                    if(student.getUser().getSubjects().isEmpty()) return;
                     Subject materia = student.getUser().getSubjects().get((int) (Math.random() * student.getUser().getSubjects().size()));
                     String[] to = new String[1];
                     to[0] = student.getUser().getEmail();
@@ -259,7 +232,12 @@ public class Recommend extends Controller {
             }
             }
         };
-        final ScheduledFuture<?> beeperHandle = scheduler.scheduleAtFixedRate(charger, 0, 7, DAYS);
+        final ScheduledFuture<?> beeperHandle;
+        if(TEST){
+            beeperHandle = scheduler.scheduleAtFixedRate(charger, 0, 4, MINUTES);
+        }else {
+            beeperHandle = scheduler.scheduleAtFixedRate(charger, 0, 7, DAYS);
+        }
     }
 
     public static float distFrom(double lat1, double lng1, double lat2, double lng2) {
