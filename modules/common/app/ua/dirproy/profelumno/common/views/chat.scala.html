@@ -2,32 +2,37 @@
 @()
 
 <aside class="control-sidebar control-sidebar-dark" id="chat-bar">
-    <section id="idunico"></section>
+    <div ng-controller="ChatController as chat" id="chatCtrl">
+        <section id="idunico"></section>
+    </div>
         <!-- chatbar -->
-    <section class="sidebar" ng-controller="ChatController as controller" >
+    <section class="sidebar" ng-controller="ChatController as controller" id="contacts-list">
 
-        <span style="margin-left: 10px">Conectados</span>
+        <span style="margin-left: 10px"  ng-show="connectedUser.length>0">Conectados</span>
         <div ng-repeat="user in connectedUser">
             <div class="pad">
                 <div class="sidebar-name">
                     <a  href="#" ng-click='getChat(user.id, user.name+" "+user.surname)'>
-                        <img width="40" height="40" src="@routes.Assets.versioned("images/institutional/stud1.jpg")" class="img-circle" />
+                        <img ng-src="data:image/*;base64,{{ user.profileImage }}" class="img-circle" alt="Imagen de Perfil" ng-show="profileImage != null">
+                        <img src="@routes.Assets.versioned("images/userDefault.jpeg")" class="img-circle" ng-show="profileImage == null">
                         <span>{{user.name+" "+user.surname}}</span>
                     </a>
                 </div>
             </div>
         </div>
-        <span style="margin-left: 10px" ng-show="disconnectedUser">Desconectados</span>
+        <span style="margin-left: 10px" ng-show="disconnectedUser.length>0">Desconectados</span>
         <div class="sidebar-name" ng-repeat="user in disconnectedUser">
                 <div class="pad">
                     <div class="sidebar-name">
                         <a href="#" ng-click='getChat(user.id, user.name+" "+user.surname)'>
-                            <img width="40" height="40" src="@routes.Assets.versioned("images/institutional/stud1.jpg")" class="img-circle" />
+                            <img ng-src="data:image/*;base64,{{ user.profileImage }}" class="img-circle" alt="Imagen de Perfil" ng-show="profileImage != null">
+                            <img src="@routes.Assets.versioned("images/userDefault.jpeg")" class="img-circle" ng-show="profileImage == null">
                             <span>{{user.name+" "+user.surname}}</span>
                         </a>
                     </div>
                 </div>
         </div>
+        <span style="margin-left: 10px" ng-show="disconnectedUser.length<=0 && connectedUser.length<=0">No hay usuarios para chatear</span>
     </section>
         <!-- /Sidebar -->
 </aside>

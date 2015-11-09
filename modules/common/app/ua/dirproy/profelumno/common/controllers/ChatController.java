@@ -80,7 +80,8 @@ public class ChatController extends Controller {
             chat.setTeacher(teacher);
             chat.setStudent(student);
         }
-        JsonNode jsonNode=Json.toJson(chat);
+        //Modifique un poco el metodo, hasta aca funciona bien igual que como estaba antes
+        JsonNode jsonNode=Json.toJson(chat); //aca salta un error no pude identificar
         node.put("chat", jsonNode);
         return ok(node);
     }

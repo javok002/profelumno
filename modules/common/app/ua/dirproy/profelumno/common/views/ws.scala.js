@@ -71,7 +71,7 @@ function register_popup(id, name,chatID)
             return;
         }
     }
-    var element2= '<div class="box box-danger direct-chat direct-chat-danger" ng-app="chatController" ng-controller="ChatController as controller">\
+    var element2='<div class="box box-danger direct-chat direct-chat-danger" >\
         <div class="box-header with-border">\
             <h3 class="box-title">'+name+'</h3>\
             <div class="box-tools pull-right">\
@@ -79,14 +79,14 @@ function register_popup(id, name,chatID)
             </div>\
         </div>\
         <div class="box-body">\
-            <div class="direct-chat-messages" id="socket-messages'+id+'" name="chat-messages">\
+            <div class="direct-chat-messages" id="socket-messages'+chatID+'" name="chat-messages">\
             </div>\
         </div>\
         <div class="box-footer">\
             <div class="input-group">\
-                <input type="text" name="message" placeholder="Type Message ..." class="form-control" id="socket-input'+chatID+'">\
+                <input type="text" name="message" placeholder="Escribir Mensaje ..." class="form-control" id="socket-input'+chatID+'">\
                 <span class="input-group-btn">\
-                    <button type="button" class="btn btn-danger btn-flat" onclick="submitMessage('+chatID+')">Send</button>\
+                    <button type="button" href="#" class="btn btn-danger btn-flat" onclick="prueba('+chatID+')">Enviar</button>\
                 </span>\
             </div>\
         </div>\
@@ -139,14 +139,15 @@ $(function() {
     angular.bootstrap(document.getElementById("chat-bar"),['chat']);
 });
 
+function prueba(cid){
+    angular.element('#chatCtrl').scope().submitMessage(cid);
+}
+
 angular.module('chat', [])
     .controller('ChatController', ['$scope', '$http', function ($scope, $http) {
         var userInSession;
-        var person = {id:101, name:"John", surname:"Doe"};
-        var person2 = {id:102, name:"Nico", surname:"Doe"};
-        var person3 = {id:103, name:"Sebastian", surname:"Doe"};
-        $scope.connectedUser=[person, person2];
-        $scope.disconnectedUser=[person3];
+        $scope.connectedUser=[];
+        $scope.disconnectedUser=[];
 
         $http.get('common/userInSession')
             .success(function (data, status, headers, config) {
@@ -158,7 +159,7 @@ angular.module('chat', [])
 
         var socket = new WebSocket("ws://localhost:9000/common/getSocket");
 
-        var writeMessages = function (event){
+        function writeMessages(event){
             event = JSON.parse(event.data);
             if (event.type=="msg"){
                 //agregar mensaje al chat
@@ -166,6 +167,8 @@ angular.module('chat', [])
                 //event.mesage
                 var idChat=event.idChat;
                 var message=event.message;
+                console.log(idChat);
+                console.log(message);
                 if (message.author.id==userInSession.id){
                     angular.element('#socket-messages'+idChat).apend('<div class="direct-chat-msg right">\
                             <div class="direct-chat-info clearfix">\
@@ -198,25 +201,32 @@ angular.module('chat', [])
                             aux.push(disconnectedUser[j]);
                         }
                     }
-                    disconnectedUser=aux;
-                    connectedUser.push(user);
+                    $scope.$apply(function(){
+                        $scope.disconnectedUser=aux;
+                        $scope.connectedUser.push(user);
+                    });
                 }else{
                     for(j=0; j<connectedUser.length;j++){
                         if (connectedUser[j]!=user){
                             aux.push(connectedUser[j]);
                         }
                     }
-                    connectedUser=aux;
-                    disconnectedUser.push(user);
+                    $scope.$apply(function(){
+                        $scope.connectedUser=aux;
+                        $scope.disconnectedUser.push(user);
+                    });
                 }
             } else if (event.type=="users"){
                 //lista de personas conectadas y desconectadas
                 //event.connectedUsers
-                $scope.connectedUser=event.connectedUsers;
-                //event.disconnectedUsers
-                $scope.disconnectedUser=event.disconnectedUsers;
+                $scope.$apply(function(){
+                    $scope.connectedUser=event.connectedUsers;
+                    //event.disconnectedUsers
+                    $scope.disconnectedUser=event.disconnectedUsers;
+                });
+
             }
-            alert(disconnectedUser);
+
         }
 
         socket.onmessage = writeMessages;
@@ -231,19 +241,18 @@ angular.module('chat', [])
         $scope.registerPop = function(id, name){
             register_popup(id, name);
         };
-        function submitMessage(chatId){
-            var message = angular.element($('#socket-input'+chatID)).val();
-            alert(message);
+        $scope.submitMessage=function(chatId){
+            var message = angular.element($('#socket-input'+chatId)).val();
             socket.send(JSON.stringify({idUserFrom: userInSession.id, message: message, idChat: chatId}));
-        };            
-          
+        };
 
         $scope.getChat = function (chatToId, name) {
             $http.get('common/getChat?userId='+chatToId)
                 .success(function (data, status, headers, config) {
                     //data.chat  Chat
-                    register_popup(chatToId, name);
                     var chat = data.chat;
+                    register_popup(chatToId, name,chat.id);
+
                     for (var i =0; i < chat.messages.length; i++){
                         var message=chat.messages[i];
                         if (message.author.id==userInSession.id){

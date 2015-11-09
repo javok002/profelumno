@@ -87,7 +87,7 @@ public class ChatManager {
 
     public static void notifyMsg(Long idUserFrom, String message, Long idChat){
         Chat chat = Chat.finder.where().eq("id", idChat).findUnique();
-        chat.addMessage(message, User.getUser(idUserFrom));
+        chat.addMessage(message, User.getUser(idUserFrom)); //aca salta un error no pude identificar cual es el problema
 
         ObjectNode node = Json.newObject();
         node.put("type", "msg");
