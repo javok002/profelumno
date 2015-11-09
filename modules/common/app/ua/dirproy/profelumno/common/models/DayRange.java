@@ -4,6 +4,7 @@ import play.db.ebean.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.time.Duration;
 import java.util.Date;
 
 /**
@@ -58,4 +59,7 @@ public class DayRange extends Model {
         this.toHour = toHour;
     }
 
+    public Duration getDuration(){
+        return Duration.ofSeconds(getToHour().getSeconds() - getFromHour().getSeconds());
+    }
 }

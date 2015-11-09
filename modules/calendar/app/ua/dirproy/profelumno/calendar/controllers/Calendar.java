@@ -9,9 +9,13 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import ua.dirproy.profelumno.calendar.views.html.calendar;
 import ua.dirproy.profelumno.common.models.*;
+import ua.dirproy.profelumno.common.models.DayEnum;
+import ua.dirproy.profelumno.common.models.DayRange;
+import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.user.models.User;
 
 import java.io.IOException;
+import java.lang.Object;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,6 +42,17 @@ public class Calendar extends Controller {
             Teacher aux = teachers.get(i);
             if (aux.getUser().getId().equals(getUser().getId())) {
                 return Teacher.getTeacher(aux.getId());
+            }
+        }
+        return null;
+    }
+
+    private static Student getStudent(){
+        List<Student> student = Student.list();
+        for (int i = 0; i < student.size(); i++) {
+            Student aux = student.get(i);
+            if (aux.getUser().getId().equals(getUser().getId())) {
+                return Student.getStudent(aux.getId());
             }
         }
         return null;
@@ -123,5 +138,64 @@ public class Calendar extends Controller {
 
     }
 
+    public static Result teacherAvailableTimeWithNoClass(){
 
+        //get del teacher del server (paca checkea esto por lo del form.form)
+        Form<Teacher> form = Form.form(Teacher.class).bindFromRequest();
+        Long teacherId = form.data().get("teacherId");
+        final Teacher teacher = Teacher.getTeacher(teacherId);
+
+        List<DayRange> calendar = teacher.getCalendar();
+
+        //get acceptedLesson from teacher
+        List<Lesson> lessons = myLessons();
+        List<Lesson> acceptLessons = new ArrayList<>();
+        for (Lesson aux : lessons) {
+            if (aux.getLessonState() == 1) {
+                acceptLessons.add(aux);
+            }
+        }
+
+        //voy sacando del calendario del teacher los horarios que ya tienen clases
+        for (Lesson aux : acceptLessons){
+            final DayEnum dayEnum = auxiliaryMethod(aux.getDateTime());
+            Duration durationOfClass = aux.getDuration();
+            for (DayRange dr : calendar) {
+                if (dr.getDayEnum() == dayEnum && dr.getDuration().equals(durationOfClass)){
+                    calendar.remove(dr);
+                }
+            }
+        }
+
+        return ok(json.toJson(calendar));
+    }
+
+    private static DayEnum auxiliaryMethod(Date date){
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(date);
+        int day = cal.get(Calendar.DAY_OF_WEEK);
+        DayEnum dayEnum = null;
+        if (Calendar.MONDAY == day){
+            dayEnum = DayEnum.MONDAY;
+        }
+        if (Calendar.TUESDAY == day){
+            dayEnum = DayEnum.TUESDAY;
+        }
+        if (Calendar.WEDNESDAY == day){
+            dayEnum = DayEnum.WEDNESDAY;
+        }
+        if (Calendar.THURSDAY == day){
+            dayEnum = DayEnum.THURSDAY;
+        }
+        if (Calendar.FRIDAY == day){
+            dayEnum = DayEnum.FRIDAY;
+        }
+        if (Calendar.SUNDAY == day){
+            dayEnum = DayEnum.SUNDAY;
+        }
+        if (Calendar.SATURDAY == day){
+            dayEnum = DayEnum.SATURDAY;
+        }
+        return dayEnum;
+    }
 }
