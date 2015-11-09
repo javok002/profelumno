@@ -130,14 +130,15 @@ function updateScroll(){
 window.addEventListener("resize", calculate_popups);
 window.addEventListener("load", calculate_popups);
 // get websocket class, firefox has a different way to get it
-var WS = window['MozWebSocket'] ? window['MozWebSocket'] : WebSocket;
+//var WS = window['MozWebSocket'] ? window['MozWebSocket'] : WebSocket;
 // open pewpew with websocket
-var socket = new WS('@ua.dirproy.profelumno.common.controllers.routes.ChatController.wsInterface().webSocketURL()');
+//var socket = new WS('@ua.dirproy.profelumno.common.controllers.routes.ChatController.wsInterface().webSocketURL()');
 
 
 $(function() {
     angular.bootstrap(document.getElementById("chat-bar"),['chat']);
 });
+
 angular.module('chat', [])
     .controller('ChatController', ['$scope', '$http', function ($scope, $http) {
         var userInSession;
@@ -155,7 +156,10 @@ angular.module('chat', [])
                 // log error
             });
 
-        function writeMessages (event){
+        var socket = new WebSocket("ws://localhost:9000/common/getSocket");
+
+        var writeMessages = function (event){
+            event = JSON.parse(event.data);
             if (event.type=="msg"){
                 //agregar mensaje al chat
                 //event.idChat
@@ -208,9 +212,9 @@ angular.module('chat', [])
             } else if (event.type=="users"){
                 //lista de personas conectadas y desconectadas
                 //event.connectedUsers
-                connectedUser=event.connectedUsers;
+                $scope.connectedUser=event.connectedUsers;
                 //event.disconnectedUsers
-                disconnectedUser=event.disconnectedUsers;
+                $scope.disconnectedUser=event.disconnectedUsers;
             }
             alert(disconnectedUser);
         }
@@ -218,7 +222,10 @@ angular.module('chat', [])
         socket.onmessage = writeMessages;
 
         //Ask for connected and disconnected contacts
-        socket.onopen = function () { socket.send({type: "connections"});};
+        socket.onopen = function () {
+            console.log("onopen");
+            socket.send(JSON.stringify({type: "connections"}));
+        };
 
 
         $scope.registerPop = function(id, name){
@@ -227,8 +234,9 @@ angular.module('chat', [])
         function submitMessage(chatId){
             var message = angular.element($('#socket-input'+chatID)).val();
             alert(message);
-            socket.send({idUserFrom: userInSession.id, message: message, idChat: chatId});
-        }
+            socket.send(JSON.stringify({idUserFrom: userInSession.id, message: message, idChat: chatId}));
+        };            
+          
 
         $scope.getChat = function (chatToId, name) {
             $http.get('common/getChat?userId='+chatToId)
