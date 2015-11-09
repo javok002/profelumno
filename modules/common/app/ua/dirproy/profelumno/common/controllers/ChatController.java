@@ -19,9 +19,10 @@ import ua.dirproy.profelumno.user.models.User;
 public class ChatController extends Controller {
 
     public static WebSocket<JsonNode> wsInterface() {
+        final Long id = Long.parseLong(session().get("id"));
         return new WebSocket<JsonNode>() {
             public void onReady(WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out) {
-                ChatManager.start(Long.parseLong(session().get("id")), in, out);
+                ChatManager.start(id, in, out);
             }
         };
     }

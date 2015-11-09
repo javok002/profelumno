@@ -11,22 +11,15 @@ import java.util.concurrent.*;
 
 public class ChatManager {
 
-    private final static Map<Long, WebSocket.Out<JsonNode>> map = new ConcurrentHashMap<>();
-    private final static ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    private final static Map<Long, ScheduledFuture<?>> timers = new ConcurrentHashMap<>();
-
-    private static ChatManager ourInstance = new ChatManager();
-
-    public static ChatManager getInstance() {
-        return ourInstance;
-    }
-
-    private ChatManager() {}
+    private static Map<Long, WebSocket.Out<JsonNode>> map = new ConcurrentHashMap<>();
+    private static ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private static Map<Long, ScheduledFuture<?>> timers = new ConcurrentHashMap<>();
 
     public static void start(Long userId, WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out){
         addConnection(userId, out);
 
         in.onMessage(jsonNode -> {
+            System.out.println("a");
             if(jsonNode.findValue("type") == null) {
                 Long idUserFrom = jsonNode.findPath("idUserFrom").asLong();
                 String message = jsonNode.findPath("message").asText();
