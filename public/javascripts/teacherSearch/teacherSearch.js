@@ -3,8 +3,17 @@
  */
 
 
-var teacherSearchApp = angular.module("teacherSearchApp", ['ngTagsInput', 'angularUtils.directives.dirPagination', 'profLesson']);
-teacherSearchApp.controller("searchController", function($scope, $http) {
+var teacherSearchApp = angular.module("teacherSearchApp", ['ngRoute', 'ngTagsInput', 'angularUtils.directives.dirPagination', 'profLesson']);
+//teacherSearchApp.config(['$routeProvider',
+//    function($routeProvider) {
+//        $routeProvider.
+//        when('/', {
+//            templateUrl: 'ua/dirproy/profelumno/teachersearch/views/teachersearch.scala.html',
+//            controller: 'searchController'
+//
+//        })
+//    }]);
+teacherSearchApp.controller("searchController", function($scope, $http, $routeParams) {
     $scope.subjects = [];
     $scope.teachers = [];
     $scope.showResults = false;
@@ -17,6 +26,19 @@ teacherSearchApp.controller("searchController", function($scope, $http) {
     $scope.directions = [];
     $scope.currentPage = 1;
     $scope.studentAdress;
+    function getQueryParams(qs) {
+        qs = qs.split('+').join(' ');
+
+        var params = {},
+            tokens,
+            re = /[?&]?([^=]+)=([^&]*)/g;
+
+        while (tokens = re.exec(qs)) {
+            params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+        }
+
+        return params;
+    }
     $scope.search = function search(){
         var literalSubjects = [];
         for(var i = 0; i < $scope.subjects.length; i++){
@@ -24,7 +46,7 @@ teacherSearchApp.controller("searchController", function($scope, $http) {
         }
         if($scope.ranking == null){$scope.ranking = 0}
         if($scope.lessonsDictated == null){$scope.lessonsDictated = 0}
-        $scope.data = {subjects: literalSubjects , ranking: $scope.ranking, lessons: $scope.lessonsDictated, homeClasses: $scope.homeClasses};
+        $scope.data = {subjects: literalSubjects , ranking: $scope.ranking, lessons: $scope.lessonsDictated, homeClasses: $scope.homeClasses, sort: $scope.sortByDistance};
         $http.post('/teacher-search/getTeachers', $scope.data).
             then(function(response){
                 //$scope.origin = new google.maps.LatLng(response.data[1], response.data[2]);
@@ -40,6 +62,21 @@ teacherSearchApp.controller("searchController", function($scope, $http) {
                 //TODO
             })
     };
+    //(function() {  // init
+    //    if (true) { // $routeParams.Id) {
+    //        var a = 0;
+    //        console.log("on init executed successfully" + a + $routeParams.paramId);
+    //        console.log($routeParams.bag)
+    //        var queryParams = getQueryParams(document.location.search);
+    //        console.log(queryParams);
+    //        $scope.subjects.push(queryParams.subject);
+    //        $scope.sort = queryParams.sort;
+    //        $scope.search();
+    //
+    //    } else {
+    //        //create a new object
+    //    }
+    //})();
 
     //var sortTeachersByDirection = function (teacherA, teacherB) {
     //    if(teacherA.user.address == null || teacherA.user.address == undefined){

@@ -2,6 +2,7 @@ package ua.dirproy.profelumno.recommend.controllers;
 
 
 import com.avaje.ebean.Ebean;
+import org.joda.time.LocalDate;
 import play.libs.Akka;
 import play.mvc.Controller;
 import scala.concurrent.duration.Duration;
@@ -76,46 +77,57 @@ public class Recommend extends Controller {
         final Runnable charger = new Runnable() {
             public void run() {
                 List<Student> students = Student.finder.findList();
-                for (Student student : students) {
-                    Subject materia = student.getUser().getSubjects().get((int) (Math.random() * student.getUser().getSubjects().size()));
-                    String[] to = new String[1];
+//                for (Student student : students) {
+//                    Subject materia = student.getUser().getSubjects().get((int) (Math.random() * student.getUser().getSubjects().size()));
+//                    String[] to = new String[1];
 //                    to[0] = student.getUser().getEmail();
-                    to[0] = "nicolas.moreno@ing.austral.edu.ar";
-                    List<Teacher> teachers = Teacher.finder.findList();
-                    List<User> teachersToRecommend = new ArrayList<>();
-                    for (Teacher teacher : teachers) {
-                        if(teacher.getUser().getSubjects().contains(materia)) {
-                            teachersToRecommend.add(teacher.getUser());
-                        }
-                    }
-                    TeacherSearches.orderByDistance(teachersToRecommend, student.getUser());
+//                    to[0] = "jose.illi@ing.austral.edu.ar";
+//                    List<Teacher> teachers = Teacher.finder.findList();
+//                    List<Teacher> teachersToRecommend = new ArrayList<>();
+//                    for (Teacher teacher : teachers) {
+//                        if(teacher.getUser().getSubjects().contains(materia)) {
+//                            teachersToRecommend.add(teacher);
+//                        }
+//                    }
+//                    TeacherSearches.orderByDistance(teachersToRecommend, student.getUser());
 
-                    teachersToRecommend = teachersToRecommend.subList(0, teachersToRecommend.size() > 6 ? 6 : teachersToRecommend.size());
-                    teachersToRecommend.sort(new Comparator<User>() {
-                        @Override
-                        public int compare(User o1, User o2) {
-                            if(o1.getReviews() == 0){
-                                return  -1;
-                            } else if(o2.getReviews() == 0){
-                                return 1;
-                            }
-                            return (int) ((o1.getTotalStars() / o1.getReviews()) - (o2.getTotalStars() / o2.getReviews()));
-                        }
-                    });
-                    String subject = "Profelumno recomienda";
-                    String message = "Hola " + student.getUser().getName() + "\n\n ¿Por qué no pides ayuda para aprobar tus exámenes? Estos profesores enseñan " + materia + " y ¡OH! tu necesitas aprender " + materia + "!\n\n";
-                    message += "En el siguiente link puedes ver los profesores que están cerca de tu casa \n";
-                    message += "www.google.com";
-                    System.out.println("Sending mail...");
-                    try {
-                        MailSenderUtil.send(to, subject, message);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        System.out.println("Error sending mail");
+//                    teachersToRecommend = teachersToRecommend.subList(0, teachersToRecommend.size() > 6 ? 6 : teachersToRecommend.size());
+//                    teachersToRecommend.sort(new Comparator<Teacher>() {
+//                        @Override
+//                        public int compare(Teacher o1, Teacher o2) {
+//                            if(o1.getUser().getReviews() == 0){
+//                                return  -1;
+//                            } else if(o2.getUser().getReviews() == 0){
+//                                return 1;
+//                            }
+//                            return (int) ((o1.getUser().getTotalStars() / o1.getUser().getReviews()) - (o2.getUser().getTotalStars() / o2.getUser().getReviews()));
+//                        }
+//                    });
+//                    String subject = "Profelumno recomienda";
+//                    String message = "Hola " + "Nash" + "\n\n ¿Por qué no pides ayuda para aprobar tus exámenes? Estos profesores enseñan " + "MATEMATICA" + " y ¡OH! tu necesitas aprender " + "MATEMATICA" + "!\n\n";
+//                    message += "En el siguiente link puedes ver los profesores que están cerca de tu casa \n";
+//                    message += "www.google.com";
+//                    System.out.println("Sending mail...");
+//                    try {
+//                        MailSenderUtil.send(to, subject, message);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                        System.out.println("Error sending mail");
+//                    }
+//                    System.out.println("Mail sent.");
+
+                    LocalDate today = LocalDate.now();
+                    int old = today.getDayOfWeek();
+                    int monday = 1;
+
+                    if (monday <= old) {
+                        monday += 7;
                     }
-                    System.out.println("Mail sent.");
+                    LocalDate next = today.plusDays(monday - old);
+                    System.out.println("Next monday: " + next);
                 }
-                }
+
+//                }
             };
         final ScheduledFuture<?> beeperHandle = scheduler.scheduleAtFixedRate(charger, 0, 180, SECONDS);
     }
