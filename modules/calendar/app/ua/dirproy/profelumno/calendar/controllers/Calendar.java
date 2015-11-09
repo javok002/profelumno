@@ -173,26 +173,71 @@ public class Calendar extends Controller {
             final DayEnum dayEnum = auxiliaryMethod(aux.getDateTime());
             Duration durationOfClass = aux.getDuration();
             int fromHour = aux.getDateTime().getHours();
+            int toHour = fromHour + durationOfClass.getNano();
             for (DayRange dr : calendar) {
                 if (dr.getDayEnum() == dayEnum){
-                    if (dayList.isEmpty()){
+                    if (!dayList.isEmpty()) {
+                        for (Day auxDay : dayList) {
+                            if (auxDay.getDay().getYear() == aux.getDateTime().getYear() && auxDay.getDay().getMonth() == aux.getDateTime().getMonth() && auxDay.getDay().getDay() == aux.getDateTime().getDay()) {
+                                List<Range> newRangeList = new ArrayList<>();
+                                List<Range> rangeList = auxDay.getRangeList();
+                                for (Range x :rangeList){
+                                    if (fromHour > x.getFrom() && toHour < x.getTo()){
+                                        Range rangeFrom = new Range();
+                                        rangeFrom.setFrom(x.getFrom());
+                                        rangeFrom.setTo(fromHour);
+                                        Range rangeTo = new Range();
+                                        rangeTo.setFrom(toHour);
+                                        rangeTo.setTo(x.getTo());
+                                        newRangeList.add(rangeFrom);
+                                        newRangeList.add(rangeTo);
+                                    }else if (fromHour == x.getFrom() && toHour < x.getTo()){
+                                        Range rangeFrom = new Range();
+                                        rangeFrom.setFrom(toHour);
+                                        rangeFrom.setTo(x.getTo());
+                                        newRangeList.add(rangeFrom);
+                                    }else if (fromHour > x.getFrom() && toHour == x.getTo()){
+                                        Range rangeFrom = new Range();
+                                        rangeFrom.setFrom(x.getFrom());
+                                        rangeFrom.setTo(fromHour);
+                                        newRangeList.add(rangeFrom);
+                                    }
+                                }
+
+                                auxDay.setRangeList(newRangeList);
+
+                            } else {
+                                Day day = new Day();
+                                day.setDay(aux.getDateTime());
+                                Range rangeFrom = new Range();
+                                rangeFrom.setFrom(dr.getFromHour().getHours());
+                                rangeFrom.setTo(fromHour);
+                                Range rangeTo = new Range();
+                                rangeTo.setFrom(toHour);
+                                rangeTo.setTo(dr.getToHour().getHours());
+                                day.addRange(rangeFrom);
+                                day.addRange(rangeTo);
+                                dayList.add(day);
+                            }
+                        }
+                    }else {
                         Day day = new Day();
                         day.setDay(aux.getDateTime());
                         Range rangeFrom = new Range();
                         rangeFrom.setFrom(dr.getFromHour().getHours());
                         rangeFrom.setTo(fromHour);
                         Range rangeTo = new Range();
-                        rangeTo.setFrom(fromHour + durationOfClass.getNano());
+                        rangeTo.setFrom(toHour);
                         rangeTo.setTo(dr.getToHour().getHours());
-                    }
-                    else{
-
+                        day.addRange(rangeFrom);
+                        day.addRange(rangeTo);
+                        dayList.add(day);
                     }
                 }
             }
         }
 
-        return ok(Json.toJson(calendar));
+        return ok(Json.toJson(dayList));
     }
 
     private static DayEnum auxiliaryMethod(Date date){

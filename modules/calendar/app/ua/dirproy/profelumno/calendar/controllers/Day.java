@@ -4,6 +4,7 @@ import com.avaje.ebean.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +17,10 @@ public class Day extends Model {
     private Long id;
     Date day;
     List<Range> rangeList;
+
+    public Day(){
+        rangeList = new ArrayList<>();
+    }
 
     public Long getId() {
         return id;
