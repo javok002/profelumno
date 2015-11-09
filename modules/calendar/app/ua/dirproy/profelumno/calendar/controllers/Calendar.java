@@ -168,6 +168,7 @@ public class Calendar extends Controller {
 
         List<Day> dayList = new ArrayList<>();
         //voy sacando del calendario del teacher los horarios que ya tienen clases
+
         for (Lesson aux : acceptLessons){
             final DayEnum dayEnum = auxiliaryMethod(aux.getDateTime());
             Duration durationOfClass = aux.getDuration();
