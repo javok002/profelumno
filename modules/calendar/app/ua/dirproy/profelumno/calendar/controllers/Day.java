@@ -2,8 +2,10 @@ package ua.dirproy.profelumno.calendar.controllers;
 
 import com.avaje.ebean.Model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +18,7 @@ public class Day extends Model {
     @Id
     private Long id;
     Date day;
+    @OneToMany(cascade = CascadeType.ALL)
     List<Range> rangeList;
 
     public Day(){
