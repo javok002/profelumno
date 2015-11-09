@@ -23,13 +23,13 @@ public enum DayEnum {
 
     public static List<DayEnum> getDayEnums(){
         ArrayList<DayEnum> dayEnums = new ArrayList<>();
-        dayEnums.add(SUNDAY);
         dayEnums.add(MONDAY);
         dayEnums.add(TUESDAY);
         dayEnums.add(WEDNESDAY);
         dayEnums.add(THURSDAY);
         dayEnums.add(FRIDAY);
         dayEnums.add(SATURDAY);
+        dayEnums.add(SUNDAY);
         return dayEnums;
     }
 

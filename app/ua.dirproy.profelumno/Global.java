@@ -28,9 +28,8 @@ public class Global extends GlobalSettings {
     public void beforeStart(Application app) {
         InitialData.insert(app);
 
-        /*
         Recommend recommend = new Recommend();
-        recommend.weMissYou();*/
+        recommend.weMissYou();
     }
 
     static class InitialData {
@@ -385,17 +384,17 @@ public class Global extends GlobalSettings {
                 for (int i = 1; i <= 100; i++) {
                     String name = names[randomizer.nextInt(names.length)];
                     String lastName = lastNames[randomizer.nextInt(lastNames.length)];
-                    int addressNumber = randomizer.nextInt((address.length / 4))  ; // OJO, addressNumber es siempre 0!!!
+                    int addressNumber = (int) (Math.random() * address.length); // OJO, addressNumber es siempre 0!!!
 
                     User userT = new User();
                     userT.setName(name);
                     userT.setSurname(lastName);
                     userT.setEmail("teacher" + i + "@sample.com");
                     userT.setPassword("secret");
-                    userT.setAddress(address[addressNumber * 4]);
-                    userT.setCity(address[(addressNumber * 4) + 1]);
-                    userT.setLatitude(generateLatitudes()[(addressNumber * 4) + 2]); // OJO, addressNumber es siempre 0!!!
-                    userT.setLongitude(generatLongituds()[(addressNumber * 4) + 3]); // OJO, addressNumber es siempre 0!!!
+                    userT.setAddress(address[addressNumber]);
+                    userT.setCity(address[addressNumber]);
+                    userT.setLatitude(generateLatitudes()[addressNumber]); // OJO, addressNumber es siempre 0!!!
+                    userT.setLongitude(generatLongituds()[addressNumber]); // OJO, addressNumber es siempre 0!!!
                     userT.setBirthday(new Date((70 + i / 10), (i + 1) / 10, i / 4));
                     userT.setGender("male");
                     userT.setSecureAnswer("Hola");
@@ -420,17 +419,17 @@ public class Global extends GlobalSettings {
                 for (int k = 1; k <= 100; k++) {
                     String name = names[randomizer.nextInt(names.length)];
                     String lastName = lastNames[randomizer.nextInt(lastNames.length)];
-                    int addressNumber = randomizer.nextInt(address.length / 4);
+                    int addressNumber = (int) (Math.random() * address.length);
 
                     User userS = new User();
                     userS.setName(name);
                     userS.setSurname(lastName);
                     userS.setEmail("student" + k + "@sample.com");
                     userS.setPassword("secret");
-                    userS.setAddress(address[addressNumber * 4]);
-                    userS.setCity(address[(addressNumber * 4) + 1]);
-                    userS.setLatitude(generateLatitudes()[(addressNumber * 4) + 2]);
-                    userS.setLongitude(generatLongituds()[(addressNumber * 4) + 3]);
+                    userS.setAddress(address[addressNumber]);
+                    userS.setCity(address[addressNumber]);
+                    userS.setLatitude(generateLatitudes()[addressNumber]);
+                    userS.setLongitude(generatLongituds()[addressNumber]);
                     userS.setBirthday(new Date((93), 5, 10));
                     userS.setGender("male");
                     userS.setSecureAnswer("Hola");
