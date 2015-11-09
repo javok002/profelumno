@@ -148,8 +148,8 @@ public class Recommend extends Controller {
         final Runnable charger = new Runnable() {
             public void run() {
                 List<Student> students = Student.finder.findList();
-                Student student = students.get(0);
-//                for (Student student : students) {
+//                Student student = students.get(0);
+                for (Student student : students) {
                     Subject materia = student.getUser().getSubjects().get((int) (Math.random() * student.getUser().getSubjects().size()));
                     String[] to = new String[1];
 //                    to[0] = student.getUser().getEmail();
@@ -206,7 +206,7 @@ public class Recommend extends Controller {
 //                now.getDayOfWeek();
 
             }
-//            }
+            }
         };
         final ScheduledFuture<?> beeperHandle = scheduler.scheduleAtFixedRate(charger, 0, 7, DAYS);
     }
