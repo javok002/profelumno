@@ -152,8 +152,8 @@ public class Recommend extends Controller {
                 for (Student student : students) {
                     Subject materia = student.getUser().getSubjects().get((int) (Math.random() * student.getUser().getSubjects().size()));
                     String[] to = new String[1];
-//                    to[0] = student.getUser().getEmail();
-                    to[0] = "jose.illi@ing.austral.edu.ar";
+                    to[0] = student.getUser().getEmail();
+//                    to[0] = "jose.illi@ing.austral.edu.ar";
                     List<Teacher> teachers = Teacher.finder.findList();
                     List<Teacher> teachersToRecommend = new ArrayList<>();
                     for (Teacher teacher : teachers) {
