@@ -15,7 +15,6 @@ import ua.dirproy.profelumno.user.models.User;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -95,7 +94,6 @@ public class Calendar extends Controller {
     }
 
     public static Result getCalendar(){
-
         List<DayRange> calendar;
         ArrayNode result = Json.newArray();
         if (getTeacher() != null){
@@ -110,6 +108,7 @@ public class Calendar extends Controller {
 
             }
         }
+
         return ok(Json.toJson(result));
     }
 
@@ -150,7 +149,6 @@ public class Calendar extends Controller {
 
     public static Result teacherAvailableTimeWithNoClass(){
 
-        //get del teacher del server (paca checkea esto por lo del form.form)
         Form<Teacher> form = Form.form(Teacher.class).bindFromRequest();
         Long teacherId = Long.parseLong(form.data().get("teacherId"));
         final Teacher teacher = Teacher.getTeacher(teacherId);
@@ -171,28 +169,104 @@ public class Calendar extends Controller {
 
         for (Lesson aux : acceptLessons){
             final DayEnum dayEnum = auxiliaryMethod(aux.getDateTime());
-            Duration durationOfClass = aux.getDuration();
+            int durationOfClass = (int) (aux.getDuration().getSeconds() / 3600);
             int fromHour = aux.getDateTime().getHours();
+            int toHour = fromHour + durationOfClass;
             for (DayRange dr : calendar) {
                 if (dr.getDayEnum() == dayEnum){
-                    if (dayList.isEmpty()){
+                    if (!dayList.isEmpty()) {
+                        for (Day auxDay : dayList) {
+                            if (auxDay.getDay().getYear() == aux.getDateTime().getYear() && auxDay.getDay().getMonth() == aux.getDateTime().getMonth() && auxDay.getDay().getDay() == aux.getDateTime().getDay()) {
+                                List<Range> newRangeList = new ArrayList<>();
+                                List<Range> rangeList = auxDay.getRangeList();
+                                for (Range x :rangeList){
+                                    if (fromHour > x.getFrom() && toHour < x.getTo()){
+                                        Range rangeFrom = new Range();
+                                        rangeFrom.setFrom(x.getFrom());
+                                        rangeFrom.setTo(fromHour);
+                                        Range rangeTo = new Range();
+                                        rangeTo.setFrom(toHour);
+                                        rangeTo.setTo(x.getTo());
+                                        newRangeList.add(rangeFrom);
+                                        newRangeList.add(rangeTo);
+                                    }else if (fromHour == x.getFrom() && toHour < x.getTo()){
+                                        Range rangeFrom = new Range();
+                                        rangeFrom.setFrom(toHour);
+                                        rangeFrom.setTo(x.getTo());
+                                        newRangeList.add(rangeFrom);
+                                    }else if (fromHour > x.getFrom() && toHour == x.getTo()){
+                                        Range rangeFrom = new Range();
+                                        rangeFrom.setFrom(x.getFrom());
+                                        rangeFrom.setTo(fromHour);
+                                        newRangeList.add(rangeFrom);
+                                    }
+                                }
+
+                                auxDay.setRangeList(newRangeList);
+                                break;
+                            } else {
+                                Day day = new Day();
+                                day.setDay(aux.getDateTime());
+                                if (fromHour > dr.getFromHour().getHours() && toHour < dr.getToHour().getHours()){
+                                    Range rangeFrom = new Range();
+                                    rangeFrom.setFrom(dr.getFromHour().getHours());
+                                    rangeFrom.setTo(fromHour);
+                                    Range rangeTo = new Range();
+                                    rangeTo.setFrom(toHour);
+                                    rangeTo.setTo(dr.getToHour().getHours());
+                                    day.addRange(rangeFrom);
+                                    day.addRange(rangeTo);;
+                                }else if (fromHour == dr.getFromHour().getHours() && toHour < dr.getToHour().getHours()){
+                                    Range rangeTo = new Range();
+                                    rangeTo.setFrom(toHour);
+                                    rangeTo.setTo(dr.getToHour().getHours());
+                                    day.addRange(rangeTo);
+                                }else if (fromHour > dr.getFromHour().getHours() && toHour == dr.getToHour().getHours()){
+                                    Range rangeFrom = new Range();
+                                    rangeFrom.setFrom(dr.getFromHour().getHours());
+                                    rangeFrom.setTo(fromHour);
+                                    day.addRange(rangeFrom);
+
+                                }
+                                dayList.add(day);
+                                break;
+                            }
+                        }
+                    }else {
                         Day day = new Day();
                         day.setDay(aux.getDateTime());
-                        Range rangeFrom = new Range();
-                        rangeFrom.setFrom(dr.getFromHour().getHours());
-                        rangeFrom.setTo(fromHour);
-                        Range rangeTo = new Range();
-                        rangeTo.setFrom(fromHour + durationOfClass.getNano());
-                        rangeTo.setTo(dr.getToHour().getHours());
-                    }
-                    else{
+                        if (fromHour > dr.getFromHour().getHours() && toHour < dr.getToHour().getHours()){
+                            Range rangeFrom = new Range();
+                            rangeFrom.setFrom(dr.getFromHour().getHours());
+                            rangeFrom.setTo(fromHour);
+                            Range rangeTo = new Range();
+                            rangeTo.setFrom(toHour);
+                            rangeTo.setTo(dr.getToHour().getHours());
+                            day.addRange(rangeFrom);
+                            day.addRange(rangeTo);;
+                        }else if (fromHour == dr.getFromHour().getHours() && toHour < dr.getToHour().getHours()){
+                            Range rangeTo = new Range();
+                            rangeTo.setFrom(toHour);
+                            rangeTo.setTo(dr.getToHour().getHours());
+                            day.addRange(rangeTo);
+                        }else if (fromHour > dr.getFromHour().getHours() && toHour == dr.getToHour().getHours()){
+                            Range rangeFrom = new Range();
+                            rangeFrom.setFrom(dr.getFromHour().getHours());
+                            rangeFrom.setTo(fromHour);
+                            day.addRange(rangeFrom);
 
+                        }
+                        dayList.add(day);
+                        break;
                     }
                 }
             }
         }
 
-        return ok(Json.toJson(calendar));
+
+        ArrayNode arrayNode = Json.newArray().add(Json.toJson(acceptLessons)).add(Json.toJson(dayList));
+
+        return ok(Json.toJson(arrayNode));
     }
 
     private static DayEnum auxiliaryMethod(Date date){

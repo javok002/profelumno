@@ -63,14 +63,14 @@ teacherSearchApp.controller("searchController", function($scope, $http, $routePa
             })
     };
     (function() {  // init
-        if (true) { // $routeParams.Id) {
-            var a = 0;
-            console.log("on init executed successfully" + a + $routeParams.paramId);
-            console.log($routeParams.bag)
-            var queryParams = getQueryParams(document.location.search);
-            console.log(queryParams);
+        var queryParams = getQueryParams(document.location.search);
+        if (queryParams.sort == "true") { // $routeParams.Id) {
+            //var a = 0;
+            //console.log("on init executed successfully" + a + $routeParams.paramId);
+            //console.log($routeParams.bag);
+            //console.log(queryParams);
             $scope.subjects.push(queryParams.subject);
-            $scope.sort = queryParams.sort;
+            $scope.sortByDistance = true;
             $scope.search();
 
         } else {
