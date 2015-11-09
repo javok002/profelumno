@@ -215,7 +215,17 @@ angular.module('chat', [])
                     }
                     $scope.$apply(function(){
                         $scope.disconnectedUser=aux;
-                        $scope.connectedUser.push(user);
+                        var exists=false;
+                        for(j=0; j<$scope.connectedUser.length;j++){
+                            if ($scope.connectedUser[j].id==user.id){
+                                exists=true;
+                            }
+                        }
+                        if (!exists) {
+                            $scope.connectedUser.push(user);
+                        } else{
+                            $scope.connectedUser=$scope.connectedUser;
+                        }
                     });
                 }else{
                     for(j=0; j<$scope.connectedUser.length;j++){
@@ -225,7 +235,17 @@ angular.module('chat', [])
                     }
                     $scope.$apply(function(){
                         $scope.connectedUser=aux;
-                        $scope.disconnectedUser.push(user);
+                        var exists=false;
+                        for(var j=0; j<$scope.disconnectedUser.length;j++){
+                            if ($scope.disconnectedUser[j].id==user.id){
+                                exists=true;
+                            }
+                        }
+                        if (!exists) {
+                            $scope.disconnectedUser.push(user);
+                        } else{
+                            $scope.disconnectedUser=$scope.disconnectedUser;
+                        }
                     });
                 }
             } else if (event.type=="users"){

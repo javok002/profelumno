@@ -127,7 +127,11 @@ public class ChatManager {
             node.put("user", Json.toJson(me));
             node.put("connected", false);
 
-            map.get(relatedTo.next()).write(node);
+            Long temp = relatedTo.next();
+
+            WebSocket.Out<JsonNode> ws = map.get(temp);
+
+            if (ws != null) ws.write(node);
         }
     }
 
