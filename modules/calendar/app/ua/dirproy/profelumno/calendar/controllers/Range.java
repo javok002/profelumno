@@ -1,18 +1,11 @@
 package ua.dirproy.profelumno.calendar.controllers;
 
-import play.db.ebean.Model;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
 /**
  * Created by ASUS on 09/11/2015.
  */
-@Entity
-public class Range extends Model {
 
-    @Id
-    private Long id;
+public class Range  {
+
     private int from;
     private int to;
 
