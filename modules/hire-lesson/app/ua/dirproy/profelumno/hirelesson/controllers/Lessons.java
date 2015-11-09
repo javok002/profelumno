@@ -18,6 +18,7 @@ import java.text.ParseException;
 
 import javax.mail.*;
 
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +33,8 @@ public class Lessons extends Controller {
 
         Lesson lesson = new Lesson();
 
+        lesson.setDuration(Duration.ZERO.plusHours(Long.parseLong(lessonsForm.data().get("duration"))));
+
         final Teacher teacher = Teacher.getTeacher(Long.parseLong(lessonsForm.data().get("teacherId")));
         lesson.setTeacher(teacher);
 
@@ -43,7 +46,7 @@ public class Lessons extends Controller {
         lesson.setSubject(subject);
 
         final String dateTime = lessonsForm.data().get("dateTime");
-        lesson.setDateTime(new Date(Integer.parseInt(dateTime.substring(0, 4)) - 1900, Integer.parseInt(dateTime.substring(5, 7)) - 1, Integer.parseInt(dateTime.substring(8, 10))));
+        lesson.setDateTime(new Date(Long.parseLong(dateTime)));
 
         String address;
         switch (lessonsForm.data().get("address")) {

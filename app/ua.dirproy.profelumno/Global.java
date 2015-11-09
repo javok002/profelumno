@@ -8,6 +8,8 @@ import ua.dirproy.profelumno.common.models.Lesson;
 import ua.dirproy.profelumno.common.models.Review;
 import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
+import ua.dirproy.profelumno.recommend.controllers.Recommend;
+import ua.dirproy.profelumno.teachersearch.controllers.TeacherSearches;
 import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
 
@@ -23,7 +25,10 @@ public class Global extends GlobalSettings {
     @Override
     public void beforeStart(Application app) {
         InitialData.insert(app);
-        //Recommend.weMissyou();
+
+        //Recommend recommend = new Recommend();
+        //recommend.weMissYou();
+        //recommend.doRecommendations();
     }
 
     static class InitialData {
@@ -378,17 +383,17 @@ public class Global extends GlobalSettings {
                 for (int i = 1; i <= 100; i++) {
                     String name = names[randomizer.nextInt(names.length)];
                     String lastName = lastNames[randomizer.nextInt(lastNames.length)];
-                    int addressNumber = randomizer.nextInt(address.length / 4);
+                    int addressNumber = (int) (Math.random() * address.length); // OJO, addressNumber es siempre 0!!!
 
                     User userT = new User();
                     userT.setName(name);
                     userT.setSurname(lastName);
                     userT.setEmail("teacher" + i + "@sample.com");
                     userT.setPassword("secret");
-                    userT.setAddress(address[addressNumber * 4]);
-                    userT.setCity(address[(addressNumber * 4) + 1]);
-                    userT.setLatitude(address[(addressNumber * 4) + 2]);
-                    userT.setLongitude(address[(addressNumber * 4) + 3]);
+                    userT.setAddress(address[addressNumber]);
+                    userT.setCity(address[addressNumber]);
+                    userT.setLatitude(generateLatitudes()[addressNumber]); // OJO, addressNumber es siempre 0!!!
+                    userT.setLongitude(generatLongituds()[addressNumber]); // OJO, addressNumber es siempre 0!!!
                     userT.setBirthday(new Date((70 + i / 10), (i + 1) / 10, i / 4));
                     userT.setGender("male");
                     userT.setSecureAnswer("Hola");
@@ -413,17 +418,17 @@ public class Global extends GlobalSettings {
                 for (int k = 1; k <= 100; k++) {
                     String name = names[randomizer.nextInt(names.length)];
                     String lastName = lastNames[randomizer.nextInt(lastNames.length)];
-                    int addressNumber = randomizer.nextInt(address.length / 4);
+                    int addressNumber = (int) (Math.random() * address.length);
 
                     User userS = new User();
                     userS.setName(name);
                     userS.setSurname(lastName);
                     userS.setEmail("student" + k + "@sample.com");
                     userS.setPassword("secret");
-                    userS.setAddress(address[addressNumber * 4]);
-                    userS.setCity(address[(addressNumber * 4) + 1]);
-                    userS.setLatitude(address[(addressNumber * 4) + 2]);
-                    userS.setLongitude(address[(addressNumber * 4) + 3]);
+                    userS.setAddress(address[addressNumber]);
+                    userS.setCity(address[addressNumber]);
+                    userS.setLatitude(generateLatitudes()[addressNumber]);
+                    userS.setLongitude(generatLongituds()[addressNumber]);
                     userS.setBirthday(new Date((93), 5, 10));
                     userS.setGender("male");
                     userS.setSecureAnswer("Hola");
@@ -484,13 +489,38 @@ public class Global extends GlobalSettings {
                     "Av. Juan Domingo Perón 1500, Buenos Aires",
                     "El Tordo 55, Pilar Centro, Buenos Aires",
                     "San Martín 744, Pilar Centro, Buenos Aires",
-                    "Yrigoyen 2749, Vicente Lopez, Buenos Aires",
                     "Ballivian 2329, Villa Ortuzar, Buenos Aires",
                     "El Salvador 5528, Palermo, Buenos Aires",
                     "Cuba 2039, Belgrano, Buenos Aires",
                     "Defensa 1431, San Telmo, Buenos Aires"
             };
             return address;
+        }
+
+        private static double[] generateLatitudes() {
+            double[] latitudes = {
+                    -34.5,
+                    -34.4496,
+                    -34.4597,
+                    -34.5787,
+                    -34.5838,
+                    -34.5614,
+                    -34.6245
+            };
+            return latitudes;
+        }
+
+        private static double[] generatLongituds() {
+            double[] longitudes = {
+                    -58.8,
+                    -58.9137,
+                    -58.9166,
+                    -58.4781,
+                    -58.4369,
+                    -58.4564,
+                    -58.3734
+            };
+            return longitudes;
         }
 
         private static Date getOldDate(Random random) {

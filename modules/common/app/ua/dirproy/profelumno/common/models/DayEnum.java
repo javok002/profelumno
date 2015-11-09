@@ -1,7 +1,5 @@
 package ua.dirproy.profelumno.common.models;
 
-import com.avaje.ebean.Model;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,15 +21,16 @@ public enum DayEnum {
         return dayName;
     }
 
-    public static List<DayEnum> listDays(){
-        ArrayList<DayEnum> list = new ArrayList();
-        list.add(SUNDAY);
-        list.add(MONDAY);
-        list.add(TUESDAY);
-        list.add(WEDNESDAY);
-        list.add(THURSDAY);
-        list.add(FRIDAY);
-        list.add(SATURDAY);
-        return list;
+    public static List<DayEnum> getDayEnums(){
+        ArrayList<DayEnum> dayEnums = new ArrayList<>();
+        dayEnums.add(MONDAY);
+        dayEnums.add(TUESDAY);
+        dayEnums.add(WEDNESDAY);
+        dayEnums.add(THURSDAY);
+        dayEnums.add(FRIDAY);
+        dayEnums.add(SATURDAY);
+        dayEnums.add(SUNDAY);
+        return dayEnums;
     }
+
 }

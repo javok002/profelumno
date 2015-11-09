@@ -27,8 +27,8 @@ public class User extends Model {
     private Date lastLogin;
     private String gender;
     private String address;
-    private String latitude;
-    private String longitude;
+    private double latitude;
+    private double longitude;
     private String city;
     private String neighbourhood;
     private String secureQuestion;
@@ -177,19 +177,19 @@ public class User extends Model {
         totalStars += stars;
     }
 
-    public String getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
-    public String getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 

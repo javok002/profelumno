@@ -5,8 +5,9 @@ angular.module('profLesson', [])
 
     .controller('HireCtrl',['$scope', '$http', function($scope, $http) {
         $scope.comment = '';
-        $scope.address= '';
         $scope.lessonDate= '';
+        $scope.selected= '';
+
         $scope.setSubjects = function (teacherId) {
             var subs = {};
             $http.get('/hire-lesson/get-subjects?teacherId='+teacherId)
@@ -16,13 +17,14 @@ angular.module('profLesson', [])
             return subs;
         };
         $scope.selected = {};
-        $scope.postLesson = function(teacherId) {
+        $scope.postLesson = function(teacherId, dateTime, duration) {
             data = {
                 address:$scope.address,
                 comment:$scope.comment,
                 teacherId:teacherId,
                 subjectId:$scope.selected,
-                dateTime:$scope.dateTime
+                dateTime:dateTime.getTime(),
+                duration: duration
             };
             $http.post('/hire-lesson/new', data).then(successCallback, errorCallback);
             $("#loadingModal").modal("show");
@@ -32,6 +34,7 @@ angular.module('profLesson', [])
         successCallback = function () {
             $("#succesModal").modal("show");
             $("#loadingModal").modal("hide");
+
         };
 
         errorCallback = function () {
@@ -39,23 +42,96 @@ angular.module('profLesson', [])
             $("#loadingModal").modal("hide");
         };
 
-        $('.datepicker').datepicker('startDate', Date.now());
-
     }])
 
-    .directive('hireLesson', function(){
+    .directive('hireLesson',['$http', function($http){
         return {
             restrict: 'E',
             scope : {
-                teacherId : '=', //todo quien se encargue de buscar profesores tiene que setear este atributo y la subject
+                teacherId : '=',
                 index : '=',
                 teacherSubs: '='
             },
             link : function(scope){
                 scope.date = 'date';
+
+                spanishDays = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
+
+                toDateTimeString = function (date) {
+                    return [spanishDays[date.getDay()], date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear(), 'a las', date.getHours() + ':' + date.getMinutes()].join(" ");
+                };
+
+                Date.prototype.addHours= function(h){
+                    this.setHours(this.getHours()+h);
+                    return this;
+                };
+
+                scope.init = function (calendarIndex) {
+
+                    $http.get("/calendar/get-user-name")
+                        .success(function (data) {
+                            scope.userName = data;
+                        });
+
+                    $http.get("/calendar/get-teacher-time?teacherId=" + scope.teacherId)
+                        .success(function (data) {
+                            data[0].forEach(function(lesson) {
+                                var teacher = lesson.teacher.user;
+                                lesson.title = lesson.subject.text /*+ ' a ' + student.name + ' ' + student.surname*/;
+                                lesson.date = new Date(lesson.dateTime);
+                                lesson.end = angular.copy(lesson.date).addHours(lesson.duration.seconds / 3600);
+                                lesson.lessonAcepted = true;
+                            });
+
+                            ranges = [];
+
+                            data[1].forEach(function(day) {
+                                auxDate = new Date(day.day);
+                                auxDate.setHours(0);
+                                auxDate.setMinutes(0);
+                                auxDate.setSeconds(0);
+
+                                day.rangeList.forEach(function(range){
+                                    for (var i = range.from; i < range.to; i++){
+                                        ranges[ranges.length] = {
+                                            title: '',
+                                            start: angular.copy(auxDate).addHours(i),
+                                            end: angular.copy(auxDate).addHours(i + 1),
+                                            color: '#fa6353',
+                                            dateTime: angular.copy(auxDate).addHours(i).getTime()
+                                    };
+                                    }
+                                });
+                            });
+
+                            scope.data = data[0].concat(ranges);
+
+                            $('#calendar' + calendarIndex ).fullCalendar({
+                                lang: 'es',
+                                header: {
+                                    left: 'today',
+                                    center: 'prev,next',
+                                    right: 'agendaWeek'
+                                },
+                                eventClick: function (event, jsEvent, view) {
+                                    if (!event.lessonAcepted) {
+                                        scope.dateTime = new Date(event.dateTime);
+                                        $('#datepicker' + scope.index).val(toDateTimeString(scope.dateTime));
+                                    }
+                                },
+                                events: scope.data
+                            });
+
+                        });
+                    $('#hire-modal' + calendarIndex).on('shown.bs.modal', function(){
+                        $('#calendar' + calendarIndex ).fullCalendar('render');
+                    });
+
+                    $('#hire-modal' + calendarIndex).modal('show');
+                };
             },
             template:
-            '<button type="button" class="btn btn-success" data-toggle="modal" data-target="#hire-modal{{index}}">' +
+            '<button type="button" class="btn btn-success" ng-click="init(index)">' +
                 'Contratar' +
             '</button>' +
 
@@ -94,20 +170,25 @@ angular.module('profLesson', [])
                                                     'El domicilio se pactará despues' +
                                             ' </label> ' +
                                         ' </div> ' +
-                                    ' </div> ' +
+                                    '</div> ' +
+                                    '<div style="border-color: #ddd; border-style: solid; border-width: 1px; margin-bottom: 10px;">'+
+                                        '<div class="box-body" id="calendar{{index}}" style="padding: 0px"></div><!-- /.box-body -->' +
+                                    '</div>' +
 
                                     '<div class="input-group">' +
-                                        '<!--<input type="text" class="form-control datepicker" datepicker="user.birthday" placeholder="Fecha de Nacimiento" name="birthday" required ng-model="user.birthday">' +
-                                        '<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>--!>' +
                                         '<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>' +
-                                        '<input ng-model="dateTime" type="date" class="form-control" name="birthday" required ng-model="user.birthday" ng-class="{&#39;default-option&#39;: user.birthday == undefined}">' +
+                                        '<input style="width: 100%;height: 28px;" id="datepicker{{index}}" value="">' +
                                     '</div>'+
+                                    '<label>Duración (horas)</label>' +
+                                    '<select class="form-control" ng-model="duration">'+
+                                        '<option ng-repeat="i in [1,2,3,4,5,6,7,8]" value="{{i}}">{{i}}</option>'+
+                                    '</select>'+
                                         '<div class="form-group">' +
                                             '<label>Comentario</label>' +
                                             '<textarea class="form-control" rows="3" placeholder="Dejar comentario ..." ng-model="comment"></textarea>' +
                                         '</div>' +
                                     '</div><!-- /.box-body -->' +
-                                    '<button ng-click="postLesson(teacherId)" class="btn btn-primary" data-dismiss="modal">Enviar</button>' +
+                                    '<button ng-click="postLesson(teacherId, dateTime, duration)" class="btn btn-primary" data-dismiss="modal">Enviar</button>' +
                             '</div><!-- /.box -->' +
                         '</div>' +
                         '<div class="modal-footer">' +
@@ -164,4 +245,4 @@ angular.module('profLesson', [])
             '</div><!-- /.modal-dialog -->' +
             '</div>'
         }
-    });
+    }]);

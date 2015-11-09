@@ -39,16 +39,22 @@
                 </div>
                 <form role="form" name="registerForm" method="post" ng-submit="submit()">
                     <div class="box-body">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Nombre" name="name" required ng-model="user.name">
+                        <div class="input-group" @if(flash.containsKey("name")) {
+                                                    ng-init="user.name = '@flash.get("name")'"
+                        }>
+                            <input type="text" class="form-control" placeholder="Nombre" name="name" required ng-model="user.name" >
                             <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                         </div>
-                        <div class="input-group">
+                        <div class="input-group" @if(flash.containsKey("surname")) {
+                            ng-init="user.surname = '@flash.get("surname")'"
+                            }>
                             <input type="text" class="form-control" placeholder="Apellido" name="surname" required ng-model="user.surname">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                         </div>
-                        <div class="input-group">
-                            <input type="email" class="form-control" placeholder="Email" name="email" required ng-model="user.email">
+                        <div class="input-group" @if(flash.containsKey("email")) {
+                            ng-init="user.email = '@flash.get("email")'"
+                            }>
+                            <input type="email" class="form-control" placeholder="Email"  name="email" required ng-model="user.email">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
                         </div>
                         <div class="input-group">
