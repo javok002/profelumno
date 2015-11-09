@@ -82,22 +82,26 @@ public class Recommend extends Controller {
                 }
             }
         };
-        final ScheduledFuture<?> beeperHandle = scheduler.scheduleAtFixedRate(charger, 0 , 10080, MINUTES);
+        final ScheduledFuture<?> beeperHandle = scheduler.scheduleAtFixedRate(charger, 4 , 10080, MINUTES);
     }
 
     private void sendWeMissYou(User user) {
         String subject = "Profelumno te extraña";
-        String message = "Hola " + user.getName();
-        message += "\n¡Hace tiempo que no nos visitas! Estamos seguros que necesitas ayuda en esa materia que ultimamente no te está yendo tan bien.";
-        message += "\n¡Te esperammos!";
-        message += "\nlocalhost:9000";
-        message += "\nEl equipo de profelumno";
+        String message1 = "<div class=\"container-fluid\">\n" +
+                "    <div class=\"row-fluid\">\n" +
+                "        <h4>Hola "+user.getName() +"</h4>\n" +
+                "        <p>¡Hace tiempo que no nos visitas! Estamos seguros que necesitas ayuda en esa materia que ultimamente no te está yendo tan bien.</p>\n" +
+                "        <p>¡Te esperamos!</p>\n" +
+                "        <p>localhost:9000</p>\n" +
+                "        <p>El equipo de Profelumno</p>\n" +
+                "    </div>\n" +
+                "</div>";
         System.out.println("Sending mail...");
         try {
             String[] to = new String[1];
             to[0] = user.getEmail();
 //            to[0] = "jose.illi@ing.austral.edu.ar";
-            MailSenderUtil.send(to, subject, message);
+            MailSenderUtil.send(to, subject, message1);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error sending mail");
@@ -108,7 +112,7 @@ public class Recommend extends Controller {
     private boolean lastLoginBeforeTenDay(Date lastLogin) {
         if(lastLogin == null) return true;
         DateTime dateTime = new DateTime(lastLogin);
-        return (dateTime.isBefore(((new DateTime()).minusDays(10))));
+        return (dateTime.isBefore(((new DateTime()).minusDays(0))));
     }
 
     private int minutesForNextMondayAtTen() {
@@ -161,6 +165,7 @@ public class Recommend extends Controller {
                             teachersToRecommend.add(teacher);
                         }
                     }
+                    if(teachersToRecommend.size() == 0) return;
                     TeacherSearches.orderByDistance(teachersToRecommend, student.getUser());
 //
                     teachersToRecommend = teachersToRecommend.subList(0, teachersToRecommend.size() > 6 ? 6 : teachersToRecommend.size());
@@ -177,14 +182,42 @@ public class Recommend extends Controller {
                         }
                     });
                     String subject = "Profelumno recomienda";
-                    String message = "Hola " + student.getUser().getName() + "\n\n ¿Por qué no pides ayuda para aprobar tus exámenes? Estos profesores enseñan " + subject + " y ¡OH! tu necesitas aprender " + subject + "!\n\n";
-                    message += "\nEn el siguiente link puedes ver los profesores que están cerca de tu casa \n";
-                    // todo -> falta la tabla con profesores
-                    message += "\nlocalhost:9000/teacher-search?subject="+subject+"&sort=true";
-                    message += "\n El equipo de profelumno";
+                    String message1 = "<div class=\"container-fluid\">\n" +
+                            "    <div class=\"row-fluid\">\n" +
+                            "        <h4>Hola " + student.getUser().getName() +"</h4>\n" +
+                            "        <p>¿Por qué no pides ayuda para aprobar tus examenes? Estos profesores enseñan " + subject + " y ¡OH! tu necesitas aprender "+ subject +"</p>\n" +
+                            "    </div>\n" +
+                            "    <div class=\"row-fluid\">\n" +
+                            "        <table class=\"table\">\n" +
+                            "            <tbody>\n" +
+                            "                <tr>\n" +
+                            "                    <th>Profesor</th>\n" +
+                            "                    <th>Ranking</th>\n" +
+                            "                    <th>Clases dictadas</th>\n" +
+                            "                    <th>Distancia a tu domicilio</th>\n" +
+                            "                </tr>\n" ;
+                    for (int i = 0; i < teachersToRecommend.size(); i++) {
+                        message1 += "                <tr>\n" +
+                                "                    <td>" + teachersToRecommend.get(i).getUser().getName() + " " + teachersToRecommend.get(i).getUser().getSurname() + "</td>\n" +
+                                "                    <td>" + teachersToRecommend.get(i).getRanking() + "</td>\n" +
+                                "                    <td>" + teachersToRecommend.get(i).getLessonsDictated() + "</td>\n" +
+                                "                    <td>" + distFrom(student.getUser().getLatitude(),student.getUser().getLongitude(),teachersToRecommend.get(i).getUser().getLatitude(),teachersToRecommend.get(i).getUser().getLongitude()) +"</td>\n" +
+                                "                </tr>\n";
+
+                    }
+                    message1 +=        "            </tbody>\n" +
+                            "        </table>\n" +
+                            "    </div>\n" +
+                            "    <div class=\"row-fluid\">\n" +
+                            "        <p>En el siguinete link puedes ver los profesores que están cerca de tu casa</p>\n" +
+                            "        <p>localhost:9000/teacher-search?subject=" +subject +"&sort=true</p>\n" +
+                            "        <p>El equipo de Profelumno</p>\n" +
+                            "    </div>\n" +
+                            "</div>";
+
                     System.out.println("Sending mail...");
                     try {
-                        MailSenderUtil.send(to, subject, message);
+                        MailSenderUtil.send(to, subject, message1);
                     } catch (Exception e) {
                         e.printStackTrace();
                         System.out.println("Error sending mail");
@@ -209,5 +242,18 @@ public class Recommend extends Controller {
             }
         };
         final ScheduledFuture<?> beeperHandle = scheduler.scheduleAtFixedRate(charger, 0, 7, DAYS);
+    }
+
+    public static float distFrom(double lat1, double lng1, double lat2, double lng2) {
+        double earthRadius = 6371000; //meters
+        double dLat = Math.toRadians(lat2-lat1);
+        double dLng = Math.toRadians(lng2-lng1);
+        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                        Math.sin(dLng/2) * Math.sin(dLng/2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        float dist = (float) (earthRadius * c);
+
+        return dist;
     }
 }
