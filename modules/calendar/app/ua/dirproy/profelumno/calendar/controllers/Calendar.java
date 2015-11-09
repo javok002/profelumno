@@ -166,13 +166,27 @@ public class Calendar extends Controller {
             }
         }
 
+        List<Day> dayList = new ArrayList<>();
         //voy sacando del calendario del teacher los horarios que ya tienen clases
         for (Lesson aux : acceptLessons){
             final DayEnum dayEnum = auxiliaryMethod(aux.getDateTime());
             Duration durationOfClass = aux.getDuration();
+            int fromHour = aux.getDateTime().getHours();
             for (DayRange dr : calendar) {
-                if (dr.getDayEnum() == dayEnum && dr.getDuration().equals(durationOfClass)){
-                    calendar.remove(dr);
+                if (dr.getDayEnum() == dayEnum){
+                    if (dayList.isEmpty()){
+                        Day day = new Day();
+                        day.setDay(aux.getDateTime());
+                        Range rangeFrom = new Range();
+                        rangeFrom.setFrom(dr.getFromHour().getHours());
+                        rangeFrom.setTo(fromHour);
+                        Range rangeTo = new Range();
+                        rangeTo.setFrom(fromHour + durationOfClass.getNano());
+                        rangeTo.setTo(dr.getToHour().getHours());
+                    }
+                    else{
+
+                    }
                 }
             }
         }
