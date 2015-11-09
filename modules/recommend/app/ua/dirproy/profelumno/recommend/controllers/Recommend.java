@@ -77,25 +77,43 @@ public class Recommend extends Controller {
                 List<Student> students = Student.finder.findList();
                 for (Student student : students) {
                     if(lastLoginBeforeTenDay(student.getUser().getLastLogin())){
-                        sendWeMissYou(student.getUser());
+                        sendWeMissYou(student.getUser(), false);
                     }
                 }
+                List<Teacher> teachers = Teacher.finder.findList();
+                for (Teacher teacher : teachers) {
+                    if(lastLoginBeforeTenDay(teacher.getUser().getLastLogin())){
+                        sendWeMissYou(teacher.getUser(), true);
+                    }
+                }
+
             }
         };
         final ScheduledFuture<?> beeperHandle = scheduler.scheduleAtFixedRate(charger, 4 , 10080, MINUTES);
     }
 
-    private void sendWeMissYou(User user) {
+    private void sendWeMissYou(User user, boolean isTeacher) {
         String subject = "Profelumno te extraña";
         String message1 = "<div class=\"container-fluid\">\n" +
                 "    <div class=\"row-fluid\">\n" +
                 "        <h4>Hola "+user.getName() +"</h4>\n" +
-                "        <p>¡Hace tiempo que no nos visitas! Estamos seguros que necesitas ayuda en esa materia que ultimamente no te está yendo tan bien.</p>\n" +
-                "        <p>¡Te esperamos!</p>\n" +
-                "        <p>localhost:9000</p>\n" +
-                "        <p>El equipo de Profelumno</p>\n" +
-                "    </div>\n" +
-                "</div>";
+                "        <p>¡Hace tiempo que no nos visitas!";
+        if(isTeacher){
+            message1 += " Estamos seguros que hay alumnos que están necesitando tu ayuda. Entra al sitio y vuelve a dar clases en Profelumno.</p>\n" +
+                    "        <p>¡Te esperamos!</p>\n" +
+                    "        <p>localhost:9000</p>\n" +
+                    "        <p>El equipo de Profelumno</p>\n" +
+                    "    </div>\n" +
+                    "</div>";
+        } else {
+            message1 += " Estamos seguros que necesitas ayuda en esa materia que ultimamente no te está yendo tan bien.</p>\n" +
+                    "        <p>¡Te esperamos!</p>\n" +
+                    "        <p>localhost:9000</p>\n" +
+                    "        <p>El equipo de Profelumno</p>\n" +
+                    "    </div>\n" +
+                    "</div>";
+        }
+
         System.out.println("Sending mail...");
         try {
             String[] to = new String[1];
@@ -112,7 +130,7 @@ public class Recommend extends Controller {
     private boolean lastLoginBeforeTenDay(Date lastLogin) {
         if(lastLogin == null) return true;
         DateTime dateTime = new DateTime(lastLogin);
-        return (dateTime.isBefore(((new DateTime()).minusDays(0))));
+        return (dateTime.isBefore(((new DateTime()).minusDays(10))));
     }
 
     private int minutesForNextMondayAtTen() {
