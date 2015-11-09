@@ -36,38 +36,51 @@ public class ChatController extends Controller {
     }
 
     public static Result getChat(Long userId) {
-        Teacher teacher = Teacher.finder.where().eq("user.id", userId).findUnique();
+        User user = Ebean.find(User.class, userId);
+        Teacher teacher = Teacher.finder.where().eq("user", user).findUnique();
+        Student student =  Student.finder.where().eq("user", user).findUnique();
         ObjectNode node = Json.newObject();
         Chat chat;
 
         if (teacher != null) {
+            teacher.setUser(user);
+            final long userId2=Long.parseLong(session("id"));
+            User user2 = Ebean.find(User.class, userId2);
+            student =  Student.finder.where().eq("user", user2).findUnique();
+            student.setUser(user2);
+
             chat = Chat.finder.where().and(Expr.eq("teacher", teacher),
-                    Expr.eq("student.user.id", Long.parseLong(session().get("id")))).findUnique();
+                    Expr.eq("student", student)).findUnique();
 
             if (chat == null) {
                 chat = new Chat();
-                final long userId2=Long.parseLong(session("id"));
-                User user2 = Ebean.find(User.class, userId2);
-                chat.setStudent(Student.finder.where().eq("user", user2).findUnique());
+                chat.setStudent(student);
                 chat.setTeacher(teacher);
                 chat.save();
             }
+            chat.setStudent(student);
+            chat.setTeacher(teacher);
         } else {
-            Student student = Student.finder.where().eq("user.id", userId).findUnique();
+            student.setUser(user);
+            final long userId2=Long.parseLong(session("id"));
+            User user2 = Ebean.find(User.class, userId2);
+            teacher =  Teacher.finder.where().eq("user", user2).findUnique();
+            teacher.setUser(user2);
+
             chat = Chat.finder.where().and(Expr.eq("student", student),
-                    Expr.eq("teacher.user.id", Long.parseLong(session().get("id")))).findUnique();
+                    Expr.eq("teacher", teacher)).findUnique();
 
             if (chat == null) {
                 chat = new Chat();
-                final long userId2=Long.parseLong(session("id"));
-                User user2 = Ebean.find(User.class, userId2);
-                chat.setTeacher(Teacher.finder.where().eq("user", user2).findUnique());
+                chat.setTeacher(teacher);
                 chat.setStudent(student);
                 chat.save();
             }
+            chat.setTeacher(teacher);
+            chat.setStudent(student);
         }
-
-        node.put("chat", Json.toJson(chat));
+        JsonNode jsonNode=Json.toJson(chat);
+        node.put("chat", jsonNode);
         return ok(node);
     }
 }
