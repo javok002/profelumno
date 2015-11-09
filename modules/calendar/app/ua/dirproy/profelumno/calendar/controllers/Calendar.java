@@ -150,7 +150,6 @@ public class Calendar extends Controller {
 
     public static Result teacherAvailableTimeWithNoClass(){
 
-        //get del teacher del server (paca checkea esto por lo del form.form)
         Form<Teacher> form = Form.form(Teacher.class).bindFromRequest();
         Long teacherId = Long.parseLong(form.data().get("teacherId"));
         final Teacher teacher = Teacher.getTeacher(teacherId);
