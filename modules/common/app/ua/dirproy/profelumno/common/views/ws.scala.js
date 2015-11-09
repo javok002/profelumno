@@ -235,8 +235,8 @@ angular.module('chat', [])
             var message = angular.element($('#socket-input'+chatID)).val();
             alert(message);
             socket.send(JSON.stringify({idUserFrom: userInSession.id, message: message, idChat: chatId}));
-        };            
-          
+        };
+
 
         $scope.getChat = function (chatToId, name) {
             $http.get('common/getChat?userId='+chatToId)
