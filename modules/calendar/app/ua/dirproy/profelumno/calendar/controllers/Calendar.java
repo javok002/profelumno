@@ -109,7 +109,7 @@ public class Calendar extends Controller {
             }
         }
 
-        return result;
+        return ok(Json.toJson(result));
     }
 
 
