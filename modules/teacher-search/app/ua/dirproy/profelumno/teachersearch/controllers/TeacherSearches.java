@@ -36,6 +36,7 @@ import static ua.dirproy.profelumno.common.models.Teacher.updateLessonsDictated;
 public class TeacherSearches extends Controller {
 
     public static Result teacherSearchView() {
+        Form<Teacher> form = Form.form(Teacher.class).bindFromRequest();
         return ok(ua.dirproy.profelumno.teachersearch.views.html.teachersearch.render());
     }
 
@@ -48,8 +49,8 @@ public class TeacherSearches extends Controller {
         allTeachers = Teacher.list();
         final List<Teacher> teachersToShow = Teacher.list();
         Form<Teacher> form = Form.form(Teacher.class).bindFromRequest();
-        List<String> subjects = new ArrayList<>(form.data().size() - 3);
-        int index = form.data().size() - 4;
+        List<String> subjects = new ArrayList<>(form.data().size() - 4);
+        int index = form.data().size() - 5;
         while (index >= 0) {
             subjects.add(form.data().get("subjects[" + index + "]").replace("-"," "));
             index--;
@@ -61,9 +62,21 @@ public class TeacherSearches extends Controller {
         final long userId = Long.parseLong(session("id"));
         User user = Ebean.find(User.class, userId);
         ArrayList<Object> toReturn = new ArrayList<>(2);
+        if(Boolean.parseBoolean(form.data().get("sort"))){
+            orderByDistance(teachersToShow, user);
+        } else{
+            teachersToShow.sort(new Comparator<Teacher>() {
+                @Override
+                public int compare(Teacher o1, Teacher o2) {
+                    float difference = o2.getRanking() - o1.getRanking();
+                    return difference < 0 ? -1 : difference > 0 ? 1 : 0;
+                }
+            });
+        }
         toReturn.add(teachersToShow);
         toReturn.add(user.getAddress());
 //        toReturn.add(user.getLongitude());
+
 
         return ok(toJson(toReturn));
     }
@@ -95,15 +108,21 @@ public class TeacherSearches extends Controller {
         return home && !teacher.getHomeClasses();
     }
 
-    public static void orderByDistance(List<User> users, User user){
-        users.sort(new Comparator<User>() {
+    public static void orderByDistance(List<Teacher> users, User user){
+        users.sort(new Comparator<Teacher>() {
             @Override
-            public int compare(User o1, User o2) {
-                if(o1.getLatitude() == 0 || o1.getLongitude() == 0) return -1;
-                else if(o2.getLatitude() == 0 || o2.getLongitude() == 0) return 1;
+            public int compare(Teacher o1, Teacher o2) {
+                if(o1.getUser().getLatitude() == 0 || o1.getUser().getLongitude() == 0) return -1;
+                else if(o2.getUser().getLatitude() == 0 || o2.getUser().getLongitude() == 0) return 1;
                 int distance = 0;
                 try {
-                        distance = (int) (getDistance(user, o1) - getDistance(user, o2));
+                    double distance1 = getDistance(user, o1.getUser());
+                    double distance2 = getDistance(user, o2.getUser());
+                    if(o1.getUser().getAddress().equals(o2.getUser().getAddress())){
+                        String a = "";
+                    }
+                    double realDistances = distance1 - distance2;
+                    distance = realDistances < 0 ? -1 : realDistances > 0 ? 1 : 0;
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
@@ -118,8 +137,12 @@ public class TeacherSearches extends Controller {
         if((user1.getLatitude() == 0 || user1.getLongitude() == 0) && user1.getAddress() != null){
             getCordinates(user1);
         }
+
         if ((user2.getLatitude() == 0 || user2.getLongitude() == 0) && user2.getAddress()!= null){
             getCordinates(user2);
+        }
+        if(user1.getAddress().equals(user2.getAddress())){
+            return 0;
         }
         return Math.hypot((user1.getLatitude() - user2.getLatitude()),(user1.getLongitude() - user2.getLongitude()));
     }
