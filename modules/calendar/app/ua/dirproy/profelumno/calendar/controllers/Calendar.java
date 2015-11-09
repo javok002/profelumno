@@ -15,7 +15,6 @@ import ua.dirproy.profelumno.user.models.User;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -214,14 +213,27 @@ public class Calendar extends Controller {
                             } else {
                                 Day day = new Day();
                                 day.setDay(aux.getDateTime());
-                                Range rangeFrom = new Range();
-                                rangeFrom.setFrom(dr.getFromHour().getHours());
-                                rangeFrom.setTo(fromHour);
-                                Range rangeTo = new Range();
-                                rangeTo.setFrom(toHour);
-                                rangeTo.setTo(dr.getToHour().getHours());
-                                day.addRange(rangeFrom);
-                                day.addRange(rangeTo);
+                                if (fromHour > dr.getFromHour().getHours() && toHour < dr.getToHour().getHours()){
+                                    Range rangeFrom = new Range();
+                                    rangeFrom.setFrom(dr.getFromHour().getHours());
+                                    rangeFrom.setTo(fromHour);
+                                    Range rangeTo = new Range();
+                                    rangeTo.setFrom(toHour);
+                                    rangeTo.setTo(dr.getToHour().getHours());
+                                    day.addRange(rangeFrom);
+                                    day.addRange(rangeTo);;
+                                }else if (fromHour == dr.getFromHour().getHours() && toHour < dr.getToHour().getHours()){
+                                    Range rangeTo = new Range();
+                                    rangeTo.setFrom(toHour);
+                                    rangeTo.setTo(dr.getToHour().getHours());
+                                    day.addRange(rangeTo);
+                                }else if (fromHour > dr.getFromHour().getHours() && toHour == dr.getToHour().getHours()){
+                                    Range rangeFrom = new Range();
+                                    rangeFrom.setFrom(dr.getFromHour().getHours());
+                                    rangeFrom.setTo(fromHour);
+                                    day.addRange(rangeFrom);
+
+                                }
                                 dayList.add(day);
                                 break;
                             }
@@ -229,14 +241,27 @@ public class Calendar extends Controller {
                     }else {
                         Day day = new Day();
                         day.setDay(aux.getDateTime());
-                        Range rangeFrom = new Range();
-                        rangeFrom.setFrom(dr.getFromHour().getHours());
-                        rangeFrom.setTo(fromHour);
-                        Range rangeTo = new Range();
-                        rangeTo.setFrom(toHour);
-                        rangeTo.setTo(dr.getToHour().getHours());
-                        day.addRange(rangeFrom);
-                        day.addRange(rangeTo);
+                        if (fromHour > dr.getFromHour().getHours() && toHour < dr.getToHour().getHours()){
+                            Range rangeFrom = new Range();
+                            rangeFrom.setFrom(dr.getFromHour().getHours());
+                            rangeFrom.setTo(fromHour);
+                            Range rangeTo = new Range();
+                            rangeTo.setFrom(toHour);
+                            rangeTo.setTo(dr.getToHour().getHours());
+                            day.addRange(rangeFrom);
+                            day.addRange(rangeTo);;
+                        }else if (fromHour == dr.getFromHour().getHours() && toHour < dr.getToHour().getHours()){
+                            Range rangeTo = new Range();
+                            rangeTo.setFrom(toHour);
+                            rangeTo.setTo(dr.getToHour().getHours());
+                            day.addRange(rangeTo);
+                        }else if (fromHour > dr.getFromHour().getHours() && toHour == dr.getToHour().getHours()){
+                            Range rangeFrom = new Range();
+                            rangeFrom.setFrom(dr.getFromHour().getHours());
+                            rangeFrom.setTo(fromHour);
+                            day.addRange(rangeFrom);
+
+                        }
                         dayList.add(day);
                         break;
                     }
