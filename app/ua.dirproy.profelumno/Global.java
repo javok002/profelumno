@@ -30,6 +30,7 @@ public class Global extends GlobalSettings {
 
 //        Recommend recommend = new Recommend();
 //        recommend.weMissYou();
+//        recommend.doRecommendations();
     }
 
     static class InitialData {

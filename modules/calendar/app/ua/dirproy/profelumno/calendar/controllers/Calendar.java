@@ -93,13 +93,7 @@ public class Calendar extends Controller {
         return ok(Json.toJson(acceptLessons));
     }
 
-
-
     public static Result getCalendar(){
-        return ok(Json.toJson(getResult()));
-    }
-
-    private static ArrayNode getResult(){
         List<DayRange> calendar;
         ArrayNode result = Json.newArray();
         if (getTeacher() != null){
@@ -114,10 +108,9 @@ public class Calendar extends Controller {
 
             }
         }
+
         return result;
     }
-
-
 
 
     public static Result updateCalendar() throws IOException {
