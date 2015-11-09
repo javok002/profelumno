@@ -44,7 +44,7 @@ public class Teacher extends Model {
 
     public Teacher(){
         calendar = new ArrayList<>();
-       // completeCalendar();
+        completeCalendar();
     }
 
     public Teacher(long id, String description, boolean homeClasses, User user){
@@ -53,19 +53,24 @@ public class Teacher extends Model {
         this.homeClasses=homeClasses;
         this.user=user;
         calendar = new ArrayList<>();
-       // completeCalendar();
+        completeCalendar();
     }
 
     private void completeCalendar(){
         List<DayEnum> dayEnums = DayEnum.getDayEnums();
         Date fromHour = new Date();
+        fromHour.setHours(0);
+        fromHour.setMinutes(0);
+        fromHour.setSeconds(0);
         Date toHour = new Date();
+        toHour.setHours(23);
+        toHour.setMinutes(0);
+        toHour.setSeconds(0);
         for (DayEnum dayEnum : dayEnums) {
             DayRange aux = new DayRange();
             aux.setDayEnum(dayEnum);
             aux.setRange(fromHour,toHour);
             calendar.add(aux);
-            aux.save();
         }
     }
 
