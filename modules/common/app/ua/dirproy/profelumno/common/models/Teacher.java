@@ -233,7 +233,6 @@ public class Teacher extends Model {
             dayEnum = DayEnum.SATURDAY;
         }
 
-
         for (DayRange dayRange : calendar) {
 
             if (dayRange.getDayEnum().equals(dayEnum)){
