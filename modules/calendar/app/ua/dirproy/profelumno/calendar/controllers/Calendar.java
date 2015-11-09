@@ -95,7 +95,10 @@ public class Calendar extends Controller {
     }
 
     public static Result getCalendar(){
+        return ok(Json.toJson(getResult()));
+    }
 
+    private static ArrayNode getResult(){
         List<DayRange> calendar;
         ArrayNode result = Json.newArray();
         if (getTeacher() != null){
@@ -110,8 +113,11 @@ public class Calendar extends Controller {
 
             }
         }
-        return ok(Json.toJson(result));
+
+        return result;
     }
+
+
 
 
     public static Result updateCalendar() throws IOException {
@@ -170,9 +176,9 @@ public class Calendar extends Controller {
 
         for (Lesson aux : acceptLessons){
             final DayEnum dayEnum = auxiliaryMethod(aux.getDateTime());
-            Duration durationOfClass = aux.getDuration();
+            int durationOfClass = (int) (aux.getDuration().getSeconds() / 3600);
             int fromHour = aux.getDateTime().getHours();
-            int toHour = fromHour + durationOfClass.getNano();
+            int toHour = fromHour + durationOfClass;
             for (DayRange dr : calendar) {
                 if (dr.getDayEnum() == dayEnum){
                     if (!dayList.isEmpty()) {
@@ -238,7 +244,10 @@ public class Calendar extends Controller {
             }
         }
 
-        return ok(Json.toJson(dayList));
+
+        ArrayNode arrayNode = Json.newArray().add(Json.toJson(getResult())).add(Json.toJson(dayList));
+
+        return ok(Json.toJson(arrayNode));
     }
 
     private static DayEnum auxiliaryMethod(Date date){
