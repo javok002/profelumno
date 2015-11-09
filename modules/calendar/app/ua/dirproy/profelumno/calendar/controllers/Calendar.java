@@ -4,6 +4,8 @@ import authenticate.Authenticate;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import play.api.libs.json.JsPath;
+import play.data.Form;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -14,13 +16,18 @@ import ua.dirproy.profelumno.common.models.DayRange;
 import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.user.models.User;
 
+
+import java.util.*;
 import java.io.IOException;
 import java.lang.Object;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import play.libs.Json;
 
 @Authenticate({Teacher.class, Student.class})
 public class Calendar extends Controller {
@@ -142,7 +149,7 @@ public class Calendar extends Controller {
 
         //get del teacher del server (paca checkea esto por lo del form.form)
         Form<Teacher> form = Form.form(Teacher.class).bindFromRequest();
-        Long teacherId = form.data().get("teacherId");
+        Long teacherId = Long.parseLong(form.data().get("teacherId"));
         final Teacher teacher = Teacher.getTeacher(teacherId);
 
         List<DayRange> calendar = teacher.getCalendar();
@@ -167,33 +174,33 @@ public class Calendar extends Controller {
             }
         }
 
-        return ok(json.toJson(calendar));
+        return ok(Json.toJson(calendar));
     }
 
     private static DayEnum auxiliaryMethod(Date date){
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(date);
-        int day = cal.get(Calendar.DAY_OF_WEEK);
+        int day = cal.get(java.util.Calendar.DAY_OF_WEEK);
         DayEnum dayEnum = null;
-        if (Calendar.MONDAY == day){
+        if (java.util.Calendar.MONDAY == day){
             dayEnum = DayEnum.MONDAY;
         }
-        if (Calendar.TUESDAY == day){
+        if (java.util.Calendar.TUESDAY == day){
             dayEnum = DayEnum.TUESDAY;
         }
-        if (Calendar.WEDNESDAY == day){
+        if (java.util.Calendar.WEDNESDAY == day){
             dayEnum = DayEnum.WEDNESDAY;
         }
-        if (Calendar.THURSDAY == day){
+        if (java.util.Calendar.THURSDAY == day){
             dayEnum = DayEnum.THURSDAY;
         }
-        if (Calendar.FRIDAY == day){
+        if (java.util.Calendar.FRIDAY == day){
             dayEnum = DayEnum.FRIDAY;
         }
-        if (Calendar.SUNDAY == day){
+        if (java.util.Calendar.SUNDAY == day){
             dayEnum = DayEnum.SUNDAY;
         }
-        if (Calendar.SATURDAY == day){
+        if (java.util.Calendar.SATURDAY == day){
             dayEnum = DayEnum.SATURDAY;
         }
         return dayEnum;

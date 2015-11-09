@@ -17,13 +17,14 @@ angular.module('profLesson', [])
             return subs;
         };
         $scope.selected = {};
-        $scope.postLesson = function(teacherId, dateTime) {
+        $scope.postLesson = function(teacherId, dateTime, duration) {
             data = {
                 address:$scope.address,
                 comment:$scope.comment,
                 teacherId:teacherId,
                 subjectId:$scope.selected,
-                dateTime:dateTime
+                dateTime:dateTime.getTime(),
+                duration: duration
             };
             $http.post('/hire-lesson/new', data).then(successCallback, errorCallback);
             $("#loadingModal").modal("show");
@@ -92,8 +93,10 @@ angular.module('profLesson', [])
                                     right: 'month,agendaWeek'
                                 },
                                 eventClick: function (event, jsEvent, view) {
-                                    scope.dateTime = new Date(event.dateTime);
-                                    if (!event.lessonAcepted) $('#datepicker' + scope.index).val(toDateTimeString(scope.dateTime));
+                                    if (!event.lessonAcepted) {
+                                        scope.dateTime = new Date(event.dateTime);
+                                        $('#datepicker' + scope.index).val(toDateTimeString(scope.dateTime));
+                                    }
                                 },
                                 events: scope.data
                             });
@@ -153,14 +156,18 @@ angular.module('profLesson', [])
 
                                     '<div class="input-group">' +
                                         '<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>' +
-                                        '<input style="width: 100%;height: 28px;" id="datepicker{{index}}" ng-model="dateTime" value="">' +
+                                        '<input style="width: 100%;height: 28px;" id="datepicker{{index}}" value="">' +
                                     '</div>'+
+                                    '<label>Duración (horas)</label>' +
+                                    '<select class="form-control" ng-model="duration">'+
+                                        '<option ng-repeat="i in [1,2,3,4,5,6,7,8]" value="{{i}}">{{i}}</option>'+
+                                    '</select>'+
                                         '<div class="form-group">' +
                                             '<label>Comentario</label>' +
                                             '<textarea class="form-control" rows="3" placeholder="Dejar comentario ..." ng-model="comment"></textarea>' +
                                         '</div>' +
                                     '</div><!-- /.box-body -->' +
-                                    '<button ng-click="postLesson(teacherId, dateTime)" class="btn btn-primary" data-dismiss="modal">Enviar</button>' +
+                                    '<button ng-click="postLesson(teacherId, dateTime, duration)" class="btn btn-primary" data-dismiss="modal">Enviar</button>' +
                             '</div><!-- /.box -->' +
                         '</div>' +
                         '<div class="modal-footer">' +
