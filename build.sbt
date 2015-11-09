@@ -50,7 +50,7 @@ lazy val teacherModification = (project in file("modules/teacher-modification"))
 
 lazy val teacherSearch = (project in file("modules/teacher-search"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(register, common,calendar)
+  .dependsOn(register, common)
 
 lazy val studentModification = (project in file("modules/student-modification"))
   .enablePlugins(PlayJava, PlayEbean)
@@ -78,7 +78,7 @@ lazy val institutional = (project in file("modules/institutional"))
 
 lazy val recommend = (project in file("modules/recommend"))
   .enablePlugins(PlayJava, PlayEbean)
-  .dependsOn(mailSender, common, teacherSearch)
+  .dependsOn(mailSender, common)
 
 lazy val root = (project in file("."))
   .enablePlugins(PlayJava, PlayEbean)

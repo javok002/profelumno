@@ -3,6 +3,7 @@
 @ua.dirproy.profelumno.common.views.html.tidyMain("Perfil") {
     @ua.dirproy.profelumno.common.views.html.topbar()
     @ua.dirproy.profelumno.common.views.html.sidebar()
+    @ua.dirproy.profelumno.common.views.html.chat()
 
     <div ng-app="app" ng-controller="CalendarController">
         <div class="content-wrapper">
@@ -39,18 +40,9 @@
                                         <!-- Apply any bg-* class to to the icon to color it -->
                                     <span class="info-box-icon bg-blue"><i class="fa fa-user"></i></span>
                                     <div class="info-box-content">
-                                        <div ng-if="userName == (currentLesson.teacher.user.name + ' ' + currentLesson.teacher.user.surname)">
-                                            <span class="info-box-text" style="font-weight : bold">Alumno</span>
-                                            <span class="info-box-text">
-                                                {{ currentLesson.student.user.name }} {{ currentLesson.student.user.surname }}
-                                            </span>
-                                        </div>
-                                        <div ng-if="userName == (currentLesson.student.user.name + ' ' + currentLesson.student.user.surname)">
-                                            <span class="info-box-text" style="font-weight : bold">Profesor</span>
-                                            <span class="info-box-text">
-                                                {{ currentLesson.teacher.user.name }} {{ currentLesson.teacher.user.surname }}
-                                            </span>
-                                        </div>
+                                        <span class="info-box-text" style="font-weight : bold">Alumno</span>
+                                        <span class="info-box-text">
+                                            {{ currentLesson.student.user.name }} {{ currentLesson.student.user.surname }}</span>
                                     </div><!-- /.info-box-content -->
                                 </div><!-- /.info-box -->
                                 <div class="info-box">
@@ -97,6 +89,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 
 } {

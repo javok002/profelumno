@@ -42,36 +42,14 @@ public class Teacher extends Model {
     @OneToMany(cascade = CascadeType.ALL)
     private List<DayRange> calendar;
 
-    public Teacher(){
-        calendar = new ArrayList<>();
-        completeCalendar();
-    }
+    public Teacher(){calendar = new ArrayList();}
 
     public Teacher(long id, String description, boolean homeClasses, User user){
         this.id=id;
         this.description=description;
         this.homeClasses=homeClasses;
         this.user=user;
-        calendar = new ArrayList<>();
-        completeCalendar();
-    }
-
-    private void completeCalendar(){
-        List<DayEnum> dayEnums = DayEnum.getDayEnums();
-        Date fromHour = new Date();
-        fromHour.setHours(0);
-        fromHour.setMinutes(0);
-        fromHour.setSeconds(0);
-        Date toHour = new Date();
-        toHour.setHours(23);
-        toHour.setMinutes(0);
-        toHour.setSeconds(0);
-        for (DayEnum dayEnum : dayEnums) {
-            DayRange aux = new DayRange();
-            aux.setDayEnum(dayEnum);
-            aux.setRange(fromHour,toHour);
-            calendar.add(aux);
-        }
+        calendar = new ArrayList();
     }
 
     public static Finder<Long, Teacher> finder = new Finder<>(Teacher.class);
@@ -207,6 +185,7 @@ public class Teacher extends Model {
     }
 
     public void updateCalendar(Date date,Date fromHour,Date toHour) {
+        Range range = new Range(fromHour,toHour);
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(date);
         int day = cal.get(Calendar.DAY_OF_WEEK);
@@ -233,16 +212,37 @@ public class Teacher extends Model {
             dayEnum = DayEnum.SATURDAY;
         }
 
-        for (DayRange dayRange : calendar) {
+        if (calendar.isEmpty()){
+            DayRange aux = new DayRange();
+            List<Range> ranges = new ArrayList<>();
+            ranges.add(range);
+            aux.setDayEnum(dayEnum);
+            aux.setRangeList(ranges);
+            range.save();
+            aux.save();
 
-            if (dayRange.getDayEnum().equals(dayEnum)){
-                dayRange.setRange(fromHour, toHour);
-                dayRange.save();
+        }
+        else {
+            for (int i = 0; i < calendar.size(); i++) {
+                DayRange dayRange = calendar.get(i);
+                if (dayRange.getDayEnum().equals(dayEnum)){
+                    List<Range> ranges = dayRange.getRangeList();
+                    ranges.add(range);
+                    range.save();
+                    dayRange.save();
+                }
+                else {
+                    DayRange aux = new DayRange();
+                    List<Range> ranges = new ArrayList<>();
+                    ranges.add(range);
+                    aux.setDayEnum(dayEnum);
+                    aux.setRangeList(ranges);
+                    range.save();
+                    aux.save();
+                }
             }
 
         }
-
-
 
     }
 }
