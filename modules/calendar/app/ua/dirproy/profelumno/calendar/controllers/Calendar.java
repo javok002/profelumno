@@ -12,8 +12,6 @@ import ua.dirproy.profelumno.calendar.views.html.calendar;
 import ua.dirproy.profelumno.common.models.*;
 import ua.dirproy.profelumno.user.models.User;
 
-
-import java.util.*;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import play.libs.Json;
 
 @Authenticate({Teacher.class, Student.class})
 public class Calendar extends Controller {
@@ -69,6 +66,17 @@ public class Calendar extends Controller {
                 myLessons.add(aux);
             }
             else if (aux.getStudent().getUser().getId().equals(user.getId())){
+                myLessons.add(aux);
+            }
+        }
+        return myLessons;
+    }
+
+    private static List<Lesson> myLessons(Teacher teacher){
+        List<Lesson> lessons = Lesson.list();
+        List<Lesson> myLessons = new ArrayList<>();
+        for (Lesson aux : lessons) {
+            if (aux.getTeacher().getId().equals(teacher.getId())) {
                 myLessons.add(aux);
             }
         }
@@ -150,7 +158,7 @@ public class Calendar extends Controller {
         List<DayRange> calendar = teacher.getCalendar();
 
         //get acceptedLesson from teacher
-        List<Lesson> lessons = myLessons();
+        List<Lesson> lessons = myLessons(teacher);
         List<Lesson> acceptLessons = new ArrayList<>();
         for (Lesson aux : lessons) {
             if (aux.getLessonState() == 1) {
