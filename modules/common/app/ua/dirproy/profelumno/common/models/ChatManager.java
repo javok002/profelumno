@@ -19,7 +19,6 @@ public class ChatManager {
         addConnection(userId, out);
 
         in.onMessage(jsonNode -> {
-            System.out.println("a");
             if(jsonNode.findValue("type") == null) {
                 Long idUserFrom = jsonNode.findPath("idUserFrom").asLong();
                 String message = jsonNode.findPath("message").asText();
@@ -92,10 +91,27 @@ public class ChatManager {
         ObjectNode node = Json.newObject();
         node.put("type", "msg");
         node.put("idChat", chat.getId());
-        node.put("message", Json.toJson(chat.getMessages().get(0)));
 
-        map.get(chat.getStudent().getUser().getId()).write(node);
-        map.get(chat.getTeacher().getUser().getId()).write(node);
+        Message msg = chat.getMessages().get(chat.getMessages().size() - 1);
+        ObjectNode temp = Json.newObject();
+        temp.put("id", msg.getId());
+        temp.put("author", Json.toJson(msg.getAuthor()));
+        temp.put("msg", msg.getMsg());
+
+        Date tempDate = msg.getDate();
+        String date = (tempDate.getHours() < 10 ? "0" + tempDate.getHours() : tempDate.getHours()) + ":"
+                + (tempDate.getMinutes() < 10 ? "0" + tempDate.getMinutes() : tempDate.getMinutes()) + " "
+                + tempDate.getDate() + "/" + (tempDate.getMonth() + 1 < 10 ?  "0" + (tempDate.getMonth() + 1) : (tempDate.getMonth() + 1))
+                + "/" + (tempDate.getYear() + 1900);
+
+        temp.put("date", date);
+
+        node.put("message", temp);
+
+        WebSocket.Out<JsonNode> outS = map.get(chat.getStudent().getUser().getId());
+        WebSocket.Out<JsonNode> outT = map.get(chat.getTeacher().getUser().getId());
+        if (outS != null) outS.write(node);
+        if (outT != null) outT.write(node);
     }
 
     public static void notifyDisconnection(Long userId){

@@ -170,7 +170,7 @@ angular.module('chat', [])
                 console.log(idChat);
                 console.log(message);
                 if (message.author.id==userInSession.id){
-                    angular.element('#socket-messages'+idChat).apend('<div class="direct-chat-msg right">\
+                    angular.element('#socket-messages'+idChat).append('<div class="direct-chat-msg right">\
                             <div class="direct-chat-info clearfix">\
                                 <span class="direct-chat-name pull-right">'+ message.author.name+" "+ message.author.surname+'</span>\
                                 <span class="direct-chat-timestamp pull-left">'+message.date+'</span>\
@@ -179,7 +179,7 @@ angular.module('chat', [])
                                 '+message.msg+'\
                             </div></div>');
                 }else{
-                    angular.element('#socket-messages'+idChat).apend('<div class="direct-chat-msg">\
+                    angular.element('#socket-messages'+idChat).append('<div class="direct-chat-msg">\
                             <div class="direct-chat-info clearfix">\
                                 <span class="direct-chat-name pull-left">'+ message.author.name+" "+ message.author.surname+'</span>\
                                 <span class="direct-chat-timestamp pull-right">'+message.date+'</span>\
@@ -256,16 +256,16 @@ angular.module('chat', [])
                     for (var i =0; i < chat.messages.length; i++){
                         var message=chat.messages[i];
                         if (message.author.id==userInSession.id){
-                            angular.element('#socket-messages'+idChat).apend('<div class="direct-chat-msg right">\
+                            angular.element('#socket-messages'+chat.id).append('<div class="direct-chat-msg right">\
                             <div class="direct-chat-info clearfix">\
                                 <span class="direct-chat-name pull-right">'+ message.author.name+" "+ message.author.surname+'</span>\
-                                <span class="direct-chat-timestamp pull-left">message.date</span>\
+                                <span class="direct-chat-timestamp pull-left">' + message.date + '</span>\
                             </div>\
                             <div class="direct-chat-text">\
                                 '+message.msg+'\
                             </div></div>');
                         }else{
-                            angular.element('#socket-messages'+idChat).apend('<div class="direct-chat-msg">\
+                            angular.element('#socket-messages'+chat.id).append('<div class="direct-chat-msg">\
                             <div class="direct-chat-info clearfix">\
                                 <span class="direct-chat-name pull-left">'+ message.author.name+" "+ message.author.surname+'</span>\
                                 <span class="direct-chat-timestamp pull-right">'+message.date+'</span>\
