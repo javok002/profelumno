@@ -52,18 +52,17 @@ function display_popups()
         element.style.display = "none";
     }
 }
-
 //creates markup for a new popup. Adds the id to popups array.
-function register_popup(id, name,chatID)
+function register_popup(id,name,chatID)
 {
     for(var iii = 0; iii < popups.length; iii++)
     {
         //already registered. Bring it to front.
-        if(id == popups[iii])
+        if(chatID == popups[iii])
         {
             Array.remove(popups, iii);
 
-            popups.unshift(id);
+            popups.unshift(chatID);
 
             calculate_popups();
 
@@ -75,7 +74,7 @@ function register_popup(id, name,chatID)
         <div class="box-header with-border">\
             <h3 class="box-title">'+name+'</h3>\
             <div class="box-tools pull-right">\
-                <button class="btn btn-box-tool"><a href="javascript:close_popup(\''+ id +'\');">&#10005;</a></button>\
+                <button class="btn btn-box-tool"><a href="javascript:close_popup(\''+ chatID +'\');">&#10005;</a></button>\
             </div>\
         </div>\
         <div class="box-body">\
@@ -91,11 +90,11 @@ function register_popup(id, name,chatID)
             </div>\
         </div>\
     </div>';
-    var element = '<div class="popup-box chat-popup" id="'+ id +'">';
+    var element = '<div class="popup-box chat-popup" id="'+ chatID +'">';
     element+=element2;
     document.getElementById("idunico").innerHTML = document.getElementById("idunico").innerHTML + element;
 
-    popups.unshift(id);
+    popups.unshift(chatID);
 
     calculate_popups();
 
@@ -141,6 +140,7 @@ $(function() {
 
 function prueba(cid){
     angular.element('#chatCtrl').scope().submitMessage(cid);
+
 }
 
 angular.module('chat', [])
@@ -169,6 +169,17 @@ angular.module('chat', [])
                 var message=event.message;
                 console.log(idChat);
                 console.log(message);
+                var open=false;
+                for(var iii = 0; iii < popups.length; iii++)
+                {
+                    if(idChat == popups[iii])
+                    {
+                        open=true;
+                    }
+                    if(!open){
+                        register_popup("",message.author.name,idChat);
+                    }
+                }
                 if (message.author.id==userInSession.id){
                     angular.element('#socket-messages'+idChat).append('<div class="direct-chat-msg right">\
                             <div class="direct-chat-info clearfix">\
@@ -243,6 +254,7 @@ angular.module('chat', [])
         };
         $scope.submitMessage=function(chatId){
             var message = angular.element($('#socket-input'+chatId)).val();
+
             socket.send(JSON.stringify({idUserFrom: userInSession.id, message: message, idChat: chatId}));
         };
 
@@ -252,6 +264,7 @@ angular.module('chat', [])
                     //data.chat  Chat
                     var chat = data.chat;
                     register_popup(chatToId, name,chat.id);
+                    angular.element('#socket-messages'+chat.id).empty();
 
                     for (var i =0; i < chat.messages.length; i++){
                         var message=chat.messages[i];
