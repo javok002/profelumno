@@ -14,6 +14,8 @@ create table day_range (
   id                        bigint not null,
   teacher_id                bigint not null,
   day_enum                  integer,
+  from_hour                 timestamp,
+  to_hour                   timestamp,
   constraint ck_day_range_day_enum check (day_enum in (0,1,2,3,4,5,6)),
   constraint pk_day_range primary key (id))
 ;
@@ -43,14 +45,6 @@ create table message (
   msg                       varchar(255),
   date                      timestamp,
   constraint pk_message primary key (id))
-;
-
-create table range (
-  id                        bigint not null,
-  day_range_id              bigint not null,
-  from_hour                 timestamp,
-  to_hour                   timestamp,
-  constraint pk_range primary key (id))
 ;
 
 create table review (
@@ -126,8 +120,6 @@ create sequence lesson_seq;
 
 create sequence message_seq;
 
-create sequence range_seq;
-
 create sequence review_seq;
 
 create sequence student_seq;
@@ -156,12 +148,10 @@ alter table lesson add constraint fk_lesson_studentReview_8 foreign key (student
 create index ix_lesson_studentReview_8 on lesson (student_review_id);
 alter table message add constraint fk_message_author_9 foreign key (author_id) references user (id) on delete restrict on update restrict;
 create index ix_message_author_9 on message (author_id);
-alter table range add constraint fk_range_day_range_10 foreign key (day_range_id) references day_range (id) on delete restrict on update restrict;
-create index ix_range_day_range_10 on range (day_range_id);
-alter table student add constraint fk_student_user_11 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_student_user_11 on student (user_id);
-alter table teacher add constraint fk_teacher_user_12 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_teacher_user_12 on teacher (user_id);
+alter table student add constraint fk_student_user_10 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_student_user_10 on student (user_id);
+alter table teacher add constraint fk_teacher_user_11 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_teacher_user_11 on teacher (user_id);
 
 
 
@@ -180,8 +170,6 @@ drop table if exists day_range;
 drop table if exists lesson;
 
 drop table if exists message;
-
-drop table if exists range;
 
 drop table if exists review;
 
@@ -204,8 +192,6 @@ drop sequence if exists day_range_seq;
 drop sequence if exists lesson_seq;
 
 drop sequence if exists message_seq;
-
-drop sequence if exists range_seq;
 
 drop sequence if exists review_seq;
 

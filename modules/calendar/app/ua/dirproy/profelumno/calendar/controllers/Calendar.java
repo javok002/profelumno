@@ -76,16 +76,13 @@ public class Calendar extends Controller {
         if (getTeacher() != null){
             calendar = getTeacher().getCalendar();
             for (DayRange day : calendar){
-                List<Range> rangeList = day.getRangeList();
-                if (!rangeList.isEmpty()) {
-                    for (Range range : rangeList) {
-                        ObjectNode obj = Json.newObject();
-                        obj.put("day", day.getDayEnum().getDayName());
-                        obj.put("fromHour", range.getFromHour().toString());
-                        obj.put("toHour", range.getToHour().toString());
-                        result.add(obj);
-                    }
-                }
+
+                ObjectNode obj = Json.newObject();
+                obj.put("day", day.getDayEnum().getDayName());
+                obj.put("fromHour", day.getFromHour().toString());
+                obj.put("toHour", day.getToHour().toString());
+                result.add(obj);
+
             }
         }
         return ok(Json.toJson(result));
@@ -116,7 +113,7 @@ public class Calendar extends Controller {
 
     private static Date deserialize(JsonNode jsonparser) throws IOException{
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String date = jsonparser.asText();
         try {
             return format.parse(date);

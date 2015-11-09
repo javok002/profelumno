@@ -2,9 +2,9 @@ package ua.dirproy.profelumno.common.models;
 
 import play.db.ebean.Model;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.util.Date;
 
 /**
  * Created by Fede on 04/11/2015.
@@ -14,11 +14,11 @@ public class DayRange extends Model {
     @Id
     private Long id;
     DayEnum dayEnum;
-    @OneToMany(cascade = CascadeType.ALL)
-    List<Range> rangeList;
+    public Date fromHour;
+    public Date toHour;
 
     public DayRange() {
-        rangeList = new ArrayList();
+
     }
 
     public Long getId() {
@@ -37,11 +37,25 @@ public class DayRange extends Model {
         this.dayEnum = dayEnum;
     }
 
-    public List<Range> getRangeList() {
-        return rangeList;
+    public void setRange(Date fromHour,Date toHour){
+        this.fromHour = fromHour;
+        this.toHour = toHour;
     }
 
-    public void setRangeList(List<Range> rangeList) {
-        this.rangeList = rangeList;
+    public Date getFromHour() {
+        return fromHour;
     }
+
+    public void setFromHour(Date fromHour) {
+        this.fromHour = fromHour;
+    }
+
+    public Date getToHour() {
+        return toHour;
+    }
+
+    public void setToHour(Date toHour) {
+        this.toHour = toHour;
+    }
+
 }
