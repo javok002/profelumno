@@ -62,21 +62,21 @@ teacherSearchApp.controller("searchController", function($scope, $http, $routePa
                 //TODO
             })
     };
-    //(function() {  // init
-    //    if (true) { // $routeParams.Id) {
-    //        var a = 0;
-    //        console.log("on init executed successfully" + a + $routeParams.paramId);
-    //        console.log($routeParams.bag)
-    //        var queryParams = getQueryParams(document.location.search);
-    //        console.log(queryParams);
-    //        $scope.subjects.push(queryParams.subject);
-    //        $scope.sort = queryParams.sort;
-    //        $scope.search();
-    //
-    //    } else {
-    //        //create a new object
-    //    }
-    //})();
+    (function() {  // init
+        var queryParams = getQueryParams(document.location.search);
+        if (queryParams.sort == "true") { // $routeParams.Id) {
+            //var a = 0;
+            //console.log("on init executed successfully" + a + $routeParams.paramId);
+            //console.log($routeParams.bag);
+            //console.log(queryParams);
+            $scope.subjects.push(queryParams.subject);
+            $scope.sortByDistance = true;
+            $scope.search();
+
+        } else {
+            //create a new object
+        }
+    })();
 
     //var sortTeachersByDirection = function (teacherA, teacherB) {
     //    if(teacherA.user.address == null || teacherA.user.address == undefined){

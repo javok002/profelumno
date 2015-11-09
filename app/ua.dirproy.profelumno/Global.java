@@ -28,8 +28,9 @@ public class Global extends GlobalSettings {
     public void beforeStart(Application app) {
         InitialData.insert(app);
 
-//        Recommend recommend = new Recommend();
-//        recommend.weMissYou();
+        Recommend recommend = new Recommend();
+        recommend.weMissYou();
+//        recommend.doRecommendations();
     }
 
     static class InitialData {
