@@ -118,9 +118,6 @@ public class TeacherSearches extends Controller {
                 try {
                     double distance1 = getDistance(user, o1.getUser());
                     double distance2 = getDistance(user, o2.getUser());
-                    if(o1.getUser().getAddress().equals(o2.getUser().getAddress())){
-                        String a = "";
-                    }
                     double realDistances = distance1 - distance2;
                     distance = realDistances < 0 ? -1 : realDistances > 0 ? 1 : 0;
                     } catch (IOException e1) {

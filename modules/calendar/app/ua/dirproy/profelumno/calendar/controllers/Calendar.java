@@ -263,6 +263,27 @@ public class Calendar extends Controller {
             }
         }
 
+        Date auxDate =new Date();
+        java.util.Calendar cal = new GregorianCalendar();
+        cal.setTime(auxDate);
+        for (int i = 0; i <60 ; i++) {
+            for (Day auxDay : dayList){
+                if (auxDay.getDay().getYear() != cal.get(java.util.Calendar.YEAR) || auxDay.getDay().getMonth() != cal.get(java.util.Calendar.MONTH) || auxDay.getDay().getDay() != cal.get(java.util.Calendar.DAY_OF_MONTH)){
+                    Day day = new Day();
+                    day.setDay(cal.getTime());
+                    Range range = new Range();
+                    range.setFrom(0);
+                    range.setTo(23);
+                    day.addRange(range);
+                    dayList.add(day);
+                        cal.add(java.util.Calendar.DAY_OF_MONTH, 1);
+                    break;
+                }
+
+            }
+
+        }
+
 
         ArrayNode arrayNode = Json.newArray().add(Json.toJson(acceptLessons)).add(Json.toJson(dayList));
 
