@@ -170,12 +170,11 @@ public class Calendar extends Controller {
         //voy sacando del calendario del teacher los horarios que ya tienen clases
 
         for (Lesson aux : acceptLessons){
-            final DayEnum dayEnum = auxiliaryMethod(aux.getDateTime());
             Duration durationOfClass = aux.getDuration();
             int fromHour = aux.getDateTime().getHours();
             int toHour = fromHour + durationOfClass.getNano();
             for (DayRange dr : calendar) {
-                if (dr.getDayEnum() == dayEnum){
+
                     if (!dayList.isEmpty()) {
                         for (Day auxDay : dayList) {
                             if (auxDay.getDay().getYear() == aux.getDateTime().getYear() && auxDay.getDay().getMonth() == aux.getDateTime().getMonth() && auxDay.getDay().getDay() == aux.getDateTime().getDay()) {
@@ -234,7 +233,7 @@ public class Calendar extends Controller {
                         dayList.add(day);
                     }
                 }
-            }
+
         }
 
         return ok(Json.toJson(dayList));
