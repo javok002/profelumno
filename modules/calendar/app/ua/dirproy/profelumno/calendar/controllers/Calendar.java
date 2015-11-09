@@ -93,6 +93,8 @@ public class Calendar extends Controller {
         return ok(Json.toJson(acceptLessons));
     }
 
+
+
     public static Result getCalendar(){
         return ok(Json.toJson(getResult()));
     }
@@ -112,7 +114,6 @@ public class Calendar extends Controller {
 
             }
         }
-
         return result;
     }
 
@@ -270,7 +271,7 @@ public class Calendar extends Controller {
         }
 
 
-        ArrayNode arrayNode = Json.newArray().add(Json.toJson(getResult())).add(Json.toJson(dayList));
+        ArrayNode arrayNode = Json.newArray().add(Json.toJson(acceptLessons)).add(Json.toJson(dayList));
 
         return ok(Json.toJson(arrayNode));
     }

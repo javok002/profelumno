@@ -73,9 +73,9 @@ angular.module('profLesson', [])
                             scope.userName = data;
                         });
 
-                    $http.get("/calendar/get-lessons")
+                    $http.get("/calendar/get-teacher-time?teacherId=" + scope.teacherId)
                         .success(function (data) {
-                            data.forEach(function(lesson) {
+                            data[0].forEach(function(lesson) {
                                 var teacher = lesson.teacher.user;
                                 lesson.title = lesson.subject.text /*+ ' a ' + student.name + ' ' + student.surname*/;
                                 lesson.date = new Date(lesson.dateTime);
@@ -83,14 +83,54 @@ angular.module('profLesson', [])
                                 lesson.lessonAcepted = true;
                             });
 
-                            scope.data = data;
+                            ranges = [];
+
+                            data[1].forEach(function(day) {
+                                auxDate = new Date(day.day);
+                                dateTime = new Date(auxDate.getFullYear(), auxDate.getMonth(), auxDate.getDay(), 0, 0, 0);
+                                day.rangeList.forEach(function(range){
+                                    for (var i = range.from; i < range.to; i++){
+                                        ranges[ranges.length] = {
+                                            title: '',
+                                            start: angular.copy(dateTime).addHours(i),
+                                            end: angular.copy(dateTime).addHours(i + 1),
+                                            color: '#fa6353',
+                                            dateTime: angular.copy(dateTime).addHours(i).getTime()
+                                        }
+                                    }
+                                });
+                            });
+
+                            isInRanges = function(date) {
+                                for(var i = 0; i < ranges.length; i++){
+                                    if (ranges[i].start.getFullYear == date.getFullYear && ranges[i].start.getMonth == date.getMonth && ranges[i].start.getDay == date.getDay)
+                                    return true
+                                }
+                            };
+
+                            for(var i = 0; i < 60; i ++){
+                                if (!isInRanges(new Date().addHours(24 * (i % 12)))){
+                                    for(var j = 0; j < 24; i++){
+                                        ranges[ranges.length] = {
+                                            title: '',
+                                            start: new Date().addHours((24 * (i % 12)) + j),
+                                            end: new Date().addHours((24 * (i % 12)) + j + 1),
+                                            color: '#fa6353',
+                                            dateTime: new Date().addHours((24 * (i % 12)) + j)
+                                        }
+                                    }
+                                }
+                            }
+
+
+                            scope.data = data[0].concat(ranges);
 
                             $('#calendar' + calendarIndex ).fullCalendar({
                                 lang: 'es',
                                 header: {
                                     left: 'today',
                                     center: 'prev,next',
-                                    right: 'month,agendaWeek'
+                                    right: 'agendaWeek'
                                 },
                                 eventClick: function (event, jsEvent, view) {
                                     if (!event.lessonAcepted) {
