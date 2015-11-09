@@ -86,7 +86,7 @@ function register_popup(id, name,chatID)
             <div class="input-group">\
                 <input type="text" name="message" placeholder="Type Message ..." class="form-control" id="socket-input'+chatID+'">\
                 <span class="input-group-btn">\
-                    <button type="button" class="btn btn-danger btn-flat" ng-click="submitMessage('+chatID+')">Send</button>\
+                    <button type="button" class="btn btn-danger btn-flat" onclick="submitMessage('+chatID+')">Send</button>\
                 </span>\
             </div>\
         </div>\
@@ -216,8 +216,8 @@ angular.module('chat', [])
                 //event.disconnectedUsers
                 $scope.disconnectedUser=event.disconnectedUsers;
             }
-
-        };
+            alert(disconnectedUser);
+        }
 
         socket.onmessage = writeMessages;
 
@@ -231,10 +231,12 @@ angular.module('chat', [])
         $scope.registerPop = function(id, name){
             register_popup(id, name);
         };
-        $scope.submitMessage= function(chatId){
+        function submitMessage(chatId){
             var message = angular.element($('#socket-input'+chatID)).val();
+            alert(message);
             socket.send(JSON.stringify({idUserFrom: userInSession.id, message: message, idChat: chatId}));
-        };
+        };            
+          
 
         $scope.getChat = function (chatToId, name) {
             $http.get('common/getChat?userId='+chatToId)
