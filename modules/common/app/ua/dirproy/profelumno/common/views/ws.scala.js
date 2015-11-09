@@ -130,9 +130,9 @@ function updateScroll(){
 window.addEventListener("resize", calculate_popups);
 window.addEventListener("load", calculate_popups);
 // get websocket class, firefox has a different way to get it
-//var WS = window['MozWebSocket'] ? window['MozWebSocket'] : WebSocket;
+var WS = window['MozWebSocket'] ? window['MozWebSocket'] : WebSocket;
 // open pewpew with websocket
-//var socket = new WS('@ua.dirproy.profelumno.common.controllers.routes.ChatController.wsInterface().webSocketURL()');
+var socket = new WS('@ua.dirproy.profelumno.common.controllers.routes.ChatController.wsInterface().webSocketURL()');
 
 
 $(function() {
@@ -149,7 +149,7 @@ angular.module('chat', [])
         $scope.connectedUser=[];
         $scope.disconnectedUser=[];
 
-        $http.get('common/userInSession')
+        $http.get('../common/userInSession')
             .success(function (data, status, headers, config) {
                 userInSession=data;
             }).
@@ -157,7 +157,7 @@ angular.module('chat', [])
                 // log error
             });
 
-        var socket = new WebSocket("ws://localhost:9000/common/getSocket");
+       // var socket = new WebSocket("ws://localhost:9000/common/getSocket");
 
         function writeMessages(event){
             event = JSON.parse(event.data);
@@ -167,8 +167,6 @@ angular.module('chat', [])
                 //event.mesage
                 var idChat=event.idChat;
                 var message=event.message;
-                console.log(idChat);
-                console.log(message);
                 if (message.author.id==userInSession.id){
                     angular.element('#socket-messages'+idChat).append('<div class="direct-chat-msg right">\
                             <div class="direct-chat-info clearfix">\
@@ -189,6 +187,7 @@ angular.module('chat', [])
                             </div></div>');
                 }
                 updateScroll();
+                angular.element($('#socket-input'+idChat)).val('');
             }else if (event.type=="user"){
                 //conecta o desconecta un usuario de mis contactos
                 //event.user User
@@ -243,11 +242,13 @@ angular.module('chat', [])
         };
         $scope.submitMessage=function(chatId){
             var message = angular.element($('#socket-input'+chatId)).val();
-            socket.send(JSON.stringify({idUserFrom: userInSession.id, message: message, idChat: chatId}));
+            if (message != '') {
+                socket.send(JSON.stringify({idUserFrom: userInSession.id, message: message, idChat: chatId}));
+            }
         };
 
         $scope.getChat = function (chatToId, name) {
-            $http.get('common/getChat?userId='+chatToId)
+            $http.get('../common/getChat?userId='+chatToId)
                 .success(function (data, status, headers, config) {
                     //data.chat  Chat
                     var chat = data.chat;
