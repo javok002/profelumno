@@ -59,7 +59,6 @@ teacherSearchApp.controller("searchController", function($scope, $http, $routePa
                 $scope.currentPage = 1;
                 //$scope.teachers.sort(sortTeachersByDirection);
             }, function(response){
-                //TODO
             })
     };
     (function() {  // init
@@ -69,7 +68,7 @@ teacherSearchApp.controller("searchController", function($scope, $http, $routePa
             //console.log("on init executed successfully" + a + $routeParams.paramId);
             //console.log($routeParams.bag);
             //console.log(queryParams);
-            $scope.subjects.push(queryParams.subject);
+            $scope.subjects.push(queryParams.subject.replace("-"," "));
             $scope.sortByDistance = true;
             $scope.search();
 

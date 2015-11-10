@@ -62,7 +62,7 @@ public class TeacherSearches extends Controller {
         final long userId = Long.parseLong(session("id"));
         User user = Ebean.find(User.class, userId);
         ArrayList<Object> toReturn = new ArrayList<>(2);
-        if(Boolean.parseBoolean(form.data().get("sort"))){
+        if(Boolean.parseBoolean(form.data().get("sort")) && user.getAddress() != null){
             orderByDistance(teachersToShow, user);
         } else{
             teachersToShow.sort(new Comparator<Teacher>() {
@@ -138,7 +138,7 @@ public class TeacherSearches extends Controller {
         if ((user2.getLatitude() == 0 || user2.getLongitude() == 0) && user2.getAddress()!= null){
             getCordinates(user2);
         }
-        if(user1.getAddress().equals(user2.getAddress())){
+        if(user1.getAddress() != null && user1.getAddress().equals(user2.getAddress())){
             return 0;
         }
         return Math.hypot((user1.getLatitude() - user2.getLatitude()),(user1.getLongitude() - user2.getLongitude()));
