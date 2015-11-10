@@ -57,7 +57,7 @@ public class Recommend extends Controller {
         final ScheduledFuture<?> beeperHandle;
 
         if(TEST){
-            beeperHandle = scheduler.scheduleAtFixedRate(charger, 3 , 60, MINUTES);
+            beeperHandle = scheduler.scheduleAtFixedRate(charger, 4 , 60, MINUTES);
         }else {
             beeperHandle = scheduler.scheduleAtFixedRate(charger, initialDelay , 10080, MINUTES);
         }
@@ -240,7 +240,7 @@ public class Recommend extends Controller {
         };
         final ScheduledFuture<?> beeperHandle;
         if(TEST){
-            beeperHandle = scheduler.scheduleAtFixedRate(charger, 3, 120, MINUTES);
+            beeperHandle = scheduler.scheduleAtFixedRate(charger, 9, 120, MINUTES);
         }else {
             beeperHandle = scheduler.scheduleAtFixedRate(charger, 0, 7, DAYS);
         }
