@@ -52,15 +52,14 @@ public class Recommend extends Controller {
                         sendWeMissYou(teacher.getUser(), true);
                     }
                 }
-
             }
         };
         final ScheduledFuture<?> beeperHandle;
 
         if(TEST){
-            beeperHandle = scheduler.scheduleAtFixedRate(charger, 0 , 4, MINUTES);
+            beeperHandle = scheduler.scheduleAtFixedRate(charger, 4 , 60, MINUTES);
         }else {
-            beeperHandle = scheduler.scheduleAtFixedRate(charger, 0 , 10080, MINUTES);
+            beeperHandle = scheduler.scheduleAtFixedRate(charger, initialDelay , 10080, MINUTES);
         }
     }
 
@@ -102,7 +101,8 @@ public class Recommend extends Controller {
     private boolean lastLoginBeforeTenDay(Date lastLogin) {
         if(lastLogin == null) return true;
         DateTime dateTime = new DateTime(lastLogin);
-        return (dateTime.isBefore(((new DateTime()).minusDays(10))));
+        DateTime today = new DateTime();
+        return (dateTime.isBefore((today.minusDays(10))));
     }
 
     private int minutesForNextMondayAtTen() {
@@ -143,7 +143,10 @@ public class Recommend extends Controller {
             public void run() {
                 List<Student> students = Student.finder.findList();
 //                Student student = students.get(0);
-                for (Student student : students) {
+                Student student;
+                for (int j = 0; j < students.size(); j++) {
+                    student = students.get(students.size()-1-j);
+
                     if(student.getUser().getSubjects().isEmpty()) return;
                     Subject materia = student.getUser().getSubjects().get((int) (Math.random() * student.getUser().getSubjects().size()));
                     String[] to = new String[1];
@@ -157,51 +160,68 @@ public class Recommend extends Controller {
                         }
                     }
                     if(teachersToRecommend.size() == 0) return;
-                    TeacherSearches.orderByDistance(teachersToRecommend, student.getUser());
-//
+                boolean hasDirection = (student.getUser().getAddress() != null);
+                if (hasDirection){
+                        TeacherSearches.orderByDistance(teachersToRecommend, student.getUser());
+                    } else {
+                        teachersToRecommend.sort(new Comparator<Teacher>() {
+                            @Override
+                            public int compare(Teacher o1, Teacher o2) {
+                                if(o1.getUser().getReviews() == 0){
+                                    return  -1;
+                                } else if(o2.getUser().getReviews() == 0){
+                                    return 1;
+                                }
+                                float difference = o2.getUser().getTotalStars()/o2.getUser().getReviews() - o1.getUser().getTotalStars()/o1.getUser().getReviews();
+                                return difference < 0 ? -1 : difference > 0 ? 1 : 0;
+                            }
+                        });
+                    }
+
                     teachersToRecommend = teachersToRecommend.subList(0, teachersToRecommend.size() > 6 ? 6 : teachersToRecommend.size());
                     teachersToRecommend.sort(new Comparator<Teacher>() {
-                        @Override
-                        public int compare(Teacher o1, Teacher o2) {
-                            if(o1.getUser().getReviews() == 0){
-                                return  -1;
-                            } else if(o2.getUser().getReviews() == 0){
-                                return 1;
-                            }
-                            float difference = o1.getRanking() - o2.getRanking();
-                            return difference < 0 ? -1 : difference > 0 ? 1 : 0;
+                    @Override
+                    public int compare(Teacher o1, Teacher o2) {
+                        if(o1.getUser().getReviews() == 0){
+                            return  -1;
+                        } else if(o2.getUser().getReviews() == 0){
+                            return 1;
                         }
-                    });
+                        float difference = o2.getUser().getTotalStars()/o2.getUser().getReviews() - o1.getUser().getTotalStars()/o1.getUser().getReviews();
+                        return difference < 0 ? -1 : difference > 0 ? 1 : 0;
+                    }
+                });
+
                     String subject = "Profelumno recomienda";
                     String message1 = "<div class=\"container-fluid\">\n" +
                             "    <div class=\"row-fluid\">\n" +
                             "        <h4>Hola " + student.getUser().getName() +"</h4>\n" +
-                            "        <p>¿Por qué no pides ayuda para aprobar tus examenes? Estos profesores enseñan " + subject + " y ¡OH! tu necesitas aprender "+ subject +"</p>\n" +
+                            "        <p>¿Por qué no pides ayuda para aprobar tus examenes? Estos profesores enseñan " + materia.getName() + " y ¡OH! tu necesitas aprender "+ materia.getName() +"</p>\n" +
                             "    </div>\n" +
-                            "    <div class=\"row-fluid\">\n" +
-                            "        <table class=\"table\">\n" +
+                            "    <div class=\"row-fluid center-block\">\n" + "<div class =\" col-xs-12\">" +
+                            "        <table class=\"table bordered\">\n" +
                             "            <tbody>\n" +
                             "                <tr>\n" +
-                            "                    <th>Profesor</th>\n" +
-                            "                    <th>Ranking</th>\n" +
-                            "                    <th>Clases dictadas</th>\n" +
-                            "                    <th>Distancia a tu domicilio</th>\n" +
+                            "                    <th class=\"text-center\">Profesor</th>\n" +
+                            "                    <th class=\"text-center\">Ranking</th>\n" +
+                            "                    <th class=\"text-center\">Clases dictadas</th>\n" +
+                            "                    <th class=\"text-center\">Distancia a tu domicilio</th>\n" +
                             "                </tr>\n" ;
                     for (int i = 0; i < teachersToRecommend.size(); i++) {
                         message1 += "                <tr>\n" +
-                                "                    <td>" + teachersToRecommend.get(i).getUser().getName() + " " + teachersToRecommend.get(i).getUser().getSurname() + "</td>\n" +
-                                "                    <td>" + teachersToRecommend.get(i).getRanking() + "</td>\n" +
-                                "                    <td>" + teachersToRecommend.get(i).getLessonsDictated() + "</td>\n" +
-                                "                    <td>" + distFrom(student.getUser().getLatitude(),student.getUser().getLongitude(),teachersToRecommend.get(i).getUser().getLatitude(),teachersToRecommend.get(i).getUser().getLongitude()) +"</td>\n" +
+                                "                    <td class=\"text-center\">" + teachersToRecommend.get(i).getUser().getName() + " " + teachersToRecommend.get(i).getUser().getSurname() + "</td>\n" +
+                                "                    <td class=\"text-center\">" + (teachersToRecommend.get(i).getUser().getReviews() == 0 ? 0 :teachersToRecommend.get(i).getUser().getTotalStars() /teachersToRecommend.get(i).getUser().getReviews()) + "</td>\n" +
+                                "                    <td class=\"text-center\">" + teachersToRecommend.get(i).getLessonsDictated() + "</td>\n" +
+                                "                    <td class=\"text-center\">" + (hasDirection ? (distFrom(student.getUser().getLatitude(),student.getUser().getLongitude(),teachersToRecommend.get(i).getUser().getLatitude(),teachersToRecommend.get(i).getUser().getLongitude())): "Desconocida") +"</td>\n" +
                                 "                </tr>\n";
 
                     }
                     message1 +=        "            </tbody>\n" +
                             "        </table>\n" +
-                            "    </div>\n" +
+                            "    </div>\n" + "<div>"+
                             "    <div class=\"row-fluid\">\n" +
                             "        <p>En el siguinete link puedes ver los profesores que están cerca de tu casa</p>\n" +
-                            "        <p>localhost:9000/teacher-search?subject=" +subject +"&sort=true</p>\n" +
+                            "        <p>localhost:9000/teacher-search?subject=" +materia.getName().replace(" ", "-") +"&sort=true</p>\n" +
                             "        <p>El equipo de Profelumno</p>\n" +
                             "    </div>\n" +
                             "</div>";
@@ -214,33 +234,19 @@ public class Recommend extends Controller {
                         System.out.println("Error sending mail");
                     }
                     System.out.println("Mail sent.");
-//
-//                LocalDate today = LocalDate.now();
-//
-//                int old = today.getDayOfWeek();
-//                int monday = 1;
-//
-//                if (monday <= old) {
-//                    monday += 7;
-//                }
-//                LocalDate next = today.plusDays(monday - old);
-//                System.out.println("Next monday: " + next);
-//
-//                LocalDateTime now = LocalDateTime.now();
-//                now.getDayOfWeek();
 
             }
             }
         };
         final ScheduledFuture<?> beeperHandle;
         if(TEST){
-            beeperHandle = scheduler.scheduleAtFixedRate(charger, 0, 4, MINUTES);
+            beeperHandle = scheduler.scheduleAtFixedRate(charger, 9, 120, MINUTES);
         }else {
             beeperHandle = scheduler.scheduleAtFixedRate(charger, 0, 7, DAYS);
         }
     }
 
-    public static float distFrom(double lat1, double lng1, double lat2, double lng2) {
+    public static String distFrom(double lat1, double lng1, double lat2, double lng2) {
         double earthRadius = 6371000; //meters
         double dLat = Math.toRadians(lat2-lat1);
         double dLng = Math.toRadians(lng2-lng1);
@@ -250,6 +256,6 @@ public class Recommend extends Controller {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         float dist = (float) (earthRadius * c);
 
-        return dist;
+        return (int) dist + " metros";
     }
 }
