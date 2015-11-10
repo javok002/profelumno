@@ -42,6 +42,7 @@ create table lesson (
 create table message (
   id                        bigint not null,
   author_id                 bigint,
+  chat_id                   bigint,
   msg                       varchar(255),
   date                      timestamp,
   constraint pk_message primary key (id))
@@ -148,10 +149,12 @@ alter table lesson add constraint fk_lesson_studentReview_8 foreign key (student
 create index ix_lesson_studentReview_8 on lesson (student_review_id);
 alter table message add constraint fk_message_author_9 foreign key (author_id) references user (id) on delete restrict on update restrict;
 create index ix_message_author_9 on message (author_id);
-alter table student add constraint fk_student_user_10 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_student_user_10 on student (user_id);
-alter table teacher add constraint fk_teacher_user_11 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_teacher_user_11 on teacher (user_id);
+alter table message add constraint fk_message_chat_10 foreign key (chat_id) references chat (id) on delete restrict on update restrict;
+create index ix_message_chat_10 on message (chat_id);
+alter table student add constraint fk_student_user_11 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_student_user_11 on student (user_id);
+alter table teacher add constraint fk_teacher_user_12 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_teacher_user_12 on teacher (user_id);
 
 
 
