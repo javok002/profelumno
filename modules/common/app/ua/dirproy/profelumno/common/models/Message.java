@@ -1,4 +1,4 @@
-package ua.dirproy.profelumno.chat.models;
+package ua.dirproy.profelumno.common.models;
 
 import com.avaje.ebean.Model;
 import ua.dirproy.profelumno.user.models.User;
@@ -21,6 +21,9 @@ public class Message extends Model {
 
     @ManyToOne
     private User author;
+
+    @ManyToOne
+    private Chat chat;
 
     private String msg;
     private Date date;
@@ -59,5 +62,13 @@ public class Message extends Model {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Chat getChat() {
+        return chat;
+    }
+
+    public void setChat(Chat chat) {
+        this.chat = chat;
     }
 }
