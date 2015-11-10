@@ -48,11 +48,11 @@ public class Common extends Controller {
         return userIsTeacher() ? teacherSidebarContent.render() : studentSidebarContent.render();
     }
 
-    private static boolean userIsTeacher() {
+    public static boolean userIsTeacher() {
         return Teacher.finder.where().eq("user", Ebean.find(User.class, Long.parseLong(session("id")))).findUnique() != null;
     }
 
-    private static boolean userIsStudent() {
+    public static boolean userIsStudent() {
         return Student.finder.where().eq("user", Ebean.find(User.class, Long.parseLong(session("id")))).findUnique() != null;
     }
 
