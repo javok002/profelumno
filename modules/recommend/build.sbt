@@ -9,4 +9,3 @@ Common.settings
 //playEbeanModels in Compile := Seq("ua.dirproy.profelumno.user.models.*")
 
 libraryDependencies ++= Common.dependencies
-libraryDependencies += "joda-time" % "joda-time" % "2.9"

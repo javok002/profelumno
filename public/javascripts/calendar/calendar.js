@@ -80,7 +80,6 @@ angular.module('app', [])
 
         $scope.openLessonModal = function (lessonEvent) {
             $scope.currentLesson = lessonEvent;
-            $scope.$apply();
             $('#lessonModal').modal('show');
         };
 

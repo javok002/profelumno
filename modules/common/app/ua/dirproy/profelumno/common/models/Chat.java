@@ -1,13 +1,12 @@
-package ua.dirproy.profelumno.chat.models;
+package ua.dirproy.profelumno.common.models;
 
 import com.avaje.ebean.Model;
-import ua.dirproy.profelumno.common.models.Student;
-import ua.dirproy.profelumno.common.models.Teacher;
 import ua.dirproy.profelumno.user.models.User;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +28,7 @@ public class Chat extends Model{
     @ManyToOne
     private Student student;
 
+    @OneToMany
     private List<Message> messages;
 
     public static Finder<Long, Chat> finder = new Finder<>(Chat.class);
@@ -69,11 +69,16 @@ public class Chat extends Model{
         this.messages = messages;
     }
 
+    public void startMessages(){
+        this.messages = new ArrayList<>();
+    }
+
     public void addMessage(String msg, User user){
         Message temp = new Message();
         temp.setAuthor(user);
         temp.setDate(new Date());
         temp.setMsg(msg);
+        temp.setChat(this);
         temp.save();
 
         messages.add(temp);
