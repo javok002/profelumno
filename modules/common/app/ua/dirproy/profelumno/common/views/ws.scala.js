@@ -28,6 +28,17 @@ function close_popup(id)
         }
     }
 }
+window.onkeyup = function(e) {
+    var key = e.keyCode ? e.keyCode : e.which;
+    if (key == 13) {
+        prueba(idChat);
+    }
+}
+var idChat='';
+
+function updateIdChat(id){
+    idChat=id;
+}
 
 //displays the popups. Displays based on the maximum number of popups that can be displayed on the current viewport width
 function display_popups()
@@ -83,7 +94,7 @@ function register_popup(id,name,chatID)
         </div>\
         <div class="box-footer">\
             <div class="input-group">\
-                <input type="text" name="message" placeholder="Escribir Mensaje ..." class="form-control" id="socket-input'+chatID+'">\
+                <input type="text" onfocus="updateIdChat('+chatID+')" name="message" placeholder="Escribir Mensaje ..." class="form-control" id="socket-input'+chatID+'">\
                 <span class="input-group-btn">\
                     <button type="button" href="#" class="btn btn-danger btn-flat" onclick="prueba('+chatID+')">Enviar</button>\
                 </span>\
