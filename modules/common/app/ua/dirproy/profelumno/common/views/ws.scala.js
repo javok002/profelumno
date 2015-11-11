@@ -14,9 +14,6 @@ var popups = [];
 //this variable is to avoid display_open_chats execute more than once when a page is load.
 var timesChatControllerExecute = 0;
 
-//this variable try to solved the problem of angular execute sequence, only for the display_open_chats
-var currentUserChatIndex = 0;
-
 //this is used to close a popup
 function close_popup(chatData)
 {
@@ -59,22 +56,34 @@ function close_popup(chatData)
         }
     }
 }
+//This function gives the current index (in the session storage) of a given chat to id.
+function searchStorageIndex(chatToId, userIdSession){
+    var openChats = sessionStorage.getItem(userIdSession);
+    if(openChats != null){
+        var openChatsJson = JSON.parse(openChats);
+        var i = 0;
+        for(i ; i < openChatsJson.length; i++){
+            var openChat = openChatsJson[i];
+            if(openChat.savedChatToId == chatToId) return i;
+        }
+    }
+}
 //This function manage all the code for displaying the chats open when the user changes the windows.
 function display_open_chats(userIdSession){
-    
     if(timesChatControllerExecute == 0){
         var objLoaded = JSON.parse(sessionStorage.getItem(userIdSession));
         if(objLoaded != null){
             var i = 0;
             for(i ; i < objLoaded.length; i++){
-                currentUserChatIndex = i;
                 var loadChatToId = objLoaded[i].savedChatToId;
                 var $http = angular.element($("#chatCtrl")).injector().get('$http');
                 $http.get('../common/getChat?userId='+loadChatToId)
                     .success(function (data, status, headers, config) {
+                        var auxChatToId = config.url.split('=')[1];
+                        var currentChatToIdIndex = searchStorageIndex(auxChatToId,userIdSession);
                         var loadedChat = data.chat;
-                        loadChatToId = objLoaded[currentUserChatIndex].savedChatToId;
-                        var loadName = objLoaded[currentUserChatIndex].savedName;
+                        loadChatToId = objLoaded[currentChatToIdIndex].savedChatToId;
+                        var loadName = objLoaded[currentChatToIdIndex].savedName;
                         initialize_open_chats(loadedChat.id, userIdSession,loadChatToId,loadName);
                         var messages = loadedChat.messages;
                         var ii = 0;
@@ -101,7 +110,6 @@ function display_open_chats(userIdSession){
                             }
                             updateScroll();
                         }
-                        currentUserChatIndex --;
                     }).
                     error(function () {
                     });
@@ -111,23 +119,9 @@ function display_open_chats(userIdSession){
     }
     else timesChatControllerExecute = 0;
 }
+
 //This function help the display_open_chats function.
 function initialize_open_chats(chatID, userInSessionID,chatToID, userName){
-    for(var iii = 0; iii < popups.length; iii++)
-    {
-        //already registered. Bring it to front.
-        if(chatID == popups[iii])
-        {
-            Array.remove(popups, iii);
-
-            popups.unshift(chatID);
-
-            calculate_popups();
-
-
-            return;
-        }
-    }
     var chatIdAndUserInSessionId = chatID + "-" + userInSessionID + "-" + chatToID;
     var element2='<div class="box box-danger direct-chat direct-chat-danger" >\
         <div class="box-header with-border">\
@@ -142,7 +136,7 @@ function initialize_open_chats(chatID, userInSessionID,chatToID, userName){
         </div>\
         <div class="box-footer">\
             <div class="input-group">\
-                <input type="text" name="message" placeholder="Escribir Mensaje ..." class="form-control" id="socket-input'+chatID+'">\
+                <input type="text" onfocus="updateIdChat('+chatID+')" name="message" placeholder="Escribir Mensaje ..." class="form-control" id="socket-input'+chatID+'">\
                 <span class="input-group-btn">\
                     <button type="button" href="#" class="btn btn-danger btn-flat" onclick="prueba('+chatID+')">Enviar</button>\
                 </span>\
@@ -179,6 +173,7 @@ function display_popups()
         element.style.display = "none";
     }
 }
+
 //creates markup for a new popup. Adds the id to popups array. Also saved an object for session storage
 function register_popup(id,name,chatID,userInSessionID)
 {
@@ -231,7 +226,7 @@ function register_popup(id,name,chatID,userInSessionID)
         </div>\
         <div class="box-footer">\
             <div class="input-group">\
-                <input type="text" name="message" placeholder="Escribir Mensaje ..." class="form-control" id="socket-input'+chatID+'">\
+                <input type="text" onfocus="updateIdChat('+chatID+')" name="message" placeholder="Escribir Mensaje ..." class="form-control" id="socket-input'+chatID+'">\
                 <span class="input-group-btn">\
                     <button type="button" href="#" class="btn btn-danger btn-flat" onclick="prueba('+chatID+')">Enviar</button>\
                 </span>\
@@ -269,8 +264,24 @@ function calculate_popups()
 
 function updateScroll(){
     var element = document.getElementsByName("chat-messages");
-    if (element!=null)
-        element[0].scrollTop = element[0].scrollHeight;
+    if (element!=null){
+        var i = 0;
+        for(i; i < element.length; i++){
+            element[i].scrollTop = element[i].scrollHeight;
+        }
+    }
+}
+
+window.onkeyup = function(e) {
+    var key = e.keyCode ? e.keyCode : e.which;
+    if (key == 13) {
+        prueba(idChat);
+    }
+};
+var idChat='';
+
+function updateIdChat(id){
+    idChat=id;
 }
 
 //recalculate when window is loaded and also when window is resized.
@@ -303,7 +314,6 @@ angular.module('chat', [])
                 display_open_chats(userInSession.id);
             }).
             error(function (data, status, headers, config) {
-                // log error
             });
         // var socket = new WebSocket("ws://localhost:9000/common/getSocket");
 
@@ -315,8 +325,8 @@ angular.module('chat', [])
                 //event.mesage
                 var idChat=event.idChat;
                 var message=event.message;
-                console.log(idChat);
-                console.log(message);
+                //console.log(idChat);
+                //console.log(message);
                 var open=false;
                 for(var iii = 0; iii < popups.length; iii++)
                 {
@@ -413,7 +423,7 @@ angular.module('chat', [])
 
         //Ask for connected and disconnected contacts
         socket.onopen = function () {
-            console.log("onopen");
+            //console.log("onopen");
             socket.send(JSON.stringify({type: "connections"}));
         };
 
@@ -462,8 +472,6 @@ angular.module('chat', [])
                     //data.chat.messeges [Messeges] En indice 0 esta el mas viejo
                 }).
                 error(function (data, status, headers, config) {
-                    // log error
-                    alert("error");
                 });
         };
     }]);
