@@ -46,8 +46,9 @@ public class Lessons extends Controller {
         lesson.setSubject(subject);
 
         final String dateTime = lessonsForm.data().get("dateTime");
-        lesson.setDateTime(new Date(Long.parseLong(dateTime)));
-
+        final Date date = new Date(Long.parseLong(dateTime));
+        lesson.setDateTime(date);
+//        lesson.setDateString(date.toString());
         String address;
         switch (lessonsForm.data().get("address")) {
             case "student":
