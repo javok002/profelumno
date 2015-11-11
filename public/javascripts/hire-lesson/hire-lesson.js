@@ -7,6 +7,10 @@ angular.module('profLesson', [])
         $scope.comment = '';
         $scope.lessonDate= '';
         $scope.selected= '';
+        $scope.subjectBool = false;
+        $scope.addressBool = false;
+        $scope.dateBool = false;
+        $scope.durationBool = false;
 
         $scope.setSubjects = function (teacherId) {
             var subs = {};
@@ -17,17 +21,45 @@ angular.module('profLesson', [])
             return subs;
         };
         $scope.selected = {};
-        $scope.postLesson = function(teacherId, dateTime, duration) {
-            data = {
-                address:$scope.address,
-                comment:$scope.comment,
-                teacherId:teacherId,
-                subjectId:$scope.selected,
-                dateTime:dateTime.getTime(),
-                duration: duration
-            };
-            $http.post('/hire-lesson/new', data).then(successCallback, errorCallback);
-            $("#loadingModal").modal("show");
+        $scope.postLesson = function(teacherId, dateTime, duration, address, subject, index) {
+
+            if(dateTime == undefined) {
+                $scope.dateBool = true;
+            } else {
+                $scope.dateBool = false;
+            }
+
+            if(duration == undefined) {
+                $scope.durationBool = true;
+            } else {
+                $scope.durationBool = false;
+            }
+
+            if(address == undefined){
+                $scope.addressBool = true;
+            } else {
+                $scope.addressBool = false;
+            }
+
+            if(subject == undefined){
+                $scope.subjectBool = true;
+            } else {
+                $scope.subjectBool = false;
+            }
+
+            if (dateTime != undefined && duration != undefined && address != undefined && subject != undefined ) {
+                data = {
+                    address: $scope.address,
+                    comment: $scope.comment,
+                    teacherId: teacherId,
+                    subjectId: $scope.selected,
+                    dateTime: dateTime.getTime(),
+                    duration: duration
+                };
+                $('#hire-modal' + index).modal("hide");
+                $http.post('/hire-lesson/new', data).then(successCallback, errorCallback);
+                $("#loadingModal").modal("show");
+            }
         };
 
 
@@ -50,9 +82,30 @@ angular.module('profLesson', [])
             scope : {
                 teacherId : '=',
                 index : '=',
-                teacherSubs: '='
+                teacherSubs: '=',
+                subjectBool: '=',
+                addressBool: '=',
+                dateBool: '=',
+                durationBool: '='
             },
             link : function(scope){
+
+                scope.$watch('selected', function(){
+                    scope.subjectBool = false;
+                });
+
+                scope.$watch('address', function(){
+                    scope.addressBool = false;
+                });
+
+                scope.$watch('dateTime', function(){
+                    scope.dateBool = false;
+                });
+
+                scope.$watch('duration', function(){
+                    scope.durationBool = false;
+                });
+
                 scope.date = 'date';
 
                 spanishDays = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
@@ -97,7 +150,7 @@ angular.module('profLesson', [])
                                             title: '',
                                             start: angular.copy(auxDate).addHours(i),
                                             end: angular.copy(auxDate).addHours(i + 1),
-                                            color: '#fa6353',
+                                            color: '#008d4c',
                                             dateTime: angular.copy(auxDate).addHours(i).getTime()
                                     };
                                     }
@@ -147,48 +200,65 @@ angular.module('profLesson', [])
                         '<div class="modal-body">' +
                             '<div ng-controller="HireCtrl">' +
                                 '<div class="box-body">' +
+
                                     '<label for="selectSub">Seleccione una materia:</label>' +
                                     '<select class="form-control" id="selectSub" ng-model="selected">'+
                                        '<option ng-repeat="subject in teacherSubs" value="{{subject.id}}">{{subject.text}}</option>'+
                                         '</select>'+
+                                        '<div ng-show="subjectBool" class="callout callout-danger">' +
+                                            '<p>Campo requerido</p>' +
+                                        '</div>' +
+
                                     '<div class="form-group">' +
                                         '<div class="radio"> ' +
                                             '<label> ' +
-                                                '<input type="radio" name="optionsRadios" id="optionsRadios1" value="teacher" ng-model="address" ng-required="!address"> ' +
+                                                '<input type="radio" name="optionsRadios" id="optionsRadios1" value="teacher" ng-model="address"> ' +
                                                     'Tomar clase en el domicilio del profesor' +
                                             ' </label> ' +
                                         ' </div> ' +
                                         ' <div class="radio"> ' +
                                             ' <label> ' +
-                                                ' <input type="radio" name="optionsRadios" id="optionsRadios2" value="student" ng-model="address" ng-required="!address"> ' +
+                                                ' <input type="radio" name="optionsRadios" id="optionsRadios2" value="student" ng-model="address"> ' +
                                                     'Tomar clases en mi domicilio' +
                                             ' </label> ' +
                                         ' </div> ' +
                                         ' <div class="radio"> ' +
                                             ' <label> ' +
-                                                ' <input type="radio" name="optionsRadios" id="optionsRadios3" value="unknow" ng-model="address" ng-required="!address"> ' +
+                                                ' <input type="radio" name="optionsRadios" id="optionsRadios3" value="unknow" ng-model="address"> ' +
                                                     'El domicilio se pactará despues' +
                                             ' </label> ' +
                                         ' </div> ' +
                                     '</div> ' +
+                                    '<div ng-show="addressBool" class="callout callout-danger">' +
+                                        '<p>Campo requerido</p>' +
+                                    '</div>' +
+
+                                    '</div>' +
                                     '<div style="border-color: #ddd; border-style: solid; border-width: 1px; margin-bottom: 10px;">'+
                                         '<div class="box-body" id="calendar{{index}}" style="padding: 0px"></div><!-- /.box-body -->' +
                                     '</div>' +
 
                                     '<div class="input-group">' +
                                         '<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>' +
-                                        '<input style="width: 100%;height: 28px;" id="datepicker{{index}}" value="">' +
+                                        '<input style="width: 100%;height: 28px;" id="datepicker{{index}}" readonly>' +
                                     '</div>'+
+                                    '<div ng-show="dateBool" class="callout callout-danger"">' +
+                                        '<p>Campo requerido</p>' +
+                                    '</div>' +
                                     '<label>Duración (horas)</label>' +
                                     '<select class="form-control" ng-model="duration">'+
                                         '<option ng-repeat="i in [1,2,3,4,5,6,7,8]" value="{{i}}">{{i}}</option>'+
                                     '</select>'+
+                                    '<div ng-show="durationBool" class="callout callout-danger">' +
+                                        '<p>Campo requerido</p>' +
+                                    '</div>' +
+                                    '<div>'+
                                         '<div class="form-group">' +
                                             '<label>Comentario</label>' +
                                             '<textarea class="form-control" rows="3" placeholder="Dejar comentario ..." ng-model="comment"></textarea>' +
                                         '</div>' +
                                     '</div><!-- /.box-body -->' +
-                                    '<button ng-click="postLesson(teacherId, dateTime, duration)" class="btn btn-primary" data-dismiss="modal">Enviar</button>' +
+                                    '<button ng-click="postLesson(teacherId, dateTime, duration, address, selected, index)" class="btn btn-primary">Enviar</button>' +
                             '</div><!-- /.box -->' +
                         '</div>' +
                         '<div class="modal-footer">' +
