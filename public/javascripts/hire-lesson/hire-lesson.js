@@ -41,13 +41,13 @@ angular.module('profLesson', [])
                 $scope.addressBool = false;
             }
 
-            if(subject == undefined){
+            if(subject.$$hashKey != undefined){
                 $scope.subjectBool = true;
             } else {
                 $scope.subjectBool = false;
             }
 
-            if (dateTime != undefined && duration != undefined && address != undefined && subject != undefined ) {
+            if (dateTime != undefined && duration != undefined && address != undefined && subject.$$hashKey == undefined ) {
                 data = {
                     address: $scope.address,
                     comment: $scope.comment,
@@ -138,6 +138,8 @@ angular.module('profLesson', [])
 
                             ranges = [];
 
+                            scope.durations = [];
+
                             data[1].forEach(function(day) {
                                 auxDate = new Date(day.day);
                                 auxDate.setHours(0);
@@ -151,8 +153,11 @@ angular.module('profLesson', [])
                                             start: angular.copy(auxDate).addHours(i),
                                             end: angular.copy(auxDate).addHours(i + 1),
                                             color: '#008d4c',
-                                            dateTime: angular.copy(auxDate).addHours(i).getTime()
+                                            dateTime: angular.copy(auxDate).addHours(i).getTime(),
+                                            from: i,
+                                            to: range.to
                                     };
+
                                     }
                                 });
                             });
@@ -170,6 +175,12 @@ angular.module('profLesson', [])
                                     if (!event.lessonAcepted) {
                                         scope.dateTime = new Date(event.dateTime);
                                         $('#datepicker' + scope.index).val(toDateTimeString(scope.dateTime));
+                                        scope.durations = [];
+                                        for(var j = event.from, i = 0; j < event.to; j++, i++){
+                                            scope.durations[i] = event.to - j;
+                                        }
+
+                                        scope.$apply();
                                     }
                                 },
                                 events: scope.data
@@ -201,13 +212,14 @@ angular.module('profLesson', [])
                             '<div ng-controller="HireCtrl">' +
                                 '<div class="box-body">' +
 
-                                    '<label for="selectSub">Seleccione una materia:</label>' +
-                                    '<select class="form-control" id="selectSub" ng-model="selected">'+
-                                       '<option ng-repeat="subject in teacherSubs" value="{{subject.id}}">{{subject.text}}</option>'+
-                                        '</select>'+
-                                        '<div ng-show="subjectBool" class="callout callout-danger">' +
-                                            '<p>Campo requerido</p>' +
-                                        '</div>' +
+                                    '<label>Seleccione una materia:</label>' +
+                                    '<select class="form-control" ng-model="selected">'+
+                                       '<option ng-if="teacherSubs.length > 0" ng-repeat="subject in teacherSubs" value="{{subject.id}}">{{subject.text}}</option>'+
+                                    '</select>'+
+
+                                    '<div ng-show="subjectBool" class="callout callout-danger">' +
+                                        '<p>Campo requerido</p>' +
+                                    '</div>' +
 
                                     '<div class="form-group">' +
                                         '<div class="radio"> ' +
@@ -247,7 +259,7 @@ angular.module('profLesson', [])
                                     '</div>' +
                                     '<label>Duración (horas)</label>' +
                                     '<select class="form-control" ng-model="duration">'+
-                                        '<option ng-repeat="i in [1,2,3,4,5,6,7,8]" value="{{i}}">{{i}}</option>'+
+                                        '<option ng-repeat="i in durations track by $index" value="{{i}}">{{i}}</option>'+
                                     '</select>'+
                                     '<div ng-show="durationBool" class="callout callout-danger">' +
                                         '<p>Campo requerido</p>' +
