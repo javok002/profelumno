@@ -24,6 +24,16 @@ public class Lesson extends Model {
     private String comment;
     private Float price;
 
+    public String getDurationLesson() {
+        return durationLesson;
+    }
+
+    public void setDurationLesson(String durationLesson) {
+        this.durationLesson = durationLesson;
+    }
+
+    private String durationLesson;
+
     @ManyToOne
     private Subject subject;
     private int lessonState = 0;//0 pendiente de aceptar, 1 aceptado, 2 rechazada

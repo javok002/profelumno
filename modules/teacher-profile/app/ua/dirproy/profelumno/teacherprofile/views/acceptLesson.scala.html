@@ -57,15 +57,25 @@
                                         <span class="info-box-icon bg-blue"><i class="fa fa-calendar"></i></span>
                                         <div class="info-box-content">
                                             <span class="info-box-text" style="font-weight : bold">Fecha</span>
-                                            <span class="info-box-text">{{toFormatDate(decisionLesson.dateTime)}}</span>
+                                            <span class="info-box-text">{{toFormatTime(decisionLesson.dateTime)}}</span>
                                         </div><!-- /.info-box-content -->
                                     </div><!-- /.info-box -->
+
+                                    <div class="info-box">
+                                            <!-- Apply any bg-* class to to the icon to color it -->
+                                        <span class="info-box-icon bg-blue"><i class="fa fa-hourglass"></i></span>
+                                        <div class="info-box-content">
+                                            <span class="info-box-text" style="font-weight : bold">Duracion</span>
+                                            <span class="info-box-text">{{decisionLesson.durationLesson}} Hora/s</span>
+                                        </div><!-- /.info-box-content -->
+                                    </div><!-- /.info-box -->
+
                                     <div class="info-box">
                                             <!-- Apply any bg-* class to to the icon to color it -->
                                         <span class="info-box-icon bg-blue"><i class="fa fa-pencil"></i></span>
                                         <div class="info-box-content">
                                             <span class="info-box-text" style="font-weight : bold">Materia</span>
-                                            <span class="info-box-text">{{decisionLesson.subject.text}}</span>
+                                            <span class="info-box-text">{{decisionLesson.subject.text}} </span>
                                         </div><!-- /.info-box-content -->
                                     </div><!-- /.info-box -->
                                     <div class="info-box">
@@ -154,6 +164,14 @@
                                         <div class="info-box-content">
                                             <span class="info-box-text" style="font-weight : bold">Fecha</span>
                                             <span class="info-box-text">{{toFormatDate(decisionLesson.dateTime)}}</span>
+                                        </div><!-- /.info-box-content -->
+                                    </div><!-- /.info-box -->
+                                    <div class="info-box">
+                                            <!-- Apply any bg-* class to to the icon to color it -->
+                                        <span class="info-box-icon bg-blue"><i class="fa fa-hourglass"></i></span>
+                                        <div class="info-box-content">
+                                            <span class="info-box-text" style="font-weight : bold">Duracion</span>
+                                            <span class="info-box-text">{{decisionLesson.durationLesson}} Hora/s</span>
                                         </div><!-- /.info-box-content -->
                                     </div><!-- /.info-box -->
                                     <div class="info-box">
