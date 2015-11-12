@@ -13,8 +13,8 @@
             <div class="pad">
                 <div class="sidebar-name">
                     <a  href="#" ng-click='getChat(user.id, user.name+" "+user.surname)'>
-                        <img ng-src="data:image/*;base64,{{ user.profileImage }}" class="img-circle" alt="Imagen de Perfil" ng-show="profileImage != null">
-                        <img width="40" height="40" src="@routes.Assets.versioned("images/userDefault.jpeg")" class="img-circle" ng-show="profileImage == null">
+                        <img ng-src="data:image/*;base64,{{user.profilePicture}}" class="user-image" alt="Imagen de Perfil" ng-show="user.profilePicture != null">
+                        <img width="40" height="40" src="@routes.Assets.versioned("images/userDefault.jpeg")" class="img-circle" ng-show="user.profilePicture == null">
                         <span>{{user.name+" "+user.surname}}</span>
                     </a>
                 </div>
@@ -25,8 +25,8 @@
             <div class="pad">
                 <div class="sidebar-name">
                     <a href="#" ng-click='getChat(user.id, user.name+" "+user.surname)'>
-                        <img ng-src="data:image/*;base64,{{ user.profileImage }}" class="img-circle" alt="Imagen de Perfil" ng-show="profileImage != null">
-                        <img width="40" height="40" src="@routes.Assets.versioned("images/userDefault.jpeg")" class="img-circle" ng-show="profileImage == null">
+                        <img ng-src="data:image/*;base64,{{user.profilePicture}}" class="img-circle" alt="Imagen de Perfil" ng-show="user.profilePicture != null">
+                        <img width="40" height="40" src="@routes.Assets.versioned("images/userDefault.jpeg")" class="img-circle" ng-show="user.profilePicture == null">
                         <span>{{user.name+" "+user.surname}}</span>
                     </a>
                 </div>

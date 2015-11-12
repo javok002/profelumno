@@ -123,7 +123,7 @@ function display_open_chats(userIdSession){
 //This function help the display_open_chats function.
 function initialize_open_chats(chatID, userInSessionID,chatToID, userName){
     var chatIdAndUserInSessionId = chatID + "-" + userInSessionID + "-" + chatToID;
-    var element2='<div class="box box-danger direct-chat direct-chat-danger" >\
+    var element2='<div class="box box-primary direct-chat direct-chat-primary" >\
         <div class="box-header with-border">\
             <h3 class="box-title">'+userName+'</h3>\
             <div class="box-tools pull-right">\
@@ -138,7 +138,7 @@ function initialize_open_chats(chatID, userInSessionID,chatToID, userName){
             <div class="input-group">\
                 <input type="text" onfocus="updateIdChat('+chatID+')" name="message" placeholder="Escribir Mensaje ..." class="form-control" id="socket-input'+chatID+'">\
                 <span class="input-group-btn">\
-                    <button type="button" href="#" class="btn btn-danger btn-flat" onclick="prueba('+chatID+')">Enviar</button>\
+                    <button type="button" href="#" class="btn btn-primary btn-flat" onclick="prueba('+chatID+')">Enviar</button>\
                 </span>\
             </div>\
         </div>\
@@ -213,7 +213,7 @@ function register_popup(id,name,chatID,userInSessionID)
         }
     }
     var chatIdAndUserInSessionId = chatID + "-" + userInSessionID + "-" + id;
-    var element2='<div class="box box-danger direct-chat direct-chat-danger" >\
+    var element2='<div class="box box-primary direct-chat direct-chat-primary" >\
         <div class="box-header with-border">\
             <h3 class="box-title">'+name+'</h3>\
             <div class="box-tools pull-right">\
@@ -228,7 +228,7 @@ function register_popup(id,name,chatID,userInSessionID)
             <div class="input-group">\
                 <input type="text" onfocus="updateIdChat('+chatID+')" name="message" placeholder="Escribir Mensaje ..." class="form-control" id="socket-input'+chatID+'">\
                 <span class="input-group-btn">\
-                    <button type="button" href="#" class="btn btn-danger btn-flat" onclick="prueba('+chatID+')">Enviar</button>\
+                    <button type="button" href="#" class="btn btn-primary btn-flat" onclick="prueba('+chatID+')">Enviar</button>\
                 </span>\
             </div>\
         </div>\
