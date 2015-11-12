@@ -71,6 +71,7 @@ public class ModifyStudent extends Controller {
         Student stu = form.get();
         User user = stu.getUser();
         Student student = Student.finder.where().eq("user", user).findUnique();
+        System.out.println(stu.getUser().getEmail() + "=============" + student.getUser().getEmail());
         if ((stu.getUser().getEmail()).equalsIgnoreCase(student.getUser().getEmail()) || User.validateEmailUnique(stu.getUser().getEmail())) {
             User studentU = student.getUser();
             User stuU = stu.getUser();
@@ -118,6 +119,7 @@ public class ModifyStudent extends Controller {
         final long userId=Long.parseLong(session("id"));
         User user = Ebean.find(User.class, userId);
         Student student =Student.finder.where().eq("user",user).findUnique();
+        if(student.getUser().getProfilePicture()==null) return ok("");
         return ok(student.getUser().getProfilePicture());
     }
 
