@@ -28,6 +28,7 @@ create table lesson (
   address                   varchar(255),
   comment                   varchar(255),
   price                     float,
+  duration_lesson           varchar(255),
   subject_id                bigint,
   lesson_state              integer,
   teacher_id                bigint,

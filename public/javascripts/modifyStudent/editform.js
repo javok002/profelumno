@@ -41,6 +41,7 @@ app.controller("EditController", ['$rootScope', '$http','$scope', 'fileUpload',f
         .success(function (data, status, headers, config) {
             $scope.imageUrl=data;
             $scope.hasImage=true;
+            if($scope.imageUrl=="")$scope.hasImage=false;
         }).
         error(function (data, status, headers, config) {
             $scope.hasImage=false;
@@ -178,6 +179,7 @@ app.controller("EditController", ['$rootScope', '$http','$scope', 'fileUpload',f
         edit.u.user.longitude = $scope.loc.lon;
         edit.u.user.city= $scope.getCity();
         edit.u.user.neighbourhood= $scope.getNeighbourhood();
+        edit.u.user.lastLogin = new Date(edit.u.user.lastLogin);
 
         //edit.u.user.subjects;
         $http.post('student-modification', edit.u)
