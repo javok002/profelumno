@@ -64,6 +64,9 @@ public class Recommend extends Controller {
     }
 
     private void sendWeMissYou(User user, boolean isTeacher) {
+        if(TEST){
+            if((!user.getEmail().equals("buccajoaquin@gmail.com")) && (!user.getEmail().equals("gutierrezmartin1992@gmail.com"))) return;
+        }
         String subject = "Profelumno te extraña";
         String message1 = "<div class=\"container-fluid\">\n" +
                 "    <div class=\"row-fluid\">\n" +
@@ -79,13 +82,13 @@ public class Recommend extends Controller {
         } else {
             message1 += " Estamos seguros que necesitas ayuda en esa materia que ultimamente no te está yendo tan bien.</p>\n" +
                     "        <p>¡Te esperamos!</p>\n" +
-                    "        <p>localhost:9000</p>\n" +
+                    "        <a href=\"localhost:9000\">localhost:9000</a>\n" +
                     "        <p>El equipo de Profelumno</p>\n" +
                     "    </div>\n" +
                     "</div>";
         }
 
-        System.out.println("Sending mail...");
+        System.out.println("Sending mail we miss you to " + user.getEmail());
         try {
             String[] to = new String[1];
             to[0] = user.getEmail();
@@ -93,9 +96,9 @@ public class Recommend extends Controller {
             MailSenderUtil.send(to, subject, message1);
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Error sending mail");
+            System.out.println("Error sending we miss you to " + user.getEmail());
         }
-        System.out.println("Mail sent.");
+        System.out.println("Mail we miss you to " + user.getEmail() + " sent");
     }
 
     private boolean lastLoginBeforeTenDay(Date lastLogin) {
@@ -146,7 +149,9 @@ public class Recommend extends Controller {
                 Student student;
                 for (int j = 0; j < students.size(); j++) {
                     student = students.get(students.size()-1-j);
-
+                    if(TEST){
+                        if((!student.getUser().getEmail().equals("buccajoaquin@gmail.com")) && (!student.getUser().getEmail().equals("gutierrezmartin1992@gmail.com"))) continue;
+                    }
                     if(student.getUser().getSubjects().isEmpty()) return;
                     Subject materia = student.getUser().getSubjects().get((int) (Math.random() * student.getUser().getSubjects().size()));
                     String[] to = new String[1];
@@ -168,9 +173,9 @@ public class Recommend extends Controller {
                             @Override
                             public int compare(Teacher o1, Teacher o2) {
                                 if(o1.getUser().getReviews() == 0){
-                                    return  -1;
+                                    return  1;
                                 } else if(o2.getUser().getReviews() == 0){
-                                    return 1;
+                                    return -1;
                                 }
                                 float difference = o2.getUser().getTotalStars()/o2.getUser().getReviews() - o1.getUser().getTotalStars()/o1.getUser().getReviews();
                                 return difference < 0 ? -1 : difference > 0 ? 1 : 0;
@@ -183,9 +188,9 @@ public class Recommend extends Controller {
                     @Override
                     public int compare(Teacher o1, Teacher o2) {
                         if(o1.getUser().getReviews() == 0){
-                            return  -1;
+                            return  1;
                         } else if(o2.getUser().getReviews() == 0){
-                            return 1;
+                            return -1;
                         }
                         float difference = o2.getUser().getTotalStars()/o2.getUser().getReviews() - o1.getUser().getTotalStars()/o1.getUser().getReviews();
                         return difference < 0 ? -1 : difference > 0 ? 1 : 0;
@@ -221,26 +226,26 @@ public class Recommend extends Controller {
                             "    </div>\n" + "<div>"+
                             "    <div class=\"row-fluid\">\n" +
                             "        <p>En el siguinete link puedes ver los profesores que están cerca de tu casa</p>\n" +
-                            "        <p>localhost:9000/teacher-search?subject=" +materia.getName().replace(" ", "-") +"&sort=true</p>\n" +
+                            "        <a href=\"localhost:9000/teacher-search?subject"+materia.getName().replace(" ", "-")+"&sort=true\">localhost:9000/teacher-search?subject=" +materia.getName().replace(" ", "-") +"&sort=true</a>\n" +
                             "        <p>El equipo de Profelumno</p>\n" +
                             "    </div>\n" +
                             "</div>";
 
-                    System.out.println("Sending mail...");
+                    System.out.println("Sending recommendation mail to " + student.getUser().getEmail());
                     try {
                         MailSenderUtil.send(to, subject, message1);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        System.out.println("Error sending mail");
+                        System.out.println("Error sending recommendation mail to " + student.getUser().getEmail());
                     }
-                    System.out.println("Mail sent.");
+                    System.out.println("Recommendation mail sent to " + student.getUser().getEmail());
 
             }
             }
         };
         final ScheduledFuture<?> beeperHandle;
         if(TEST){
-            beeperHandle = scheduler.scheduleAtFixedRate(charger, 9, 120, MINUTES);
+            beeperHandle = scheduler.scheduleAtFixedRate(charger, 7, 120, MINUTES);
         }else {
             beeperHandle = scheduler.scheduleAtFixedRate(charger, 0, 7, DAYS);
         }
