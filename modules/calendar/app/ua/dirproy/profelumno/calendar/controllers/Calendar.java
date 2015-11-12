@@ -272,7 +272,7 @@ public class Calendar extends Controller {
         cal.setTime(auxDate);
         for (int i = 0; i <60 ; i++) {
             for (Day auxDay : dayList){
-                if (auxDay.getDay().getYear() != cal.get(java.util.Calendar.YEAR) || auxDay.getDay().getMonth() != cal.get(java.util.Calendar.MONTH) || auxDay.getDay().getDay() != cal.get(java.util.Calendar.DAY_OF_MONTH)){
+                if (auxDay.getDay().getYear() != cal.get(java.util.Calendar.YEAR) || auxDay.getDay().getMonth() != cal.get(java.util.Calendar.MONTH) || auxDay.getDay().getDay() != cal.get(java.util.Calendar.DAY_OF_YEAR)){
                     final DayEnum dayEnum = auxiliaryMethod(cal.getTime());
                     for (DayRange dr : calendar) {
                         if (dr.getDayEnum() == dayEnum) {
@@ -283,11 +283,12 @@ public class Calendar extends Controller {
                             range.setTo(dr.getToHour().getHours());
                             day.addRange(range);
                             dayList.add(day);
-                            cal.add(java.util.Calendar.DAY_OF_MONTH, 1);
+                            cal.add(java.util.Calendar.DAY_OF_YEAR, 1);
                             break;
                         }
                     }
                 }
+                break;
 
             }
 
@@ -298,6 +299,8 @@ public class Calendar extends Controller {
 
         return ok(Json.toJson(arrayNode));
     }
+
+
 
     private static DayEnum auxiliaryMethod(Date date){
         GregorianCalendar cal = new GregorianCalendar();
