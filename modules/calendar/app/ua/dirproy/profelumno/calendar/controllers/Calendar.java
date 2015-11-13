@@ -15,6 +15,7 @@ import ua.dirproy.profelumno.user.models.User;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -164,6 +165,16 @@ public class Calendar extends Controller {
             }
         }
 
+        Lesson auxLesson = new Lesson();
+        auxLesson.setDateTime(new Date(new Date().getTime() + 600000));
+        auxLesson.setDuration(Duration.ofHours(1));
+        boolean emptyLessonsFlag = false;
+
+        if (acceptLessons.isEmpty()) {
+            acceptLessons.add(auxLesson);
+            emptyLessonsFlag = true;
+        }
+
         List<Day> dayList = new ArrayList<>();
         //voy sacando del calendario del teacher los horarios que ya tienen clases
         Date today = new Date();
@@ -293,6 +304,8 @@ public class Calendar extends Controller {
             }
 
         }
+
+        if (emptyLessonsFlag) acceptLessons.remove(auxLesson);
 
 
         ArrayNode arrayNode = Json.newArray().add(Json.toJson(acceptLessons)).add(Json.toJson(dayList));
