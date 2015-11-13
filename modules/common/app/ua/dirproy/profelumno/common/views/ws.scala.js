@@ -364,6 +364,7 @@ angular.module('chat', [])
                 //event.user User
                 //event.connected  boolean true connected false disconnected
                 user=event.user;
+                user.profilePicture=event.picture;
                 var aux=[];
                 if (event.connected){
                     for(var j=0; j<$scope.disconnectedUser.length;j++){
@@ -411,8 +412,16 @@ angular.module('chat', [])
                 //event.connectedUsers
                 $scope.$apply(function(){
                     $scope.connectedUser=event.connectedUsers;
+                    var connectedPicture= event.connectedUsersPicture;
+                    for (var i =0; i<connectedPicture.length; i++){
+                        $scope.connectedUser[i].profilePicture=connectedPicture[i];
+                    }
                     //event.disconnectedUsers
                     $scope.disconnectedUser=event.disconnectedUsers;
+                    var disconnectedPicture= event.disconnectedUsersPicture;
+                    for (var i =0; i<disconnectedPicture.length; i++){
+                        $scope.disconnectedUser[i].profilePicture=disconnectedPicture[i];
+                    }
                 });
 
             }
