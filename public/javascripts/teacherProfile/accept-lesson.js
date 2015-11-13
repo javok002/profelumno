@@ -36,6 +36,10 @@ app.controller('AcceptController', ['$scope', '$http', function ($scope, $http) 
 
         var date = new Date(time);
         return date.getDate() + "/" + (date.getMonth() + 1) + '/' + date.getFullYear();
+   };
+    $scope.toFormatTime = function (time){
+        var date = new Date(time);
+        return date.getDate() + "/" + (date.getMonth() + 1) + '/' + date.getFullYear() + " " + date.getHours() +":" + date.getMinutes();
     };
     $scope.setLesson = function (lesson) {
         $scope.decisionLesson = lesson;

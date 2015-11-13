@@ -34,6 +34,7 @@ public class Lessons extends Controller {
         Lesson lesson = new Lesson();
 
         lesson.setDuration(Duration.ZERO.plusHours(Long.parseLong(lessonsForm.data().get("duration"))));
+        lesson.setDurationLesson(lessonsForm.data().get("duration").toString());
 
         final Teacher teacher = Teacher.getTeacher(Long.parseLong(lessonsForm.data().get("teacherId")));
         lesson.setTeacher(teacher);
@@ -46,8 +47,9 @@ public class Lessons extends Controller {
         lesson.setSubject(subject);
 
         final String dateTime = lessonsForm.data().get("dateTime");
-        lesson.setDateTime(new Date(Long.parseLong(dateTime)));
-
+        final Date date = new Date(Long.parseLong(dateTime));
+        lesson.setDateTime(date);
+//        lesson.setDateString(date.toString());
         String address;
         switch (lessonsForm.data().get("address")) {
             case "student":
@@ -66,7 +68,7 @@ public class Lessons extends Controller {
         lesson.setTeacherReview(null);
         lesson.setStudentReview(null);
         lesson.setLessonState(0);
-        notifyTeacher(teacher.getUser().getEmail());
+         notifyTeacher(teacher.getUser().getEmail());
         lesson.save();
         return ok(); //todo redireccionar al index
     }

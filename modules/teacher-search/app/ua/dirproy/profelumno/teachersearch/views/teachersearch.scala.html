@@ -73,7 +73,7 @@
                         <td class="text-center"> {{teacher.user.surname}}, {{teacher.user.name}}</td>
                         <td class="text-center">{{teacher.ranking}}</td>
                         <td class="text-center">{{teacher.lessonsDictated}}</td>
-                        <td class="text-center"><hire-lesson teacher-id=teacher.id index=$index teacher-subs=teacher.user.subjects></hire-lesson></td>
+                        <td class="text-center"><hire-lesson teacher-id=teacher.id index=$index teacher-subs=teacher.user.subjects subject-bool="subjectBoll" address-bool="adrressBool" date-bool="dateBool" durationBool="durationBool"></hire-lesson></td>
                     </tr>
                 </tbody>
             </table>
@@ -94,7 +94,7 @@
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/teachersearch/ng-tags-input.min.css")">
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/teachersearch/ng-tags-input.bootstrap.min.css")">
     <link rel="stylesheet" href="@routes.Assets.versioned("external/fullcalendar/fullcalendar.css")">
-    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/calendar/calendar.css")">
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/calendar/calendar.css") ">
     <link rel="stylesheet" href="@routes.Assets.versioned("external/datepicker/datepicker3.css")">
 } {
     <script src="@routes.Assets.versioned("javascripts/teacherSearch/teacherSearch.js")"></script>

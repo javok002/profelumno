@@ -14,6 +14,8 @@ create table day_range (
   id                        bigint not null,
   teacher_id                bigint not null,
   day_enum                  integer,
+  from_hour                 timestamp,
+  to_hour                   timestamp,
   constraint ck_day_range_day_enum check (day_enum in (0,1,2,3,4,5,6)),
   constraint pk_day_range primary key (id))
 ;
@@ -26,6 +28,7 @@ create table lesson (
   address                   varchar(255),
   comment                   varchar(255),
   price                     float,
+  duration_lesson           varchar(255),
   subject_id                bigint,
   lesson_state              integer,
   teacher_id                bigint,
@@ -44,14 +47,6 @@ create table message (
   msg                       varchar(255),
   date                      timestamp,
   constraint pk_message primary key (id))
-;
-
-create table range (
-  id                        bigint not null,
-  day_range_id              bigint not null,
-  from_hour                 timestamp,
-  to_hour                   timestamp,
-  constraint pk_range primary key (id))
 ;
 
 create table review (
@@ -101,8 +96,8 @@ create table user (
   last_login                timestamp,
   gender                    varchar(255),
   address                   varchar(255),
-  latitude                  varchar(255),
-  longitude                 varchar(255),
+  latitude                  double,
+  longitude                 double,
   city                      varchar(255),
   neighbourhood             varchar(255),
   secure_question           varchar(255),
@@ -126,8 +121,6 @@ create sequence day_range_seq;
 create sequence lesson_seq;
 
 create sequence message_seq;
-
-create sequence range_seq;
 
 create sequence review_seq;
 
@@ -159,12 +152,10 @@ alter table message add constraint fk_message_author_9 foreign key (author_id) r
 create index ix_message_author_9 on message (author_id);
 alter table message add constraint fk_message_chat_10 foreign key (chat_id) references chat (id) on delete restrict on update restrict;
 create index ix_message_chat_10 on message (chat_id);
-alter table range add constraint fk_range_day_range_11 foreign key (day_range_id) references day_range (id) on delete restrict on update restrict;
-create index ix_range_day_range_11 on range (day_range_id);
-alter table student add constraint fk_student_user_12 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_student_user_12 on student (user_id);
-alter table teacher add constraint fk_teacher_user_13 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_teacher_user_13 on teacher (user_id);
+alter table student add constraint fk_student_user_11 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_student_user_11 on student (user_id);
+alter table teacher add constraint fk_teacher_user_12 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_teacher_user_12 on teacher (user_id);
 
 
 
@@ -183,8 +174,6 @@ drop table if exists day_range;
 drop table if exists lesson;
 
 drop table if exists message;
-
-drop table if exists range;
 
 drop table if exists review;
 
@@ -207,8 +196,6 @@ drop sequence if exists day_range_seq;
 drop sequence if exists lesson_seq;
 
 drop sequence if exists message_seq;
-
-drop sequence if exists range_seq;
 
 drop sequence if exists review_seq;
 

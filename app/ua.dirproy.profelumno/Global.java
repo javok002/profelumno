@@ -3,14 +3,16 @@ package ua.dirproy.profelumno;
 import com.avaje.ebean.Expr;
 import play.Application;
 import play.GlobalSettings;
-import play.libs.Akka;
-import ua.dirproy.profelumno.chat.models.Chat;
-import ua.dirproy.profelumno.chat.models.Message;
+import ua.dirproy.profelumno.common.models.Chat;
 import ua.dirproy.profelumno.common.models.Lesson;
 import ua.dirproy.profelumno.common.models.Review;
 import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
+<<<<<<< Temporary merge branch 1
 import ua.dirproy.profelumno.recommend.controllers.Recommend;
+import ua.dirproy.profelumno.teachersearch.controllers.TeacherSearches;
+=======
+>>>>>>> Temporary merge branch 2
 import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
 
@@ -26,7 +28,10 @@ public class Global extends GlobalSettings {
     @Override
     public void beforeStart(Application app) {
         InitialData.insert(app);
-        //Recommend.weMissyou();
+
+        Recommend recommend = new Recommend();
+        recommend.weMissYou();
+        recommend.doRecommendations();
     }
 
     static class InitialData {
@@ -418,7 +423,6 @@ public class Global extends GlobalSettings {
                     "Av. Juan Domingo Perón 1500, Buenos Aires",
                     "El Tordo 55, Pilar Centro, Buenos Aires",
                     "San Martín 744, Pilar Centro, Buenos Aires",
-                    "Yrigoyen 2749, Vicente Lopez, Buenos Aires",
                     "Ballivian 2329, Villa Ortuzar, Buenos Aires",
                     "El Salvador 5528, Palermo, Buenos Aires",
                     "Cuba 2039, Belgrano, Buenos Aires",

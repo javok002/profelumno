@@ -16,10 +16,46 @@
 
             <section class="content" ng-cloak>
 
+                @if(ua.dirproy.profelumno.common.controllers.Common.userIsTeacher()) {
+                    <div class="box box-info">
+                        <div class="box-header">
+                            <h3 class="box-title">Mis Horarios Disponibles</h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-success" ng-click="updateHours()">Actualizar Horarios</button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="row seven-cols">
+
+                                <div class="col-sm-4 col-md-1" ng-repeat="range in availableHours">
+                                    <div class="box box-solid box-info">
+                                        <div class="box-header with-border text-center">
+                                            <h3 class="box-title">{{ range.dayES }}</h3>
+                                        </div>
+                                        <div class="box-body">
+                                            <label for="mondayFrom">Desde</label>
+                                            <div class="input-group form-group bootstrap-timepicker timepicker">
+                                                    <input id="{{ range.day + 'from' }}" type="text" class="form-control input-small timePicker">
+                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                                            </div>
+                                            <label for="mondayFrom">Hasta</label>
+                                            <div class="input-group bootstrap-timepicker timepicker">
+                                                    <input id="{{ range.day + 'to' }}" type="text" class="form-control input-small timePicker">
+                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+
                 <div class="box box-primary">
                     @*<div class="box-header with-border"></div><!-- /.box-header -->*@
                     <div class="box-body" id="calendar"></div><!-- /.box-body -->
-                </div><!-- /.box -->
+                </div> <!-- /.box -->
 
             </section>
 
@@ -101,10 +137,12 @@
     </div>
 
 } {
+    <link rel="stylesheet" href="@routes.Assets.versioned("external/timepicker/bootstrap-timepicker.min.css")">
     <link rel="stylesheet" href="@routes.Assets.versioned("external/fullcalendar/fullcalendar.css")">
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/calendar/calendar.css")">
 } {
     <script src="@routes.Assets.versioned("external/daterangepicker/moment.min.js")"></script>
+    <script src="@routes.Assets.versioned("external/timepicker/bootstrap-timepicker.min.js")"></script>
     <script src="@routes.Assets.versioned("external/fullcalendar/fullcalendar.js")"></script>
     <script src="@routes.Assets.versioned("external/fullcalendar/es.js")"></script>
     <script src="@routes.Assets.versioned("javascripts/calendar/calendar.js")"></script>

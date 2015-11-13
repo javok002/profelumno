@@ -242,7 +242,6 @@ public class Teacher extends Model {
 
         }
 
-
-
     }
+
 }
