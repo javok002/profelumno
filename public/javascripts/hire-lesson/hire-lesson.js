@@ -119,6 +119,11 @@ angular.module('profLesson', [])
                     return this;
                 };
 
+                $http.get("/hire-lesson/home-classes?teacherId=" + scope.teacherId)
+                    .success(function (data){
+                        scope.homeClasses = data;
+                    });
+
                 scope.init = function (calendarIndex) {
 
                     $http.get("/calendar/get-user-name")
@@ -146,17 +151,23 @@ angular.module('profLesson', [])
                                 auxDate.setMinutes(0);
                                 auxDate.setSeconds(0);
 
+                                if (day.day == 1447461413807){
+                                    var i =0;
+                                }
+
                                 day.rangeList.forEach(function(range){
                                     for (var i = range.from; i < range.to; i++){
-                                        ranges[ranges.length] = {
-                                            title: '',
-                                            start: angular.copy(auxDate).addHours(i),
-                                            end: angular.copy(auxDate).addHours(i + 1),
-                                            color: '#008d4c',
-                                            dateTime: angular.copy(auxDate).addHours(i).getTime(),
-                                            from: i,
-                                            to: range.to
-                                    };
+                                        if (angular.copy(auxDate).addHours(i).getTime() > new Date().getTime()) {
+                                            ranges[ranges.length] = {
+                                                title: '',
+                                                start: angular.copy(auxDate).addHours(i),
+                                                end: angular.copy(auxDate).addHours(i + 1),
+                                                color: '#008d4c',
+                                                dateTime: angular.copy(auxDate).addHours(i).getTime(),
+                                                from: i,
+                                                to: range.to
+                                            };
+                                        }
 
                                     }
                                 });
@@ -166,11 +177,9 @@ angular.module('profLesson', [])
 
                             $('#calendar' + calendarIndex ).fullCalendar({
                                 lang: 'es',
-                                header: {
-                                    left: 'today',
-                                    center: 'prev,next',
-                                    right: 'agendaWeek'
-                                },
+
+                                defaultView: 'agendaWeek',
+
                                 eventClick: function (event, jsEvent, view) {
                                     if (!event.lessonAcepted) {
                                         scope.dateTime = new Date(event.dateTime);
@@ -228,7 +237,7 @@ angular.module('profLesson', [])
                                                     'Tomar clase en el domicilio del profesor' +
                                             ' </label> ' +
                                         ' </div> ' +
-                                        ' <div class="radio"> ' +
+                                        ' <div ng-if="homeClasses" class="radio"> ' +
                                             ' <label> ' +
                                                 ' <input type="radio" name="optionsRadios" id="optionsRadios2" value="student" ng-model="address"> ' +
                                                     'Tomar clases en mi domicilio' +

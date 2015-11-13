@@ -83,6 +83,12 @@ public class Lessons extends Controller {
         return ok(Json.toJson(subjects));
     }
 
+    public static Result homeClasses(String teacherId){
+        Teacher teacher = Teacher.getTeacher(Long.parseLong(teacherId));
+        boolean homeClasses = teacher.getHomeClasses();
+        return ok(Json.toJson(homeClasses));
+    }
+
     private static void notifyTeacher(String emailTeacher) throws MessagingException {
         MailSenderUtil.send(new String[]{emailTeacher}, "ProfeLumno: Usted tiene una nueva clase.", "<body style=\"-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;margin: 0;font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif;font-size: 14px;line-height: 1.428571429;color: #333;background-color: #fff;\">\n" +
                 "<div style=\"-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;\">\n" +
