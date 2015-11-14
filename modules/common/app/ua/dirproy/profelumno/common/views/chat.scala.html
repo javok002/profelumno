@@ -13,7 +13,7 @@
             <div class="pad">
                 <div class="sidebar-name">
                     <a  href="#" ng-click='getChat(user.id, user.name+" "+user.surname)'>
-                        <img ng-src="data:image/*;base64,{{user.profilePicture}}" class="user-image" alt="Imagen de Perfil" ng-show="user.profilePicture != null">
+                        <img ng-src="data:image/*;base64,{{user.profilePicture}}" class="user-image img-circle" alt="Imagen de Perfil" ng-show="user.profilePicture != null">
                         <img width="40" height="40" src="@routes.Assets.versioned("images/userDefault.jpeg")" class="img-circle" ng-show="user.profilePicture == null">
                         <span>{{user.name+" "+user.surname}}</span>
                     </a>

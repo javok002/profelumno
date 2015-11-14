@@ -200,6 +200,7 @@ app.controller('TeacherInfoController', ['$rootScope', '$scope', '$http', 'fileU
         edit.u.user.city= $scope.getCity();
         edit.u.user.neighbourhood= $scope.getNeighbourhood();
         edit.u.renewalDate=$scope.renewalDate;
+        edit.u.user.lastLogin = new Date(edit.u.user.lastLogin);
 
 
         $http.post('modify-teacher/teacher-modification-post', edit.u)
