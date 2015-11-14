@@ -3,16 +3,8 @@ package ua.dirproy.profelumno;
 import com.avaje.ebean.Expr;
 import play.Application;
 import play.GlobalSettings;
-import ua.dirproy.profelumno.common.models.Chat;
-import ua.dirproy.profelumno.common.models.Lesson;
-import ua.dirproy.profelumno.common.models.Review;
-import ua.dirproy.profelumno.common.models.Student;
-import ua.dirproy.profelumno.common.models.Teacher;
-<<<<<<< Temporary merge branch 1
+import ua.dirproy.profelumno.common.models.*;
 import ua.dirproy.profelumno.recommend.controllers.Recommend;
-import ua.dirproy.profelumno.teachersearch.controllers.TeacherSearches;
-=======
->>>>>>> Temporary merge branch 2
 import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
 
@@ -57,7 +49,7 @@ public class Global extends GlobalSettings {
 
         public static void setLessonsAndReviews() {
             Random randomizer = new Random();
-            String[] address = generateAnAddress();
+            String[] address = generateAnAddressT();
 
 
             for (Teacher teacher1 : teachers) {
@@ -74,6 +66,7 @@ public class Global extends GlobalSettings {
                     lessonInbox.setTeacher(teacher1);
                     lessonInbox.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet augue nisl. Sed ultrices rhoncus justo, in hendrerit turpis laoreet a.");
                     lessonInbox.setDuration(Duration.ofHours(2));
+                    lessonInbox.setDurationLesson("2");
                     lessonInbox.setDateString("" + futureDateState0.getDate() + "/" + (futureDateState0.getMonth() + 1) + "/" + (futureDateState0.getYear() + 1900));
                     lessonInbox.setDateTime(futureDateState0);
                     lessonInbox.setSubject(subjects.get((new Random()).nextInt(subjects.size())));
@@ -87,6 +80,7 @@ public class Global extends GlobalSettings {
                     nextLesson.setTeacher(teacher1);
                     nextLesson.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet augue nisl. Sed ultrices rhoncus justo, in hendrerit turpis laoreet a.");
                     nextLesson.setDuration(Duration.ofHours(2));
+                    nextLesson.setDurationLesson("2");
                     nextLesson.setDateString("" + futureDateState1.getDate() + "/" + (futureDateState1.getMonth() + 1) + "/" + (futureDateState1.getYear() + 1900));
                     nextLesson.setDateTime(futureDateState1);
                     nextLesson.setSubject(subjects.get((new Random()).nextInt(subjects.size())));
@@ -101,12 +95,13 @@ public class Global extends GlobalSettings {
                     lessonFinished.setTeacher(teacher1);
                     lessonFinished.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet augue nisl. Sed ultrices rhoncus justo, in hendrerit turpis laoreet a.");
                     lessonFinished.setDuration(Duration.ofHours(1));
+                    lessonFinished.setDurationLesson("1");
                     lessonFinished.setDateString("" + oldDateState1.getDate() + "/" + (oldDateState1.getMonth() + 1) + "/" + (oldDateState1.getYear() + 1900));
                     lessonFinished.setDateTime(oldDateState1);
                     lessonFinished.setSubject(subjects.get((new Random()).nextInt(subjects.size())));
 
                     String[] conver = genereateConversationList();
-                    if (randomizer.nextBoolean()) {
+                    if (true) {
                         Chat chat = Chat.finder.where().and(Expr.eq("teacher", lessonFinished.getTeacher()),
                                 Expr.eq("student", lessonFinished.getStudent())).findUnique();
                         if (chat == null) {
@@ -115,16 +110,21 @@ public class Global extends GlobalSettings {
                             chat.setStudent(lessonFinished.getStudent());
                             int typeOfConversation = randomizer.nextInt(conver.length);
                             if (typeOfConversation % 2 != 0) {
-                                String c = conver[typeOfConversation];
-                                for (int i = 0; i < c.split(";").length-1; i = i + 2) {
-                                    chat.addMessage(c.split(";")[i], lessonFinished.getStudent().getUser());
-                                    chat.addMessage(c.split(";")[i + 1], lessonFinished.getTeacher().getUser());
+                                String[] c = conver[typeOfConversation].split(";");
+                                for (int i = 0; i < (c.length); i++) {
+                                    chat.addMessage(c[i], lessonFinished.getTeacher().getUser());
+                                    i++;
+                                    if (i>=c.length)break;
+                                    chat.addMessage(c[i], lessonFinished.getStudent().getUser());
                                 }
                             } else {
-                                String c = conver[typeOfConversation];
-                                for (int i = 0; i < c.split(";").length-1; i = i + 2) {
-                                    chat.addMessage(c.split(";")[i], lessonFinished.getStudent().getUser());
-                                    chat.addMessage(c.split(";")[i + 1], lessonFinished.getTeacher().getUser());
+                                String[] c = conver[typeOfConversation].split(";");
+                                for (int i = 0; i < (c.length); i++) {
+                                    chat.addMessage(c[i], lessonFinished.getStudent().getUser());
+                                    i++;
+                                    if (i>=c.length)break;
+                                    chat.addMessage(c[i], lessonFinished.getTeacher().getUser());
+
                                 }
                             }
                         }
@@ -298,7 +298,7 @@ public class Global extends GlobalSettings {
 
             String[] names = generateNameList();
             String[] lastNames = generateLastNameList();
-            String[] address = generateAnAddress();
+            String[] address = generateAnAddressT();
 
 
             if (User.finder.all().isEmpty()) {
@@ -307,7 +307,7 @@ public class Global extends GlobalSettings {
                 for (int i = 1; i <= 100; i++) {
                     String name = names[randomizer.nextInt(names.length)];
                     String lastName = lastNames[randomizer.nextInt(lastNames.length)];
-                    int addressNumber = (int) (Math.random() * address.length); // OJO, addressNumber es siempre 0!!!
+                    int addressNumber = (new Random().nextInt(7)); // OJO, addressNumber es siempre 0!!!
 
                     User userT = new User();
                     userT.setName(name);
@@ -342,7 +342,7 @@ public class Global extends GlobalSettings {
                 for (int k = 1; k <= 100; k++) {
                     String name = names[randomizer.nextInt(names.length)];
                     String lastName = lastNames[randomizer.nextInt(lastNames.length)];
-                    int addressNumber = (int) (Math.random() * address.length);
+                    int addressNumber = (new Random().nextInt(6))+7;
 
                     User userS = new User();
                     userS.setName(name);
@@ -379,10 +379,10 @@ public class Global extends GlobalSettings {
 
         private static String[] genereateConversationList() {
             String[] conversation = {
-                    "Buenas tardes \n Como le va?; Bien \n Como te fue en el examen?; Mal, fue bastante dificil",
-                    "Como te fue en el examen?; Mas o menos, era medio complicado; Que te tomaron?; Ecuaciones diferenciales y grafos; Pero no me dijiste que te tomaban grafos;Es que lo explico el dia anterior; Vas a querer otra clase?; Despues lo veo",
-                    "Buenos dias \n Cuando podriamos tener otra clase?; Podriamos tenerla en dos semanas; Bueno, ya te la reservo",
-                    "Buenas tardes, quisiera saber por que no vino a la ultima clase; Disculpa, es que estaba enfermo; Cuando la queres recuperar?; Cuando me sienta mejor le confirmo"
+                    ";Buenas tardes, quisiera saber por que no vino a la ultima clase; Disculpa, es que estaba enfermo; Cuando la queres recuperar?; Cuando me sienta mejor le confirmo",
+                    ";Buenas tardes,  Como le va?; Bien,  Como te fue en el examen?; Mal, fue bastante dificil",
+                    ";Como te fue en el examen?; Mas o menos, era medio complicado; Que te tomaron?; Ecuaciones diferenciales y grafos; Pero no me dijiste que te tomaban grafos;Es que lo explico el dia anterior; Vas a querer otra clase?; Despues lo veo",
+                    ";Buenos dias, Cuando podriamos tener otra clase?; Podriamos tenerla en dos semanas; Bueno, ya te la reservo"
             };
             return conversation;
         }
@@ -418,7 +418,7 @@ public class Global extends GlobalSettings {
             return subjectList;
         }
 
-        private static String[] generateAnAddress() {
+        private static String[] generateAnAddressT() {
             String[] address = {
                     "Av. Juan Domingo Perón 1500, Buenos Aires",
                     "El Tordo 55, Pilar Centro, Buenos Aires",
@@ -426,7 +426,26 @@ public class Global extends GlobalSettings {
                     "Ballivian 2329, Villa Ortuzar, Buenos Aires",
                     "El Salvador 5528, Palermo, Buenos Aires",
                     "Cuba 2039, Belgrano, Buenos Aires",
-                    "Defensa 1431, San Telmo, Buenos Aires"
+                    "Defensa 1431, San Telmo, Buenos Aires",
+
+
+                    "San Martin 1805 - Santa Fe, Buenos Aires",
+                    "Rodríguez Peña 1439, Buenos Aires",
+                    "Dorrego 2031 | Rosario, Santa Fe, Argentina",
+                    "Ayacucho 685 San Miguel de Tucumán Argentina ",
+                    "Cdad. de La Paz 1866, Belgrano, Capital Federal",
+                    "Clay 3082, CABA, Argentina",
+            };
+            return address;
+        }
+        private static String[] generateAnAddressS() {
+            String[] address = {
+                    "San Martin 1805 - Santa Fe, Buenos Aires",
+                    "Rodríguez Peña 1439, Buenos Aires",
+                    "Dorrego 2031 | Rosario, Santa Fe, Argentina",
+                    "Ayacucho 685 San Miguel de Tucumán Argentina ",
+                    "Cdad. de La Paz 1866, Belgrano, Capital Federal",
+                    "Clay 3082, CABA, Argentina",
             };
             return address;
         }
@@ -439,7 +458,14 @@ public class Global extends GlobalSettings {
                     -34.5787,
                     -34.5838,
                     -34.5614,
-                    -34.6245
+                    -34.6245,
+
+                    -31.6546,
+                    -34.5930,
+                    -32.9591,
+                    -26.8392,
+                    -34.5648,
+                    -34.5725
             };
             return latitudes;
         }
@@ -452,7 +478,14 @@ public class Global extends GlobalSettings {
                     -58.4781,
                     -58.4369,
                     -58.4564,
-                    -58.3734
+                    -58.3734,
+
+                    -60.7090,
+                    -58.3913,
+                    -60.6529,
+                    -65.2115,
+                    -58.4557,
+                    -58.4286
             };
             return longitudes;
         }
@@ -462,7 +495,7 @@ public class Global extends GlobalSettings {
             c.setTime(new Date()); // Now use today date.
             c.add(Calendar.DATE, (random.nextInt(15) * -1) - 1); // Subtract 1 to 15 days
 
-            return new Date(c.get(Calendar.YEAR) - 1900, c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+            return new Date(c.get(Calendar.YEAR) - 1900, c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH),random.nextInt(23),0);
         }
 
         private static Date getFutureDate(Random random) {
@@ -470,7 +503,7 @@ public class Global extends GlobalSettings {
             c.setTime(new Date()); // Now use today date.
             c.add(Calendar.DATE, random.nextInt(15) + 1); // Adds from 1 to 15 days
 
-            return new Date(c.get(Calendar.YEAR) - 1900, c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+            return new Date(c.get(Calendar.YEAR) - 1900, c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH),random.nextInt(23),0);
         }
     }
 }
