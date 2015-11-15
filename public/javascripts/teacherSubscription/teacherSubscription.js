@@ -10,7 +10,7 @@
             }).
             error(function (data, status, headers, config) {
                 document.getElementById('cancel').style.visibility = "hidden";
-
+                document.getElementById('logout').style.visibility = "visible";
                 // log error
             });
         // create a blank object to handle form data.
