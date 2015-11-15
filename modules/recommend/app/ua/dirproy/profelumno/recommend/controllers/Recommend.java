@@ -74,8 +74,8 @@ public class Recommend extends Controller {
                 "        <p>¡Hace tiempo que no nos visitas!";
         if(isTeacher){
             message1 += " Estamos seguros que hay alumnos que están necesitando tu ayuda. Entra al sitio y vuelve a dar clases en Profelumno.</p>\n" +
-                    "        <p>¡Te esperamos!</p>\n" +
-                    "        <p>localhost:9000</p>\n" +
+                    "        <p>¡Te esperamos!</p>" +
+                    "        <a href=\"localhost:9000\">localhost:9000</a>\n" +
                     "        <p>El equipo de Profelumno</p>\n" +
                     "    </div>\n" +
                     "</div>";
