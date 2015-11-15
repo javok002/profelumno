@@ -38,9 +38,9 @@ public class AuthenticateAction extends Action<Authenticate> {
         if (teacher != null) {
             if (check(Teacher.class)) {
                 Date date=new Date();
-                if(teacher.getRenewalDate() != null && (!(path.equals("/subscription/endTrial"))) && !(path.equals("/subscription/charge"))){
+                if(teacher.getRenewalDate() != null && (!(path.equals("/subscription/endTrial"))) && !(path.equals("/subscription") )&&!(path.equals("/subscription/charge"))){
                     if (date.after(teacher.getRenewalDate()) && teacher.isInTrial()){
-                        if(path.equals("/subscription/cardNumber")){
+                        if(path.equals("/subscription/cardNumber") ||path.equals("/subscription/validate")){
                             return delegate.call(context);
                         }
                         return F.Promise.pure(redirect("/subscription/endTrial"));
