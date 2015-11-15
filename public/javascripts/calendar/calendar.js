@@ -84,6 +84,11 @@ angular.module('app', [])
             $('#lessonModal').modal('show');
         };
 
+        $scope.toFormatDate = function (time) {
+            var date = new Date(time);
+            return date.getDate() + "/" + (date.getMonth() + 1) + '/' + date.getFullYear();
+        };
+
         var spanishDays = {
             "MONDAY": 'Lunes',
             "TUESDAY": 'Martes',
