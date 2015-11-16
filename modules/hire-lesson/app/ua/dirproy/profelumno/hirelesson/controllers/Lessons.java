@@ -18,6 +18,7 @@ import java.text.ParseException;
 
 import javax.mail.*;
 
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +33,9 @@ public class Lessons extends Controller {
 
         Lesson lesson = new Lesson();
 
+        lesson.setDuration(Duration.ZERO.plusHours(Long.parseLong(lessonsForm.data().get("duration"))));
+        lesson.setDurationLesson(lessonsForm.data().get("duration").toString());
+
         final Teacher teacher = Teacher.getTeacher(Long.parseLong(lessonsForm.data().get("teacherId")));
         lesson.setTeacher(teacher);
 
@@ -43,8 +47,9 @@ public class Lessons extends Controller {
         lesson.setSubject(subject);
 
         final String dateTime = lessonsForm.data().get("dateTime");
-        lesson.setDateTime(new Date(Integer.parseInt(dateTime.substring(0, 4)) - 1900, Integer.parseInt(dateTime.substring(5, 7)) - 1, Integer.parseInt(dateTime.substring(8, 10))));
-
+        final Date date = new Date(Long.parseLong(dateTime));
+        lesson.setDateTime(date);
+//        lesson.setDateString(date.toString());
         String address;
         switch (lessonsForm.data().get("address")) {
             case "student":
@@ -63,7 +68,7 @@ public class Lessons extends Controller {
         lesson.setTeacherReview(null);
         lesson.setStudentReview(null);
         lesson.setLessonState(0);
-        notifyTeacher(teacher.getUser().getEmail());
+         notifyTeacher(teacher.getUser().getEmail());
         lesson.save();
         return ok(); //todo redireccionar al index
     }
@@ -76,6 +81,12 @@ public class Lessons extends Controller {
         Teacher teacher = Teacher.getTeacher(Long.parseLong(teacherId));
         List<Subject> subjects = teacher.getUser().getSubjects();
         return ok(Json.toJson(subjects));
+    }
+
+    public static Result homeClasses(String teacherId){
+        Teacher teacher = Teacher.getTeacher(Long.parseLong(teacherId));
+        boolean homeClasses = teacher.getHomeClasses();
+        return ok(Json.toJson(homeClasses));
     }
 
     private static void notifyTeacher(String emailTeacher) throws MessagingException {

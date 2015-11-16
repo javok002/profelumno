@@ -5,9 +5,16 @@
     function logFb() {
                 FB.login(function(response) {
                     if(response.status == 'connected'){
-                        console.log(response);
+                       FB.api('/me' ,{fields: 'email, first_name,last_name'}, function(response) {
+                       document.getElementById('email').value = response.email.toString();
+                       document.getElementById('name').value = response.first_name.toString();
+                       document.getElementById('surname').value = response.last_name.toString();
+                      document.getElementById('submiter').click();
+
+
+                      });
                     }
-    }, {scope: 'first_name,last_name,email'});
+                }, {scope: 'email'});
             }
     function logUser(){
         FB.getLoginStatus(function(response) {
@@ -51,6 +58,13 @@
                     <h3 class="box-title">Iniciar Sesión</h3>
                 </div>
                 <form role="form" action="@ua.dirproy.profelumno.loginout.controllers.routes.Login.loginUser()" method="post">
+                    <input type="email" style="display : none ;" id="email" name="fb_email"/>
+                    <input type="text" style="display : none ;" id="name" name="fb_name"/>
+                    <input type="text" style="display : none ;" id="surname" name="fb_surname"/>
+                    <button type="submit" id="submiter" class="btn btn-primary" style="display : none">
+                        Ingresar</button>
+                </form>
+                <form role="form" action="@ua.dirproy.profelumno.loginout.controllers.routes.Login.loginUser()" method="post">
                     <div class="box-body">
                         <div class="input-group">
                             <input type="email" class="form-control" placeholder="Mail" name="email" required value="@if(flash.containsKey("previousEmail")) {
@@ -83,8 +97,8 @@
                         <div class="input-group"><a href="#" onclick="goTo('/register')">No tengo un usuario</a></div>
                     </div>
                 </form>
-                @*<button class="btn btn-primary" onclick="logFb()">*@
-                    @*Ingresar con Facebook <span> <i class="fa fa-facebook-official"></i></span></button>*@
+                <button class="btn btn-primary" onclick="logFb()">
+                    Ingresar con Facebook <span> <i class="fa fa-facebook-official"></i></span></button>
             </div>
         </div>
         <div class="col-md-4 col-sm-3"></div>

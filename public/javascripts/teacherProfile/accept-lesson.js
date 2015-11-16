@@ -1,7 +1,11 @@
 /**
  * Created by facundo on 1/10/15.
  */
-var app = angular.module('acceptLesson', []);
+var app = angular.module('acceptLesson', ['djds4rce.angular-socialshare']);
+app.run(function($FB){
+    $FB.init('1509250906034945');
+});
+
 function loadLessons($http, $scope) {
     $http.get("/teacher-profile/current-lessons")
         .success(function (data) {
@@ -32,6 +36,10 @@ app.controller('AcceptController', ['$scope', '$http', function ($scope, $http) 
 
         var date = new Date(time);
         return date.getDate() + "/" + (date.getMonth() + 1) + '/' + date.getFullYear();
+   };
+    $scope.toFormatTime = function (time){
+        var date = new Date(time);
+        return date.getDate() + "/" + (date.getMonth() + 1) + '/' + date.getFullYear() + " " + date.getHours() +":" + date.getMinutes();
     };
     $scope.setLesson = function (lesson) {
         $scope.decisionLesson = lesson;

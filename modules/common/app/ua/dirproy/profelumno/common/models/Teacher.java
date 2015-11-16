@@ -3,12 +3,9 @@ package ua.dirproy.profelumno.common.models;
 import com.avaje.ebean.Model;
 import ua.dirproy.profelumno.user.models.User;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+
+import javax.persistence.*;
+import java.util.*;
 
 /**
  * Created by javier
@@ -42,13 +39,39 @@ public class Teacher extends Model {
 
     private double price;
 
-    public Teacher(){}
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<DayRange> calendar;
+
+    public Teacher(){
+        calendar = new ArrayList<>();
+        completeCalendar();
+    }
 
     public Teacher(long id, String description, boolean homeClasses, User user){
         this.id=id;
         this.description=description;
         this.homeClasses=homeClasses;
         this.user=user;
+        calendar = new ArrayList<>();
+        completeCalendar();
+    }
+
+    private void completeCalendar(){
+        List<DayEnum> dayEnums = DayEnum.getDayEnums();
+        Date fromHour = new Date();
+        fromHour.setHours(0);
+        fromHour.setMinutes(0);
+        fromHour.setSeconds(0);
+        Date toHour = new Date();
+        toHour.setHours(23);
+        toHour.setMinutes(0);
+        toHour.setSeconds(0);
+        for (DayEnum dayEnum : dayEnums) {
+            DayRange aux = new DayRange();
+            aux.setDayEnum(dayEnum);
+            aux.setRange(fromHour,toHour);
+            calendar.add(aux);
+        }
     }
 
     public static Finder<Long, Teacher> finder = new Finder<>(Teacher.class);
@@ -174,4 +197,51 @@ public class Teacher extends Model {
         teacher.setRanking(temp);
         teacher.save();
     }
+
+    public List<DayRange> getCalendar() {
+        return calendar;
+    }
+
+    public void setCalendar(List<DayRange> calendar) {
+        this.calendar = calendar;
+    }
+
+    public void updateCalendar(Date date,Date fromHour,Date toHour) {
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(date);
+        int day = cal.get(Calendar.DAY_OF_WEEK);
+        DayEnum dayEnum = null;
+        if (Calendar.MONDAY == day){
+            dayEnum = DayEnum.MONDAY;
+        }
+        if (Calendar.TUESDAY == day){
+            dayEnum = DayEnum.TUESDAY;
+        }
+        if (Calendar.WEDNESDAY == day){
+            dayEnum = DayEnum.WEDNESDAY;
+        }
+        if (Calendar.THURSDAY == day){
+            dayEnum = DayEnum.THURSDAY;
+        }
+        if (Calendar.FRIDAY == day){
+            dayEnum = DayEnum.FRIDAY;
+        }
+        if (Calendar.SUNDAY == day){
+            dayEnum = DayEnum.SUNDAY;
+        }
+        if (Calendar.SATURDAY == day){
+            dayEnum = DayEnum.SATURDAY;
+        }
+
+        for (DayRange dayRange : calendar) {
+
+            if (dayRange.getDayEnum().equals(dayEnum)){
+                dayRange.setRange(fromHour, toHour);
+                dayRange.save();
+            }
+
+        }
+
+    }
+
 }
