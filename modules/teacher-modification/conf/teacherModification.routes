@@ -8,7 +8,7 @@ GET         /user                             ua.dirproy.profelumno.teachermodif
 GET         /changepass                       ua.dirproy.profelumno.teachermodification.controller.ModifyTeacher.changePasswordView()
 GET         /img                              ua.dirproy.profelumno.teachermodification.controller.ModifyTeacher.getPicture()
 GET         /subjects                         ua.dirproy.profelumno.teachermodification.controller.ModifyTeacher.getSubject()
-POST        /save-pass                        ua.dirproy.profelumno.teachermodification.controller.ModifyTeacher.savePassword()
+POST        /save-pass                        ua.dirproy.profelumno.teachermodification.controller.ModifyTeacher.savePassword(password: String)
 POST        /img                              ua.dirproy.profelumno.teachermodification.controller.ModifyTeacher.savePicture()
 POST        /subjects                         ua.dirproy.profelumno.teachermodification.controller.ModifyTeacher.saveSubject()
 POST        /teacher-modification-post        ua.dirproy.profelumno.teachermodification.controller.ModifyTeacher.saveTeacherInfo(name: String, surname:String, email: String,birthday: String, address: String, gender: String, price: String, homeClasses: String, description: String, latitude: String, longitude: String, city: String, neighbourhood: String, renewalDate: String, lastLogin: String)

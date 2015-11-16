@@ -43,14 +43,14 @@ app.controller("EditController", ['$http','$scope',function($http,$scope){
         edit.u.user.birthday=$scope.date;
         edit.u.renewalDate=$scope.renewalDate;
         edit.u.user.password=$scope.password;
-        $http.post('save-pass', edit.u)
+        edit.u.user.lastLogin=new Date(edit.u.user.lastLogin);
+        $http.post('save-pass?password='+edit.u.user.password)
             .success(function (data) {
                 $scope.errors = { invalid: false, incomplete: false, teacherAge: false, studentAge: false };
                 //alert(JSON.stringify(data));
                 window.location.href = data;
             })
             .error(function (data) {
-                alert(data);
             });
     };
 

@@ -9,9 +9,9 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
-import ua.dirproy.profelumno.common.models.Student;
 import ua.dirproy.profelumno.common.models.Teacher;
-import ua.dirproy.profelumno.teachermodification.view.html.*;
+import ua.dirproy.profelumno.teachermodification.view.html.changepassword;
+import ua.dirproy.profelumno.teachermodification.view.html.teacherprofile;
 import ua.dirproy.profelumno.user.models.Subject;
 import ua.dirproy.profelumno.user.models.User;
 
@@ -171,17 +171,20 @@ public class ModifyTeacher extends Controller {
         return badRequest();
     }
 
-    public static Result savePassword() {
-        Form<Teacher> form = Form.form(Teacher.class).bindFromRequest();
-        if (form.hasErrors()) {
+    public static Result savePassword(String password) {
+        //Form<Teacher> form = Form.form(Teacher.class).bindFromRequest();
+        //if (form.hasErrors()) {
 //            return badRequest(register.render());
-            return badRequest(form.errors().toString());
-        }
-        Teacher tch = form.get();
-        User user = tch.getUser();
+        //    return badRequest(form.errors().toString());
+        //}
+        //Teacher tch = form.get();
+        final long userId=Long.parseLong(session("id"));
+        User user = Ebean.find(User.class, userId);
         Teacher teacher = Teacher.finder.where().eq("user", user).findUnique();
+
+
         User studentU = teacher.getUser();
-        studentU.setPassword(user.getPassword());
+        studentU.setPassword(password);
         Ebean.save(teacher);
         Ebean.save(teacher.getUser());
 //        return ok(Json.toJson(student));
