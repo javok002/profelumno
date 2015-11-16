@@ -57,7 +57,7 @@ public class Recommend extends Controller {
         final ScheduledFuture<?> beeperHandle;
 
         if(TEST){
-            beeperHandle = scheduler.scheduleAtFixedRate(charger, 2 , 60, MINUTES);
+            beeperHandle = scheduler.scheduleAtFixedRate(charger, 4 , 60, MINUTES);
         }else {
             beeperHandle = scheduler.scheduleAtFixedRate(charger, initialDelay , 10080, MINUTES);
         }
@@ -65,7 +65,7 @@ public class Recommend extends Controller {
 
     private void sendWeMissYou(User user, boolean isTeacher) {
         if(TEST){
-            if((!user.getEmail().equals("jose.illi@ing.austral.edu.ar")) && (!user.getEmail().equals("gutierrezmartin1992@gmail.com"))) return;
+            if((!user.getEmail().equals("buccajoaquin@gmail.com")) && (!user.getEmail().equals("gutierrezmartin1992@gmail.com"))) return;
         }
         String subject = "Profelumno te extraña";
         String message = "<h2><span style=\"color: #008080;\">&iexcl;Hola "+user.getName() +"!</span></h2>\n" +
@@ -157,7 +157,7 @@ public class Recommend extends Controller {
                 for (int j = 0; j < students.size(); j++) {
                     student = students.get(students.size()-1-j);
                     if(TEST){
-                        if((!student.getUser().getEmail().equals("illijoseignacio@gmail.com")) && (!student.getUser().getEmail().equals("gutierrezmartin1992@gmail.com"))) continue;
+                        if((!student.getUser().getEmail().equals("buccajoaquin@gmail.com")) && (!student.getUser().getEmail().equals("gutierrezmartin1992@gmail.com"))) continue;
                     }
                     if(student.getUser().getSubjects().isEmpty()) return;
                     Subject materia = student.getUser().getSubjects().get((int) (Math.random() * student.getUser().getSubjects().size()));
@@ -280,7 +280,7 @@ public class Recommend extends Controller {
         };
         final ScheduledFuture<?> beeperHandle;
         if(TEST){
-            beeperHandle = scheduler.scheduleAtFixedRate(charger, 4, 120, MINUTES);
+            beeperHandle = scheduler.scheduleAtFixedRate(charger, 7, 120, MINUTES);
         }else {
             beeperHandle = scheduler.scheduleAtFixedRate(charger, 0, 7, DAYS);
         }
