@@ -2,10 +2,7 @@ package ua.dirproy.profelumno.delete.controllers;
 
 import play.mvc.Controller;
 import play.mvc.Result;
-import ua.dirproy.profelumno.common.models.Chat;
-import ua.dirproy.profelumno.common.models.Lesson;
-import ua.dirproy.profelumno.common.models.Student;
-import ua.dirproy.profelumno.common.models.Teacher;
+import ua.dirproy.profelumno.common.models.*;
 import ua.dirproy.profelumno.user.models.User;
 
 import java.util.List;
@@ -23,7 +20,6 @@ public class Delete extends Controller {
         User user = User.finder.byId(parseId);
         List<Student> students = Student.list();
         boolean deleteUser = false;
-        session().clear();
         for (int i = 0; i <students.size() ; i++) {
             Student aux = students.get(i);
             if (aux.getUser().getId().equals(parseId)){
@@ -48,6 +44,7 @@ public class Delete extends Controller {
         }
         user.setSubjects(null);
         user.delete();
+        session().clear();
         return redirect("/");
     }
 
@@ -73,20 +70,31 @@ public class Delete extends Controller {
 
     private static void deleteChatStudent(Long userId){
         List<Chat> chatList = Chat.finder.all();
-        for (int j = 0; j <chatList.size() ; j++) {
-            Chat chat = chatList.get(j);
-            if (chat.getStudent().getId().equals(userId)){
-                chat.delete();
+        for (Chat chat : chatList) {
+            for (Message message : chat.getMessages()) {
+                if (message.getAuthor().getId().equals(userId)) {
+                    message.setAuthor(null);
+                    message.save();
+                }
             }
         }
+        for ( Chat chat : chatList) {
+            if (chat.getStudent() != null && chat.getTeacher() != null && chat.getStudent().getId().equals(userId)) {
+                chat.setTeacher(null);
+                chat.setStudent(null);
+                chat.save();
+            }
+        }
+
     }
 
     private static void deleteChatTeacher(Long userId){
         List<Chat> chatList = Chat.finder.all();
-        for (int j = 0; j <chatList.size() ; j++) {
-            Chat chat = chatList.get(j);
+        for (Chat chat : chatList) {
             if (chat.getTeacher().getId().equals(userId)){
-                chat.delete();
+                chat.setTeacher(null);
+                chat.setStudent(null);
+                chat.save();
             }
         }
     }

@@ -3,10 +3,7 @@ package ua.dirproy.profelumno.common.models;
 import com.avaje.ebean.Model;
 import ua.dirproy.profelumno.user.models.User;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -84,5 +81,6 @@ public class Chat extends Model{
         messages.add(temp);
         this.save();
     }
+
 
 }
