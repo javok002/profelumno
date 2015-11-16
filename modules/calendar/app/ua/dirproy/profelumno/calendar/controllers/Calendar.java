@@ -84,6 +84,11 @@ public class Calendar extends Controller {
     }
 
     public static Result getLessonAccepted(){
+        List<Lesson> acceptLessons = getListLessonsAccepted();
+        return ok(Json.toJson(acceptLessons));
+    }
+
+    private static List<Lesson> getListLessonsAccepted() {
         List<Lesson> lessons = myLessons();
         List<Lesson> acceptLessons = new ArrayList<>();
         for (Lesson aux : lessons) {
@@ -91,7 +96,7 @@ public class Calendar extends Controller {
                 acceptLessons.add(aux);
             }
         }
-        return ok(Json.toJson(acceptLessons));
+        return acceptLessons;
     }
 
     public static Result getCalendar(){
@@ -308,7 +313,7 @@ public class Calendar extends Controller {
         if (emptyLessonsFlag) acceptLessons.remove(auxLesson);
 
 
-        ArrayNode arrayNode = Json.newArray().add(Json.toJson(acceptLessons)).add(Json.toJson(dayList));
+        ArrayNode arrayNode = Json.newArray().add(Json.toJson(getListLessonsAccepted())).add(Json.toJson(dayList));
 
         return ok(Json.toJson(arrayNode));
     }
