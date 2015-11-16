@@ -200,9 +200,10 @@ app.controller('TeacherInfoController', ['$rootScope', '$scope', '$http', 'fileU
         edit.u.user.city= $scope.getCity();
         edit.u.user.neighbourhood= $scope.getNeighbourhood();
         edit.u.renewalDate=$scope.renewalDate;
+        edit.u.user.lastLogin = new Date(edit.u.user.lastLogin);
 
-
-        $http.post('modify-teacher/teacher-modification-post', edit.u)
+        $http.post('modify-teacher/teacher-modification-post?name='+edit.u.user.name+'&surname='+edit.u.user.surname+'&email='+edit.u.user.email+'&birthday='+edit.u.user.birthday+'&address='+edit.u.user.address+'&gender='+edit.u.user.gender+'&price='+edit.u.price+'&homeClasses='+edit.u.homeClasses
+            +'&description='+edit.u.description+'&latitude='+edit.u.user.latitude+'&longitude='+edit.u.user.longitude+'&city='+edit.u.user.city+'&neighbourhood='+edit.u.user.neighbourhood+'&renewalDate='+edit.u.renewalDate+'&lastLogin='+edit.u.lastLogin)
             .success(function (data) {
                 $scope.errors = {incomplete: false, invalid: false, teacherAge: false, taken: false, length: false};
                 window.location.href = "/teacher-profile";

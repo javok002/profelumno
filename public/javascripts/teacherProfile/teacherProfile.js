@@ -33,7 +33,7 @@ angular.module('app', [])
                 .success(function (data) {
                     data.forEach(function(lesson) {
                         var date = new Date(lesson.dateTime);
-                        lesson.date = dateToString(date);
+                        lesson.date = dateToString(new Date(date));
                     });
                     $scope.nextLessons = data;
                 })

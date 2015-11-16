@@ -52,21 +52,27 @@ public class ChatManager {
     public static void notifyUsersConnections(Long userId){
         ObjectNode node = Json.newObject();
         List<User> connected = new ArrayList<>();
+        List<byte[]> connectedPicture= new ArrayList<>();
         List<User> disconnected = new ArrayList<>();
+        List<byte[]> disconnectedPicture= new ArrayList<>();
 
         for (Long aLong : getUsersRelated(userId)) {
             User temp = User.getUser(aLong);
             WebSocket.Out<JsonNode> out = map.get(temp.getId());
             if (out != null){
                 connected.add(temp);
+                connectedPicture.add(temp.getProfilePicture()!=null?Base64.getDecoder().decode(temp.getProfilePicture()):null);
             } else {
                 disconnected.add(temp);
+                disconnectedPicture.add(temp.getProfilePicture()!=null?Base64.getDecoder().decode(temp.getProfilePicture()):null);
             }
         }
 
         node.put("type", "users");
         node.put("connectedUsers", Json.toJson(connected));
+        node.put("connectedUsersPicture", Json.toJson(connectedPicture));
         node.put("disconnectedUsers", Json.toJson(disconnected));
+        node.put("disconnectedUsersPicture", Json.toJson(disconnectedPicture));
 
         map.get(userId).write(node);
 
@@ -78,6 +84,7 @@ public class ChatManager {
             ObjectNode node = Json.newObject();
             node.put("type", "user");
             node.put("user", Json.toJson(me));
+            node.put("picture", Json.toJson(user.getProfilePicture()!=null?Base64.getDecoder().decode(user.getProfilePicture()):null));
             node.put("connected", true);
 
             map.get(user.getId()).write(node);
@@ -125,6 +132,7 @@ public class ChatManager {
             ObjectNode node = Json.newObject();
             node.put("type", "user");
             node.put("user", Json.toJson(me));
+            node.put("picture", Json.toJson(me.getProfilePicture()!=null?Base64.getDecoder().decode(me.getProfilePicture()):null));
             node.put("connected", false);
 
             Long temp = relatedTo.next();

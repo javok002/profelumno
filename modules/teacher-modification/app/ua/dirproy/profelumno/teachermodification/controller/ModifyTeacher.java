@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,38 +43,32 @@ public class ModifyTeacher extends Controller {
     public static Result changePasswordView() {
         return ok(changepassword.render());
     }
-    public static Result saveTeacherInfo(){
-        Form<Teacher> form = Form.form(Teacher.class).bindFromRequest();
-        if (form.hasErrors()) {
-//            return badRequest(register.render());
-            return badRequest("Error in form");
-        }
-        Teacher tch = form.get();
-        User user = tch.getUser();
+    public static Result saveTeacherInfo(String name, String surname, String email, String birthday, String address, String gender, String price, String homeClasses,
+                                         String description, String latitude, String longitude, String city, String neighbourhood, String renewalDate, String lastLogin){
+        final long userId=Long.parseLong(session("id"));
+        User user = Ebean.find(User.class, userId);
         Teacher teacher = Teacher.finder.where().eq("user", user).findUnique();
 
-        if ((tch.getUser().getEmail()).equalsIgnoreCase(teacher.getUser().getEmail())||
-                User.validateEmailUnique(tch.getUser().getEmail())) {
-            //teacher.setProfilePicture(tch.getProfilePicture());
+        if ((email).equalsIgnoreCase(teacher.getUser().getEmail())||
+                User.validateEmailUnique(email)) {
             User teacherU=teacher.getUser();
-            User tchU=tch.getUser();
-            teacherU.setAddress(tchU.getAddress());
-            teacherU.setBirthday(tchU.getBirthday());
-            teacherU.setEmail(tchU.getEmail());
-            teacherU.setGender(tchU.getGender());
-            teacherU.setName(tchU.getName());
-            teacherU.setPassword(tchU.getPassword());
-            teacherU.setSurname(tchU.getSurname());
-            teacher.setPrice(tch.getPrice());
-            teacher.setHomeClasses(tch.getHomeClasses());
-            teacherU.setLatitude(tchU.getLatitude());
-            teacherU.setLongitude(tchU.getLongitude());
-            teacherU.setCity(tchU.getCity());
-            teacherU.setNeighbourhood(tchU.getNeighbourhood());
-            teacher.setDescription(tch.getDescription());
+            teacherU.setAddress(address);
+            teacherU.setBirthday(new Date(birthday));
+            teacherU.setEmail(email);
+            teacherU.setGender(gender);
+            teacherU.setName(name);
+            teacherU.setPassword(teacher.getUser().getPassword());
+            teacherU.setSurname(surname);
+            teacher.setPrice(Double.parseDouble(price));
+            teacher.setHomeClasses(Boolean.parseBoolean(homeClasses));
+            teacherU.setLatitude(Double.parseDouble(latitude));
+            teacherU.setLongitude(Double.parseDouble(longitude));
+            teacherU.setCity(city);
+            teacherU.setNeighbourhood(neighbourhood);
+            teacher.setDescription(description);
             Ebean.save(teacher.getUser());
             Ebean.save(teacher);
-//            System.out.println(Teacher.list().get(0).getUser().getName());
+
             return ok(routes.ModifyTeacher.profileView().url()) /*ok(Json.toJson(teacher))*/;
         }else {
             return badRequest("Unique");

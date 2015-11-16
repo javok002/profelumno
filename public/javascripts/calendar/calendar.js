@@ -5,6 +5,11 @@
 angular.module('app', [])
     .controller('CalendarController', ['$scope', '$http', function ($scope, $http) {
 
+        $scope.messages = {
+            success: false,
+            error: false
+        };
+
         $scope.init = function () {
             $http.get("/calendar/get-user-name")
                 .success(function (data) {
@@ -66,6 +71,9 @@ angular.module('app', [])
         };
 
         $scope.updateHours = function() {
+            var spinner = $('#spinner');
+            spinner.addClass('overlay');
+            spinner.removeClass('hidden');
             $scope.availableHours.forEach(function(range) {
                 var fromDate = getDateForHour(range.day, document.getElementById(range.day + 'from').value);
                 var toDate = getDateForHour(range.day, document.getElementById(range.day + 'to').value);
@@ -75,6 +83,16 @@ angular.module('app', [])
                     toHour: serialize(toDate)
                 };
                 $http.post("/calendar", data)
+                    .success(function() {
+                        if (!$scope.messages.success) $scope.messages.success = true;
+                        spinner.addClass('hidden');
+                        spinner.removeClass('overlay');
+                    })
+                    .error(function() {
+                        if (!$scope.messages.error) $scope.messages.error = true;
+                        spinner.addClass('hidden');
+                        spinner.removeClass('overlay');
+                    })
             });
         };
 
@@ -82,6 +100,11 @@ angular.module('app', [])
             $scope.currentLesson = lessonEvent;
             $scope.$apply();
             $('#lessonModal').modal('show');
+        };
+
+        $scope.toFormatDate = function (time) {
+            var date = new Date(time);
+            return date.getDate() + "/" + (date.getMonth() + 1) + '/' + date.getFullYear();
         };
 
         var spanishDays = {
