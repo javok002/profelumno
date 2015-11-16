@@ -15,7 +15,8 @@ import ua.dirproy.profelumno.user.models.User;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -170,25 +171,22 @@ public class Calendar extends Controller {
             }
         }
 
-        Lesson auxLesson = new Lesson();
-        auxLesson.setDateTime(new Date(new Date().getTime() + 600000));
-        auxLesson.setDuration(Duration.ofHours(1));
-        boolean emptyLessonsFlag = false;
-
-        if (acceptLessons.isEmpty()) {
-            acceptLessons.add(auxLesson);
-            emptyLessonsFlag = true;
-        }
-
         List<Day> dayList = new ArrayList<>();
         //voy sacando del calendario del teacher los horarios que ya tienen clases
         Date today = new Date();
+        today.setHours(0);
+        today.setMinutes(0);
+        today.setSeconds(0);
         for (Lesson aux : acceptLessons){
             final DayEnum dayEnum = auxiliaryMethod(aux.getDateTime());
             int durationOfClass = (int) (aux.getDuration().getSeconds() / 3600);
             int fromHour = aux.getDateTime().getHours();
             int toHour = fromHour + durationOfClass;
-            if (aux.getDateTime().after(today)) {
+            Date dateDay = aux.getDateTime();
+            dateDay.setHours(0);
+            dateDay.setMinutes(0);
+            dateDay.setSeconds(0);
+            if (dateDay.after(today)) {
                 for (DayRange dr : calendar) {
                     if (dr.getDayEnum() == dayEnum) {
                         if (!dayList.isEmpty()) {
@@ -223,7 +221,7 @@ public class Calendar extends Controller {
                                     break;
                                 } else {
                                     Day day = new Day();
-                                    day.setDay(aux.getDateTime());
+                                    day.setDay(dateDay);
                                     if (fromHour > dr.getFromHour().getHours() && toHour < dr.getToHour().getHours()) {
                                         Range rangeFrom = new Range();
                                         rangeFrom.setFrom(dr.getFromHour().getHours());
@@ -252,7 +250,7 @@ public class Calendar extends Controller {
                             }
                         } else {
                             Day day = new Day();
-                            day.setDay(aux.getDateTime());
+                            day.setDay(dateDay);
                             if (fromHour > dr.getFromHour().getHours() && toHour < dr.getToHour().getHours()) {
                                 Range rangeFrom = new Range();
                                 rangeFrom.setFrom(dr.getFromHour().getHours());
@@ -262,7 +260,6 @@ public class Calendar extends Controller {
                                 rangeTo.setTo(dr.getToHour().getHours());
                                 day.addRange(rangeFrom);
                                 day.addRange(rangeTo);
-                                ;
                             } else if (fromHour == dr.getFromHour().getHours() && toHour < dr.getToHour().getHours()) {
                                 Range rangeTo = new Range();
                                 rangeTo.setFrom(toHour);
@@ -283,37 +280,45 @@ public class Calendar extends Controller {
             }
         }
 
-        Date auxDate =new Date();
+        List<Day> dayListComplete = new ArrayList<>();
+        //Date auxDate =new Date();
         java.util.Calendar cal = new GregorianCalendar();
-        cal.setTime(auxDate);
+        cal.setTime(today);
         for (int i = 0; i <60 ; i++) {
-            for (Day auxDay : dayList){
-                if (auxDay.getDay().getYear() != cal.get(java.util.Calendar.YEAR) || auxDay.getDay().getMonth() != cal.get(java.util.Calendar.MONTH) || auxDay.getDay().getDay() != cal.get(java.util.Calendar.DAY_OF_YEAR)){
-                    final DayEnum dayEnum = auxiliaryMethod(cal.getTime());
-                    for (DayRange dr : calendar) {
-                        if (dr.getDayEnum() == dayEnum) {
-                            Day day = new Day();
-                            day.setDay(cal.getTime());
-                            Range range = new Range();
-                            range.setFrom(dr.getFromHour().getHours());
-                            range.setTo(dr.getToHour().getHours());
-                            day.addRange(range);
-                            dayList.add(day);
-                            cal.add(java.util.Calendar.DAY_OF_YEAR, 1);
-                            break;
-                        }
+                final DayEnum dayEnum = auxiliaryMethod(cal.getTime());
+                for (DayRange dr : calendar) {
+                    if (dr.getDayEnum() == dayEnum) {
+                        Day day = new Day();
+                        day.setDay(cal.getTime());
+                        Range range = new Range();
+                        range.setFrom(dr.getFromHour().getHours());
+                        range.setTo(dr.getToHour().getHours());
+                        day.addRange(range);
+                        dayListComplete.add(day);
+                        break;
                     }
                 }
-                break;
+            cal.add(java.util.Calendar.DAY_OF_YEAR, 1);
+        }
 
+
+
+        for (int j = 0; j <dayListComplete.size() ; j++) {
+            Day auxDay = dayListComplete.get(j);
+            Date auxDate = auxDay.getDay();
+            LocalDate date = auxDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            for (int i = 0; i <dayList.size() ; i++) {
+                Day auxDay1 = dayList.get(i);
+                Date auxDate1 = auxDay1.getDay();
+                LocalDate date1 = auxDate1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                if (date1.equals(date)){
+                    dayListComplete.set(j,auxDay1);
+                }
             }
 
         }
 
-        if (emptyLessonsFlag) acceptLessons.remove(auxLesson);
-
-
-        ArrayNode arrayNode = Json.newArray().add(Json.toJson(getListLessonsAccepted())).add(Json.toJson(dayList));
+        ArrayNode arrayNode = Json.newArray().add(Json.toJson(getListLessonsAccepted())).add(Json.toJson(dayListComplete));
 
         return ok(Json.toJson(arrayNode));
     }
@@ -348,4 +353,7 @@ public class Calendar extends Controller {
         }
         return dayEnum;
     }
+
+
+
 }
