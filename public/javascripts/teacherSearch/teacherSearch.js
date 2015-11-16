@@ -68,7 +68,7 @@ teacherSearchApp.controller("searchController", function($scope, $http, $routePa
             //console.log("on init executed successfully" + a + $routeParams.paramId);
             //console.log($routeParams.bag);
             //console.log(queryParams);
-            $scope.subjects.push(queryParams.subject.replace("-"," "));
+            $scope.subjects.push({text: queryParams.subject.replace("-"," ")});
             $scope.sortByDistance = true;
             $scope.search();
 

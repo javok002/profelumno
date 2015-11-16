@@ -57,7 +57,7 @@ public class Recommend extends Controller {
         final ScheduledFuture<?> beeperHandle;
 
         if(TEST){
-            beeperHandle = scheduler.scheduleAtFixedRate(charger, 4 , 60, MINUTES);
+            beeperHandle = scheduler.scheduleAtFixedRate(charger, 2 , 60, MINUTES);
         }else {
             beeperHandle = scheduler.scheduleAtFixedRate(charger, initialDelay , 10080, MINUTES);
         }
@@ -65,35 +65,42 @@ public class Recommend extends Controller {
 
     private void sendWeMissYou(User user, boolean isTeacher) {
         if(TEST){
-            if((!user.getEmail().equals("buccajoaquin@gmail.com")) && (!user.getEmail().equals("gutierrezmartin1992@gmail.com"))) return;
+            if((!user.getEmail().equals("jose.illi@ing.austral.edu.ar")) && (!user.getEmail().equals("gutierrezmartin1992@gmail.com"))) return;
         }
         String subject = "Profelumno te extraña";
-        String message1 = "<div class=\"container-fluid\">\n" +
-                "    <div class=\"row-fluid\">\n" +
-                "        <h4>Hola "+user.getName() +"</h4>\n" +
-                "        <p>¡Hace tiempo que no nos visitas!";
+        String message = "<h2><span style=\"color: #008080;\">&iexcl;Hola "+user.getName() +"!</span></h2>\n" +
+                "<h4>&iexcl;Hace tiempo que no nos visitas!</h4>\n";
+//        String message1 = "<div class=\"container-fluid\">\n" +
+//                "    <div class=\"row-fluid\">\n" +
+//                "        <h4>Hola "+user.getName() +"</h4>\n" +
+//                "        <p>¡Hace tiempo que no nos visitas!";
         if(isTeacher){
-            message1 += " Estamos seguros que hay alumnos que están necesitando tu ayuda. Entra al sitio y vuelve a dar clases en Profelumno.</p>\n" +
-                    "        <p>¡Te esperamos!</p>" +
-                    "        <a href=\"localhost:9000\">localhost:9000</a>\n" +
-                    "        <p>El equipo de Profelumno</p>\n" +
-                    "    </div>\n" +
-                    "</div>";
+            message+="<p>Estamos seguros que hay alumnos que est&aacute;n necesitando tu ayuda. Entra al sitio y vuelve a dar clases en Profelumno.</p>";
+//            message1 += " Estamos seguros que hay alumnos que están necesitando tu ayuda. Entra al sitio y vuelve a dar clases en Profelumno.</p>\n" +
+//                    "        <p>¡Te esperamos!</p>" +
+//                    "        <a href=\"localhost:9000\">localhost:9000</a>\n" +
+//                    "        <p>El equipo de Profelumno</p>\n" +
+//                    "    </div>\n" +<p>
+//                    "</div>";
         } else {
-            message1 += " Estamos seguros que necesitas ayuda en esa materia que ultimamente no te está yendo tan bien.</p>\n" +
-                    "        <p>¡Te esperamos!</p>\n" +
-                    "        <a href=\"localhost:9000\">localhost:9000</a>\n" +
-                    "        <p>El equipo de Profelumno</p>\n" +
-                    "    </div>\n" +
-                    "</div>";
+            message+=" <p>Estamos seguros que necesitas ayuda en esa materia que ultimamente no te está yendo tan bien. &iexcl;Vuelve a Profelumno y busca ayuda!</p>\n";
+//            message1 += " Estamos seguros que necesitas ayuda en esa materia que ultimamente no te está yendo tan bien.</p>\n" +
+//                    "        <p>¡Te esperamos!</p>\n" +
+//                    "        <a href=\"localhost:9000\">localhost:9000</a>\n" +
+//                    "        <p>El equipo de Profelumno</p>\n" +
+//                    "    </div>\n" +
+//                    "</div>";
         }
+        message+= "<h1 style=\"text-align: center;\"><span style=\"color: #ff6600;\">&iexcl;Te esperamos!</span></h1>\n" +
+                "<p><a href=\"http://localhost:9000\" target=\"_blank\">http://localhost:9000</a></p>\n" +
+                "<h2>El equipo de <span style=\"color: #33cccc;\">Profelumno</span></h2>";
 
         System.out.println("Sending mail we miss you to " + user.getEmail());
         try {
             String[] to = new String[1];
             to[0] = user.getEmail();
 //            to[0] = "jose.illi@ing.austral.edu.ar";
-            MailSenderUtil.send(to, subject, message1);
+            MailSenderUtil.send(to, subject, message);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error sending we miss you to " + user.getEmail());
@@ -150,7 +157,7 @@ public class Recommend extends Controller {
                 for (int j = 0; j < students.size(); j++) {
                     student = students.get(students.size()-1-j);
                     if(TEST){
-                        if((!student.getUser().getEmail().equals("buccajoaquin@gmail.com")) && (!student.getUser().getEmail().equals("gutierrezmartin1992@gmail.com"))) continue;
+                        if((!student.getUser().getEmail().equals("illijoseignacio@gmail.com")) && (!student.getUser().getEmail().equals("gutierrezmartin1992@gmail.com"))) continue;
                     }
                     if(student.getUser().getSubjects().isEmpty()) return;
                     Subject materia = student.getUser().getSubjects().get((int) (Math.random() * student.getUser().getSubjects().size()));
@@ -165,75 +172,103 @@ public class Recommend extends Controller {
                         }
                     }
                     if(teachersToRecommend.size() == 0) return;
+
+                    for (Teacher teacher : teachersToRecommend) {
+                        Teacher.updateRating(teacher);
+                    }
+                    teachersToRecommend.sort(new Comparator<Teacher>() {
+                        @Override
+                        public int compare(Teacher o1, Teacher o2) {
+                            if(o1.getUser().getReviews() == 0){
+                                return  1;
+                            } else if(o2.getUser().getReviews() == 0){
+                                return -1;
+                            }
+                            float difference = o2.getRanking() - o1.getRanking();
+                            return difference < 0 ? -1 : difference > 0 ? 1 : 0;
+                        }
+                    });
                 boolean hasDirection = (student.getUser().getAddress() != null);
                 if (hasDirection){
                         TeacherSearches.orderByDistance(teachersToRecommend, student.getUser());
-                    } else {
-                        teachersToRecommend.sort(new Comparator<Teacher>() {
-                            @Override
-                            public int compare(Teacher o1, Teacher o2) {
-                                if(o1.getUser().getReviews() == 0){
-                                    return  1;
-                                } else if(o2.getUser().getReviews() == 0){
-                                    return -1;
-                                }
-                                float difference = o2.getUser().getTotalStars()/o2.getUser().getReviews() - o1.getUser().getTotalStars()/o1.getUser().getReviews();
-                                return difference < 0 ? -1 : difference > 0 ? 1 : 0;
-                            }
-                        });
                     }
+//                else {
+//                        teachersToRecommend.sort(new Comparator<Teacher>() {
+//                            @Override
+//                            public int compare(Teacher o1, Teacher o2) {
+//                                if(o1.getUser().getReviews() == 0){
+//                                    return  1;
+//                                } else if(o2.getUser().getReviews() == 0){
+//                                    return -1;
+//                                }
+//                                float difference = o2.getUser().getTotalStars()/o2.getUser().getReviews() - o1.getUser().getTotalStars()/o1.getUser().getReviews();
+//                                return difference < 0 ? -1 : difference > 0 ? 1 : 0;
+//                            }
+//                        });
+//                    }
+
 
                     teachersToRecommend = teachersToRecommend.subList(0, teachersToRecommend.size() > 6 ? 6 : teachersToRecommend.size());
-                    teachersToRecommend.sort(new Comparator<Teacher>() {
-                    @Override
-                    public int compare(Teacher o1, Teacher o2) {
-                        if(o1.getUser().getReviews() == 0){
-                            return  1;
-                        } else if(o2.getUser().getReviews() == 0){
-                            return -1;
-                        }
-                        float difference = o2.getUser().getTotalStars()/o2.getUser().getReviews() - o1.getUser().getTotalStars()/o1.getUser().getReviews();
-                        return difference < 0 ? -1 : difference > 0 ? 1 : 0;
-                    }
-                });
 
                     String subject = "Profelumno recomienda";
-                    String message1 = "<div class=\"container-fluid\">\n" +
-                            "    <div class=\"row-fluid\">\n" +
-                            "        <h4>Hola " + student.getUser().getName() +"</h4>\n" +
-                            "        <p>¿Por qué no pides ayuda para aprobar tus examenes? Estos profesores enseñan " + materia.getName() + " y ¡OH! tu necesitas aprender "+ materia.getName() +"</p>\n" +
+                    String message = "<div>\n" +
+                            "    <div>\n" +
+                            "        <h2><span style=\"color: #008080;\">&iexcl;Hola " + student.getUser().getName() +"!</span></h2>\n" +
+                            "        <p><span style=\"color: #000000;\">&iquest;Por qu&eacute; no pides ayuda para aprobar tus examenes? Estos profesores ense&ntilde;an <em>"+ materia.getName() +"</em> y &iexcl;OH! tu necesitas aprender <em>"+ materia.getName() +"</em></span></p>\n" +
                             "    </div>\n" +
-                            "    <div class=\"row-fluid center-block\">\n" + "<div class =\" col-xs-12\">" +
-                            "        <table class=\"table bordered\">\n" +
-                            "            <tbody>\n" +
-                            "                <tr>\n" +
-                            "                    <th class=\"text-center\">Profesor</th>\n" +
-                            "                    <th class=\"text-center\">Ranking</th>\n" +
-                            "                    <th class=\"text-center\">Clases dictadas</th>\n" +
-                            "                    <th class=\"text-center\">Distancia a tu domicilio</th>\n" +
-                            "                </tr>\n" ;
+                            "    <div>\n" +
+                            "        <div>\n" +
+                            "            <table style=\"border-color: #5882fa; margin-left: auto; margin-right: auto;\" border=\"solid\" cellpadding=\"12\">\n" +
+                            "                <tbody>\n" +
+                            "                <tr><th style=\"text-align: center;\">Profesor</th><th style=\"text-align: center;\">Ranking</th><th style=\"text-align: center;\">Clases dictadas</th><th style=\"text-align: center;\">Distancia a tu domicilio</th></tr>\n";
+
+//                    String message1 = "<div class=\"container-fluid\">\n" +
+//                            "    <div class=\"row-fluid\">\n" +
+//                            "        <h4>Hola " + student.getUser().getName() +"</h4>\n" +
+//                            "        <p>¿Por qué no pides ayuda para aprobar tus examenes? Estos profesores enseñan " + materia.getName() + " y ¡OH! tu necesitas aprender "+ materia.getName() +"</p>\n" +
+//                            "    </div>\n" +
+//                            "    <div class=\"row-fluid center-block\">\n" + "<div class =\" col-xs-12\">" +
+//                            "        <table class=\"table bordered\">\n" +
+//                            "            <tbody>\n" +
+//                            "                <tr>\n" +
+//                            "                    <th class=\"text-center\">Profesor</th>\n" +
+//                            "                    <th class=\"text-center\">Ranking</th>\n" +
+//                            "                    <th class=\"text-center\">Clases dictadas</th>\n" +
+//                            "                    <th class=\"text-center\">Distancia a tu domicilio</th>\n" +
+//                            "                </tr>\n" ;
                     for (int i = 0; i < teachersToRecommend.size(); i++) {
-                        message1 += "                <tr>\n" +
-                                "                    <td class=\"text-center\">" + teachersToRecommend.get(i).getUser().getName() + " " + teachersToRecommend.get(i).getUser().getSurname() + "</td>\n" +
-                                "                    <td class=\"text-center\">" + (teachersToRecommend.get(i).getUser().getReviews() == 0 ? 0 :teachersToRecommend.get(i).getUser().getTotalStars() /teachersToRecommend.get(i).getUser().getReviews()) + "</td>\n" +
-                                "                    <td class=\"text-center\">" + teachersToRecommend.get(i).getLessonsDictated() + "</td>\n" +
-                                "                    <td class=\"text-center\">" + (hasDirection ? (distFrom(student.getUser().getLatitude(),student.getUser().getLongitude(),teachersToRecommend.get(i).getUser().getLatitude(),teachersToRecommend.get(i).getUser().getLongitude())): "Desconocida") +"</td>\n" +
+                        message += "                <tr>\n" +
+                                "                    <td style=\"text-align: center;\">" + teachersToRecommend.get(i).getUser().getName() + " " + teachersToRecommend.get(i).getUser().getSurname() + "</td>\n" +
+                                "                    <td style=\"text-align: center;\">" + teachersToRecommend.get(i).getRanking() + "</td>\n" +
+                                "                    <td style=\"text-align: center;\">" + teachersToRecommend.get(i).getLessonsDictated() + "</td>\n" +
+                                "                    <td style=\"text-align: center;\">" + (hasDirection ? (distFrom(student.getUser().getLatitude(),student.getUser().getLongitude(),teachersToRecommend.get(i).getUser().getLatitude(),teachersToRecommend.get(i).getUser().getLongitude())): "Desconocida") +"</td>\n" +
                                 "                </tr>\n";
 
                     }
-                    message1 +=        "            </tbody>\n" +
-                            "        </table>\n" +
-                            "    </div>\n" + "<div>"+
-                            "    <div class=\"row-fluid\">\n" +
-                            "        <p>En el siguinete link puedes ver los profesores que están cerca de tu casa</p>\n" +
-                            "        <a href=\"localhost:9000/teacher-search?subject"+materia.getName().replace(" ", "-")+"&sort=true\">localhost:9000/teacher-search?subject=" +materia.getName().replace(" ", "-") +"&sort=true</a>\n" +
-                            "        <p>El equipo de Profelumno</p>\n" +
+                    message+= "                </tbody>\n" +
+                            "            </table>\n" +
+                            "        </div>\n" +
+                            "        <div>\n" +
+                            "            <p>En el siguinete link puedes ver los profesores que est&aacute;n cerca de tu casa</p>\n" +
+                            "            <p><a href=\"http://localhost:9000/teacher-search?subject="+materia.getName().replace(" ", "-")+"&sort=true\" target=\"_blank\">http://localhost:9000/teacher-search?subject=" +materia.getName().replace(" ", "-") +"&sort=true</a></p>\n" +
+                            "            <h2>El equipo de <span style=\"color: #33cccc;\">Profelumno</span></h2>\n" +
+                            "        </div>\n" +
                             "    </div>\n" +
-                            "</div>";
+                            "</div>";;
+
+//                    message1 +=        "            </tbody>\n" +
+//                            "        </table>\n" +
+//                            "    </div>\n" + "<div>"+
+//                            "    <div class=\"row-fluid\">\n" +
+//                            "        <p>En el siguinete link puedes ver los profesores que están cerca de tu casa</p>\n" +
+//                            "        <a href=\"localhost:9000/teacher-search?subject"+materia.getName().replace(" ", "-")+"&sort=true\">localhost:9000/teacher-search?subject=" +materia.getName().replace(" ", "-") +"&sort=true</a>\n" +
+//                            "        <p>El equipo de Profelumno</p>\n" +
+//                            "    </div>\n" +
+//                            "</div>";
 
                     System.out.println("Sending recommendation mail to " + student.getUser().getEmail());
                     try {
-                        MailSenderUtil.send(to, subject, message1);
+                        MailSenderUtil.send(to, subject, message);
                     } catch (Exception e) {
                         e.printStackTrace();
                         System.out.println("Error sending recommendation mail to " + student.getUser().getEmail());
@@ -245,7 +280,7 @@ public class Recommend extends Controller {
         };
         final ScheduledFuture<?> beeperHandle;
         if(TEST){
-            beeperHandle = scheduler.scheduleAtFixedRate(charger, 7, 120, MINUTES);
+            beeperHandle = scheduler.scheduleAtFixedRate(charger, 4, 120, MINUTES);
         }else {
             beeperHandle = scheduler.scheduleAtFixedRate(charger, 0, 7, DAYS);
         }
@@ -261,6 +296,6 @@ public class Recommend extends Controller {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         float dist = (float) (earthRadius * c);
 
-        return (int) dist + " metros";
+        return String.format("%.2f", (dist/1000))+ " km";
     }
 }

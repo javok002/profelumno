@@ -123,7 +123,11 @@ public class TeacherSearches extends Controller {
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
-                return distance;
+                    if(distance == 0){
+                        float difference = o2.getRanking() - o1.getRanking();
+                        distance = difference < 0 ? -1 : difference > 0 ? 1 : 0;
+                    }
+                    return distance;
                 }
 
         });
