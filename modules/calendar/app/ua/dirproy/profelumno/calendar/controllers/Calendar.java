@@ -171,12 +171,68 @@ public class Calendar extends Controller {
             }
         }
 
+        List<Lesson> lessonStudent = getListLessonsAccepted();
+
         List<Day> dayList = new ArrayList<>();
         //voy sacando del calendario del teacher los horarios que ya tienen clases
+
         Date today = new Date();
         today.setHours(0);
         today.setMinutes(0);
         today.setSeconds(0);
+
+        addLessonDay(dayList,acceptLessons,calendar,today);
+
+        addLessonDay(dayList,lessonStudent,calendar,today);
+
+        List<Day> dayListComplete = new ArrayList<>();
+        //Date auxDate =new Date();
+        java.util.Calendar cal = new GregorianCalendar();
+        cal.setTime(today);
+        for (int i = 0; i <60 ; i++) {
+                final DayEnum dayEnum = auxiliaryMethod(cal.getTime());
+                for (DayRange dr : calendar) {
+                    if (dr.getDayEnum() == dayEnum) {
+                        Day day = new Day();
+                        day.setDay(cal.getTime());
+                        Range range = new Range();
+                        range.setFrom(dr.getFromHour().getHours());
+                        range.setTo(dr.getToHour().getHours());
+                        day.addRange(range);
+                        dayListComplete.add(day);
+                        break;
+                    }
+                }
+            cal.add(java.util.Calendar.DAY_OF_YEAR, 1);
+        }
+
+
+
+        for (int j = 0; j <dayListComplete.size() ; j++) {
+            Day auxDay = dayListComplete.get(j);
+            Date auxDate = auxDay.getDay();
+            LocalDate date = auxDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            for (int i = 0; i <dayList.size() ; i++) {
+                Day auxDay1 = dayList.get(i);
+                Date auxDate1 = auxDay1.getDay();
+                LocalDate date1 = auxDate1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                if (date1.equals(date)){
+                    dayListComplete.set(j,auxDay1);
+                }
+            }
+
+        }
+
+
+
+        ArrayNode arrayNode = Json.newArray().add(Json.toJson(getListLessonsAccepted())).add(Json.toJson(dayListComplete));
+
+        return ok(Json.toJson(arrayNode));
+    }
+
+
+    private static void addLessonDay(List<Day> dayList,List<Lesson> acceptLessons,List<DayRange> calendar,Date today){
+
         for (Lesson aux : acceptLessons){
             final DayEnum dayEnum = auxiliaryMethod(aux.getDateTime());
             int durationOfClass = (int) (aux.getDuration().getSeconds() / 3600);
@@ -279,51 +335,7 @@ public class Calendar extends Controller {
                 }
             }
         }
-
-        List<Day> dayListComplete = new ArrayList<>();
-        //Date auxDate =new Date();
-        java.util.Calendar cal = new GregorianCalendar();
-        cal.setTime(today);
-        for (int i = 0; i <60 ; i++) {
-                final DayEnum dayEnum = auxiliaryMethod(cal.getTime());
-                for (DayRange dr : calendar) {
-                    if (dr.getDayEnum() == dayEnum) {
-                        Day day = new Day();
-                        day.setDay(cal.getTime());
-                        Range range = new Range();
-                        range.setFrom(dr.getFromHour().getHours());
-                        range.setTo(dr.getToHour().getHours());
-                        day.addRange(range);
-                        dayListComplete.add(day);
-                        break;
-                    }
-                }
-            cal.add(java.util.Calendar.DAY_OF_YEAR, 1);
-        }
-
-
-
-        for (int j = 0; j <dayListComplete.size() ; j++) {
-            Day auxDay = dayListComplete.get(j);
-            Date auxDate = auxDay.getDay();
-            LocalDate date = auxDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            for (int i = 0; i <dayList.size() ; i++) {
-                Day auxDay1 = dayList.get(i);
-                Date auxDate1 = auxDay1.getDay();
-                LocalDate date1 = auxDate1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                if (date1.equals(date)){
-                    dayListComplete.set(j,auxDay1);
-                }
-            }
-
-        }
-
-        ArrayNode arrayNode = Json.newArray().add(Json.toJson(getListLessonsAccepted())).add(Json.toJson(dayListComplete));
-
-        return ok(Json.toJson(arrayNode));
     }
-
-
 
     private static DayEnum auxiliaryMethod(Date date){
         GregorianCalendar cal = new GregorianCalendar();
