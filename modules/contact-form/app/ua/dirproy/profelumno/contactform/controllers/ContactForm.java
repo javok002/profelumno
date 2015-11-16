@@ -29,9 +29,9 @@ public class ContactForm extends Controller {
         for (String line : lines) {
             messageToSend.append("<br>").append(line);
         }
-
+        String emailToSendTo = "francisco.di@ing.austral.edu.ar";
         try {
-            MailSenderUtil.send(new String[]{"francisco.di@ing.austral.edu.ar"}, subject, messageToSend.toString());
+            MailSenderUtil.send(new String[]{emailToSendTo}, subject, messageToSend.toString());
         } catch (Exception e) {
             e.printStackTrace();
             return badRequest();
